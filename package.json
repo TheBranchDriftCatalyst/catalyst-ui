@@ -1,9 +1,8 @@
 {
   "name": "catalyst-ui",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
   "main": "lib/index.js",
+  "license": "MIT",
   "module": "lib/index.esm.js",
   "types": "lib/index.d.ts",
   "devDependencies": {
@@ -35,5 +34,6 @@
   "scripts": {
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
-  }
+  },
+  "packageManager": "yarn@3.6.3"
 }
