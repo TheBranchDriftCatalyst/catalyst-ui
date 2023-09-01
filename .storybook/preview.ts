@@ -1,4 +1,6 @@
 import type { Preview } from "@storybook/react";
+import { withTests } from '@storybook/addon-jest';
+import results from '../.jest-test-results.json';
 
 const preview: Preview = {
   parameters: {
@@ -11,5 +13,14 @@ const preview: Preview = {
     },
   },
 };
+
+
+
+export const decorators = [
+  withTests({
+    results,
+  }),
+];
+
 
 export default preview;

@@ -6,7 +6,7 @@ export interface ButtonProps {
 }
 
 const Button: React.FC<ButtonProps> = ({ label, onClick }) => {
-  return <button onClick={onClick}>{label}</button>;
+  return <button onClick={onClick}>{label} XXXX</button>;
 };
 
 export default Button;
