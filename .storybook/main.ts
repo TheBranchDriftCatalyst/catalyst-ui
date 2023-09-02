@@ -16,6 +16,10 @@ const config: StorybookConfig = {
         extensions: config.resolve.extensions,
       }),
     ];
+    config.module.rules.push({
+      test: /\.scss$/,
+      use: ["style-loader", "css-loader", "postcss-loader", "sass-loader"],
+    });
     return config;
   },
   stories: [
@@ -30,6 +34,7 @@ const config: StorybookConfig = {
     // "@storybook/testing-library", // we don't need this in the storybook runner, test-runner is separate
     '@storybook/addon-coverage',
     "@storybook/addon-console",
+    '@storybook/addon-controls',
     // "@storybook/addon-actions", // automatically added??
     {
       name: '@storybook/addon-styling',

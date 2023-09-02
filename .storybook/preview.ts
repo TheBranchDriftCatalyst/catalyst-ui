@@ -3,8 +3,14 @@ import { withTests } from '@storybook/addon-jest';
 import { withThemeByDataAttribute } from '@storybook/addon-styling';
 import results from '../.jest-test-results.json';
 import { withConsole } from '@storybook/addon-console';
+// import * as nextImage from "next/image";
 
-import '../src/tailwind.css';
+import '../src/tailwind.scss';
+
+// Object.defineProperty(nextImage, "default", {
+//   configurable: true,
+//   value: (props) => <img {...props} />,
+// });
 
 const preview: Preview = {
   parameters: {
@@ -26,6 +32,7 @@ export const decorators = [
     themes: {
       light: 'light',
       dark: 'dark',
+      dracula: 'dracula',
     },
     defaultTheme: 'light',
     attributeName: 'data-mode',
