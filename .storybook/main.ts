@@ -1,6 +1,12 @@
 import type { StorybookConfig } from "@storybook/react-webpack5";
 
+const location = {}
+
 const config: StorybookConfig = {
+  // webpackFinal: (config) => {
+  //   config.resolve.alias['location'] = {}
+  //   return config;
+  // },
   stories: [
     "../stories/**/*.mdx",
     "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)",
@@ -9,7 +15,7 @@ const config: StorybookConfig = {
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
-    "@storybook/addon-onboarding",
+    // "@storybook/addon-onboarding",
     "@storybook/addon-interactions",
     '@storybook/addon-jest',
     '@storybook/addon-storysource',
@@ -24,15 +30,7 @@ const config: StorybookConfig = {
           implementation: require('postcss'),
         },
       },
-    },
-    // {
-    //   name: '@storybook/addon-postcss',
-    //   options: {
-    //     postcssLoaderOptions: {
-    //       implementation: require('postcss'),
-    //     },
-    //   },
-    // },
+    }
   ],
   framework: {
     name: "@storybook/react-webpack5",
