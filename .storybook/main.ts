@@ -1,8 +1,15 @@
 import type { StorybookConfig } from "@storybook/react-webpack5";
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import '@storybook/addon-console';
+
+// const panelExclude = setConsoleOptions({}).panelExclude;
+// setConsoleOptions({
+//   panelExclude: [...panelExclude, /deprecated/],
+// });
 
 const config: StorybookConfig = {
   webpackFinal: async (config) => {
+    // allow path aliases
     config.resolve.plugins = [
       ...(config.resolve.plugins || []),
       new TsconfigPathsPlugin({
@@ -20,8 +27,10 @@ const config: StorybookConfig = {
     "@storybook/addon-interactions",
     '@storybook/addon-jest',
     '@storybook/addon-storysource',
-    "@storybook/testing-library",
+    // "@storybook/testing-library", // we don't need this in the storybook runner, test-runner is separate
     '@storybook/addon-coverage',
+    "@storybook/addon-console",
+    // "@storybook/addon-actions", // automatically added??
     {
       name: '@storybook/addon-styling',
       options: {

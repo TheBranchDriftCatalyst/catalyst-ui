@@ -4,7 +4,7 @@ import React from "react";
 import { Button } from "./Button";
 
 export default {
-  // title: "Components/Button",
+  title: "Components/Button",
   component: Button,
   tags: ['autodocs'],
   argTypes: {
@@ -25,6 +25,7 @@ export default {
       control: { type: "radio" },
       defaultValue: "default",
     },
+    onClick: { action: "clicked" },
   },
 };
 
@@ -88,5 +89,5 @@ export const IconSize = {
   args: {
     size: 'icon',
     children: 'Icon Button',
-  },
+  }
 };
