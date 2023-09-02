@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Button } from './Button';
-import './header.css';
+// import './header.css';
 
 export const Header = ({ user, onLogin, onLogout, onCreateAccount }) => (
   <header>

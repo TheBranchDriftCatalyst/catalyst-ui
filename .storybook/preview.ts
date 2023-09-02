@@ -3,7 +3,7 @@ import { withTests } from '@storybook/addon-jest';
 import { withThemeByDataAttribute } from '@storybook/addon-styling';
 import results from '../.jest-test-results.json';
 
-import '../src/tailwind.css';
+// import '../src/tailwind.css';
 
 const preview: Preview = {
   parameters: {

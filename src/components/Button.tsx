@@ -1,5 +1,3 @@
-// ./src/stories/Button.js
-
 import React, { useMemo } from 'react';
 
 const getSizeClasses = (size) => {
