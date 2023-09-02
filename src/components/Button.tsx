@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
+import { SynthesizedComment } from 'typescript';
 
 export interface ButtonProps {
   label: string;

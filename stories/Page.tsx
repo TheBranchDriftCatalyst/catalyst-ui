@@ -1,14 +1,12 @@
+// ./src/stories/Page.js
+
 import React from 'react';
 
 import { Header } from './Header';
 import './page.css';
 
-type User = {
-  name: string;
-};
-
-export const Page: React.FC = () => {
-  const [user, setUser] = React.useState<User>();
+export const Page = () => {
+  const [user, setUser] = React.useState();
 
   return (
     <article>
@@ -19,7 +17,7 @@ export const Page: React.FC = () => {
         onCreateAccount={() => setUser({ name: 'Jane Doe' })}
       />
 
-      <section className="storybook-page">
+      <section className="dark:text-white dark:bg-slate-800">
         <h2>Pages in Storybook</h2>
         <p>
           We recommend building UIs with a{' '}
@@ -48,11 +46,13 @@ export const Page: React.FC = () => {
           <a href="https://storybook.js.org/tutorials/" target="_blank" rel="noopener noreferrer">
             Storybook tutorials
           </a>
-          . Read more in the{' '}
-          <a href="https://storybook.js.org/docs" target="_blank" rel="noopener noreferrer">
+          . Read more in the <a
+            href="https://storybook.js.org/docs"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             docs
-          </a>
-          .
+          </a>.
         </p>
         <div className="tip-wrapper">
           <span className="tip">Tip</span> Adjust the width of the canvas with the{' '}
