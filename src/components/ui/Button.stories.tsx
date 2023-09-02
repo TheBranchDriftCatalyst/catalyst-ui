@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Button } from "./Button";
+import { within, userEvent } from "@storybook/testing-library";
 
 export default {
   title: "Components/Button",
@@ -27,6 +28,13 @@ export default {
     },
     onClick: { action: "clicked" },
   },
+  // play: async ({ canvasElement }) => {
+  //   const canvas = within(canvasElement);
+  //   const loginButton = await canvas.getByRole("button", {
+  //     name: /Log in/i,
+  //   });
+  //   await userEvent.click(loginButton);
+  // },
 };
 
 export const Default = {
