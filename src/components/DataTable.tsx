@@ -29,14 +29,8 @@ export default function DataTable<TData, TValue>({
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
+    getCoreRowModel: getCoreRowModel(),   
   })
-
-  console.log({
-    headerRows: table.getHeaderGroups(),
-  })
-
-  // return (<div>test</div>)
 
   return (
     <div className="rounded-md border">

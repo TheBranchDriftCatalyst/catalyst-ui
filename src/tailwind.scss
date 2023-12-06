@@ -8,6 +8,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+// TODO: we want this to be added to build output so we can import it in our client services
+// like import "catalyst-ui/tailwind.css";
  
 html[data-mode="dark"] {
   @apply bg-slate-800 text-white;

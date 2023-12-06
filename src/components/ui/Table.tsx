@@ -1,5 +1,8 @@
 import * as React from "react"
 
+// All table ui components are defined here
+// TODO: move this into separate files eventually
+
 import { cn } from "@/lib/utils"
 
 export const Table = React.forwardRef<
