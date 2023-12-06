@@ -5,7 +5,7 @@ import { Button } from "./Button";
 import { within, userEvent } from "@storybook/testing-library";
 
 export default {
-  title: "Components/Button",
+  title: "UI/Button",
   component: Button,
   tags: ['autodocs'],
   argTypes: {
@@ -15,7 +15,6 @@ export default {
         "destructive",
         "outline",
         "secondary",
-        "ghost",
         "link",
       ],
       control: { type: "radio" },
