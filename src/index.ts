@@ -1,3 +1,3 @@
-export { default as Button } from './components/Button';
+export { default as Button } from './components/ui/Button';
 export { default as Table } from './components/DataTable';
-export { default as tailwindStyles } from './tailwind.scss';
+// export { default as tailwindStyles } from './global.scss';
