@@ -1,6 +1,6 @@
 import type { StorybookConfig } from "@storybook/react-webpack5";
-import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
-import '@storybook/addon-console';
+import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
+import "@storybook/addon-console";
 
 // const panelExclude = setConsoleOptions({}).panelExclude;
 // setConsoleOptions({
@@ -16,37 +16,45 @@ const config: StorybookConfig = {
         extensions: config.resolve.extensions,
       }),
     ];
-    config.module.rules.push({
-      test: /\.scss$/,
-      use: ["style-loader", "css-loader", "postcss-loader", "sass-loader"],
-    });
+    // config.module.rules.push({
+    //   test: /\.scss$/,
+    //   use: ["sass-loader", "style-loader", "css-loader", "postcss-loader"],
+    // });
     return config;
   },
-  stories: [
-    "../src/**/*.stories.mdx",
-    "../src/**/*.stories.@(js|jsx|ts|tsx)"
-  ],
+  stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
-    '@storybook/addon-jest',
-    '@storybook/addon-storysource',
+    "@storybook/addon-jest",
+    "@storybook/addon-storysource",
     // "@storybook/testing-library", // we don't need this in the storybook runner, test-runner is separate
-    '@storybook/addon-coverage',
+    "@storybook/addon-coverage",
     "@storybook/addon-console",
-    '@storybook/addon-controls',
-    // "@storybook/addon-actions", // automatically added??
+    "@storybook/addon-controls",
+    // 'storybook-dark-mode',
+
     {
-      name: '@storybook/addon-styling',
+      name: "storybook-addon-sass-postcss",
       options: {
-        // Check out https://github.com/storybookjs/addon-styling/blob/main/docs/api.md
-        // For more details on this addon's options.
-        postCss: {
-          implementation: require('postcss'),
+        postcssLoaderOptions: {
+          implementation: require("postcss"),
+          loadSassAfterPostCSS: true,
         },
       },
-    }
+    },
+    // "@storybook/addon-actions", // automatically added??
+    // {
+    //   name: '@storybook/addon-styling',
+    //   options: {
+    //     // Check out https://github.com/storybookjs/addon-styling/blob/main/docs/api.md
+    //     // For more details on this addon's options.
+    //     postCss: {
+    //       implementation: require('postcss'),
+    //     },
+    //   },
+    // }
   ],
   framework: {
     name: "@storybook/react-webpack5",

@@ -1,6 +1,6 @@
 import type { Preview } from "@storybook/react";
 import { withTests } from '@storybook/addon-jest';
-import { withThemeByDataAttribute } from '@storybook/addon-styling';
+// import { withThemeByDataAttribute } from '@storybook/addon-styling';
 import results from '../.jest-test-results.json';
 import { withConsole } from '@storybook/addon-console';
 // import * as nextImage from "next/image";
@@ -28,15 +28,7 @@ export const decorators = [
   withTests({
     results,
   }),
-  withThemeByDataAttribute({
-    themes: {
-      light: 'light',
-      dark: 'dark',
-      dracula: 'dracula',
-    },
-    defaultTheme: 'light',
-    attributeName: 'data-mode',
-  }),
+  
 ];
 
 // export const globalTypes = {
