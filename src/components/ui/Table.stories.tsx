@@ -13,7 +13,16 @@ import {
 export default {
   title: 'UI/Table',
   component: Table,
-  subcomponents: { TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption },
+  // subcomponents: { TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption }, 
+  tags: ['autodocs'],
+  argTypes: {
+    size: {
+      options: ["default", "compact"],
+      control: { type: "radio" },
+      defaultValue: "default",
+    },
+    onClick: { action: "clicked" },
+  },
 };
 
 const Default = () => (

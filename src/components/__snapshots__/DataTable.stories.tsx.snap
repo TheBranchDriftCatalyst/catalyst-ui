@@ -1,0 +1,309 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Components/DataTable Default smoke-test 1`] = `
+<div class="rounded-md border">
+  <div class="relative w-full overflow-auto">
+    <table class="w-full caption-bottom text-sm">
+      <thead class="[&amp;_tr]:border-b">
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+          <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+            Status
+          </th>
+          <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+            Email
+          </th>
+          <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+            Amount
+          </th>
+        </tr>
+      </thead>
+      <tbody class="[&amp;_tr:last-child]:border-0">
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            data-state="false"
+        >
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            completed
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            Bridie.Feil48@yahoo.com
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            287
+          </td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            data-state="false"
+        >
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            failed
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            Sydni_Spinka48@gmail.com
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            133
+          </td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            data-state="false"
+        >
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            failed
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            Reese_Cartwright@hotmail.com
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            133
+          </td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            data-state="false"
+        >
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            failed
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            Kaden24@yahoo.com
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            166
+          </td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            data-state="false"
+        >
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            failed
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            Mireya19@gmail.com
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            244
+          </td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            data-state="false"
+        >
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            completed
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            Enos65@hotmail.com
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            44
+          </td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            data-state="false"
+        >
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            pending
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            Cleve.Beahan58@gmail.com
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            229
+          </td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            data-state="false"
+        >
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            completed
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            Dina41@yahoo.com
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            496
+          </td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            data-state="false"
+        >
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            pending
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            Brannon95@hotmail.com
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            427
+          </td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            data-state="false"
+        >
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            completed
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            Pascale_Reichert1@hotmail.com
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            53
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+
+exports[`Components/DataTable WithPagination smoke-test 1`] = `
+<div class="rounded-md border">
+  <div class="relative w-full overflow-auto">
+    <table class="w-full caption-bottom text-sm">
+      <thead class="[&amp;_tr]:border-b">
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+          <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+            Status
+          </th>
+          <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+            Email
+          </th>
+          <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+            Amount
+          </th>
+        </tr>
+      </thead>
+      <tbody class="[&amp;_tr:last-child]:border-0">
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            data-state="false"
+        >
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            completed
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            Bridie.Feil48@yahoo.com
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            287
+          </td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            data-state="false"
+        >
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            failed
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            Sydni_Spinka48@gmail.com
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            133
+          </td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            data-state="false"
+        >
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            failed
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            Reese_Cartwright@hotmail.com
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            133
+          </td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            data-state="false"
+        >
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            failed
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            Kaden24@yahoo.com
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            166
+          </td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            data-state="false"
+        >
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            failed
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            Mireya19@gmail.com
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            244
+          </td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            data-state="false"
+        >
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            completed
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            Enos65@hotmail.com
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            44
+          </td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            data-state="false"
+        >
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            pending
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            Cleve.Beahan58@gmail.com
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            229
+          </td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            data-state="false"
+        >
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            completed
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            Dina41@yahoo.com
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            496
+          </td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            data-state="false"
+        >
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            pending
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            Brannon95@hotmail.com
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            427
+          </td>
+        </tr>
+        <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+            data-state="false"
+        >
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            completed
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            Pascale_Reichert1@hotmail.com
+          </td>
+          <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+            53
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;

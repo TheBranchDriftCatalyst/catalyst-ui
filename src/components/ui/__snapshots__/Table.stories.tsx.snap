@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UI/Table Default smoke-test 1`] = `
+<div class="relative w-full overflow-auto">
+  <table class="w-full caption-bottom text-sm">
+    <caption class="mt-4 text-sm text-muted-foreground">
+      Sample Table
+    </caption>
+    <thead class="[&amp;_tr]:border-b">
+      <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+          Column 1
+        </th>
+        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+          Column 2
+        </th>
+        <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+          Column 3
+        </th>
+      </tr>
+    </thead>
+    <tbody class="[&amp;_tr:last-child]:border-0">
+      <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+        <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+          Data 1
+        </td>
+        <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+          Data 2
+        </td>
+        <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+          Data 3
+        </td>
+      </tr>
+      <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+        <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+          Data 4
+        </td>
+        <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+          Data 5
+        </td>
+        <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+          Data 6
+        </td>
+      </tr>
+    </tbody>
+    <tfoot class="border-t bg-muted/50 font-medium [&amp;>tr]:last:border-b-0">
+      <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+        <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+          Footer 1
+        </td>
+        <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+          Footer 2
+        </td>
+        <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+          Footer 3
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+`;

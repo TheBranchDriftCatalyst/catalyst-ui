@@ -13,12 +13,12 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, Var
 }
 declare const Button: React.ForwardRefExoticComponent<ButtonProps & React.RefAttributes<HTMLButtonElement>>;
 
-interface DataTableProps<TData, TValue> {
+interface SimpleTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
     totalItems: number;
     onPageChange: PaginationState | PaginationTableState;
 }
-declare function DataTable<TData, TValue>({ columns, data, totalItems, onPageChange }: DataTableProps<TData, TValue>): React__default.JSX.Element;
+declare function SimpleTable<TData, TValue>({ columns, data, totalItems, onPageChange }: SimpleTableProps<TData, TValue>): React__default.JSX.Element;
 
-export { Button, DataTable as Table };
+export { Button, SimpleTable };

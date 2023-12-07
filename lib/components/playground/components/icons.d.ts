@@ -1,0 +1,30 @@
+/// <reference types="react" />
+import { LucideProps, type Icon as LucideIcon } from "lucide-react";
+export type Icon = LucideIcon;
+export declare const Icons: {
+    logo: import("lucide-react").LucideIcon;
+    close: import("lucide-react").LucideIcon;
+    spinner: import("lucide-react").LucideIcon;
+    chevronLeft: import("lucide-react").LucideIcon;
+    chevronRight: import("lucide-react").LucideIcon;
+    trash: import("lucide-react").LucideIcon;
+    settings: import("lucide-react").LucideIcon;
+    billing: import("lucide-react").LucideIcon;
+    ellipsis: import("lucide-react").LucideIcon;
+    add: import("lucide-react").LucideIcon;
+    warning: import("lucide-react").LucideIcon;
+    user: import("lucide-react").LucideIcon;
+    arrowRight: import("lucide-react").LucideIcon;
+    help: import("lucide-react").LucideIcon;
+    twitter: import("lucide-react").LucideIcon;
+    check: import("lucide-react").LucideIcon;
+    copy: import("lucide-react").LucideIcon;
+    copyDone: import("lucide-react").LucideIcon;
+    sun: import("lucide-react").LucideIcon;
+    moon: import("lucide-react").LucideIcon;
+    laptop: import("lucide-react").LucideIcon;
+    gitHub: (props: LucideProps) => import("react").JSX.Element;
+    completeMode: ({ ...props }: LucideProps) => import("react").JSX.Element;
+    insertMode: ({ ...props }: LucideProps) => import("react").JSX.Element;
+    editMode: ({ ...props }: LucideProps) => import("react").JSX.Element;
+};
