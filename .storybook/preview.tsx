@@ -55,7 +55,7 @@ export const decorators = [
     a[`${tName}`] = `theme-${tName}`;
     return a;
   }, {}),
-    defaultTheme: "theme-dracula",
+    defaultTheme: "dracula",
   }),
 ];
 
