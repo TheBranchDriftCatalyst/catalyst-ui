@@ -12,14 +12,8 @@ const config: StorybookConfig = {
     // allow path aliases
     config.resolve.plugins = [
       ...(config.resolve.plugins || []),
-      new TsconfigPathsPlugin({
-        extensions: config.resolve.extensions,
-      }),
+      new TsconfigPathsPlugin({ extensions: config.resolve.extensions }),
     ];
-    // config.module.rules.push({
-    //   test: /\.scss$/,
-    //   use: ["sass-loader", "style-loader", "css-loader", "postcss-loader"],
-    // });
     return config;
   },
   stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.@(js|jsx|ts|tsx)"],
@@ -33,28 +27,16 @@ const config: StorybookConfig = {
     "@storybook/addon-coverage",
     "@storybook/addon-console",
     "@storybook/addon-controls",
-    // 'storybook-dark-mode',
-
+    "@storybook/addon-themes",
     {
       name: "storybook-addon-sass-postcss",
       options: {
+        loadSassAfterPostCSS: true, // for tailwind
         postcssLoaderOptions: {
           implementation: require("postcss"),
-          loadSassAfterPostCSS: true,
         },
       },
     },
-    // "@storybook/addon-actions", // automatically added??
-    // {
-    //   name: '@storybook/addon-styling',
-    //   options: {
-    //     // Check out https://github.com/storybookjs/addon-styling/blob/main/docs/api.md
-    //     // For more details on this addon's options.
-    //     postCss: {
-    //       implementation: require('postcss'),
-    //     },
-    //   },
-    // }
   ],
   framework: {
     name: "@storybook/react-webpack5",

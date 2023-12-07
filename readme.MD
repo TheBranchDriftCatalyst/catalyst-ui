@@ -1,5 +1,10 @@
 # Readme
 
+## TODOS
+
+- [ ] rename storybook-static -> out
+    - [ ] update GH deploy action
+
 ## Commands
 
 ```shell

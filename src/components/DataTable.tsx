@@ -1,5 +1,7 @@
 import {
   ColumnDef,
+  PaginationState,
+  PaginationTableState,
   flexRender,
   getCoreRowModel,
   useReactTable,
@@ -19,11 +21,18 @@ import React from "react"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  totalItems: number,
+  onPageChange: PaginationState | PaginationTableState
 }
+
+// use react f orward ref here to pass through the tanstack props transparently
+
 
 export default function DataTable<TData, TValue>({
   columns,
   data,
+  totalItems,
+  onPageChange
 }: DataTableProps<TData, TValue>) {
 
   const table = useReactTable({
