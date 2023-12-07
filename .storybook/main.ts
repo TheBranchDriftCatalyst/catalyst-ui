@@ -28,6 +28,7 @@ const config: StorybookConfig = {
     "@storybook/addon-console",
     "@storybook/addon-controls",
     "@storybook/addon-themes",
+    "storybook-dark-mode",
     {
       name: "storybook-addon-sass-postcss",
       options: {

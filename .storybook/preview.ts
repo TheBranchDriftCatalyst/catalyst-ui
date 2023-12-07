@@ -28,6 +28,12 @@ const channel = addons.getChannel();
 
 const preview: Preview = {
   parameters: {
+    darkMode: {
+      darkClass: 'dark',
+      lightClass: 'light',
+      // classTarget: 'html',
+      stylePreview: true,
+    },
     actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
       matchers: {
@@ -40,8 +46,7 @@ const preview: Preview = {
 
 const tNames = ['dracula', 'gold', 'laracon', 'nature', 'netflix', 'nord']
 const themes = reduce(tNames, (a, tName) => {
-  a[`${tName}Dark`] = `theme-${tName} dark`;
-  a[`${tName}Light`] = `theme-${tName} light`;
+  a[`${tName}`] = `theme-${tName}`;
   return a;
 }, {})
 
@@ -49,11 +54,12 @@ export const decorators = [
   withTests({
     results,
   }),
+  
   // TODO: might switch to this: https://storybook.js.org/addons/storybook-dark-mode/
   //  so that i can separate the dark mode from the theme
   withThemeByClassName({
     themes: themes,
-    defaultTheme: "theme-dracula dark",
+    defaultTheme: "theme-dracula",
   }),
 ];
 
