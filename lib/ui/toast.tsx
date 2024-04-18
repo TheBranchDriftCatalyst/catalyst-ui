@@ -3,8 +3,8 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
 import * as React from "react";
 
-import { Progress } from "./progress";
-import { cn } from "../utils";
+import { Progress } from "@/ui/progress";
+import { cn } from "@/utils";
 
 const ToastProvider = ToastPrimitives.Provider;
 

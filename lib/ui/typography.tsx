@@ -1,5 +1,5 @@
 // import { useWidgetWidth } from "@/components/ResponsiveGridWidget";
-import { cn } from "../utils";
+import { cn } from "@/utils";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import React from "react";

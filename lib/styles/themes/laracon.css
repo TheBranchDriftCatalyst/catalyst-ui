@@ -29,7 +29,6 @@
   --ring: hsl(37, 19%, 58%);
 }
 
-
 .theme-laracon.dark {
   --background: hsl(25, 13%, 18%);
   --foreground: hsl(0, 0%, 100%);
@@ -58,7 +57,11 @@
   --destructive: hsl(37, 17%, 35%);
   --destructive-foreground: hsl(0, 0%, 100%);
 
-  --link-text: hsl(2, 94%, 57%); /* Variant of the accent color for link text *)/
+  --link-text: hsl(
+    2,
+    94%,
+    57%
+  ); /* Variant of the accent color for link text *)/
 
   /* --ring: hsl(2, 94%, 57%; */
 }

@@ -1,13 +1,17 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./lib/*"]
+    },
     "composite": true,
     "skipLibCheck": true,
     "module": "ESNext",
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true
   },
-  "paths": {
-      "@/components": ["./lib/components"]
-  },
   "include": ["vite.config.ts"]
+  // "exclude": [
+  //   "**/*.stories.tsx"
+  // ],
 }

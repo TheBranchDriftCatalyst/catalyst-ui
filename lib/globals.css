@@ -1,9 +1,10 @@
-@import 'styles/themes/nord.css';
-@import 'styles/themes/gold.css';
-@import 'styles/themes/nature.css';
-@import 'styles/themes/netflix.css';
-@import 'styles/themes/laracon.css';
-@import 'styles/themes/dracula.css';
+@import "styles/themes/nord.css";
+@import "styles/themes/gold.css";
+@import "styles/themes/nature.css";
+@import "styles/themes/netflix.css";
+@import "styles/themes/laracon.css";
+@import "styles/themes/dracula.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -41,35 +42,35 @@
   /*  --radius: 0.5rem;*/
   /*}*/
 
-  :root { 
+  :root {
     /* ^ change this to ,dark and implement the above during the theme addition task */
-    --background: #09090BFF;
-    --foreground: #FAFAFAFF;
+    --background: #09090bff;
+    --foreground: #fafafaff;
 
     --card: #19141a;
-    --card-foreground: #FAFAFAFF;
+    --card-foreground: #fafafaff;
 
-    --popover: #09090BFF;
-    --popover-foreground: #FAFAFAFF;
+    --popover: #09090bff;
+    --popover-foreground: #fafafaff;
 
     --primary: #00fcd6;
-    --primary-foreground: #18181BFF;
+    --primary-foreground: #18181bff;
 
     --secondary: #aa00ff;
-    --secondary-foreground: #FAFAFAFF;
+    --secondary-foreground: #fafafaff;
 
-    --muted: #27272AFF;
-    --muted-foreground: #A1A1AAFF;
+    --muted: #27272aff;
+    --muted-foreground: #a1a1aaff;
 
-    --accent: #27272AFF;
-    --accent-foreground: #FAFAFAFF;
+    --accent: #27272aff;
+    --accent-foreground: #fafafaff;
 
-    --destructive: #EE1111FF;
-    --destructive-foreground: #FAFAFAFF;
+    --destructive: #ee1111ff;
+    --destructive-foreground: #fafafaff;
 
-    --border: #27272AFF;
-    --input: #27272AFF;
-    --ring: #D4D4D8FF;
+    --border: #27272aff;
+    --input: #27272aff;
+    --ring: #d4d4d8ff;
   }
 }
 

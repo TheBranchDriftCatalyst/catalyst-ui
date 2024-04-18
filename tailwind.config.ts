@@ -1,12 +1,9 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
 /** @type {import('tailwindcss').Config} */
 const config = {
   darkMode: ["class"],
-  content: [
-    './lib/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+  content: ["./lib/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
     container: {
@@ -17,19 +14,19 @@ const config = {
       },
     },
     fontSize: {
-      '4xs': '.375rem',   // 6px
-      '3xs': '.5rem',     // 8px
-      '2xs': '.625rem',   // 10px
-      'xs': '.75rem',     // 12px
-      'sm': '.875rem',    // 14px
-      'base': '1rem',     // 16px
-      'lg': '1.125rem',   // 18px
-      'xl': '1.25rem',    // 20px
-      '2xl': '1.5rem',    // 24px
-      '3xl': '1.875rem',  // 30px
-      '4xl': '2.25rem',   // 36px
-      '5xl': '3rem',      // 48px
-      '6xl': '4rem',      // 64px
+      "4xs": ".375rem", // 6px
+      "3xs": ".5rem", // 8px
+      "2xs": ".625rem", // 10px
+      xs: ".75rem", // 12px
+      sm: ".875rem", // 14px
+      base: "1rem", // 16px
+      lg: "1.125rem", // 18px
+      xl: "1.25rem", // 20px
+      "2xl": "1.5rem", // 24px
+      "3xl": "1.875rem", // 30px
+      "4xl": "2.25rem", // 36px
+      "5xl": "3rem", // 48px
+      "6xl": "4rem", // 64px
     },
     extend: {
       colors: {
@@ -92,10 +89,7 @@ const config = {
       },
     },
   },
-  plugins: [
-    require("tailwindcss-animate"),
-    require('@tailwindcss/typography'),
-  ],
-} satisfies Config
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
+} satisfies Config;
 
-export default config
+export default config;

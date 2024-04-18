@@ -1,6 +1,5 @@
 .theme-dracula.light {
-  --background: #FFFFFF
-  --foreground: hsl(60, 30%, 10%);
+  --background: #ffffff --foreground: hsl(60, 30%, 10%);
 
   --muted: hsl(232, 14%, 98%);
   --muted-foreground: hsl(60, 30%, 20%);
@@ -59,4 +58,3 @@
 
   --ring: hsl(225, 27%, 51%);
 }
-
