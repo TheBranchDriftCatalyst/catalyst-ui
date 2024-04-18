@@ -1,0 +1,64 @@
+.theme-laracon.light {
+  --background: hsl(2, 94%, 57%);
+  --foreground: hsl(11, 85%, 97%);
+
+  --muted: hsl(11, 85%, 97%);
+  --muted-foreground: hsl(33, 17%, 12%);
+
+  --popover: hsl(33, 17%, 12%);
+  --popover-foreground: hsl(33, 17%, 12%);
+
+  --border: hsl(37, 17%, 35%);
+  --input: hsl(37, 17%, 35%);
+
+  --card: hsl(11, 85%, 97%);
+  --card-foreground: hsl(37, 17%, 35%);
+
+  --primary: hsl(2, 94%, 90%);
+  --primary-foreground: hsl(33, 17%, 12%);
+
+  --secondary: hsl(37, 19%, 58%);
+  --secondary-foreground: hsl(0, 0%, 100%);
+
+  --accent: hsl(2, 94%, 77%);
+  --accent-foreground: hsl(11, 85%, 97%);
+
+  --destructive: hsl(37, 17%, 35%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+
+  --ring: hsl(37, 19%, 58%);
+}
+
+
+.theme-laracon.dark {
+  --background: hsl(25, 13%, 18%);
+  --foreground: hsl(0, 0%, 100%);
+
+  --muted: hsl(0, 0%, 50%);
+  --muted-foreground: hsl(0, 0%, 100%);
+
+  --popover: hsl(0, 0%, 5%);
+  --popover-foreground: hsl(0, 0%, 100%);
+
+  --border: hsl(37, 17%, 35%);
+  --input: hsl(37, 17%, 35%);
+
+  --card: hsl(2, 94%, 57%);
+  --card-foreground: hsl(0, 0%, 100%);
+
+  --primary: hsl(254, 96%, 94%);
+  --primary-foreground: hsl(0, 0%, 0%);
+
+  --secondary: hsl(25, 13%, 18%);
+  --secondary-foreground: hsl(0, 0%, 0%);
+
+  --accent: hsl(2, 94%, 57%);
+  --accent-foreground: hsl(0, 0%, 100%);
+
+  --destructive: hsl(37, 17%, 35%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+
+  --link-text: hsl(2, 94%, 57%); /* Variant of the accent color for link text *)/
+
+  /* --ring: hsl(2, 94%, 57%; */
+}

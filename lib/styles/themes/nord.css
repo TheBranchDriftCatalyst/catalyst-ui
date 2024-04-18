@@ -1,0 +1,61 @@
+.theme-nord.light {
+  --background: hsl(220, 16%, 96%);
+  --foreground: hsl(222, 20%, 16%);
+
+  --muted: hsl(215, 14%, 80%);
+  --muted-foreground: hsl(222, 20%, 16%);
+
+  --popover: hsl(220, 16%, 96%);
+  --popover-foreground: hsl(222, 20%, 16%);
+
+  --border: hsl(222, 20%, 70%);
+  --input: hsl(222, 20%, 70%);
+
+  --card: hsl(220, 16%, 96%);
+  --card-foreground: hsl(222, 20%, 16%);
+
+  --primary: hsl(222, 20%, 70%);
+  --primary-foreground: hsl(220, 16%, 96%);
+
+  --secondary: hsl(215, 14%, 80%);
+  --secondary-foreground: hsl(222, 20%, 16%);
+
+  --accent: hsl(215, 14%, 80%);
+  --accent-foreground: hsl(222, 20%, 16%);
+
+  --destructive: hsl(0, 80%, 50%);
+  --destructive-foreground: hsl(222, 20%, 16%);
+
+  --ring: hsl(222, 20%, 70%);
+}
+
+.theme-nord.dark {
+  --background: hsl(220, 16%, 16%);
+  --foreground: hsl(222, 20%, 96%);
+
+  --muted: hsl(215, 14%, 25%);
+  --muted-foreground: hsl(222, 20%, 96%);
+
+  --popover: hsl(220, 16%, 16%);
+  --popover-foreground: hsl(222, 20%, 96%);
+
+  --border: hsl(222, 20%, 40%);
+  --input: hsl(222, 20%, 40%);
+
+  --card: hsl(220, 16%, 16%);
+  --card-foreground: hsl(222, 20%, 96%);
+
+  --primary: hsl(222, 20%, 65%);
+  --primary-foreground: hsl(220, 16%, 16%);
+
+  --secondary: hsl(215, 14%, 25%);
+  --secondary-foreground: hsl(222, 20%, 96%);
+
+  --accent: hsl(215, 14%, 25%);
+  --accent-foreground: hsl(222, 20%, 96%);
+
+  --destructive: hsl(0, 80%, 50%);
+  --destructive-foreground: hsl(222, 20%, 96%);
+
+  --ring: hsl(222, 20%, 40%);
+}
