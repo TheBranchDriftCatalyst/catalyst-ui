@@ -1,3 +1,4 @@
+
 export * from "@/ui/accordion";
 export * from "@/ui/button";
 export * from "@/ui/card";
@@ -16,3 +17,10 @@ export * from "@/ui/toggle";
 export * from "@/ui/typography";
 
 export * as utils from "./utils";
+
+export {
+  default as catalystTwTheme
+  // TODO: add extends theme here probably
+} from "./tw_theme";
+
+export { default as catalystCSS } from "./globals.css?inline";

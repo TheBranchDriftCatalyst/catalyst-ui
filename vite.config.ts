@@ -16,6 +16,8 @@ export default defineConfig({
   ],
   build: {
     copyPublicDir: false,
+    cssMinify: false,
+    cssCodeSplit: false,
     lib: {
       entry: resolve(__dirname, "lib/main.ts"),
       formats: ["es"],
@@ -25,7 +27,7 @@ export default defineConfig({
       input: Object.fromEntries(
         // https://rollupjs.org/configuration-options/#input
         glob
-          .sync("lib/**/*.{ts,tsx}")
+          .sync("lib/**/*.{ts,tsx,css}")
           .filter((path) => !path.endsWith(".stories.tsx"))
           .map((file) => [
             // 1. The name of the entry point
@@ -37,7 +39,12 @@ export default defineConfig({
           ]),
       ),
       output: {
-        assetFileNames: "assets/[name][extname]",
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name.endsWith('.css')) {
+            return 'styles/catalyst.css';
+          }
+          return 'assets/[name][extname]';
+        },
         entryFileNames: "[name].js",
         sourcemap: true,
       },
