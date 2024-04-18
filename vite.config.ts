@@ -1,10 +1,9 @@
-import { defineConfig } from "vite";
-import path, { extname, relative, resolve } from "path";
-import { fileURLToPath } from "node:url";
-import { glob } from "glob";
 import react from "@vitejs/plugin-react";
+import { glob } from "glob";
+import { fileURLToPath } from "node:url";
+import { extname, relative, resolve } from "path";
+import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
-import { libInjectCss } from "vite-plugin-lib-inject-css";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 /** @type {import('vite').UserConfig} */
@@ -12,7 +11,7 @@ export default defineConfig({
   plugins: [
     react(),
     tsconfigPaths(),
-    libInjectCss(),
+    // libInjectCss(),
     dts({ include: ["lib"], exclude: ["**/*.stories.tsx"] }),
   ],
   build: {
