@@ -1,0 +1,4 @@
+build-watch: yarn build:watch
+storybook: yarn dev:storybook
+preview: yarn dev:preview
+test: sleep 3 && yarn dev:test --watch
