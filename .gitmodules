@@ -1,0 +1,3 @@
+[submodule "shadcn-ui-theme-explorer"]
+	path = shadcn-ui-theme-explorer
+	url = git@github.com:luisFilipePT/shadcn-ui-theme-explorer.git

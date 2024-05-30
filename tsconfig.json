@@ -24,7 +24,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "lib"],
+  "include": ["src", "lib", "../n-queens/src/components/CatalystNextApplet"],
   "references": [{ "path": "./tsconfig.node.json" }],
   "exclude": ["**/*.stories.tsx"]
 }

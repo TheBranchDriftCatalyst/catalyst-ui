@@ -23,7 +23,7 @@ export default {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const button = canvas.getByRole("button", { name: "Button" });
+    const button = canvas.getByRole("button");
     await userEvent.click(button);
   },
 };

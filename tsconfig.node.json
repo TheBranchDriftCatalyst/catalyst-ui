@@ -11,7 +11,4 @@
     "allowSyntheticDefaultImports": true
   },
   "include": ["vite.config.ts"]
-  // "exclude": [
-  //   "**/*.stories.tsx"
-  // ],
 }

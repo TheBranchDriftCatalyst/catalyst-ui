@@ -1,6 +1,6 @@
-import "@/globals.css";
+import { Button, Input, Label } from "@/catalyst";
+import "@/global.css";
 import { useState } from "react";
-import { Button, Input, Label } from "../lib/main";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 // import { Button, Label, Input } from './ui/components'

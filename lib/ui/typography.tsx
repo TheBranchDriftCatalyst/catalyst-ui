@@ -119,6 +119,10 @@ const ResponsiveTypography = React.forwardRef<
 
 ResponsiveTypography.displayName = "ResponsiveTypography";
 
-export { ResponsiveTypography, typographyVariants };
+export {
+  ResponsiveTypography,
+  typographyVariants,
+  ResponsiveTypography as Typography,
+};
 
 export default ResponsiveTypography;
