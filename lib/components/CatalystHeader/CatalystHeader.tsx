@@ -1,9 +1,9 @@
 'use client';
 
-import NavigationHeader from "@/components/NavigationHeader/NavigationHeader";
-import NavigationItem from "@/components/NavigationHeader/NavigationItem";
-import { Avatar, AvatarFallback, AvatarImage } from "@/ui/avatar";
-import Typography from "@/ui/typography";
+import NavigationHeader from "@/catalyst-ui/components/NavigationHeader/NavigationHeader";
+import NavigationItem from "@/catalyst-ui/components/NavigationHeader/NavigationItem";
+import { Avatar, AvatarFallback, AvatarImage } from "@/catalyst-ui/ui/avatar";
+import Typography from "@/catalyst-ui/ui/typography";
 
 //  TODO: when we get to it, this interface is going to == the CatalystHeaderContext shape
 interface CatalystHeaderProps {

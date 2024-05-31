@@ -1,5 +1,5 @@
-// import { useWidgetWidth } from "@/components/ResponsiveGridWidget";
-import { cn } from "@/utils";
+// import { useWidgetWidth } from "@/catalyst-ui/components/ResponsiveGridWidget";
+import { cn } from "@/catalyst-ui/utils";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import React from "react";
@@ -120,9 +120,7 @@ const ResponsiveTypography = React.forwardRef<
 ResponsiveTypography.displayName = "ResponsiveTypography";
 
 export {
-  ResponsiveTypography,
-  typographyVariants,
-  ResponsiveTypography as Typography,
+    ResponsiveTypography, ResponsiveTypography as Typography, typographyVariants
 };
 
 export default ResponsiveTypography;

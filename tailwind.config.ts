@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-import theme from "./lib/catalyst-tw";
+import theme from "./lib/theme";
 
 /** @type {import('tailwindcss').Config} */
 const config = {

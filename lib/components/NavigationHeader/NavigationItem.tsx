@@ -1,5 +1,5 @@
-import { NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuTrigger } from "@/ui/navigation-menu";
-import { cn } from "@/utils";
+import { NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuTrigger } from "@/catalyst-ui/ui/navigation-menu";
+import { cn } from "@/catalyst-ui/utils";
 import React, { useMemo } from "react";
 
 export const NavigationListItem = React.forwardRef<React.ElementRef<"a">, React.ComponentPropsWithoutRef<"a"> & { comp?: React.ElementType}>(
@@ -55,7 +55,7 @@ export const _sampleLinkObjects: NavigationListLinks[] = Array.from({ length: 10
 type NavigationItemProps = NavigationItemChildrenProps & NavigationItemListChildrenProps;
 
 export const NavigationItem = ({ children, title, links }:  NavigationItemProps) => {
-  
+
   const navContent = useMemo(() => {
     if (children) {
       return children;

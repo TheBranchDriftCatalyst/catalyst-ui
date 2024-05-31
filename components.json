@@ -11,8 +11,8 @@
     "prefix": ""
   },
   "aliases": {
-    "components": "@/components",
-    "ui": "@/ui",
-    "utils": "@/utils"
+    "components": "@/catalyst-ui/components",
+    "ui": "@/catalyst-ui/ui",
+    "utils": "@/catalyst-ui/utils"
   }
 }

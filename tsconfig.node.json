@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@/*": ["./lib/*"]
+      "@/catalyst-ui/*": ["./lib/*"]
     },
     "composite": true,
     "skipLibCheck": true,

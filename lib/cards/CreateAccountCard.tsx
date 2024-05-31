@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/ui/card";
+import { Button } from "@/catalyst-ui/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
 import { SiGit, SiGoogle } from "@icons-pack/react-simple-icons";
 import { toLower } from "lodash";
 import { FileQuestionIcon } from "lucide-react";
@@ -10,7 +10,6 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Typography } from "@/catalyst";
 import {
   Form,
   // Form,
@@ -19,8 +18,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/ui/form";
-import { Input } from "@/ui/input";
+} from "@/catalyst-ui/ui/form";
+import { Input } from "@/catalyst-ui/ui/input";
+import { Typography } from "@/catalyst-ui/ui/typography";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const InputFormSchema = z.object({

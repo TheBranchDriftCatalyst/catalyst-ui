@@ -1,7 +1,7 @@
 import * as ProgressPrimitive from "@radix-ui/react-progress";
 import * as React from "react";
 
-import { cn } from "@/utils";
+import { cn } from "@/catalyst-ui/utils";
 import { VariantProps, cva } from "class-variance-authority";
 
 const progressBarVariants = cva(

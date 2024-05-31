@@ -6,7 +6,7 @@
 export * as components from "./components";
 export * from "./contexts";
 export * from "./hooks";
-export * from "./ui";
+// export * from "./ui";
 // export * from "./icons";
 
 // export * from "@/contexts";
@@ -15,7 +15,7 @@ export * as utils from "./utils";
 
 export * from "./hooks";
 
-export { default as catalystTwTheme } from "./catalyst-tw";
+export { default as catalystTwTheme } from "./theme";
 
 export { default as catalystCSS } from "./global.css?inline";
 

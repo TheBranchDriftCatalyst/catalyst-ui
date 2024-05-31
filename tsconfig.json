@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@/*": ["./lib/*"]
+      "@/catalyst-ui/*": ["./lib/*"]
     },
     "target": "ES2020",
     "useDefineForClassFields": true,
@@ -24,7 +24,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "lib", "../n-queens/src/components/CatalystNextApplet"],
+  "include": [
+    "app",
+    "lib",
+  ],
   "references": [{ "path": "./tsconfig.node.json" }],
   "exclude": ["**/*.stories.tsx"]
 }

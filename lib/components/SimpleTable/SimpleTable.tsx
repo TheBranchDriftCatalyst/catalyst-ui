@@ -19,8 +19,8 @@ import {
 } from "@tanstack/react-table"
 import * as React from "react"
 
-import { Button } from "@/ui/button"
-import { Checkbox } from "@/ui/checkbox"
+import { Button } from "@/catalyst-ui/ui/button"
+import { Checkbox } from "@/catalyst-ui/ui/checkbox"
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -29,8 +29,8 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/ui/dropdown-menu"
-import { Input } from "@/ui/input"
+} from "@/catalyst-ui/ui/dropdown-menu"
+import { Input } from "@/catalyst-ui/ui/input"
 import {
     Table,
     TableBody,
@@ -38,7 +38,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/ui/table"
+} from "@/catalyst-ui/ui/table"
 
 const data: Payment[] = [
   {

@@ -33,7 +33,7 @@ export default defineConfig({
     rollupOptions: {
       external: ["react", "react/jsx-runtime"],
       onwarn(warning, defaultHandler) {
-        // See this issue, its a non issue just... unfortunate. TL:DR: directives fuck up source maps, vite 
+        // See this issue, its a non issue just... unfortunate. TL:DR: directives fuck up source maps, vite
         // compares the old and new with the sourcemap and sees a discrepancy and warns us
         // https://github.com/vitejs/vite/issues/15012
         if (warning.code === 'SOURCEMAP_ERROR') {

@@ -5,18 +5,18 @@ import {
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator
-} from "@/ui/breadcrumb";
+} from "@/catalyst-ui/ui/breadcrumb";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/ui/dropdown-menu";
+} from "@/catalyst-ui/ui/dropdown-menu";
 import { Fragment } from "react/jsx-runtime";
 
 interface CrumbShape {
-  href: string, 
-  name: string 
+  href: string,
+  name: string
   // Compact the next n items
   compact?: number
 }
