@@ -22,7 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-workspace.code-workspace
 
 # Storybook build dir
 storybook-static
