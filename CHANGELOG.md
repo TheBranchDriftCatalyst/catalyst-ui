@@ -3,6 +3,13 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+## [0.1.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v0.0.4...v0.1.0) (2025-10-04)
+
+
+### ⚡ NEW FEATURES
+
+* add Next.js App Router compatibility with "use client" directives ([b3106b2](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/b3106b21bfd4815e96794f2fde3be29102b2f04b))
+
 ### [0.0.4](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v0.0.3...v0.0.4) (2025-10-04)
 
 
