@@ -1,18 +1,22 @@
 {
   "types": [
-    { "type": "feat", "section": "Features" },
-    { "type": "fix", "section": "Bug Fixes" },
-    { "type": "chore", "section": "Chores" },
-    { "type": "docs", "section": "Documentation" },
-    { "type": "style", "section": "Code Style" },
-    { "type": "refactor", "section": "Code Refactoring" },
-    { "type": "perf", "section": "Performance Improvements" },
-    { "type": "test", "section": "Tests" },
-    { "type": "build", "section": "Build System" },
-    { "type": "ci", "section": "CI/CD" }
+    { "type": "feat", "section": "⚡ NEW FEATURES" },
+    { "type": "fix", "section": "🔧 BUG FIXES" },
+    { "type": "chore", "section": "🛠️  MAINTENANCE" },
+    { "type": "docs", "section": "📚 DOCUMENTATION" },
+    { "type": "style", "section": "💎 CODE STYLE" },
+    { "type": "refactor", "section": "♻️  REFACTORING" },
+    { "type": "perf", "section": "🚀 PERFORMANCE" },
+    { "type": "test", "section": "🧪 TESTING" },
+    { "type": "build", "section": "📦 BUILD SYSTEM" },
+    { "type": "ci", "section": "🤖 CI/CD PIPELINE" }
   ],
-  "releaseCommitMessageFormat": "chore(release): {{currentTag}} [skip ci]",
+  "releaseCommitMessageFormat": "chore(release): v{{currentTag}} 🎉 [skip ci]",
   "skip": {
     "changelog": false
-  }
+  },
+  "header": "# 🔮 CATALYST UI CHANGELOG\n\n> **NEURAL INTERFACE ENGAGED** · Component library transmission log\n\n",
+  "commitUrlFormat": "{{host}}/{{owner}}/{{repository}}/commit/{{hash}}",
+  "compareUrlFormat": "{{host}}/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}",
+  "issueUrlFormat": "{{host}}/{{owner}}/{{repository}}/issues/{{id}}"
 }
