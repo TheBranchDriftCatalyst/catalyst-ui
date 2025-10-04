@@ -31,7 +31,14 @@ function KitchenSink() {
       <div className="max-w-7xl mx-auto space-y-8">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <Typography variant="h1">Catalyst UI Kitchen Sink</Typography>
+          <div>
+            <Typography variant="h1">Catalyst UI Kitchen Sink</Typography>
+            <Typography variant="muted" className="mt-2">
+              <a href="http://localhost:6006" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                → Open Storybook
+              </a>
+            </Typography>
+          </div>
           <div className="flex gap-2 items-center">
             <Menubar>
               <MenubarMenu>
@@ -59,22 +66,133 @@ function KitchenSink() {
           </BreadcrumbList>
         </Breadcrumb>
 
+        {/* Frameworks & Resources - Moved up */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Frameworks & Resources</CardTitle>
+            <CardDescription>External libraries and tools powering this UI library</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Framework</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead>Description</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell className="font-medium">
+                    <a href="https://react.dev" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      React
+                    </a>
+                  </TableCell>
+                  <TableCell>Framework</TableCell>
+                  <TableCell>UI library for building component-based interfaces</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">
+                    <a href="https://www.radix-ui.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      Radix UI
+                    </a>
+                  </TableCell>
+                  <TableCell>Components</TableCell>
+                  <TableCell>Unstyled, accessible component primitives</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">
+                    <a href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      Tailwind CSS
+                    </a>
+                  </TableCell>
+                  <TableCell>Styling</TableCell>
+                  <TableCell>Utility-first CSS framework (v4)</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">
+                    <a href="https://ui.shadcn.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      shadcn/ui
+                    </a>
+                  </TableCell>
+                  <TableCell>Components</TableCell>
+                  <TableCell>Component patterns and design system</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">
+                    <a href="https://react-hook-form.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      React Hook Form
+                    </a>
+                  </TableCell>
+                  <TableCell>Forms</TableCell>
+                  <TableCell>Performant form validation with Zod integration</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">
+                    <a href="https://d3js.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      D3.js
+                    </a>
+                  </TableCell>
+                  <TableCell>Visualization</TableCell>
+                  <TableCell>Data-driven document manipulation and SVG graphics</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">
+                    <a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      Vite
+                    </a>
+                  </TableCell>
+                  <TableCell>Build Tool</TableCell>
+                  <TableCell>Fast development server and optimized builds</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">
+                    <a href="http://localhost:6006" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      Storybook
+                    </a>
+                  </TableCell>
+                  <TableCell>Development</TableCell>
+                  <TableCell>Component development and documentation</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">
+                    <a href="https://www.typescriptlang.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      TypeScript
+                    </a>
+                  </TableCell>
+                  <TableCell>Language</TableCell>
+                  <TableCell>Type-safe JavaScript with enhanced tooling</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">
+                    <a href="https://lucide.dev" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      Lucide Icons
+                    </a>
+                  </TableCell>
+                  <TableCell>Icons</TableCell>
+                  <TableCell>Open-source icon set with React components</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+
         {/* Typography Section */}
         <Card>
           <CardHeader>
             <CardTitle>Typography</CardTitle>
             <CardDescription>Various text styles and headings</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-2">
-            <Typography variant="h1">Heading 1</Typography>
-            <Typography variant="h2">Heading 2</Typography>
-            <Typography variant="h3">Heading 3</Typography>
-            <Typography variant="h4">Heading 4</Typography>
-            <Typography variant="p">This is a paragraph with some text content.</Typography>
-            <Typography variant="blockquote">This is a blockquote element.</Typography>
-            <Typography variant="code">const code = "inline code";</Typography>
-            <Typography variant="lead">This is lead text for emphasis.</Typography>
-            <Typography variant="muted">This is muted text.</Typography>
+          <CardContent className="space-y-3">
+            <Typography variant="h1" className="text-primary border-b-2 border-primary pb-2">Heading 1</Typography>
+            <Typography variant="h2" className="text-secondary tracking-tight">Heading 2</Typography>
+            <Typography variant="h3" className="text-accent-foreground font-semibold">Heading 3</Typography>
+            <Typography variant="h4" className="tracking-wide">Heading 4</Typography>
+            <Typography variant="p" className="leading-relaxed">This is a paragraph with some text content.</Typography>
+            <Typography variant="blockquote" className="text-muted-foreground border-l-4 border-primary pl-4 italic">This is a blockquote element.</Typography>
+            <Typography variant="code" className="text-primary bg-primary/10 px-2 py-1 rounded">const code = "inline code";</Typography>
+            <Typography variant="lead" className="text-secondary font-medium tracking-tight">This is lead text for emphasis.</Typography>
+            <Typography variant="muted" className="text-xs">This is muted text.</Typography>
           </CardContent>
         </Card>
 
@@ -284,117 +402,6 @@ function KitchenSink() {
                   <TableCell>bob@example.com</TableCell>
                   <TableCell>Manager</TableCell>
                   <TableCell>Away</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-
-        {/* Frameworks & Resources */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Frameworks & Resources</CardTitle>
-            <CardDescription>External libraries and tools powering this UI library</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Framework</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>Description</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableCell className="font-medium">
-                    <a href="https://react.dev" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                      React
-                    </a>
-                  </TableCell>
-                  <TableCell>Framework</TableCell>
-                  <TableCell>UI library for building component-based interfaces</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">
-                    <a href="https://www.radix-ui.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                      Radix UI
-                    </a>
-                  </TableCell>
-                  <TableCell>Components</TableCell>
-                  <TableCell>Unstyled, accessible component primitives</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">
-                    <a href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                      Tailwind CSS
-                    </a>
-                  </TableCell>
-                  <TableCell>Styling</TableCell>
-                  <TableCell>Utility-first CSS framework (v4)</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">
-                    <a href="https://ui.shadcn.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                      shadcn/ui
-                    </a>
-                  </TableCell>
-                  <TableCell>Components</TableCell>
-                  <TableCell>Component patterns and design system</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">
-                    <a href="https://react-hook-form.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                      React Hook Form
-                    </a>
-                  </TableCell>
-                  <TableCell>Forms</TableCell>
-                  <TableCell>Performant form validation with Zod integration</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">
-                    <a href="https://d3js.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                      D3.js
-                    </a>
-                  </TableCell>
-                  <TableCell>Visualization</TableCell>
-                  <TableCell>Data-driven document manipulation and SVG graphics</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">
-                    <a href="https://vitejs.dev" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                      Vite
-                    </a>
-                  </TableCell>
-                  <TableCell>Build Tool</TableCell>
-                  <TableCell>Fast development server and optimized builds</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">
-                    <a href="https://storybook.js.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                      Storybook
-                    </a>
-                  </TableCell>
-                  <TableCell>Development</TableCell>
-                  <TableCell>Component development and documentation</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">
-                    <a href="https://www.typescriptlang.org" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                      TypeScript
-                    </a>
-                  </TableCell>
-                  <TableCell>Language</TableCell>
-                  <TableCell>Type-safe JavaScript with enhanced tooling</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">
-                    <a href="https://lucide.dev" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                      Lucide Icons
-                    </a>
-                  </TableCell>
-                  <TableCell>Icons</TableCell>
-                  <TableCell>Open-source icon set with React components</TableCell>
                 </TableRow>
               </TableBody>
             </Table>

@@ -123,11 +123,13 @@
   box-shadow: var(--glow-primary);
 }
 
-/* Input focus glow */
+/* Input focus glow - more pronounced */
 .theme-catalyst input:focus,
 .theme-catalyst textarea:focus,
 .theme-catalyst select:focus {
-  box-shadow: var(--glow-accent);
+  box-shadow: var(--glow-primary);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
 
 /* Card hover glow */

@@ -342,48 +342,6 @@ const preview = {
       },
       // No static theme - we inject it dynamically via decorator
     },
-    backgrounds: {
-      // NOTE: Backgrounds addon disabled - theme decorator handles background switching
-      disable: true,
-      default: 'dark',
-      values: [
-        {
-          name: 'dark',
-          value: '#0a0a0a',
-        },
-        {
-          name: 'light',
-          value: '#ffffff',
-        },
-        {
-          name: 'gray',
-          value: '#333333',
-        },
-        {
-          name: 'neutral',
-          value: '#f5f5f5',
-        },
-        {
-          name: 'synthwave purple',
-          value: '#1a0b2e',
-        },
-        {
-          name: 'neon pink',
-          value: '#ff006e',
-        },
-        {
-          name: 'cyber blue',
-          value: '#0a1929',
-        },
-      ],
-      // Enable color picker in the backgrounds addon toolbar
-      disable: false,
-      grid: {
-        cellSize: 20,
-        opacity: 0.5,
-        cellAmount: 5,
-      },
-    },
   },
   decorators: [
     // withTests({ results, filesExt: ".stories.tsx" }),
