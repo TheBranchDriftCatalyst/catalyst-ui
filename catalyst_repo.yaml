@@ -1,0 +1,41 @@
+# Catalyst Repository Metadata
+# This file defines metadata for each repository to be used by the profile page generator
+
+# Repository Information
+name: "catalyst-ui"
+description: "React component library with Vite and TypeScript for shared UI components"
+repo_url: ""  # Git remote needs to be fixed
+
+# Visibility
+private: true
+
+# Repository Status (active, archived, wip, experimental)
+status: "active"
+
+# Tech Stack
+tech_stack:
+  languages:
+    - "typescript"
+    - "javascript"
+  frameworks:
+    - "react"
+    - "vite"
+  tools:
+    - "storybook"
+
+# Grouping/Categories (for organizing on profile page)
+groups:
+  - "catalyst-core"
+  - "component-library"
+
+# Badge Configuration (optional - will use defaults if not specified)
+badges:
+  stars: false
+  issues: false
+  prs: false
+  license: false
+
+# Custom highlights (optional - used for non-AI manual highlights)
+highlights:
+  - "Shared React component library"
+  - "Built with Vite library mode"

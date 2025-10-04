@@ -1,0 +1,20 @@
+version: '3'
+
+tasks:
+  new-component:
+  # TODO there has to be a different more official way of doign this
+    desc: Create a new component
+    cmds:
+    - echo "Creating a new component {{ .CLI_ARGS }}"
+    - |
+      bash -c '
+        read -p "Enter component name: " component_name && \
+        fzf_path=$(find ./lib -type d | fzf) && \
+        mkdir -p "${fzf_path}/${component_name}" && \
+        cp etc/templates/NewComponent.stories.tsx "${fzf_path}/${component_name}/$(echo ${component_name^}).stories.tsx" && \
+        cp etc/templates/NewComponent.tsx "${fzf_path}/${component_name}/$(echo ${component_name^}).tsx" && \
+        echo "Component created at ${fzf_path}/${component_name}" && \
+        echo "Selected component type: ${fzf_path}"
+        code ${fzf_path}/${component_name}/$(echo ${component_name^}).tsx
+        code ${fzf_path}/${component_name}/$(echo ${component_name^}).stories.tsx'
+

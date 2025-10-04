@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(yarn dev)",
+      "Bash(yarn info:*)",
+      "Bash(pkill:*)",
+      "Bash(npx:*)",
+      "WebSearch",
+      "Bash(yarn dev:storybook)",
+      "Bash(curl:*)",
+      "Bash(xargs:*)",
+      "WebFetch(domain:stackoverflow.com)",
+      "Bash(grep:*)",
+      "Bash(node:*)",
+      "Bash(yarn build)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

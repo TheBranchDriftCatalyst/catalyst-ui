@@ -1,0 +1,61 @@
+.theme-catalyst.light {
+  --background: hsl(0 0% 100%);
+  --foreground: hsl(222.2 84% 4.9%);
+
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(222.2 84% 4.9%);
+
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(222.2 84% 4.9%);
+
+  --primary: hsl(222, 81%, 46%);
+  --primary-foreground: hsl(210 40% 98%);
+
+  --secondary: hsl(210 40% 96.1%);
+  --secondary-foreground: hsl(222.2 47.4% 11.2%);
+
+  --muted: hsl(210 40% 96.1%);
+  --muted-foreground: hsl(215.4 16.3% 46.9%);
+
+  --accent: hsl(210 40% 96.1%);
+  --accent-foreground: hsl(222.2 47.4% 11.2%);
+
+  --destructive: hsl(0 84.2% 60.2%);
+  --destructive-foreground: hsl(210 40% 98%);
+
+  --border: hsl(214.3 31.8% 91.4%);
+  --input: hsl(214.3 31.8% 91.4%);
+  --ring: hsl(222.2 84% 4.9%);
+
+  --radius: hsl(0.5rem);
+}
+
+.theme-catalyst.dark {
+  --background: #09090bff;
+  --foreground: #fafafaff;
+
+  --card: #19141a;
+  --card-foreground: #fafafaff;
+
+  --popover: #09090bff;
+  --popover-foreground: #fafafaff;
+
+  --primary: #00fcd6;
+  --primary-foreground: #18181bff;
+
+  --secondary: #aa00ff;
+  --secondary-foreground: #fafafaff;
+
+  --muted: #27272aff;
+  --muted-foreground: #a1a1aaff;
+
+  --accent: #27272aff;
+  --accent-foreground: #fafafaff;
+
+  --destructive: #ee1111ff;
+  --destructive-foreground: #fafafaff;
+
+  --border: #27272aff;
+  --input: #27272aff;
+  --ring: #d4d4d8ff;
+}
