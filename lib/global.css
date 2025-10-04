@@ -6,14 +6,7 @@
 @source "../app";
 @source "../lib";
 
-/* TODO: remove all these we will inject them with the theme provider */
-@import './contexts/Theme/styles/catalyst.css' layer(base);
-@import './contexts/Theme/styles/dracula.css' layer(base);
-@import './contexts/Theme/styles/gold.css' layer(base);
-@import './contexts/Theme/styles/laracon.css' layer(base);
-@import './contexts/Theme/styles/nature.css' layer(base);
-@import './contexts/Theme/styles/netflix.css' layer(base);
-@import './contexts/Theme/styles/nord.css' layer(base);
+/* Theme CSS is dynamically injected by ThemeProvider */
 
 @custom-variant dark (&:is(.dark *));
 
