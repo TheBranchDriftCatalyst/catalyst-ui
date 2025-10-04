@@ -8,28 +8,15 @@ const config: StorybookConfig = {
   ],
 
   addons: [
-    "@storybook/addon-essentials",
     "@storybook/addon-links",
     "@storybook/addon-jest",
     "@storybook/addon-themes",
     "@chromatic-com/storybook",
     "storybook-addon-mock",
-    // {
-    //   name: '@storybook/addon-docs',
-    //   options: {
-    //     sourceLoaderOptions: {
-    //       injectStoryParameters: true,
-    //       parser: "typescript",
-    //     },
-    //   },
-    // },
     {
       name: "@storybook/addon-coverage",
       options: {
         debug: true,
-        // istanbul: {
-        //   includes: ['lib/**'],
-        // }
       },
     },
     "@storybook/addon-docs"

@@ -26,7 +26,7 @@
     "dev:lib": "vite build --watch",
     "dev:test": "test-storybook --coverage",
     "build": "tsc --p ./tsconfig-build.json && vite build",
-    "build:app": "vite build ./app",
+    "build:app": "vite build --config vite.app.config.ts",
     "build:storybook": "storybook build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "release:first": "standard-version --first-release",
