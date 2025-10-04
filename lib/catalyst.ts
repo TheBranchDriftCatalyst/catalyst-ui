@@ -1,3 +1,4 @@
+"use client";
 // TODO:
 // - Probably rename this file at some point (requires changing dependent packages)
 

@@ -8,6 +8,38 @@ import dts from "vite-plugin-dts";
 import istanbul from 'vite-plugin-istanbul';
 import tsconfigPaths from "vite-tsconfig-paths";
 
+// Plugin to preserve "use client" directives in build output
+function preserveUseClient() {
+  return {
+    name: 'preserve-use-client',
+    enforce: 'post' as const,
+    generateBundle(_options: any, bundle: any) {
+      for (const chunk of Object.values(bundle) as any[]) {
+        if (chunk.type === 'chunk' && chunk.code) {
+          // Add "use client" to any chunk that imports from React
+          // This is necessary for Next.js App Router compatibility
+          const needsUseClient =
+            chunk.code.includes('from "react"') ||
+            chunk.code.includes('from \'react\'') ||
+            chunk.code.includes('import * as') && chunk.code.includes('react') ||
+            chunk.code.includes('useState') ||
+            chunk.code.includes('useEffect') ||
+            chunk.code.includes('useContext') ||
+            chunk.code.includes('useRef');
+
+          if (needsUseClient) {
+            // Prepend "use client" if not already present
+            if (!chunk.code.trimStart().startsWith('"use client"') &&
+                !chunk.code.trimStart().startsWith("'use client'")) {
+              chunk.code = '"use client";\n' + chunk.code;
+            }
+          }
+        }
+      }
+    }
+  };
+}
+
 /** @type {import('vite').UserConfig} */
 export default defineConfig({
   root: "./app",
@@ -25,6 +57,7 @@ export default defineConfig({
       // requireEnv: true,
     }),
     dts({ include: ["lib"], exclude: ["**/*.stories.tsx"] }),
+    preserveUseClient(),
   ],
   build: {
     outDir: "../dist",
