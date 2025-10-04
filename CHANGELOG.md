@@ -3,6 +3,13 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+## [0.3.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v0.2.0...v0.3.0) (2025-10-04)
+
+
+### ⚡ NEW FEATURES
+
+* add CodeBlock component with Shiki syntax highlighting ([5df9c10](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/5df9c1098e40fd30e6f5ad1434cce5b6af68cc5d))
+
 ## [0.2.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v0.1.0...v0.2.0) (2025-10-04)
 
 
