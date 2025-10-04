@@ -3,6 +3,23 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+### [0.0.3](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v0.0.2...v0.0.3) (2025-10-04)
+
+
+### 📚 DOCUMENTATION
+
+* complete README overhaul with cyberpunk styling and current features ([4b6e421](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/4b6e4212da329e678ea455d268d48642c8da589b))
+
+
+### ♻️  REFACTORING
+
+* migrate to Tailwind v4 CSS-based configuration ([30928bc](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/30928bc1ec9bb48995beb14cad5602b33f40e9bf))
+
+
+### ⚡ NEW FEATURES
+
+* enhance catalyst theme with cyberpunk corporate aesthetic ([e17990a](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/e17990ad75c967cdb3e5669ade068dccbbdfd9ea)), closes [#00fcd6](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues/00fcd6) [#aa00](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues/aa00)
+
 ### 0.0.2 (2025-10-04)
 
 
