@@ -3,6 +3,7 @@ import { createContext, useContext } from "react";
 
 export type ThemeVariant = "dark" | "light";
 
+// TODO: lets dynamically create these from ./styles/*.css ????
 export const THEMES = [
   "dracula",
   "gold",
