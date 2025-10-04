@@ -20,11 +20,33 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/catalyst-ui/ui/table";
 import { CreateAccountCard } from "@/catalyst-ui/cards/CreateAccountCard/CreateAccountCard";
 import MultiChoiceQuestionCard from "@/catalyst-ui/cards/MultiChoiceQuetion/MultiChoiceQuestion";
+import { CodeBlock } from "@/catalyst-ui/components/CodeBlock";
 import { useState } from "react";
 
 function KitchenSink() {
   const [progress, setProgress] = useState(33);
   const [sliderValue, setSliderValue] = useState([50]);
+  const [codeTheme, setCodeTheme] = useState("vitesse-dark");
+  const [showLineNumbers, setShowLineNumbers] = useState(true);
+  const [editableCode, setEditableCode] = useState(`async function fetchUserData(userId: string): Promise<User> {
+  try {
+    const response = await fetch(\`/api/users/\${userId}\`);
+
+    if (!response.ok) {
+      throw new Error(\`HTTP error! status: \${response.status}\`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Failed to fetch user:', error);
+    throw error;
+  }
+}
+
+// Usage
+const user = await fetchUserData('123');
+console.log(user.name);`);
 
   return (
     <div className="min-h-screen bg-background text-foreground p-8">
@@ -171,6 +193,15 @@ function KitchenSink() {
                   </TableCell>
                   <TableCell>Icons</TableCell>
                   <TableCell>Open-source icon set with React components</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">
+                    <a href="https://shiki.style" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                      Shiki
+                    </a>
+                  </TableCell>
+                  <TableCell>Syntax Highlighting</TableCell>
+                  <TableCell>VS Code-quality syntax highlighting using TextMate grammars</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -405,6 +436,63 @@ function KitchenSink() {
                 </TableRow>
               </TableBody>
             </Table>
+          </CardContent>
+        </Card>
+
+        {/* Code Block Section */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Code Block</CardTitle>
+            <CardDescription>Syntax highlighting with Shiki (VS Code quality)</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Typography variant="h4" className="text-sm font-semibold">Static Example</Typography>
+              <CodeBlock
+                code={`import React from 'react';
+
+export function HelloWorld() {
+  const [count, setCount] = React.useState(0);
+
+  return (
+    <div className="app">
+      <h1>Hello, Catalyst UI! 🚀</h1>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>
+        Increment
+      </button>
+    </div>
+  );
+}`}
+                language="tsx"
+                fileName="HelloWorld.tsx"
+                theme="vitesse-dark"
+                showLineNumbers={true}
+                showCopyButton={true}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <div className="space-y-1">
+                <Typography variant="h4" className="text-sm font-semibold">Fully Interactive Example</Typography>
+                <Typography variant="muted" className="text-xs">
+                  ✏️ Click pencil to edit • 🎨 Change theme • #️⃣ Toggle line numbers
+                </Typography>
+              </div>
+              <CodeBlock
+                code={editableCode}
+                language="typescript"
+                fileName="api.ts"
+                theme={codeTheme}
+                showLineNumbers={showLineNumbers}
+                showCopyButton={true}
+                interactive={true}
+                editable={true}
+                onCodeChange={setEditableCode}
+                onThemeChange={setCodeTheme}
+                onLineNumbersChange={setShowLineNumbers}
+              />
+            </div>
           </CardContent>
         </Card>
 
