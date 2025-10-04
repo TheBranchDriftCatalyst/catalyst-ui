@@ -3,6 +3,24 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+### [0.0.4](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v0.0.3...v0.0.4) (2025-10-04)
+
+
+### 🛠️  MAINTENANCE
+
+* remove stale TODOs and orphaned files ([2d328a6](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/2d328a6393f8d9d3caf49162d97927b876f4b7cd))
+
+
+### ⚡ NEW FEATURES
+
+* implement dynamic theme CSS injection ([0180dbb](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/0180dbb999ebaed787a4c244a43852760fbc46b3))
+* kitchen sink UI enhancements and polish ([f63b85e](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/f63b85e767868d05c664196463983ae43243aad1))
+
+
+### 🔧 BUG FIXES
+
+* restore Storybook theme switching functionality ([b97589d](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/b97589dfb78906abe15e534361c727ba09bb1556))
+
 ### [0.0.3](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v0.0.2...v0.0.3) (2025-10-04)
 
 
