@@ -54,7 +54,6 @@ const config: StorybookConfig = {
     test: {
       disabledAddons: [
         "@storybook/addon-docs",
-        "@storybook/addon-essentials/docs",
       ],
     },
   }

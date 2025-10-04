@@ -6,6 +6,9 @@ import { DOCS_RENDERED } from "storybook/internal/core-events";
 import reduce from "lodash/reduce";
 // import results from "../coverage/storybook/coverage-storybook.json";
 import "../lib/global.css";
+// Frontload all theme CSS for Storybook (normally dynamically loaded by ThemeProvider)
+// Using Vite's glob import to automatically load all theme CSS files
+import.meta.glob('../lib/contexts/Theme/styles/*.css', { eager: true });
 import { useEffect } from "react";
 import { useGlobals } from "storybook/internal/preview-api";
 
@@ -22,31 +25,41 @@ const isColorDark = (hexColor: string): boolean => {
   return brightness < 128;
 };
 
-// Decorator to sync backgrounds to docs mode
+// Decorator to sync backgrounds to docs mode AND set light/dark class on html
 const withBackgroundSync = (Story, context) => {
-  const [globals, updateGlobals] = useGlobals();
+  const [globals] = useGlobals();
   const backgroundName = globals?.backgrounds?.value;
 
   useEffect(() => {
-    if (backgroundName) {
-      // Get the actual color value from the backgrounds config
-      const backgrounds = context.parameters?.backgrounds?.values || [];
-      const selectedBg = backgrounds.find(bg => bg.name === backgroundName);
-      const backgroundColor = selectedBg?.value || backgroundName;
+    if (!backgroundName) return;
 
-      const isDark = isColorDark(backgroundColor);
+    const backgrounds = context.parameters?.backgrounds?.values || [];
+    const selectedBg = backgrounds.find(bg => bg.name === backgroundName);
+    const backgroundColor = selectedBg?.value || backgroundName || '#0a0a0a';
 
-      // Remove existing style tag if present
-      let styleTag = document.getElementById('storybook-bg-override');
-      if (styleTag) {
-        styleTag.remove();
-      }
+    const isDark = isColorDark(backgroundColor);
 
-      styleTag = document.createElement('style');
-      styleTag.id = 'storybook-bg-override';
+    // Update html class to include light/dark (but preserve theme-* classes)
+    const html = document.documentElement;
+    const currentThemeClass = Array.from(html.classList).find(c => c.startsWith('theme-'));
+    html.classList.remove('light', 'dark');
+    html.classList.add(isDark ? 'dark' : 'light');
+    // Ensure theme class is still present
+    if (currentThemeClass && !html.classList.contains(currentThemeClass)) {
+      html.classList.add(currentThemeClass);
+    }
 
-      // Get the appropriate Storybook theme (using themes.dark/light which have the correct structure)
-      const theme = isDark ? sbThemes.dark : sbThemes.light;
+    // Remove existing style tag if present
+    let styleTag = document.getElementById('storybook-bg-override');
+    if (styleTag) {
+      styleTag.remove();
+    }
+
+    styleTag = document.createElement('style');
+    styleTag.id = 'storybook-bg-override';
+
+    // Get the appropriate Storybook theme (using themes.dark/light which have the correct structure)
+    const theme = isDark ? sbThemes.dark : sbThemes.light;
 
       // HACK THE PLANET: Inject Storybook's EXACT theme properties extracted from node_modules
       // CRITICAL: Avoid bleeding into component previews by excluding .sb-story and #story--* elements
@@ -55,14 +68,11 @@ const withBackgroundSync = (Story, context) => {
       // once i told it to go nuclear and just do the tedious work of replicating the entire structure
       // TODO: lets maybe extract this big blob to a seperate helper util
       styleTag.textContent = `
-        /* Override background - NUCLEAR OPTION */
+        /* Override background - ONLY Storybook docs UI, NOT component previews */
         .sbdocs.sbdocs-wrapper,
         .sbdocs-content,
-        .sb-main-padded,
-        #storybook-docs,
-        html,
-        body,
-        #storybook-root {
+        .sb-main-padded:not(:has(.docs-story)):not(:has(.sb-story)),
+        #storybook-docs {
           background-color: ${backgroundColor} !important;
         }
 
@@ -320,7 +330,6 @@ const withBackgroundSync = (Story, context) => {
       `;
 
       document.head.appendChild(styleTag);
-    }
   }, [backgroundName]);
 
   return Story();
@@ -333,6 +342,13 @@ const preview = {
         color: /(background|color)$/i,
         date: /Date$/i,
       },
+    },
+    backgrounds: {
+      default: 'dark',
+      values: [
+        { name: 'dark', value: '#0a0a0a' },
+        { name: 'light', value: '#f5f5f5' },
+      ],
     },
     docs: {
       codePanel: true,
@@ -350,7 +366,7 @@ const preview = {
       themes: reduce(
         ["catalyst", "dracula", "gold", "laracon", "nature", "netflix", "nord"],
         (a, tName) => {
-          a[`${tName}`] = `theme-${tName} dark`;
+          a[`${tName}`] = `theme-${tName}`;
           return a;
         },
         {},
