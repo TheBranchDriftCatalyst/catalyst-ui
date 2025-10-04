@@ -50,6 +50,10 @@ const withBackgroundSync = (Story, context) => {
 
       // HACK THE PLANET: Inject Storybook's EXACT theme properties extracted from node_modules
       // CRITICAL: Avoid bleeding into component previews by excluding .sb-story and #story--* elements
+      // This fixes hte dumb issue of not being able to toggle docs theme after runtime... comeon bros|bras
+      //  AI Generated this hack, so if some future update breaks it, just have AI do it again, wasnt hard
+      // once i told it to go nuclear and just do the tedious work of replicating the entire structure
+      // TODO: lets maybe extract this big blob to a seperate helper util
       styleTag.textContent = `
         /* Override background - NUCLEAR OPTION */
         .sbdocs.sbdocs-wrapper,
@@ -339,6 +343,7 @@ const preview = {
       // No static theme - we inject it dynamically via decorator
     },
     backgrounds: {
+      // TODO: i dont know if these even work actually
       default: 'dark',
       values: [
         {
