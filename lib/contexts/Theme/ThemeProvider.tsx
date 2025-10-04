@@ -6,7 +6,7 @@ import { ThemeContext, ThemeVariant } from "./ThemeContext";
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setTheme] = useLocalStorageState<string>(
     "theme:name",
-    "default",
+    "catalyst",
   );
   const [variant, setVariant] = useLocalStorageState<ThemeVariant>(
     "theme:variant",

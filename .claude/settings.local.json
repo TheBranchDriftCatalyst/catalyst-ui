@@ -16,7 +16,12 @@
       "Bash(git log:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(yarn build:*)",
+      "Bash(for class in \"min-h-screen\" \"bg-background\" \"text-foreground\" \"p-8\" \"flex\" \"mx-auto\")",
+      "Bash(do echo -n \"$class: \")",
+      "Bash(done)",
+      "Bash(yarn release)"
     ],
     "deny": [],
     "ask": []

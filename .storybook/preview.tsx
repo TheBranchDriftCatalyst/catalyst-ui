@@ -343,7 +343,8 @@ const preview = {
       // No static theme - we inject it dynamically via decorator
     },
     backgrounds: {
-      // TODO: i dont know if these even work actually
+      // NOTE: Backgrounds addon disabled - theme decorator handles background switching
+      disable: true,
       default: 'dark',
       values: [
         {

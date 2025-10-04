@@ -1,4 +1,4 @@
-import "@/catalyst-ui/global.css";
+import "../lib/global.css";
 import { ThemeProvider } from "@/catalyst-ui/contexts/Theme/ThemeProvider";
 import { ToggleVariantButton } from "@/catalyst-ui/contexts/Theme/ToggleDarkMode";
 import { ChangeThemeDropdown } from "@/catalyst-ui/contexts/Theme/ChangeThemeDropdown";
