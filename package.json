@@ -5,8 +5,8 @@
   "private": false,
   "version": "0.1.0",
   "type": "module",
-  "main": "./dist/catalyst.js",
-  "types": "./dist/catalyst.d.ts",
+  "main": "./lib/catalyst.ts",
+  "types": "./lib/catalyst.ts",
   "files": [
     "dist",
     "lib"
@@ -105,6 +105,7 @@
     "dlx": "^0.2.1",
     "eslint-plugin-react-hooks": "^6.1.0",
     "glob": "^11.0.3",
+    "js-yaml": "^4.1.0",
     "lucide-react": "^0.544.0",
     "react-hook-form": "^7.51.5",
     "react-hooks": "^1.0.1",

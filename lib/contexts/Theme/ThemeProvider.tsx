@@ -5,12 +5,19 @@ import { ThemeContext, ThemeVariant } from "./ThemeContext";
 
 // Dynamic theme CSS imports
 const themeStyles: Record<string, () => Promise<any>> = {
+  // @ts-ignore - Vite handles CSS imports
   catalyst: () => import("./styles/catalyst.css"),
+  // @ts-ignore - Vite handles CSS imports
   dracula: () => import("./styles/dracula.css"),
+  // @ts-ignore - Vite handles CSS imports
   gold: () => import("./styles/gold.css"),
+  // @ts-ignore - Vite handles CSS imports
   laracon: () => import("./styles/laracon.css"),
+  // @ts-ignore - Vite handles CSS imports
   nature: () => import("./styles/nature.css"),
+  // @ts-ignore - Vite handles CSS imports
   netflix: () => import("./styles/netflix.css"),
+  // @ts-ignore - Vite handles CSS imports
   nord: () => import("./styles/nord.css"),
 };
 
