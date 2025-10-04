@@ -21,7 +21,8 @@
       "Bash(for class in \"min-h-screen\" \"bg-background\" \"text-foreground\" \"p-8\" \"flex\" \"mx-auto\")",
       "Bash(do echo -n \"$class: \")",
       "Bash(done)",
-      "Bash(yarn release)"
+      "Bash(yarn release)",
+      "Read(//Users/panda/catalyst-devspace/**)"
     ],
     "deny": [],
     "ask": []
