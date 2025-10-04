@@ -3,6 +3,15 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+## [0.2.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v0.1.0...v0.2.0) (2025-10-04)
+
+
+### 🛠️  MAINTENANCE
+
+* added misc comments todo ([5802b79](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/5802b792f029f0c0a03e0da43e88cb700b2e2e60))
+* fix all ts errors for official build ([b87c4c1](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/b87c4c18db554e1aa3463617f5c8ac18e5d9bdd7))
+* **release:** v0.1.1 🎉 [skip ci] ([ef145e1](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/ef145e1ae9eb9cf207285d30b82fc31ff7519eda))
+
 ### [0.1.1](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v0.1.0...v0.1.1) (2025-10-04)
 
 
