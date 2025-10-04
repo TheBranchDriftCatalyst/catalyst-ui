@@ -15,7 +15,8 @@ export * as utils from "./utils";
 
 export * from "./hooks";
 
-export { default as catalystTwTheme } from "./theme";
+// Tailwind v4 uses CSS-based configuration via @theme in global.css
+// No need to export theme config - it's all in the CSS now!
 
 // CSS export disabled for build - include manually if needed
 // export { default as catalystCSS } from "./global.css?inline";

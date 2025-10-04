@@ -1,4 +1,4 @@
-@config '../tailwind.config.ts';
+/* Tailwind CSS v4 - No config file needed! Using @theme directive below */
 
 /* TODO: remove all these we will inject them with the theme provider */
 @import './contexts/Theme/styles/catalyst.css' layer(base);
