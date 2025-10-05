@@ -3,6 +3,13 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+## [0.5.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v0.4.1...v0.5.0) (2025-10-05)
+
+
+### ⚡ NEW FEATURES
+
+* add draggable/resizable UI panels and ELK layout ([682870c](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/682870c4c67542210de299a6b2f6e91390b4dfd3))
+
 ### [0.4.1](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v0.4.0...v0.4.1) (2025-10-05)
 
 
