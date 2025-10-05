@@ -106,13 +106,17 @@ export interface GraphConfig<TNodeKind extends string = string, TEdgeKind extend
   /** Custom node dimension calculator */
   getNodeDimensions?: (node: NodeData) => { width: number; height: number };
 
-  /** Status filter options for UI (domain-specific) */
+  /**
+   * Domain-specific status filter options for UI
+   * Example: For Docker - running, stopped, in-use
+   * These are specific to the domain and not graph-level properties
+   */
   statusFilterOptions?: FilterOption<any>[];
 
-  /** Connection filter options for UI (domain-specific) */
-  connectionFilterOptions?: FilterOption<any>[];
-
-  /** Additional custom filter options */
+  /**
+   * Additional custom filter options for domain-specific filters
+   * Use this for any other domain-specific filters beyond status
+   */
   customFilterOptions?: Record<string, FilterOption<any>[]>;
 }
 

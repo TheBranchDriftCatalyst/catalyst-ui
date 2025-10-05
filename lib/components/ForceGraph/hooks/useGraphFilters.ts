@@ -1,25 +1,28 @@
 import { useEffect, useMemo } from 'react';
 import { useGraphContext } from '../context/GraphContext';
 import { NodeData, EdgeData, NodeKind, EdgeKind } from '../types';
-import { GraphFilters, NodeStatusFilter, NodeConnectionFilter } from '../types/filterTypes';
+import { GraphFilters, GraphConnectionFilter } from '../types/filterTypes';
 import { GraphConfig } from '../config/types';
 
 export const useGraphFilters = (config?: GraphConfig<any, any>) => {
   const { state, dispatch } = useGraphContext();
 
   // Helper function to check if a node is orphaned (no edges)
+  // This is a graph-level property, not domain-specific
   const isOrphanedNode = (nodeId: string, edges: EdgeData[]): boolean => {
     return !edges.some(edge => edge.src === nodeId || edge.dst === nodeId);
   };
 
   // Helper function to check if a node matches status filter
-  const matchesStatusFilter = (node: NodeData, filter: NodeStatusFilter): boolean => {
+  // NOTE: This is domain-specific logic (e.g., Docker container statuses)
+  const matchesStatusFilter = (node: NodeData, filter: string): boolean => {
     if (filter === 'all') {
       return true;
     }
 
     const status = node.attributes?.status?.toLowerCase();
 
+    // Domain-specific status matching (currently Docker-focused)
     switch (filter) {
       case 'running':
         return status === 'running';
@@ -27,16 +30,14 @@ export const useGraphFilters = (config?: GraphConfig<any, any>) => {
         return status === 'stopped' || status === 'exited';
       case 'in-use':
         return status === 'in-use' || status === 'running';
-      case 'orphaned':
-        // This will be handled by connection filter
-        return true;
       default:
         return true;
     }
   };
 
   // Helper function to check if a node matches connection filter
-  const matchesConnectionFilter = (nodeId: string, filter: NodeConnectionFilter, edges: EdgeData[]): boolean => {
+  // This is a graph-level property (connected/orphaned), not domain-specific
+  const matchesConnectionFilter = (nodeId: string, filter: GraphConnectionFilter, edges: EdgeData[]): boolean => {
     if (filter === 'all') {
       return true;
     }
@@ -216,11 +217,11 @@ export const useGraphFilters = (config?: GraphConfig<any, any>) => {
     dispatch({ type: 'TOGGLE_EDGE_VISIBILITY', payload: edgeKind });
   };
 
-  const setStatusFilter = (filter: NodeStatusFilter) => {
+  const setStatusFilter = (filter: string) => {
     updateFilters({ statusFilter: filter });
   };
 
-  const setConnectionFilter = (filter: NodeConnectionFilter) => {
+  const setConnectionFilter = (filter: GraphConnectionFilter) => {
     updateFilters({ connectionFilter: filter });
   };
 

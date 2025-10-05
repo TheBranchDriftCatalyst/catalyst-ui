@@ -3,87 +3,89 @@ import { NodeTypeOption, EdgeTypeOption } from '../types/filterTypes';
 import { NodeData } from '../types';
 
 /**
- * Docker-specific node types
+ * Unified Docker node/edge/filter type definition.
+ * This is the single source of truth for all Docker-specific metadata.
+ * All types are derived from this const to ensure type safety and eliminate string matching.
  */
-export type DockerNodeKind = 'container' | 'network' | 'image' | 'volume';
+const DockerNodeEdgeTypes = {
+  nodes: {
+    container: {
+      label: 'Containers',
+      color: 'var(--primary)',
+      icon: '📦',
+    },
+    network: {
+      label: 'Networks',
+      color: 'var(--neon-yellow)',
+      icon: '🌐',
+    },
+    image: {
+      label: 'Images',
+      color: 'var(--neon-red)',
+      icon: '💿',
+    },
+    volume: {
+      label: 'Volumes',
+      color: 'var(--neon-purple)',
+      icon: '💾',
+    },
+  },
+  edges: {
+    derived_from: {
+      label: 'Derived From',
+      color: 'var(--neon-red)',
+    },
+    connected_to: {
+      label: 'Connected To',
+      color: 'var(--primary)',
+    },
+    mounted_into: {
+      label: 'Mounted Into',
+      color: 'var(--neon-yellow)',
+    },
+  },
+  statusFilters: {
+    all: 'All Status',
+    running: 'Running',
+    stopped: 'Stopped',
+    'in-use': 'In Use',
+  },
+} as const;
 
 /**
- * Docker-specific edge types
+ * Docker-specific node types (derived from DockerNodeEdgeTypes)
  */
-export type DockerEdgeKind = 'derived_from' | 'connected_to' | 'mounted_into';
+export type DockerNodeKind = keyof typeof DockerNodeEdgeTypes.nodes;
 
 /**
- * Docker-specific status filter type
+ * Docker-specific edge types (derived from DockerNodeEdgeTypes)
  */
-export type DockerNodeStatusFilter = 'all' | 'running' | 'stopped' | 'in-use' | 'orphaned';
+export type DockerEdgeKind = keyof typeof DockerNodeEdgeTypes.edges;
 
 /**
- * Docker-specific connection filter type
+ * Docker-specific status filter type (derived from DockerNodeEdgeTypes)
+ * NOTE: This is Docker-specific (running/stopped/in-use are container statuses)
  */
-export type DockerNodeConnectionFilter = 'all' | 'connected' | 'orphaned';
+export type DockerStatusFilter = keyof typeof DockerNodeEdgeTypes.statusFilters;
 
 /**
- * Docker node type configurations
+ * Docker node type configurations (derived from DockerNodeEdgeTypes)
  */
-const dockerNodeTypes: Record<DockerNodeKind, NodeTypeConfig> = {
-  container: {
-    label: 'Containers',
-    color: 'var(--primary)',
-    icon: '📦',
-  },
-  network: {
-    label: 'Networks',
-    color: 'var(--neon-yellow)',
-    icon: '🌐',
-  },
-  image: {
-    label: 'Images',
-    color: 'var(--neon-red)',
-    icon: '💿',
-  },
-  volume: {
-    label: 'Volumes',
-    color: 'var(--neon-purple)',
-    icon: '💾',
-  },
-};
+const dockerNodeTypes: Record<DockerNodeKind, NodeTypeConfig> = DockerNodeEdgeTypes.nodes as Record<DockerNodeKind, NodeTypeConfig>;
 
 /**
- * Docker edge type configurations
+ * Docker edge type configurations (derived from DockerNodeEdgeTypes)
  */
-const dockerEdgeTypes: Record<DockerEdgeKind, EdgeTypeConfig> = {
-  derived_from: {
-    label: 'Derived From',
-    color: 'var(--neon-red)',
-  },
-  connected_to: {
-    label: 'Connected To',
-    color: 'var(--primary)',
-  },
-  mounted_into: {
-    label: 'Mounted Into',
-    color: 'var(--neon-yellow)',
-  },
-};
+const dockerEdgeTypes: Record<DockerEdgeKind, EdgeTypeConfig> = DockerNodeEdgeTypes.edges as Record<DockerEdgeKind, EdgeTypeConfig>;
 
 /**
  * Docker status filter options (for UI components)
+ * Derived from DockerNodeEdgeTypes.statusFilters
+ * NOTE: These are Docker-specific (container/resource statuses)
  */
-const dockerStatusFilterOptions: FilterOption<DockerNodeStatusFilter>[] = [
-  { value: 'all', label: 'All Status' },
-  { value: 'running', label: 'Running' },
-  { value: 'stopped', label: 'Stopped' },
-  { value: 'in-use', label: 'In Use' },
-];
-
-/**
- * Docker connection filter options (for UI components)
- */
-const dockerConnectionFilterOptions: FilterOption<DockerNodeConnectionFilter>[] = [
-  { value: 'all', label: 'All Nodes' },
-  { value: 'connected', label: 'Connected' },
-  { value: 'orphaned', label: 'Orphaned' },
-];
+const dockerStatusFilterOptions: FilterOption<DockerStatusFilter>[] = Object.entries(DockerNodeEdgeTypes.statusFilters).map(
+  ([value, label]) => ({ value: value as DockerStatusFilter, label })
+);
 
 /**
  * Docker layer0 filter - hides common Docker infrastructure resources
@@ -104,6 +106,7 @@ const dockerLayer0Filter: AttributeFilter = {
 
 /**
  * Docker quick filter presets
+ * NOTE: Now type-safe - no more 'as any' needed!
  */
 const dockerQuickFilters: QuickFilter[] = [
   {
@@ -113,7 +116,7 @@ const dockerQuickFilters: QuickFilter[] = [
     action: () => ({
       showOrphanedOnly: true,
       statusFilter: 'all',
-      connectionFilter: 'orphaned',
+      connectionFilter: 'orphaned', // Graph-level property
       showRunningOnly: false,
       showInUseOnly: false,
     }),
@@ -124,7 +127,7 @@ const dockerQuickFilters: QuickFilter[] = [
     className: 'px-3 py-2 bg-neon-red/15 border border-neon-red/40 rounded-md text-neon-red cursor-pointer text-xs font-semibold transition-all hover:bg-neon-red/25 hover:-translate-y-0.5',
     action: () => ({
       showRunningOnly: true,
-      statusFilter: 'running' as any,
+      statusFilter: 'running', // Docker-specific status
       showOrphanedOnly: false,
       showInUseOnly: false,
     }),
@@ -136,8 +139,8 @@ const dockerQuickFilters: QuickFilter[] = [
     action: () => ({
       attributeFilterValues: { layer0: true },
       showOrphanedOnly: false,
-      statusFilter: 'in-use' as any,
-      connectionFilter: 'connected' as any,
+      statusFilter: 'in-use', // Docker-specific status
+      connectionFilter: 'connected', // Graph-level property
     }),
   },
 ];
@@ -157,7 +160,6 @@ export const DockerGraphConfig: GraphConfig<DockerNodeKind, DockerEdgeKind> = {
   title: 'DOCKER GRAPH',
   // Domain-specific filter options
   statusFilterOptions: dockerStatusFilterOptions,
-  connectionFilterOptions: dockerConnectionFilterOptions,
 };
 
 /**
@@ -175,9 +177,8 @@ export const getDockerEdgeConfig = (kind: DockerEdgeKind): EdgeTypeConfig => {
 };
 
 // NOTE: Legacy exports for backwards compatibility
-// These are now available in DockerGraphConfig.statusFilterOptions and DockerGraphConfig.connectionFilterOptions
+// These are now available in DockerGraphConfig.statusFilterOptions
 export const DOCKER_STATUS_FILTER_OPTIONS = dockerStatusFilterOptions;
-export const DOCKER_CONNECTION_FILTER_OPTIONS = dockerConnectionFilterOptions;
 
 /**
  * Docker node type filter options (for UI components)

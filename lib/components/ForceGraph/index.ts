@@ -33,8 +33,7 @@ export type {
 
 export type {
   GraphFilters,
-  NodeStatusFilter,
-  NodeConnectionFilter,
+  GraphConnectionFilter,
 } from './types/filterTypes';
 
 export type {
@@ -42,3 +41,11 @@ export type {
   EdgeWithHelpers,
   EnrichedGraph,
 } from './utils/GraphNavigator';
+
+// Config exports
+export { DockerGraphConfig } from './config/DockerGraphConfig';
+export type {
+  DockerNodeKind,
+  DockerEdgeKind,
+  DockerStatusFilter,
+} from './config/DockerGraphConfig';

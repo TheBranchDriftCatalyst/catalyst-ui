@@ -4,7 +4,7 @@ import { GraphFilters } from '../types/filterTypes';
 import { GraphConfig } from '../config/types';
 import { DockerGraphConfig } from '../config/DockerGraphConfig';
 
-export type { NodeStatusFilter, NodeConnectionFilter, GraphFilters } from '../types/filterTypes';
+export type { GraphConnectionFilter, GraphFilters } from '../types/filterTypes';
 
 // Local storage key for persisted filters
 export const FILTERS_STORAGE_KEY = 'catalyst-ui.forcegraph.filters.v1';

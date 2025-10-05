@@ -2,10 +2,26 @@
 
 export type NodeID = string;
 
-/** Node kinds */
+/**
+ * Node kinds - Domain-specific type
+ *
+ * NOTE: This is currently set to Docker types for backwards compatibility.
+ * For new code, import DockerNodeKind from config/DockerGraphConfig instead.
+ * In the future, this could be made fully generic via type parameters.
+ *
+ * @deprecated Import domain-specific types from your graph config instead
+ */
 export type NodeKind = 'container' | 'network' | 'image' | 'volume';
 
-/** Edge kinds */
+/**
+ * Edge kinds - Domain-specific type
+ *
+ * NOTE: This is currently set to Docker types for backwards compatibility.
+ * For new code, import DockerEdgeKind from config/DockerGraphConfig instead.
+ * In the future, this could be made fully generic via type parameters.
+ *
+ * @deprecated Import domain-specific types from your graph config instead
+ */
 export type EdgeKind = 'derived_from' | 'connected_to' | 'mounted_into';
 
 /** Node data structure */
