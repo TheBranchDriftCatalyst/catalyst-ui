@@ -25,7 +25,8 @@
       "Read(//Users/panda/catalyst-devspace/**)",
       "Bash(yarn add:*)",
       "WebFetch(domain:ui.shadcn.com)",
-      "Bash(yarn remove:*)"
+      "Bash(yarn remove:*)",
+      "mcp__ide__getDiagnostics"
     ],
     "deny": [],
     "ask": []

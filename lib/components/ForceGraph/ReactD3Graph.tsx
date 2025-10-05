@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import ReactD3Node, { getNodeDimensions } from './ReactD3Node';
+import ReactD3Node from './ReactD3Node';
 import ReactD3Edge from './ReactD3Edge';
-import { NodeKind, EdgeKind, ReactD3GraphProps, NodeData, EdgeData } from './types';
+import { EdgeKind, ReactD3GraphProps, NodeData, EdgeData } from './types';
 import { enrichGraph, NodeWithHelpers, EdgeWithHelpers } from './utils/GraphNavigator';
 import { useGraphState } from './hooks/useGraphState';
 import { applyStructuredLayout } from './utils/layouts';
@@ -16,12 +16,13 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
   setSelectedNode,
   hoveredNode,
   selectedNode,
+  config,
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const zoomLayerRef = useRef<SVGGElement>(null);
   const [nodes, setNodes] = useState<NodeWithHelpers[] | NodeData[]>([]);
   const [edges, setEdges] = useState<EdgeWithHelpers[] | EdgeData[]>([]);
-  const [zoomScale, setZoomScale] = useState<number>(1);
+  const [_zoomScale, setZoomScale] = useState<number>(1);
   const simulationRef = useRef<d3.Simulation<any, undefined> | null>(null);
   const chargeForceRef = useRef<any>(null);
   const prevNodeCountRef = useRef<number>(0);
@@ -313,27 +314,36 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
 
         {/* Nodes */}
         <g className="nodes">
-          {nodes.map((node) => (
-            <ReactD3Node
-              key={node.id}
-              data={node}
-              isSelected={selectedNode === node.id}
-              isHovered={hoveredNode === node.id}
-              isDimmed={Boolean(hoveredNode && hoveredNode !== node.id && selectedNode !== node.id)}
-              onMouseEnter={handleNodeMouseEnter(node.id)}
-              onMouseLeave={handleNodeMouseLeave(node.id)}
-              onClick={handleNodeClick(node.id)}
-              onDoubleClick={() => {
-                try {
-                  node.fx = null;
-                  node.fy = null;
-                } catch (e) { }
-              }}
-              onDragStart={handleDragStart(node)}
-              onDrag={handleDrag(node)}
-              onDragEnd={handleDragEnd(node)}
-            />
-          ))}
+          {nodes.map((node) => {
+            // Get custom renderer from config for this node type
+            const nodeConfig = config?.nodeTypes?.[node.kind];
+            const customRenderer = nodeConfig?.renderer || config?.defaultNodeRenderer;
+            const getNodeDimensionsFn = config?.getNodeDimensions;
+
+            return (
+              <ReactD3Node
+                key={node.id}
+                data={node}
+                isSelected={selectedNode === node.id}
+                isHovered={hoveredNode === node.id}
+                isDimmed={Boolean(hoveredNode && hoveredNode !== node.id && selectedNode !== node.id)}
+                customRenderer={customRenderer}
+                getNodeDimensionsFn={getNodeDimensionsFn}
+                onMouseEnter={handleNodeMouseEnter(node.id)}
+                onMouseLeave={handleNodeMouseLeave(node.id)}
+                onClick={handleNodeClick(node.id)}
+                onDoubleClick={() => {
+                  try {
+                    node.fx = null;
+                    node.fy = null;
+                  } catch (e) { }
+                }}
+                onDragStart={handleDragStart(node)}
+                onDrag={handleDrag(node)}
+                onDragEnd={handleDragEnd(node)}
+              />
+            );
+          })}
         </g>
       </g>
     </svg>

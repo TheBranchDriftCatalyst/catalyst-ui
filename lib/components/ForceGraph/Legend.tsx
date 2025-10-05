@@ -1,6 +1,7 @@
 import React from 'react';
 import { NodeKind, EdgeKind } from './types';
 import { useGraphState } from './hooks/useGraphState';
+import { useGraphConfig } from './context/GraphContext';
 
 interface LegendProps {
   visibleNodes: Record<NodeKind, boolean>;
@@ -15,20 +16,27 @@ const Legend: React.FC<LegendProps> = ({
   visibleEdges,
   setVisibleEdges,
 }) => {
+  const config = useGraphConfig();
   const { layout, setLayout, orthogonalEdges, toggleOrthogonalEdges } = useGraphState();
 
-  const nodeTypes: { kind: NodeKind; label: string; color: string; icon: string }[] = [
-    { kind: 'container', label: 'Containers', color: 'var(--primary)', icon: '📦' },
-    { kind: 'network', label: 'Networks', color: 'var(--neon-yellow)', icon: '🌐' },
-    { kind: 'image', label: 'Images', color: 'var(--neon-red)', icon: '💿' },
-    { kind: 'volume', label: 'Volumes', color: 'var(--neon-purple)', icon: '💾' },
-  ];
+  // Build node types from config
+  const nodeTypes: { kind: NodeKind; label: string; color: string; icon: string }[] = Object.entries(
+    config.nodeTypes
+  ).map(([kind, typeConfig]) => ({
+    kind: kind as NodeKind,
+    label: typeConfig.label,
+    color: typeConfig.color,
+    icon: typeConfig.icon,
+  }));
 
-  const edgeTypes: { kind: EdgeKind; label: string; color: string }[] = [
-    { kind: 'derived_from', label: 'Derived From', color: 'var(--neon-red)' },
-    { kind: 'connected_to', label: 'Connected To', color: 'var(--primary)' },
-    { kind: 'mounted_into', label: 'Mounted Into', color: 'var(--neon-yellow)' },
-  ];
+  // Build edge types from config
+  const edgeTypes: { kind: EdgeKind; label: string; color: string }[] = Object.entries(
+    config.edgeTypes
+  ).map(([kind, typeConfig]) => ({
+    kind: kind as EdgeKind,
+    label: typeConfig.label,
+    color: typeConfig.color,
+  }));
 
   const toggleNode = (kind: NodeKind) => {
     setVisibleNodes((prev) => ({ ...prev, [kind]: !prev[kind] }));
@@ -222,73 +230,91 @@ const Legend: React.FC<LegendProps> = ({
   };
 
   return (
-    <div className="absolute top-7 left-6 bg-background/95 border-2 border-primary rounded-xl p-4 backdrop-blur-md shadow-[0_8px_32px_rgba(var(--primary-rgb),0.3)]">
-      <h3 className="text-sm font-bold text-primary mb-3" style={{ textShadow: '0 0 8px var(--primary)' }}>
+    <div className="absolute top-7 left-6 bg-background/95 border-2 border-primary rounded-xl p-3 backdrop-blur-md shadow-[0_8px_32px_rgba(var(--primary-rgb),0.3)]">
+      <h3 className="text-xs font-bold text-primary mb-2" style={{ textShadow: '0 0 8px var(--primary)' }}>
         Legend
       </h3>
-      <div className="flex flex-col gap-2 max-h-[60vh] overflow-y-auto pr-2">
+      <div className="flex flex-col gap-1 max-h-[60vh] overflow-y-auto pr-1">
         {/* Nodes */}
-        <div className="mb-2">
-          <p className="text-xs font-semibold text-foreground/60 mb-1">NODES</p>
+        <div className="mb-1">
+          <p className="text-[10px] font-semibold text-foreground/60 mb-0.5 uppercase tracking-wide">Nodes</p>
           {nodeTypes.map(({ kind, label, color, icon }) => (
-            <label
+            <button
               key={kind}
-              className="flex items-center gap-2 cursor-pointer p-1.5 rounded-md hover:bg-accent/10 transition-colors text-xs"
               onClick={() => toggleNode(kind)}
+              className={`w-full flex items-center gap-1.5 cursor-pointer px-1.5 py-0.5 rounded transition-all text-[11px] ${
+                visibleNodes[kind]
+                  ? 'opacity-100'
+                  : 'opacity-40 hover:opacity-70'
+              }`}
             >
-              <input
-                type="checkbox"
-                checked={visibleNodes[kind]}
-                onChange={() => toggleNode(kind)}
-                className="w-4 h-4 cursor-pointer"
-              />
-              <span className="text-base">{icon}</span>
-              <span className="flex-1 text-foreground" style={{ color }}>{label}</span>
-            </label>
+              <span className="text-sm">{icon}</span>
+              <span
+                className={`flex-1 text-left font-medium ${visibleNodes[kind] ? 'border-b' : ''}`}
+                style={{
+                  color: visibleNodes[kind] ? color : 'var(--foreground)',
+                  borderColor: visibleNodes[kind] ? color : 'transparent',
+                }}
+              >
+                {label}
+              </span>
+            </button>
           ))}
         </div>
 
         {/* Edges */}
-        <div className="mb-2">
-          <p className="text-xs font-semibold text-foreground/60 mb-1">EDGES</p>
+        <div className="mb-1">
+          <p className="text-[10px] font-semibold text-foreground/60 mb-0.5 uppercase tracking-wide">Edges</p>
           {edgeTypes.map(({ kind, label, color }) => (
-            <label
+            <button
               key={kind}
-              className="flex items-center gap-2 cursor-pointer p-1.5 rounded-md hover:bg-accent/10 transition-colors text-xs"
               onClick={() => toggleEdge(kind)}
+              className={`w-full flex items-center gap-1.5 cursor-pointer px-1.5 py-0.5 rounded transition-all text-[11px] ${
+                visibleEdges[kind]
+                  ? 'opacity-100'
+                  : 'opacity-40 hover:opacity-70'
+              }`}
             >
-              <input
-                type="checkbox"
-                checked={visibleEdges[kind]}
-                onChange={() => toggleEdge(kind)}
-                className="w-4 h-4 cursor-pointer"
+              <div
+                className={`h-0.5 rounded-full transition-all ${visibleEdges[kind] ? 'w-6' : 'w-4'}`}
+                style={{
+                  backgroundColor: color,
+                  boxShadow: visibleEdges[kind] ? `0 0 4px ${color}` : 'none',
+                }}
               />
-              <div className="w-6 h-0.5" style={{ backgroundColor: color }} />
-              <span className="flex-1 text-foreground">{label}</span>
-            </label>
+              <span
+                className={`flex-1 text-left font-medium ${visibleEdges[kind] ? 'border-b' : ''}`}
+                style={{
+                  color: visibleEdges[kind] ? color : 'var(--foreground)',
+                  borderColor: visibleEdges[kind] ? color : 'transparent',
+                }}
+              >
+                {label}
+              </span>
+            </button>
           ))}
         </div>
 
         {/* Layout Controls */}
-        <div className="mb-2 pt-2 border-t border-primary/20">
-          <p className="text-xs font-semibold text-foreground/60 mb-2">LAYOUT</p>
-          <div className="flex gap-1">
+        <div className="mb-1 pt-1 border-t border-primary/20">
+          <p className="text-[10px] font-semibold text-foreground/60 mb-1 uppercase tracking-wide">Layout</p>
+          <div className="flex gap-0.5">
             <button
               onClick={() => setLayout('force')}
-              className={`flex-1 px-2 py-1.5 text-xs rounded-md border transition-all ${
+              className={`flex-1 px-1.5 py-0.5 text-[11px] rounded transition-all ${
                 layout === 'force'
-                  ? 'bg-primary/15 border-primary/40 text-primary font-semibold'
-                  : 'bg-background/50 border-border text-foreground/80 hover:bg-accent/10'
+                  ? 'text-primary font-semibold border-b-2 border-primary'
+                  : 'text-foreground/70 hover:text-foreground'
               }`}
             >
               Force
             </button>
             <button
               onClick={() => setLayout('structured')}
-              className={`flex-1 px-2 py-1.5 text-xs rounded-md border transition-all ${
+              className={`flex-1 px-1.5 py-0.5 text-[11px] rounded transition-all ${
                 layout === 'structured'
-                  ? 'bg-primary/15 border-primary/40 text-primary font-semibold'
-                  : 'bg-background/50 border-border text-foreground/80 hover:bg-accent/10'
+                  ? 'text-primary font-semibold border-b-2 border-primary'
+                  : 'text-foreground/70 hover:text-foreground'
               }`}
             >
               Structured
@@ -297,30 +323,28 @@ const Legend: React.FC<LegendProps> = ({
         </div>
 
         {/* Edge Routing */}
-        <div className="mb-2 pt-2 border-t border-primary/20">
-          <p className="text-xs font-semibold text-foreground/60 mb-2">EDGE ROUTING</p>
-          <label
-            className="flex items-center gap-2 cursor-pointer p-1.5 rounded-md hover:bg-accent/10 transition-colors text-xs"
+        <div className="mb-1 pt-1 border-t border-primary/20">
+          <p className="text-[10px] font-semibold text-foreground/60 mb-1 uppercase tracking-wide">Edge Routing</p>
+          <button
             onClick={toggleOrthogonalEdges}
+            className={`w-full px-1.5 py-0.5 text-[11px] rounded transition-all ${
+              orthogonalEdges
+                ? 'text-primary font-semibold border-b-2 border-primary'
+                : 'text-foreground/70 hover:text-foreground'
+            }`}
           >
-            <input
-              type="checkbox"
-              checked={orthogonalEdges}
-              onChange={toggleOrthogonalEdges}
-              className="w-4 h-4 cursor-pointer"
-            />
-            <span className="flex-1 text-foreground">Orthogonal edges</span>
-          </label>
+            Orthogonal Edges
+          </button>
         </div>
 
         {/* Download Button */}
-        <div className="pt-2 border-t border-primary/20">
+        <div className="pt-1 border-t border-primary/20">
           <button
             onClick={downloadGraphAsPng}
-            className="w-full px-3 py-2 bg-green-500/10 border border-green-500/30 rounded-md text-green-400 cursor-pointer text-xs font-semibold transition-all hover:bg-green-500/20 hover:-translate-y-0.5"
+            className="w-full px-2 py-1 bg-green-500/10 border border-green-500/30 rounded text-green-400 cursor-pointer text-[11px] font-semibold transition-all hover:bg-green-500/20"
             title="Download graph as PNG image"
           >
-            📥 Download PNG
+            📥 PNG
           </button>
         </div>
       </div>

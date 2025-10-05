@@ -8,25 +8,23 @@ import FilterPanel from './FilterPanel';
 import { GraphProvider } from './context/GraphContext';
 import { useGraphState } from './hooks/useGraphState';
 import { useGraphFilters } from './hooks/useGraphFilters';
+import { GraphConfig } from './config/types';
+import { DockerGraphConfig } from './config/DockerGraphConfig';
 
 // Inner component that uses the context
-const ForceGraphInner: React.FC<{ data: any }> = ({ data }) => {
+const ForceGraphInner: React.FC<{ data: any; config?: GraphConfig<any, any> }> = ({ data, config }) => {
   const {
     filteredData,
     hoveredNode,
     selectedNode,
     dimensions,
-    layout,
-    orthogonalEdges,
     setRawData,
     setHoveredNode,
     setSelectedNode,
-    setLayout,
-    toggleOrthogonalEdges,
     getNodeInfo,
   } = useGraphState();
 
-  const { filters, toggleNodeVisibility, toggleEdgeVisibility, excludeNode } = useGraphFilters();
+  const { filters, toggleNodeVisibility, toggleEdgeVisibility, excludeNode } = useGraphFilters(config);
   const [filterPanelVisible, setFilterPanelVisible] = useState(false);
 
   // Update raw data when props change
@@ -54,12 +52,14 @@ const ForceGraphInner: React.FC<{ data: any }> = ({ data }) => {
     if (typeof setter === 'function') {
       const newVisibility = setter(filters.visibleNodes);
       Object.entries(newVisibility).forEach(([nodeKind, visible]) => {
+        // @ts-ignore - nodeKind from config can be any node type
         if (visible !== filters.visibleNodes[nodeKind as any]) {
           toggleNodeVisibility(nodeKind as any);
         }
       });
     } else {
       Object.entries(setter).forEach(([nodeKind, visible]) => {
+        // @ts-ignore - nodeKind from config can be any node type
         if (visible !== filters.visibleNodes[nodeKind as any]) {
           toggleNodeVisibility(nodeKind as any);
         }
@@ -71,12 +71,14 @@ const ForceGraphInner: React.FC<{ data: any }> = ({ data }) => {
     if (typeof setter === 'function') {
       const newVisibility = setter(filters.visibleEdges);
       Object.entries(newVisibility).forEach(([edgeKind, visible]) => {
+        // @ts-ignore - edgeKind from config can be any edge type
         if (visible !== filters.visibleEdges[edgeKind as any]) {
           toggleEdgeVisibility(edgeKind as any);
         }
       });
     } else {
       Object.entries(setter).forEach(([edgeKind, visible]) => {
+        // @ts-ignore - edgeKind from config can be any edge type
         if (visible !== filters.visibleEdges[edgeKind as any]) {
           toggleEdgeVisibility(edgeKind as any);
         }
@@ -123,6 +125,7 @@ const ForceGraphInner: React.FC<{ data: any }> = ({ data }) => {
         setSelectedNode={wrappedSetSelectedNode}
         hoveredNode={hoveredNode}
         selectedNode={selectedNode}
+        config={config}
       />
       {!filterPanelVisible && (
         <Legend
@@ -144,10 +147,10 @@ const ForceGraphInner: React.FC<{ data: any }> = ({ data }) => {
 };
 
 // Main component with provider
-const ForceGraph: React.FC<ForceGraphProps> = ({ data }) => {
+const ForceGraph: React.FC<ForceGraphProps> = ({ data, config = DockerGraphConfig }) => {
   return (
-    <GraphProvider>
-      <ForceGraphInner data={data} />
+    <GraphProvider config={config}>
+      <ForceGraphInner data={data} config={config} />
     </GraphProvider>
   );
 };

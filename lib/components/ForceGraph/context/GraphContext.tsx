@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useReducer, ReactNode, useEffect } from 'react';
 import { NodeKind, EdgeKind, GraphData } from '../types';
-import { GraphFilters, NodeStatusFilter, NodeConnectionFilter } from '../types/filterTypes';
+import { GraphFilters } from '../types/filterTypes';
+import { GraphConfig } from '../config/types';
+import { DockerGraphConfig } from '../config/DockerGraphConfig';
 
 export type { NodeStatusFilter, NodeConnectionFilter, GraphFilters } from '../types/filterTypes';
 
@@ -17,6 +19,7 @@ export function clearPersistedFilters() {
 }
 
 export interface GraphState {
+  config: GraphConfig<any, any>;
   rawData: GraphData | null;
   filteredData: GraphData | null;
   filters: GraphFilters;
@@ -60,11 +63,11 @@ const defaultFilters: GraphFilters = {
   showOrphanedOnly: false,
   showRunningOnly: false,
   showInUseOnly: false,
-  hideSystemResources: false,
   excludedNodeIds: [],
 };
 
-const initialState: GraphState = {
+const getInitialState = (config: GraphConfig<any, any>): GraphState => ({
+  config,
   rawData: null,
   filteredData: null,
   filters: defaultFilters,
@@ -73,7 +76,7 @@ const initialState: GraphState = {
   dimensions: { width: window.innerWidth, height: window.innerHeight },
   layout: 'force',
   orthogonalEdges: false,
-};
+});
 
 // Reducer
 function graphReducer(state: GraphState, action: GraphAction): GraphState {
@@ -147,8 +150,11 @@ const GraphContext = createContext<{
 } | null>(null);
 
 // Provider
-export const GraphProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [state, dispatch] = useReducer(graphReducer, initialState, (init) => {
+export const GraphProvider: React.FC<{
+  children: ReactNode;
+  config?: GraphConfig<any, any>;
+}> = ({ children, config = DockerGraphConfig }) => {
+  const [state, dispatch] = useReducer(graphReducer, getInitialState(config), (init) => {
     try {
       const raw = localStorage.getItem(FILTERS_STORAGE_KEY);
       if (raw) {
@@ -184,4 +190,10 @@ export const useGraphContext = () => {
     throw new Error('useGraphContext must be used within a GraphProvider');
   }
   return context;
+};
+
+// Convenience hook to access just the config
+export const useGraphConfig = () => {
+  const { state } = useGraphContext();
+  return state.config;
 };

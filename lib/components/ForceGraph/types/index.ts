@@ -70,11 +70,13 @@ export interface GraphEventHandlers {
 export interface ReactD3GraphProps extends VisibilityState, GraphEventHandlers {
   data: GraphData;
   dimensions: GraphDimensions;
+  config?: any; // GraphConfig from config/types - using any to avoid circular import
 }
 
 /** Props for main ForceGraph component */
 export interface ForceGraphProps {
   data: GraphData;
+  config?: any; // GraphConfig type from config/types - using any to avoid circular import
 }
 
 /** Type guards */

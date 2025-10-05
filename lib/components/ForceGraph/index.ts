@@ -9,7 +9,7 @@ export { default as Title } from './Title';
 export { default as JsonTreeView } from './components/JsonTreeView';
 
 // Context and hooks
-export { GraphProvider, useGraphContext, clearPersistedFilters } from './context/GraphContext';
+export { GraphProvider, useGraphContext, useGraphConfig, clearPersistedFilters } from './context/GraphContext';
 export { useGraphState } from './hooks/useGraphState';
 export { useGraphFilters } from './hooks/useGraphFilters';
 

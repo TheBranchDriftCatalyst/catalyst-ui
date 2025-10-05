@@ -27,9 +27,16 @@ import { ForceGraph } from "@/catalyst-ui/components/ForceGraph";
 import type { GraphData } from "@/catalyst-ui/components/ForceGraph";
 import JsonTreeView from "@/catalyst-ui/components/ForceGraph/components/JsonTreeView";
 import { DesignTokenDocBlock } from "storybook-design-token";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function KitchenSink() {
+  // Read initial tab from URL params
+  const getInitialTab = () => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('tab') || 'overview';
+  };
+
+  const [activeTab, setActiveTab] = useState(getInitialTab());
   const [progress, setProgress] = useState(33);
   const [sliderValue, setSliderValue] = useState([50]);
   const [codeTheme, setCodeTheme] = useState("catalyst");
@@ -54,6 +61,26 @@ function KitchenSink() {
 const user = await fetchUserData('123');
 console.log(user.name);`);
 
+  // Update URL when tab changes
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    params.set('tab', activeTab);
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState({}, '', newUrl);
+  }, [activeTab]);
+
+  // Handle browser back/forward
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      const tab = params.get('tab') || 'overview';
+      setActiveTab(tab);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   const navigationItems = [
     <a key="storybook" href="http://localhost:6006" target="_blank" rel="noopener noreferrer" className="text-sm hover:text-primary transition-colors">
       Storybook
@@ -72,7 +99,7 @@ console.log(user.name);`);
       />
       <div className="max-w-7xl mx-auto space-y-8 p-8">
         {/* Tabbed Component Library */}
-        <Tabs defaultValue="overview" className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-7 h-auto">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="tokens">Design Tokens</TabsTrigger>

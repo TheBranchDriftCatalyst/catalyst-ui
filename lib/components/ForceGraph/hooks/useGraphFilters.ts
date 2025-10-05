@@ -1,9 +1,10 @@
 import { useEffect, useMemo } from 'react';
 import { useGraphContext } from '../context/GraphContext';
-import { GraphData, NodeData, EdgeData, NodeKind, EdgeKind } from '../types';
+import { NodeData, EdgeData, NodeKind, EdgeKind } from '../types';
 import { GraphFilters, NodeStatusFilter, NodeConnectionFilter } from '../types/filterTypes';
+import { GraphConfig } from '../config/types';
 
-export const useGraphFilters = () => {
+export const useGraphFilters = (config?: GraphConfig<any, any>) => {
   const { state, dispatch } = useGraphContext();
 
   // Helper function to check if a node is orphaned (no edges)
@@ -65,21 +66,31 @@ export const useGraphFilters = () => {
     return nodeName.includes(searchLower) || nodeId.includes(searchLower);
   };
 
-  // Helper function to check if a node is a system resource
-  const isSystemResource = (node: NodeData): boolean => {
-    const name = (node.name || node.Name || '').toLowerCase();
+  // Helper function to apply attribute filters from config
+  const matchesAttributeFilters = (node: NodeData, filters: GraphFilters): boolean => {
+    if (!config?.attributeFilters || config.attributeFilters.length === 0) {
+      return true; // No attribute filters configured
+    }
 
-    // Common system resource patterns
-    const systemPatterns = [
-      'bridge',
-      'host',
-      'none',
-      'default',
-      'docker_gwbridge',
-      'ingress'
-    ];
+    if (!filters.attributeFilterValues) {
+      return true; // No filter values set
+    }
 
-    return systemPatterns.some(pattern => name.includes(pattern));
+    // All attribute filters must pass
+    return config.attributeFilters.every(filter => {
+      const filterValue = filters.attributeFilterValues?.[filter.name];
+
+      // If no value is set for this filter, use default or skip
+      if (filterValue === undefined || filterValue === null) {
+        if (filter.defaultValue !== undefined) {
+          return filter.predicate(filter.defaultValue, node, filter);
+        }
+        return true; // Skip this filter if no value set
+      }
+
+      // Apply the predicate function with filter config as 3rd param
+      return filter.predicate(filterValue, node, filter);
+    });
   };
 
   // Main filtering function
@@ -116,11 +127,6 @@ export const useGraphFilters = () => {
         return false;
       }
 
-      // System resources filter
-      if (filters.hideSystemResources && isSystemResource(node)) {
-        return false;
-      }
-
       // Running only filter
       if (filters.showRunningOnly) {
         const status = node.attributes?.status?.toLowerCase();
@@ -135,6 +141,11 @@ export const useGraphFilters = () => {
         if (status !== 'in-use' && status !== 'running') {
           return false;
         }
+      }
+
+      // Apply generic attribute filters from config
+      if (!matchesAttributeFilters(node, filters)) {
+        return false;
       }
 
       return true;
@@ -217,6 +228,22 @@ export const useGraphFilters = () => {
     updateFilters({ searchQuery: query });
   };
 
+  const setAttributeFilterValue = (filterName: string, value: any) => {
+    const current = state.filters.attributeFilterValues || {};
+    updateFilters({
+      attributeFilterValues: {
+        ...current,
+        [filterName]: value,
+      },
+    });
+  };
+
+  const clearAttributeFilter = (filterName: string) => {
+    const current = state.filters.attributeFilterValues || {};
+    const { [filterName]: removed, ...remaining } = current;
+    updateFilters({ attributeFilterValues: remaining });
+  };
+
   const toggleOrphanedOnly = () => {
     updateFilters({ showOrphanedOnly: !state.filters.showOrphanedOnly });
   };
@@ -227,10 +254,6 @@ export const useGraphFilters = () => {
 
   const toggleInUseOnly = () => {
     updateFilters({ showInUseOnly: !state.filters.showInUseOnly });
-  };
-
-  const toggleSystemResources = () => {
-    updateFilters({ hideSystemResources: !state.filters.hideSystemResources });
   };
 
   const resetFilters = () => {
@@ -276,7 +299,6 @@ export const useGraphFilters = () => {
 
   const showMinimalView = () => {
     updateFilters({
-      hideSystemResources: true,
       showOrphanedOnly: false,
       statusFilter: 'in-use',
       connectionFilter: 'connected'
@@ -301,7 +323,10 @@ export const useGraphFilters = () => {
     toggleOrphanedOnly,
     toggleRunningOnly,
     toggleInUseOnly,
-    toggleSystemResources,
+
+    // Attribute filter actions
+    setAttributeFilterValue,
+    clearAttributeFilter,
 
     // Exclusion helpers
     excludeNode,

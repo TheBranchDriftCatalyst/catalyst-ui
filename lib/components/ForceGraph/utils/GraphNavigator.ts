@@ -80,7 +80,6 @@ export function enrichGraph(data: GraphData): EnrichedGraph {
 
   // neighbors: union of outgoing targets and incoming sources
   for (const node of Object.values(nodeMap)) {
-    const prevNeighbors = node.neighbors;
     node.neighbors = () => {
       const outs = node.outgoing().map((e) => e.target).filter(Boolean);
       const ins = node.incoming().map((e) => e.source).filter(Boolean);

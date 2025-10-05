@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
-import { NodeData, NodeKind } from './types';
+import { NodeData } from './types';
+import { NodeRenderer } from './config/types';
+import { useGraphConfig } from './context/GraphContext';
 
 interface ReactD3NodeProps {
   data: NodeData;
@@ -9,6 +11,8 @@ interface ReactD3NodeProps {
   zoom?: number;
   isDimmed?: boolean;
   showLogo?: boolean;
+  customRenderer?: NodeRenderer;
+  getNodeDimensionsFn?: (node: NodeData) => { width: number; height: number };
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
   onClick?: () => void;
@@ -47,45 +51,14 @@ export const getNodeDimensions = (d: NodeData) => {
   return { width, height };
 };
 
-// Get node color based on kind - using CSS variables
-const getNodeColor = (kind: NodeKind): string => {
-  switch (kind) {
-    case 'container':
-      return 'var(--primary)';
-    case 'network':
-      return 'var(--neon-yellow)';
-    case 'image':
-      return 'var(--neon-red)';
-    case 'volume':
-      return 'var(--neon-purple)';
-    default:
-      return 'var(--border)';
-  }
-};
-
-// Get node icon/emoji
-const getNodeIcon = (kind: NodeKind): string => {
-  switch (kind) {
-    case 'container':
-      return '📦';
-    case 'network':
-      return '🌐';
-    case 'image':
-      return '💿';
-    case 'volume':
-      return '💾';
-    default:
-      return '⚪';
-  }
-};
-
 const ReactD3Node: React.FC<ReactD3NodeProps> = ({
   data,
   isSelected = false,
   isHovered = false,
-  zoom,
   isDimmed = false,
   showLogo = true,
+  customRenderer,
+  getNodeDimensionsFn,
   onMouseEnter,
   onMouseLeave,
   onClick,
@@ -94,10 +67,10 @@ const ReactD3Node: React.FC<ReactD3NodeProps> = ({
   onDrag,
   onDragEnd,
 }) => {
+  const config = useGraphConfig();
   const groupRef = useRef<SVGGElement>(null);
-  const { width, height } = getNodeDimensions(data);
-  const effectiveZoom = 1;
-
+  const dimensionCalculator = getNodeDimensionsFn || getNodeDimensions;
+  const { width, height } = dimensionCalculator(data);
   const pad = 12;
   const imgSize = 32;
 
@@ -116,7 +89,52 @@ const ReactD3Node: React.FC<ReactD3NodeProps> = ({
     d3.select(groupRef.current).call(drag as any);
   }, [onDragStart, onDrag, onDragEnd]);
 
-  // Calculate content
+  // If custom renderer is provided, use it
+  if (customRenderer) {
+    const CustomRenderer = customRenderer;
+
+    return (
+      <g
+        ref={groupRef}
+        transform={`translate(${data.x || 0}, ${data.y || 0})`}
+        style={{
+          cursor: 'pointer',
+          opacity: isDimmed ? 0.35 : 1,
+          filter: isSelected || isHovered ? 'url(#node-glow)' : undefined,
+        }}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        onClick={(e) => {
+          try {
+            e.stopPropagation();
+          } catch (err) { }
+          if (onClick) onClick();
+        }}
+        onDoubleClick={onDoubleClick}
+        onMouseDown={(e) => {
+          try {
+            e.stopPropagation();
+          } catch (err) { }
+        }}
+        onTouchStart={(e) => {
+          try {
+            e.stopPropagation();
+          } catch (err) { }
+        }}
+      >
+        <CustomRenderer
+          data={data}
+          width={width}
+          height={height}
+          pad={pad}
+          imgSize={imgSize}
+          showLogo={showLogo}
+        />
+      </g>
+    );
+  }
+
+  // Default rendering (Docker-specific)
   const name = data.name || data.Name || data.id || '';
   const status = (data.attributes && data.attributes.status) || '';
   const maxLength = Math.floor((width - imgSize - 40) / 7);
@@ -139,8 +157,11 @@ const ReactD3Node: React.FC<ReactD3NodeProps> = ({
 
   const visualWidth = width;
   const visualHeight = height;
-  const nodeColor = getNodeColor(data.kind);
-  const nodeIcon = getNodeIcon(data.kind);
+
+  // Get node config from context
+  const nodeTypeConfig = config.nodeTypes[data.kind];
+  const nodeColor = nodeTypeConfig?.color || 'var(--border)';
+  const nodeIcon = nodeTypeConfig?.icon || '⚪';
 
   return (
     <g
@@ -163,7 +184,7 @@ const ReactD3Node: React.FC<ReactD3NodeProps> = ({
       onMouseDown={(e) => {
         try {
           e.stopPropagation();
-        } catch (err) { }
+          } catch (err) { }
       }}
       onTouchStart={(e) => {
         try {

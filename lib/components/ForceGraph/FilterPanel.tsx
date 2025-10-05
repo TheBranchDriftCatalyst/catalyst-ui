@@ -1,18 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useGraphFilters } from './hooks/useGraphFilters';
 import { useGraphState } from './hooks/useGraphState';
-import { clearPersistedFilters } from './context/GraphContext';
-import {
-  FilterPanelProps,
-  NODE_TYPE_OPTIONS,
-  EDGE_TYPE_OPTIONS,
-  STATUS_FILTER_OPTIONS,
-  CONNECTION_FILTER_OPTIONS,
-  NodeStatusFilter,
-  NodeConnectionFilter,
-} from './types/filterTypes';
+import { clearPersistedFilters, useGraphConfig } from './context/GraphContext';
+import { FilterPanelProps, NodeStatusFilter, NodeConnectionFilter } from './types/filterTypes';
 
 const FilterPanel: React.FC<FilterPanelProps> = ({ isVisible, onToggle }) => {
+  const config = useGraphConfig();
   const {
     filters,
     toggleNodeVisibility,
@@ -23,16 +16,36 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ isVisible, onToggle }) => {
     toggleOrphanedOnly,
     toggleRunningOnly,
     toggleInUseOnly,
-    toggleSystemResources,
     resetFilters,
-    showOnlyOrphaned,
-    showOnlyRunning,
-    showMinimalView,
     includeNode,
     clearExcluded,
+    updateFilters,
   } = useGraphFilters();
 
   const { getNodeInfo } = useGraphState();
+
+  // Build filter options from config
+  const NODE_TYPE_OPTIONS = useMemo(
+    () =>
+      Object.entries(config.nodeTypes).map(([kind, typeConfig]) => ({
+        kind: kind as keyof typeof config.nodeTypes,
+        label: typeConfig.label,
+        color: typeConfig.color,
+      })),
+    [config.nodeTypes]
+  );
+
+  const EDGE_TYPE_OPTIONS = useMemo(
+    () =>
+      Object.entries(config.edgeTypes).map(([kind, typeConfig]) => ({
+        kind: kind as keyof typeof config.edgeTypes,
+        label: typeConfig.label,
+      })),
+    [config.edgeTypes]
+  );
+
+  const STATUS_FILTER_OPTIONS = config.statusFilterOptions || [];
+  const CONNECTION_FILTER_OPTIONS = config.connectionFilterOptions || [];
 
   return (
     <>
@@ -73,69 +86,66 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ isVisible, onToggle }) => {
           </div>
 
           {/* Quick Presets */}
-          <div className="mb-7 pb-5 border-b border-primary/20">
-            <div className="text-base font-semibold mb-4 text-primary" style={{ textShadow: '0 0 8px var(--primary)', letterSpacing: '0.5px' }}>
-              Quick Filters
+          {config.quickFilters && config.quickFilters.length > 0 && (
+            <div className="mb-7 pb-5 border-b border-primary/20">
+              <div className="text-base font-semibold mb-4 text-primary" style={{ textShadow: '0 0 8px var(--primary)', letterSpacing: '0.5px' }}>
+                Quick Filters
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {config.quickFilters.map((quickFilter, index) => (
+                  <button
+                    key={index}
+                    className={quickFilter.className || 'px-3 py-2 bg-neon-red/15 border border-neon-red/40 rounded-md text-neon-red cursor-pointer text-xs font-semibold transition-all hover:bg-neon-red/25 hover:-translate-y-0.5'}
+                    onClick={() => updateFilters(quickFilter.action(filters))}
+                  >
+                    {quickFilter.icon} {quickFilter.label}
+                  </button>
+                ))}
+                <button
+                  className="px-3 py-2 bg-primary/10 border border-primary/30 rounded-md text-foreground cursor-pointer text-xs font-normal transition-all hover:bg-foreground/10 hover:-translate-y-0.5"
+                  onClick={resetFilters}
+                >
+                  🔄 Reset
+                </button>
+              </div>
             </div>
-            <div className="flex flex-wrap gap-2">
-              <button
-                className="px-3 py-2 bg-neon-red/15 border border-neon-red/40 rounded-md text-neon-red cursor-pointer text-xs font-semibold transition-all hover:bg-neon-red/25 hover:-translate-y-0.5"
-                onClick={showOnlyOrphaned}
-              >
-                🔍 Orphaned
-              </button>
-              <button
-                className="px-3 py-2 bg-neon-red/15 border border-neon-red/40 rounded-md text-neon-red cursor-pointer text-xs font-semibold transition-all hover:bg-neon-red/25 hover:-translate-y-0.5"
-                onClick={showOnlyRunning}
-              >
-                ▶️ Running
-              </button>
-              <button
-                className="px-3 py-2 bg-neon-red/15 border border-neon-red/40 rounded-md text-neon-red cursor-pointer text-xs font-semibold transition-all hover:bg-neon-red/25 hover:-translate-y-0.5"
-                onClick={showMinimalView}
-              >
-                🎯 Minimal
-              </button>
-              <button
-                className="px-3 py-2 bg-primary/10 border border-primary/30 rounded-md text-foreground cursor-pointer text-xs font-normal transition-all hover:bg-foreground/10 hover:-translate-y-0.5"
-                onClick={resetFilters}
-              >
-                🔄 Reset
-              </button>
-            </div>
-          </div>
+          )}
 
           {/* Node Types */}
           <div className="mb-7 pb-5 border-b border-primary/20">
             <div className="text-base font-semibold mb-4 text-primary" style={{ textShadow: '0 0 8px var(--primary)', letterSpacing: '0.5px' }}>
               Node Types
             </div>
-            {NODE_TYPE_OPTIONS.map(({ kind, label, color }) => (
-              <label
-                key={kind}
-                className="flex items-center gap-3 cursor-pointer p-1.5 rounded-md hover:bg-accent/10 transition-all mb-2 text-xs"
-                style={{
-                  backgroundColor: filters.visibleNodes[kind] ? 'rgba(var(--primary-rgb), 0.1)' : 'transparent',
-                  borderColor: filters.visibleNodes[kind] ? 'rgba(var(--primary-rgb), 0.3)' : 'transparent',
-                }}
-              >
-                <input
-                  type="checkbox"
-                  checked={filters.visibleNodes[kind]}
-                  onChange={() => toggleNodeVisibility(kind)}
-                  className="w-4 h-4 cursor-pointer"
-                  style={{ transform: 'scale(1.2)' }}
-                />
-                <span
-                  className="w-3.5 h-3.5 rounded-full inline-block"
+            {NODE_TYPE_OPTIONS.map(({ kind, label, color }) => {
+              // @ts-ignore - kind is from config which can be any node type
+              const isVisible = filters.visibleNodes[kind];
+              return (
+                <label
+                  key={kind}
+                  className="flex items-center gap-3 cursor-pointer p-1.5 rounded-md hover:bg-accent/10 transition-all mb-2 text-xs"
                   style={{
-                    backgroundColor: color,
-                    boxShadow: `0 0 8px ${color}40`,
+                    backgroundColor: isVisible ? 'rgba(var(--primary-rgb), 0.1)' : 'transparent',
+                    borderColor: isVisible ? 'rgba(var(--primary-rgb), 0.3)' : 'transparent',
                   }}
-                />
-                <span className="flex-1 text-foreground">{label}</span>
-              </label>
-            ))}
+                >
+                  <input
+                    type="checkbox"
+                    checked={isVisible}
+                    onChange={() => toggleNodeVisibility(kind as any)}
+                    className="w-4 h-4 cursor-pointer"
+                    style={{ transform: 'scale(1.2)' }}
+                  />
+                  <span
+                    className="w-3.5 h-3.5 rounded-full inline-block"
+                    style={{
+                      backgroundColor: color,
+                      boxShadow: `0 0 8px ${color}40`,
+                    }}
+                  />
+                  <span className="flex-1 text-foreground">{label}</span>
+                </label>
+              );
+            })}
           </div>
 
           {/* Edge Types */}
@@ -143,25 +153,29 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ isVisible, onToggle }) => {
             <div className="text-base font-semibold mb-4 text-primary" style={{ textShadow: '0 0 8px var(--primary)', letterSpacing: '0.5px' }}>
               Edge Types
             </div>
-            {EDGE_TYPE_OPTIONS.map(({ kind, label }) => (
-              <label
-                key={kind}
-                className="flex items-center gap-3 cursor-pointer p-1.5 rounded-md hover:bg-accent/10 transition-all mb-2 text-xs"
-                style={{
-                  backgroundColor: filters.visibleEdges[kind] ? 'rgba(var(--primary-rgb), 0.1)' : 'transparent',
-                }}
-              >
-                <input
-                  type="checkbox"
-                  checked={filters.visibleEdges[kind]}
-                  onChange={() => toggleEdgeVisibility(kind)}
-                  className="w-4 h-4 cursor-pointer"
-                  style={{ transform: 'scale(1.2)' }}
-                />
-                <span className="text-xs text-primary mr-2">━━</span>
-                <span className="flex-1 text-foreground">{label}</span>
-              </label>
-            ))}
+            {EDGE_TYPE_OPTIONS.map(({ kind, label }) => {
+              // @ts-ignore - kind is from config which can be any edge type
+              const isVisible = filters.visibleEdges[kind];
+              return (
+                <label
+                  key={kind}
+                  className="flex items-center gap-3 cursor-pointer p-1.5 rounded-md hover:bg-accent/10 transition-all mb-2 text-xs"
+                  style={{
+                    backgroundColor: isVisible ? 'rgba(var(--primary-rgb), 0.1)' : 'transparent',
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={isVisible}
+                    onChange={() => toggleEdgeVisibility(kind as any)}
+                    className="w-4 h-4 cursor-pointer"
+                    style={{ transform: 'scale(1.2)' }}
+                  />
+                  <span className="text-xs text-primary mr-2">━━</span>
+                  <span className="flex-1 text-foreground">{label}</span>
+                </label>
+              );
+            })}
           </div>
 
           {/* Status Filter */}
@@ -268,21 +282,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ isVisible, onToggle }) => {
               💾 Show in-use resources only
             </label>
 
-            <label
-              className="flex items-center gap-3 cursor-pointer p-1.5 rounded-md hover:bg-accent/10 transition-all mb-2 text-xs"
-              style={{
-                backgroundColor: filters.hideSystemResources ? 'rgba(var(--primary-rgb), 0.1)' : 'transparent',
-              }}
-            >
-              <input
-                type="checkbox"
-                checked={filters.hideSystemResources}
-                onChange={toggleSystemResources}
-                className="w-4 h-4 cursor-pointer"
-                style={{ transform: 'scale(1.2)' }}
-              />
-              🚫 Hide system resources
-            </label>
           </div>
 
           {/* Excluded Nodes */}
@@ -338,11 +337,6 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ isVisible, onToggle }) => {
               {filters.showInUseOnly && (
                 <>
                   <br />• 💾 <strong>In-use only</strong>
-                </>
-              )}
-              {filters.hideSystemResources && (
-                <>
-                  <br />• 🚫 <strong>No system resources</strong>
                 </>
               )}
               {filters.searchQuery && (

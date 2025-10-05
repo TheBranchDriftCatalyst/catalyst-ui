@@ -109,7 +109,7 @@ const calculateOrthogonalPath = (
   targetNode: any,
   allNodes: any[] = [],
   edgeIndex: number = 0,
-  totalEdgesBetweenNodes: number = 1
+  _totalEdgesBetweenNodes: number = 1
 ) => {
   const dx = x2 - x1;
   const dy = y2 - y1;
