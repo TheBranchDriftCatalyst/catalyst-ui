@@ -11,19 +11,19 @@ import { useTheme } from "./ThemeContext";
 export const ChangeThemeDropdown = () => {
   const { theme, setTheme, allThemes } = useTheme();
 
-  // TODO: a cursory look at the menubar radio group shows it to be structured similar to a
-  // dropdown menu.  Want to allow both uses here eventually
+  // Capitalize theme name for display
+  const displayTheme = theme.charAt(0).toUpperCase() + theme.slice(1);
+
   return (
     <MenubarMenu>
-      <MenubarTrigger className={`MenubarTrigger`}>
-        Theme: {theme}
+      <MenubarTrigger className="text-sm font-medium hover:text-primary transition-colors cursor-pointer">
+        {displayTheme}
       </MenubarTrigger>
       <MenubarPortal>
         <MenubarContent
-          className="MenubarContent"
-          align="start"
-          sideOffset={5}
-          alignOffset={-14}
+          align="end"
+          sideOffset={8}
+          className="min-w-[160px]"
         >
           <MenubarRadioGroup
             value={theme}
@@ -33,9 +33,9 @@ export const ChangeThemeDropdown = () => {
           >
             {allThemes?.map((item) => (
               <MenubarRadioItem
-                className="MenubarRadioItem inset"
                 key={item}
                 value={item || "default"}
+                className="capitalize"
               >
                 {item || "default"}
               </MenubarRadioItem>

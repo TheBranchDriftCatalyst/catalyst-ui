@@ -25,3 +25,6 @@ dist-ssr
 
 # Storybook build dir
 storybook-static
+
+# Claude settings
+.claude

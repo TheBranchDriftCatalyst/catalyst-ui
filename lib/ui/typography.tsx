@@ -18,13 +18,25 @@ const typographyVariants = cva("", {
       lg: "text-lg sm:text-xl md:text-2xl",
       xl: "text-xl sm:text-2xl md:text-3xl",
       "2xl": "text-2xl sm:text-3xl md:text-4xl",
-      h3: "text-2xl sm:text-3xl md:text-4xl",
+      h4: "text-lg sm:text-xl md:text-2xl font-bold tracking-[0.05em] uppercase",
       "3xl": "text-3xl sm:text-4xl md:text-5xl",
-      h2: "text-3xl sm:text-4xl md:text-5xl",
+      h3: "text-xl sm:text-2xl md:text-3xl font-bold tracking-[0.05em] uppercase",
       "4xl": "text-4xl sm:text-5xl md:text-6xl",
-      h1: "text-4xl sm:text-5xl md:text-6xl",
+      h2: "text-2xl sm:text-3xl md:text-4xl font-bold tracking-[0.05em] uppercase leading-tight",
       "5xl": "text-5xl sm:text-6xl md:text-7xl",
+      h1: "text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-[0.05em] uppercase leading-tight",
       "6xl": "text-6xl sm:text-7xl md:text-8xl",
+    },
+    variant: {
+      h1: "font-display",
+      h2: "font-display",
+      h3: "font-display",
+      h4: "font-display",
+      p: "font-sans",
+      blockquote: "border-l-4 pl-4 italic font-sans",
+      code: "font-mono text-sm bg-muted px-1 py-0.5 rounded",
+      lead: "text-xl font-medium font-sans tracking-wide",
+      muted: "text-muted-foreground font-sans",
     },
   },
   defaultVariants: {
@@ -39,6 +51,7 @@ interface ResponsiveTypographyProps
   children?: React.ReactNode;
   asChild?: boolean;
   breakpoints?: Record<TypographySize, number>;
+  variant?: VariantProps<typeof typographyVariants>["variant"];
 }
 
 type TypographySize = Exclude<
@@ -81,6 +94,7 @@ const ResponsiveTypography = React.forwardRef<
     {
       tag,
       size,
+      variant,
       className,
       asChild = false,
       children,
@@ -90,9 +104,17 @@ const ResponsiveTypography = React.forwardRef<
     ref,
   ) => {
     // const { width } = useWidgetWidth();
-    const Comp: React.ElementType = asChild ? Slot : tag || "p";
+    // If variant is provided and matches a heading, use it as size and tag
+    const resolvedSize = variant && ['h1', 'h2', 'h3', 'h4'].includes(variant)
+      ? variant as TypographySize
+      : size;
+    const resolvedTag = variant && ['h1', 'h2', 'h3', 'h4'].includes(variant)
+      ? variant
+      : tag;
 
-    let adjustedSize: TypographySize = size as TypographySize;
+    const Comp: React.ElementType = asChild ? Slot : resolvedTag || "p";
+
+    let adjustedSize: TypographySize = resolvedSize as TypographySize;
 
     // Determine the appropriate size based on the widget's width and breakpoints
     // for (const [breakpointSize, breakpointWidth] of Object.entries(
@@ -106,7 +128,7 @@ const ResponsiveTypography = React.forwardRef<
     // }
 
     const classNames = cn(
-      typographyVariants({ size: adjustedSize, className }),
+      typographyVariants({ size: adjustedSize, variant, className }),
     );
 
     return (

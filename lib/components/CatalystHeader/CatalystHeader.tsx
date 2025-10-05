@@ -1,13 +1,12 @@
 'use client';
 
-import NavigationHeader from "@/catalyst-ui/components/NavigationHeader/NavigationHeader";
-import NavigationItem from "@/catalyst-ui/components/NavigationHeader/NavigationItem";
 import { Avatar, AvatarFallback, AvatarImage } from "@/catalyst-ui/ui/avatar";
 import Typography from "@/catalyst-ui/ui/typography";
+import React from "react";
 
 //  TODO: when we get to it, this interface is going to == the CatalystHeaderContext shape
 interface CatalystHeaderProps {
-  navigationItems: React.ReactElement<typeof NavigationItem>[];
+  navigationItems?: React.ReactNode[];
   title: string;
 
   breadcrumbs?: any[]
@@ -15,27 +14,24 @@ interface CatalystHeaderProps {
 
 export const CatalystHeader = ({ navigationItems, title }: CatalystHeaderProps) => {
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background">
-      <div className="ml-4 mr-4 flex justify-between">
+    <header className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b border-border">
+      <div className="container flex h-16 items-center gap-2 px-6">
         {/* Left Subgroup */}
-        <div className="flex items-center">
-            <div className="flex items-center">
-              <Typography>{title}</Typography>
-            </div>
+        <div className="flex items-center gap-2">
+          <Typography className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            {title}
+          </Typography>
         </div>
         {/* Right Subgroup */}
-        <div className="flex items-center justify-around">
-            <NavigationHeader direction="right">{navigationItems}</NavigationHeader>
-            <Avatar>
-              {/* TODO: turn this into the login widget */}
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+        <div className="ml-auto flex items-center gap-2">
+          {navigationItems}
+          <Avatar className="h-8 w-8">
+            {/* TODO: turn this into the login widget */}
+            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
         </div>
       </div>
-      {/* <div className="ml-4 mr-4">
-          <Breadcrumbs crumbs={breadcrumbs}  />
-      </div> */}
     </header>
   );
 };

@@ -2,6 +2,7 @@ import { cn } from "@/catalyst-ui/utils";
 import { codeToHtml } from "shiki";
 import * as React from "react";
 import CodeBlockHeader from "./CodeBlockHeader";
+import { catalystTheme } from "./catalyst-theme";
 
 export interface CodeBlockProps extends React.HTMLAttributes<HTMLDivElement> {
   code: string;
@@ -23,7 +24,7 @@ const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
     {
       code,
       language,
-      theme = "vitesse-dark",
+      theme = "catalyst",
       showLineNumbers = true,
       showCopyButton = true,
       fileName,
@@ -46,9 +47,13 @@ const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
       const highlight = async () => {
         try {
           setIsLoading(true);
+
+          // Use custom theme if "catalyst", otherwise use built-in
+          const themeToUse = theme === "catalyst" ? catalystTheme : theme;
+
           const highlighted = await codeToHtml(code, {
             lang: language,
-            theme: theme,
+            theme: themeToUse,
             transformers: showLineNumbers
               ? [
                   {
@@ -101,14 +106,14 @@ const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
             value={code}
             onChange={(e) => onCodeChange(e.target.value)}
             className={cn(
-              "w-full p-4 bg-[#1e1e1e] text-gray-100 font-mono text-sm resize-none outline-none border-none",
-              "focus:ring-2 focus:ring-blue-500 focus:ring-inset"
+              "w-full p-4 bg-card text-foreground font-mono text-sm resize-none outline-none border-none",
+              "focus:ring-2 focus:ring-primary focus:ring-inset"
             )}
             style={{ minHeight: "200px" }}
             spellCheck={false}
           />
         ) : isLoading ? (
-          <div className="p-4 bg-[#1e1e1e] text-gray-400 animate-pulse">
+          <div className="p-4 bg-card text-muted-foreground animate-pulse">
             Loading...
           </div>
         ) : (
@@ -133,7 +138,7 @@ const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
             width: 2.5rem;
             margin-right: 1.5rem;
             text-align: right;
-            color: #6e7681;
+            color: hsl(var(--muted-foreground));
             user-select: none;
           }
 

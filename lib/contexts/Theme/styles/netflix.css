@@ -29,6 +29,33 @@
   --ring: hsl(0, 100%, 44%);
 }
 
+/* Light mode - crisp modern */
+.theme-netflix.light [class*="card"] {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(229, 9, 20, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-netflix.light [class*="card"]:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(229, 9, 20, 0.08);
+  transform: translateY(-2px);
+}
+
+.theme-netflix.light button[class*="bg-primary"] {
+  box-shadow: 0 2px 8px rgba(229, 9, 20, 0.2);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-netflix.light button[class*="bg-primary"]:hover {
+  box-shadow: 0 4px 16px rgba(229, 9, 20, 0.35);
+  transform: translateY(-1px);
+}
+
+.theme-netflix.light input:focus,
+.theme-netflix.light textarea:focus {
+  box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.15);
+  transition: box-shadow 0.2s ease;
+}
+
 .theme-netflix.dark {
   --background: hsl(0, 0%, 0%);
   --foreground: hsl(0, 0%, 100%);
@@ -58,4 +85,39 @@
   --destructive-foreground: hsl(0, 0%, 100%);
 
   --ring: hsl(0, 100%, 44%);
+}
+
+/* Dark mode - bold cinematic */
+.theme-netflix.dark [class*="card"] {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 20px rgba(229, 9, 20, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-netflix.dark [class*="card"]:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 32px rgba(229, 9, 20, 0.15);
+  transform: translateY(-2px);
+}
+
+.theme-netflix.dark button[class*="bg-primary"] {
+  box-shadow: 0 2px 12px rgba(229, 9, 20, 0.3);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-netflix.dark button[class*="bg-primary"]:hover {
+  box-shadow: 0 4px 20px rgba(229, 9, 20, 0.5), 0 0 24px rgba(229, 9, 20, 0.2);
+  transform: translateY(-1px);
+}
+
+.theme-netflix.dark input:focus,
+.theme-netflix.dark textarea:focus {
+  box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.25), 0 0 16px rgba(229, 9, 20, 0.15);
+  transition: box-shadow 0.2s ease;
+}
+
+.theme-netflix.dark a {
+  transition: color 0.2s ease;
+}
+
+.theme-netflix.dark a:hover {
+  color: hsl(0, 100%, 50%);
 }

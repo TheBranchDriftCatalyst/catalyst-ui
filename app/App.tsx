@@ -2,6 +2,8 @@ import "../lib/global.css";
 import { ThemeProvider } from "@/catalyst-ui/contexts/Theme/ThemeProvider";
 import { ToggleVariantButton } from "@/catalyst-ui/contexts/Theme/ToggleDarkMode";
 import { ChangeThemeDropdown } from "@/catalyst-ui/contexts/Theme/ChangeThemeDropdown";
+import { CatalystHeader } from "@/catalyst-ui/components/CatalystHeader/CatalystHeader";
+import { HeaderProvider } from "@/catalyst-ui/components/CatalystHeader/HeaderProvider";
 import { Button } from "@/catalyst-ui/ui/button";
 import { Input } from "@/catalyst-ui/ui/input";
 import { Label } from "@/catalyst-ui/ui/label";
@@ -15,18 +17,21 @@ import { Toggle } from "@/catalyst-ui/ui/toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/catalyst-ui/ui/avatar";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/catalyst-ui/ui/accordion";
 import { Typography } from "@/catalyst-ui/ui/typography";
-import { Menubar, MenubarMenu, MenubarTrigger } from "@/catalyst-ui/ui/menubar";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/catalyst-ui/ui/breadcrumb";
+import { Menubar } from "@/catalyst-ui/ui/menubar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/catalyst-ui/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/catalyst-ui/ui/tabs";
 import { CreateAccountCard } from "@/catalyst-ui/cards/CreateAccountCard/CreateAccountCard";
 import MultiChoiceQuestionCard from "@/catalyst-ui/cards/MultiChoiceQuetion/MultiChoiceQuestion";
 import { CodeBlock } from "@/catalyst-ui/components/CodeBlock";
+import { ForceGraph } from "@/catalyst-ui/components/ForceGraph";
+import type { GraphData } from "@/catalyst-ui/components/ForceGraph";
+import { DesignTokenDocBlock } from "storybook-design-token";
 import { useState } from "react";
 
 function KitchenSink() {
   const [progress, setProgress] = useState(33);
   const [sliderValue, setSliderValue] = useState([50]);
-  const [codeTheme, setCodeTheme] = useState("vitesse-dark");
+  const [codeTheme, setCodeTheme] = useState("catalyst");
   const [showLineNumbers, setShowLineNumbers] = useState(true);
   const [editableCode, setEditableCode] = useState(`async function fetchUserData(userId: string): Promise<User> {
   try {
@@ -48,47 +53,38 @@ function KitchenSink() {
 const user = await fetchUserData('123');
 console.log(user.name);`);
 
+  const navigationItems = [
+    <a key="storybook" href="http://localhost:6006" target="_blank" rel="noopener noreferrer" className="text-sm hover:text-primary transition-colors">
+      Storybook
+    </a>,
+    <Menubar key="theme">
+      <ChangeThemeDropdown />
+    </Menubar>,
+    <ToggleVariantButton key="variant" />,
+  ];
+
   return (
-    <div className="min-h-screen bg-background text-foreground p-8">
-      <div className="max-w-7xl mx-auto space-y-8">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <Typography variant="h1">Catalyst UI Kitchen Sink</Typography>
-            <Typography variant="muted" className="mt-2">
-              <a href="http://localhost:6006" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                → Open Storybook
-              </a>
-            </Typography>
-          </div>
-          <div className="flex gap-2 items-center">
-            <Menubar>
-              <MenubarMenu>
-                <MenubarTrigger>Theme</MenubarTrigger>
-                <ChangeThemeDropdown />
-              </MenubarMenu>
-            </Menubar>
-            <ToggleVariantButton />
-          </div>
-        </div>
+    <div className="min-h-screen bg-background text-foreground">
+      <CatalystHeader
+        title="Catalyst UI Kitchen Sink"
+        navigationItems={navigationItems}
+      />
+      <div className="max-w-7xl mx-auto space-y-8 p-8">
+        {/* Tabbed Component Library */}
+        <Tabs defaultValue="overview" className="w-full">
+          <TabsList className="grid w-full grid-cols-7 h-auto">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="tokens">Design Tokens</TabsTrigger>
+            <TabsTrigger value="typography">Typography</TabsTrigger>
+            <TabsTrigger value="forms">Forms</TabsTrigger>
+            <TabsTrigger value="display">Display</TabsTrigger>
+            <TabsTrigger value="cards">Cards</TabsTrigger>
+            <TabsTrigger value="forcegraph">Force Graph</TabsTrigger>
+          </TabsList>
 
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/">Home</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/components">Components</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Kitchen Sink</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-
-        {/* Frameworks & Resources - Moved up */}
+          {/* Overview Tab */}
+          <TabsContent value="overview" className="space-y-4">
+        {/* Frameworks & Resources */}
         <Card>
           <CardHeader>
             <CardTitle>Frameworks & Resources</CardTitle>
@@ -207,7 +203,192 @@ console.log(user.name);`);
             </Table>
           </CardContent>
         </Card>
+          </TabsContent>
 
+          {/* Design Tokens Tab */}
+          <TabsContent value="tokens" className="space-y-4">
+            {/* Neon Colors */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Neon Color Palette</CardTitle>
+                <CardDescription>Cybersynthpunk accent colors with live examples</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="space-y-2">
+                    <div className="h-20 rounded-lg" style={{ backgroundColor: 'var(--neon-cyan)', boxShadow: 'var(--glow-primary)' }} />
+                    <div className="text-sm font-mono">--neon-cyan</div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="h-20 rounded-lg" style={{ backgroundColor: 'var(--neon-purple)', boxShadow: 'var(--glow-secondary)' }} />
+                    <div className="text-sm font-mono">--neon-purple</div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="h-20 rounded-lg" style={{ backgroundColor: 'var(--neon-pink)', boxShadow: '0 0 20px var(--neon-pink)' }} />
+                    <div className="text-sm font-mono">--neon-pink</div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="h-20 rounded-lg" style={{ backgroundColor: 'var(--neon-blue)', boxShadow: '0 0 20px var(--neon-blue)' }} />
+                    <div className="text-sm font-mono">--neon-blue</div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="h-20 rounded-lg" style={{ backgroundColor: 'var(--neon-red)', boxShadow: '0 0 20px var(--neon-red)' }} />
+                    <div className="text-sm font-mono">--neon-red</div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="h-20 rounded-lg" style={{ backgroundColor: 'var(--neon-yellow)', boxShadow: '0 0 20px var(--neon-yellow)' }} />
+                    <div className="text-sm font-mono">--neon-yellow</div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="h-20 rounded-lg" style={{ backgroundColor: 'var(--neon-gold)', boxShadow: '0 0 20px var(--neon-gold)' }} />
+                    <div className="text-sm font-mono">--neon-gold</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Glow Effects */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Glow Effects</CardTitle>
+                <CardDescription>Cyberpunk shadow glows for depth and atmosphere</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <div className="h-24 rounded-lg bg-primary/20 flex items-center justify-center" style={{ boxShadow: 'var(--glow-primary)' }}>
+                      <span className="text-sm font-mono">--glow-primary</span>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="h-24 rounded-lg bg-secondary/20 flex items-center justify-center" style={{ boxShadow: 'var(--glow-secondary)' }}>
+                      <span className="text-sm font-mono">--glow-secondary</span>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="h-24 rounded-lg bg-accent/20 flex items-center justify-center" style={{ boxShadow: 'var(--glow-accent)' }}>
+                      <span className="text-sm font-mono">--glow-accent</span>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="h-24 rounded-lg bg-primary/20 flex items-center justify-center" style={{ boxShadow: 'var(--glow-hover)' }}>
+                      <span className="text-sm font-mono">--glow-hover</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Neon Shadows */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Neon Shadow System</CardTitle>
+                <CardDescription>Multi-layered elevation shadows</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <div className="h-32 rounded-lg bg-card flex items-center justify-center" style={{ boxShadow: 'var(--shadow-neon-sm)' }}>
+                      <span className="text-sm font-mono">--shadow-neon-sm</span>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="h-32 rounded-lg bg-card flex items-center justify-center" style={{ boxShadow: 'var(--shadow-neon-md)' }}>
+                      <span className="text-sm font-mono">--shadow-neon-md</span>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="h-32 rounded-lg bg-card flex items-center justify-center" style={{ boxShadow: 'var(--shadow-neon-lg)' }}>
+                      <span className="text-sm font-mono">--shadow-neon-lg</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Typography Fonts */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Cybersynthpunk Typography</CardTitle>
+                <CardDescription>Custom Google Fonts for unique aesthetic</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-2">
+                  <div className="text-sm text-muted-foreground">Display Font (Headings)</div>
+                  <div className="text-4xl font-display uppercase tracking-wider">Orbitron - Futuristic & Bold</div>
+                  <code className="text-xs">font-family: 'Orbitron', sans-serif</code>
+                </div>
+                <div className="space-y-2">
+                  <div className="text-sm text-muted-foreground">Body Font</div>
+                  <div className="text-2xl font-sans">Rajdhani - Condensed & Modern</div>
+                  <code className="text-xs">font-family: 'Rajdhani', sans-serif</code>
+                </div>
+                <div className="space-y-2">
+                  <div className="text-sm text-muted-foreground">Monospace Font (Code)</div>
+                  <div className="text-xl font-mono">Space Mono - Technical & Retro</div>
+                  <code className="text-xs">font-family: 'Space Mono', monospace</code>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Auto-Generated Token List */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Complete Design Token Reference</CardTitle>
+                <CardDescription>Auto-generated from CSS annotations • All tokens documented</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <DesignTokenDocBlock
+                  viewType="table"
+                  maxHeight={600}
+                />
+              </CardContent>
+            </Card>
+
+            {/* Usage Examples */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Usage in Code</CardTitle>
+                <CardDescription>How to use design tokens in your components</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <CodeBlock
+                  code={`// Using design tokens with inline styles
+<div style={{
+  color: 'var(--neon-cyan)',
+  boxShadow: 'var(--glow-primary)'
+}}>
+  Neon text with glow
+</div>
+
+// Using in Tailwind classes (custom CSS)
+<button className="shadow-[var(--shadow-neon-md)] bg-primary">
+  Elevated Button
+</button>
+
+// Typography with custom fonts
+<h1 className="font-display uppercase tracking-wider">
+  Cyberpunk Heading
+</h1>
+
+// Accessing in TypeScript
+const styles = {
+  glowEffect: 'var(--glow-hover)',
+  neonAccent: 'var(--neon-purple)',
+  elevation: 'var(--shadow-neon-lg)'
+};`}
+                  language="tsx"
+                  fileName="TokenUsage.tsx"
+                  theme="catalyst"
+                  showLineNumbers={true}
+                  showCopyButton={true}
+                />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Typography Tab */}
+          <TabsContent value="typography" className="space-y-4">
         {/* Typography Section */}
         <Card>
           <CardHeader>
@@ -226,7 +407,10 @@ console.log(user.name);`);
             <Typography variant="muted" className="text-xs">This is muted text.</Typography>
           </CardContent>
         </Card>
+          </TabsContent>
 
+          {/* Forms Tab */}
+          <TabsContent value="forms" className="space-y-4">
         {/* Buttons Section */}
         <Card>
           <CardHeader>
@@ -368,7 +552,10 @@ console.log(user.name);`);
             </div>
           </CardContent>
         </Card>
+          </TabsContent>
 
+          {/* Display Tab */}
+          <TabsContent value="display" className="space-y-4">
         {/* Accordion */}
         <Card>
           <CardHeader>
@@ -443,59 +630,30 @@ console.log(user.name);`);
         <Card>
           <CardHeader>
             <CardTitle>Code Block</CardTitle>
-            <CardDescription>Syntax highlighting with Shiki (VS Code quality)</CardDescription>
+            <CardDescription>
+              Syntax highlighting with Shiki (VS Code quality) • ✏️ Click pencil to edit • 🎨 Change theme • #️⃣ Toggle line numbers
+            </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Typography variant="h4" className="text-sm font-semibold">Static Example</Typography>
-              <CodeBlock
-                code={`import React from 'react';
-
-export function HelloWorld() {
-  const [count, setCount] = React.useState(0);
-
-  return (
-    <div className="app">
-      <h1>Hello, Catalyst UI! 🚀</h1>
-      <p>Count: {count}</p>
-      <button onClick={() => setCount(count + 1)}>
-        Increment
-      </button>
-    </div>
-  );
-}`}
-                language="tsx"
-                fileName="HelloWorld.tsx"
-                theme="vitesse-dark"
-                showLineNumbers={true}
-                showCopyButton={true}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <div className="space-y-1">
-                <Typography variant="h4" className="text-sm font-semibold">Fully Interactive Example</Typography>
-                <Typography variant="muted" className="text-xs">
-                  ✏️ Click pencil to edit • 🎨 Change theme • #️⃣ Toggle line numbers
-                </Typography>
-              </div>
-              <CodeBlock
-                code={editableCode}
-                language="typescript"
-                fileName="api.ts"
-                theme={codeTheme}
-                showLineNumbers={showLineNumbers}
-                showCopyButton={true}
-                interactive={true}
-                editable={true}
-                onCodeChange={setEditableCode}
-                onThemeChange={setCodeTheme}
-                onLineNumbersChange={setShowLineNumbers}
-              />
-            </div>
+          <CardContent>
+            <CodeBlock
+              code={editableCode}
+              language="typescript"
+              fileName="api.ts"
+              theme={codeTheme}
+              showLineNumbers={showLineNumbers}
+              showCopyButton={true}
+              interactive={true}
+              editable={true}
+              onCodeChange={setEditableCode}
+              onThemeChange={setCodeTheme}
+              onLineNumbersChange={setShowLineNumbers}
+            />
           </CardContent>
         </Card>
+          </TabsContent>
 
+          {/* Cards Tab */}
+          <TabsContent value="cards" className="space-y-4">
         {/* Cards Section */}
         <div className="grid md:grid-cols-2 gap-4">
           <CreateAccountCard
@@ -510,6 +668,151 @@ export function HelloWorld() {
             onChange={(value) => console.log("Selected:", value)}
           />
         </div>
+          </TabsContent>
+
+          {/* Force Graph Tab */}
+          <TabsContent value="forcegraph" className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Force Graph Visualization</CardTitle>
+            <CardDescription>
+              Interactive graph with D3.js force simulation, advanced filtering, and Docker resource visualization.
+              Click the ⚙️ icon to open the filter panel and experiment with all filtering features!
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="p-0">
+            <div className="h-[800px] w-full relative">
+              <ForceGraph data={(() => {
+                // Comprehensive dataset demonstrating all filtering features
+                const nodes: GraphData['nodes'] = {};
+                const edges: any[] = [];
+
+                // Running containers
+                for (let i = 0; i < 3; i++) {
+                  nodes[`running-${i}`] = {
+                    id: `running-${i}`,
+                    kind: 'container',
+                    name: `prod-service-${i}`,
+                    attributes: {
+                      status: 'running',
+                      image: `service:v${i}`,
+                    },
+                  };
+                }
+
+                // Stopped containers
+                for (let i = 0; i < 2; i++) {
+                  nodes[`stopped-${i}`] = {
+                    id: `stopped-${i}`,
+                    kind: 'container',
+                    name: `old-service-${i}`,
+                    attributes: {
+                      status: 'stopped',
+                      image: `old:v${i}`,
+                    },
+                  };
+                }
+
+                // Images (some orphaned)
+                for (let i = 0; i < 5; i++) {
+                  nodes[`image-${i}`] = {
+                    id: `image-${i}`,
+                    kind: 'image',
+                    name: `image-${i}`,
+                    attributes: {
+                      tags: `image-${i}:latest`,
+                      size: '150000000',
+                    },
+                  };
+                }
+
+                // Networks (including system)
+                nodes['network-user'] = {
+                  id: 'network-user',
+                  kind: 'network',
+                  name: 'app_network',
+                  attributes: { driver: 'bridge', scope: 'local' },
+                };
+                nodes['network-bridge'] = {
+                  id: 'network-bridge',
+                  kind: 'network',
+                  name: 'bridge',
+                  attributes: { driver: 'bridge', scope: 'local', system: true },
+                };
+
+                // Volumes (some in-use)
+                nodes['volume-active'] = {
+                  id: 'volume-active',
+                  kind: 'volume',
+                  name: 'data_volume',
+                  attributes: {
+                    driver: 'local',
+                    status: 'in-use',
+                    mountpoint: '/var/lib/docker/volumes/data_volume/_data',
+                  },
+                };
+                nodes['volume-orphaned'] = {
+                  id: 'volume-orphaned',
+                  kind: 'volume',
+                  name: 'old_volume',
+                  attributes: {
+                    driver: 'local',
+                    mountpoint: '/var/lib/docker/volumes/old_volume/_data',
+                  },
+                };
+
+                // Connect running containers
+                for (let i = 0; i < 3; i++) {
+                  edges.push({
+                    src: `running-${i}`,
+                    dst: `image-${i}`,
+                    kind: 'derived_from',
+                    source: nodes[`running-${i}`],
+                    target: nodes[`image-${i}`],
+                  });
+                  edges.push({
+                    src: `running-${i}`,
+                    dst: 'network-user',
+                    kind: 'connected_to',
+                    attributes: { ip: `172.25.0.${i + 2}` },
+                    source: nodes[`running-${i}`],
+                    target: nodes['network-user'],
+                  });
+                }
+
+                // Mount volume to first running container
+                edges.push({
+                  src: 'running-0',
+                  dst: 'volume-active',
+                  kind: 'mounted_into',
+                  attributes: { target: '/data', rw: 'true' },
+                  source: nodes['running-0'],
+                  target: nodes['volume-active'],
+                });
+
+                // image-3 and image-4 are orphaned (no containers using them)
+                // volume-orphaned is orphaned (no containers mounting it)
+
+                return { nodes, edges };
+              })()} />
+            </div>
+          </CardContent>
+          <CardFooter className="flex flex-col items-start gap-2 border-t pt-4">
+            <Typography variant="h4" className="text-sm font-semibold">Features to Try:</Typography>
+            <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+              <li><strong>Filter Panel</strong> - Click ⚙️ to open advanced filtering options</li>
+              <li><strong>Quick Presets</strong> - Try "🔍 Orphaned", "▶️ Running", or "🎯 Minimal" filters</li>
+              <li><strong>Search</strong> - Search nodes by name or ID in the filter panel</li>
+              <li><strong>Node Types</strong> - Toggle visibility of containers, images, networks, volumes</li>
+              <li><strong>Edge Types</strong> - Show/hide derived_from, connected_to, mounted_into relationships</li>
+              <li><strong>Status Filters</strong> - Filter containers by running/stopped status</li>
+              <li><strong>Advanced Filters</strong> - Hide system resources, show in-use only, etc.</li>
+              <li><strong>Interactions</strong> - Drag nodes, zoom/pan, click for details, right-click to exclude</li>
+            </ul>
+          </CardFooter>
+        </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
@@ -518,7 +821,9 @@ export function HelloWorld() {
 function App() {
   return (
     <ThemeProvider>
-      <KitchenSink />
+      <HeaderProvider>
+        <KitchenSink />
+      </HeaderProvider>
     </ThemeProvider>
   );
 }

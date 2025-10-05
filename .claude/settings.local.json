@@ -22,7 +22,9 @@
       "Bash(do echo -n \"$class: \")",
       "Bash(done)",
       "Bash(yarn release)",
-      "Read(//Users/panda/catalyst-devspace/**)"
+      "Read(//Users/panda/catalyst-devspace/**)",
+      "Bash(yarn add:*)",
+      "WebFetch(domain:ui.shadcn.com)"
     ],
     "deny": [],
     "ask": []

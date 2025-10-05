@@ -135,7 +135,7 @@ export const Default: Story = {
     code: javascriptCode,
     language: "javascript",
     fileName: "fibonacci.js",
-    theme: "vitesse-dark",
+    theme: "catalyst",
     showLineNumbers: true,
     showCopyButton: true,
   },
@@ -206,30 +206,6 @@ export const LightTheme: Story = {
   },
 };
 
-export const InteractiveViewOnly: Story = {
-  render: (args) => {
-    const [theme, setTheme] = React.useState(args.theme || "vitesse-dark");
-    const [showLineNumbers, setShowLineNumbers] = React.useState(args.showLineNumbers ?? true);
-
-    return (
-      <CodeBlock
-        {...args}
-        theme={theme}
-        showLineNumbers={showLineNumbers}
-        interactive={true}
-        onThemeChange={setTheme}
-        onLineNumbersChange={setShowLineNumbers}
-      />
-    );
-  },
-  args: {
-    code: typescriptCode,
-    language: "typescript",
-    fileName: "user.service.ts",
-    showCopyButton: true,
-  },
-};
-
 export const FullyInteractive: Story = {
   render: (args) => {
     const [code, setCode] = React.useState(args.code || reactCode);
@@ -261,27 +237,5 @@ export const FullyInteractive: Story = {
   },
   args: {
     code: reactCode,
-  },
-};
-
-export const EditableOnly: Story = {
-  render: (args) => {
-    const [code, setCode] = React.useState(args.code || pythonCode);
-
-    return (
-      <CodeBlock
-        code={code}
-        language="python"
-        fileName="quicksort.py"
-        theme="monokai"
-        showLineNumbers={true}
-        showCopyButton={true}
-        editable={true}
-        onCodeChange={setCode}
-      />
-    );
-  },
-  args: {
-    code: pythonCode,
   },
 };

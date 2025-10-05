@@ -19,7 +19,8 @@ const config: StorybookConfig = {
         debug: true,
       },
     },
-    "@storybook/addon-docs"
+    "@storybook/addon-docs",
+    "storybook-design-token"
   ],
 
   async viteFinal(config) {

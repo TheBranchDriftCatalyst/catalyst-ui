@@ -1,86 +1,391 @@
 .theme-catalyst.light {
-  --background: hsl(220 15% 95%);
-  --foreground: hsl(222.2 84% 4.9%);
+  /**
+   * @tokens Colors
+   * @presenter Color
+   */
 
-  --card: hsl(0 0% 98%);
-  --card-foreground: hsl(222.2 84% 4.9%);
+  /* Opulent synthwave sunset palette - easier on the eyes */
 
-  --popover: hsl(0 0% 98%);
-  --popover-foreground: hsl(222.2 84% 4.9%);
+  /**
+   * @tokens Background Colors
+   * @presenter Color
+   */
+  --background: hsl(30 30% 82%); /* @token { "name": "Background", "category": "Colors/Background" } */
+  --foreground: hsl(270 50% 12%); /* @token { "name": "Foreground", "category": "Colors/Background" } */
 
-  --primary: hsl(180, 100%, 30%);
-  --primary-foreground: hsl(0 0% 100%);
+  /**
+   * @tokens Card Colors
+   * @presenter Color
+   */
+  --card: hsl(330 35% 88%); /* @token { "name": "Card", "category": "Colors/Card" } */
+  --card-foreground: hsl(270 50% 12%); /* @token { "name": "Card Foreground", "category": "Colors/Card" } */
 
-  --secondary: hsl(270, 100%, 35%);
-  --secondary-foreground: hsl(0 0% 100%);
+  /**
+   * @tokens Popover Colors
+   * @presenter Color
+   */
+  --popover: hsl(330 35% 88%); /* @token { "name": "Popover", "category": "Colors/Popover" } */
+  --popover-foreground: hsl(270 50% 12%); /* @token { "name": "Popover Foreground", "category": "Colors/Popover" } */
 
-  --muted: hsl(220 15% 90%);
-  --muted-foreground: hsl(215.4 16.3% 40%);
+  /**
+   * @tokens Primary Colors
+   * @presenter Color
+   */
+  --primary: hsl(180, 70%, 32%); /* @token { "name": "Primary", "category": "Colors/Primary" } */
+  --primary-foreground: hsl(0 0% 100%); /* @token { "name": "Primary Foreground", "category": "Colors/Primary" } */
 
-  --accent: hsl(220 15% 92%);
-  --accent-foreground: hsl(222.2 47.4% 11.2%);
+  /**
+   * @tokens Secondary Colors
+   * @presenter Color
+   */
+  --secondary: hsl(290, 70%, 45%); /* @token { "name": "Secondary", "category": "Colors/Secondary" } */
+  --secondary-foreground: hsl(0 0% 100%); /* @token { "name": "Secondary Foreground", "category": "Colors/Secondary" } */
 
-  --destructive: hsl(0 84.2% 60.2%);
-  --destructive-foreground: hsl(210 40% 98%);
+  /**
+   * @tokens Muted Colors
+   * @presenter Color
+   */
+  --muted: hsl(30 25% 75%); /* @token { "name": "Muted", "category": "Colors/Muted" } */
+  --muted-foreground: hsl(270 35% 30%); /* @token { "name": "Muted Foreground", "category": "Colors/Muted" } */
 
-  --border: hsl(220 15% 85%);
-  --input: hsl(220 15% 92%);
-  --ring: hsl(180, 100%, 30%);
+  /**
+   * @tokens Accent Colors
+   * @presenter Color
+   */
+  --accent: hsl(320 50% 82%); /* @token { "name": "Accent", "category": "Colors/Accent" } */
+  --accent-foreground: hsl(270 55% 20%); /* @token { "name": "Accent Foreground", "category": "Colors/Accent" } */
 
-  --radius: 0.25rem;
+  /**
+   * @tokens Destructive Colors
+   * @presenter Color
+   */
+  --destructive: hsl(340 75% 50%); /* @token { "name": "Destructive", "category": "Colors/Destructive" } */
+  --destructive-foreground: hsl(0 0% 100%); /* @token { "name": "Destructive Foreground", "category": "Colors/Destructive" } */
 
-  /* Subtle corporate vibes */
-  --glow-primary: 0 0 8px rgba(0, 150, 150, 0.2);
-  --glow-secondary: 0 0 8px rgba(120, 0, 180, 0.15);
-  --glow-accent: 0 0 4px rgba(0, 150, 150, 0.1);
+  /**
+   * @tokens Form Colors
+   * @presenter Color
+   */
+  --border: hsl(320 30% 70%); /* @token { "name": "Border", "category": "Colors/Forms" } */
+  --input: hsl(30 25% 80%); /* @token { "name": "Input", "category": "Colors/Forms" } */
+  --ring: hsl(290, 70%, 45%); /* @token { "name": "Ring", "category": "Colors/Forms" } */
+
+  /**
+   * @tokens Border Radius
+   * @presenter Spacing
+   */
+  --radius: 0.25rem; /* @token { "name": "Base Radius", "category": "Spacing/Radius" } */
+
+  /**
+   * @tokens Neon Colors
+   * @presenter Color
+   */
+  /* Extended opulent palette */
+  --neon-cyan: hsl(180, 85%, 45%); /* @token { "name": "Neon Cyan", "category": "Colors/Neon" } */
+  --neon-pink: hsl(330, 100%, 70%); /* @token { "name": "Neon Pink", "category": "Colors/Neon" } */
+  --neon-purple: hsl(290, 80%, 55%); /* @token { "name": "Neon Purple", "category": "Colors/Neon" } */
+  --neon-blue: hsl(200, 100%, 55%); /* @token { "name": "Neon Blue", "category": "Colors/Neon" } */
+  --neon-red: hsl(340, 90%, 60%); /* @token { "name": "Neon Red", "category": "Colors/Neon" } */
+  --neon-yellow: hsl(45, 95%, 60%); /* @token { "name": "Neon Yellow", "category": "Colors/Neon" } */
+  --neon-gold: hsl(38, 90%, 55%); /* @token { "name": "Neon Gold", "category": "Colors/Neon" } */
+
+  /**
+   * @tokens Glow Effects
+   * @presenter Shadow
+   */
+  /* Opulent synthwave glows - vibrant even in light */
+  --glow-primary: 0 0 20px rgba(0, 180, 180, 0.35), 0 0 40px rgba(0, 180, 180, 0.15); /* @token { "name": "Primary Glow", "category": "Effects/Glow" } */
+  --glow-secondary: 0 0 20px rgba(192, 38, 211, 0.4), 0 0 40px rgba(192, 38, 211, 0.2); /* @token { "name": "Secondary Glow", "category": "Effects/Glow" } */
+  --glow-accent: 0 0 15px rgba(255, 110, 199, 0.3); /* @token { "name": "Accent Glow", "category": "Effects/Glow" } */
+  --glow-hover: 0 0 25px rgba(192, 38, 211, 0.5), 0 0 50px rgba(192, 38, 211, 0.25); /* @token { "name": "Hover Glow", "category": "Effects/Glow" } */
+
+  /**
+   * @tokens Neon Shadows
+   * @presenter Shadow
+   */
+  /* Luxurious shadows with color */
+  --shadow-neon-sm: 0 2px 8px rgba(192, 38, 211, 0.15), 0 4px 16px rgba(0, 180, 180, 0.1); /* @token { "name": "Small Neon Shadow", "category": "Effects/Shadows" } */
+  --shadow-neon-md: 0 4px 16px rgba(192, 38, 211, 0.2), 0 8px 32px rgba(0, 180, 180, 0.12); /* @token { "name": "Medium Neon Shadow", "category": "Effects/Shadows" } */
+  --shadow-neon-lg: 0 8px 24px rgba(192, 38, 211, 0.25), 0 16px 48px rgba(0, 180, 180, 0.15); /* @token { "name": "Large Neon Shadow", "category": "Effects/Shadows" } */
 }
 
-/* Light mode card base */
+/* Opulent light mode cards - colorful shadows */
 .theme-catalyst.light [class*="card"] {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-neon-sm);
+  background: linear-gradient(135deg, hsl(330 35% 90%), hsl(280 30% 88%));
+  border: 1px solid rgba(192, 38, 211, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-catalyst.light [class*="card"]:hover {
+  box-shadow: var(--shadow-neon-md);
+  border-color: rgba(192, 38, 211, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Gradient background for opulent synthwave feel */
+.theme-catalyst.light body {
+  background: linear-gradient(135deg,
+    hsl(30 30% 82%) 0%,
+    hsl(330 25% 80%) 50%,
+    hsl(280 22% 78%) 100%);
+  background-attachment: fixed;
+}
+
+/* Sunset grid pattern - subtle but luxurious */
+.theme-catalyst.light body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(192, 38, 211, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(192, 38, 211, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.7;
+}
+
+/* Opulent links - rich purple glow */
+.theme-catalyst.light a {
+  color: var(--neon-purple);
+  text-shadow: 0 0 10px rgba(192, 38, 211, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-catalyst.light a:hover {
+  text-shadow: 0 0 20px rgba(192, 38, 211, 0.5), 0 0 40px rgba(192, 38, 211, 0.25);
+  color: var(--secondary);
+}
+
+/* Headings - Opulent cyberpunk with layered effects */
+.theme-catalyst.light h1,
+.theme-catalyst.light h2,
+.theme-catalyst.light h3,
+.theme-catalyst.light h4,
+.theme-catalyst.light h5,
+.theme-catalyst.light h6 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--neon-purple), var(--neon-gold));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  position: relative;
+  filter: drop-shadow(0 0 8px rgba(192, 38, 211, 0.3));
+}
+
+.theme-catalyst.light h1::before,
+.theme-catalyst.light h2::before {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0.3;
+  filter: blur(8px);
+}
+
+/* Primary buttons - vibrant glow */
+.theme-catalyst.light button[class*="bg-primary"],
+.theme-catalyst.light [class*="bg-primary"] button {
+  box-shadow: var(--glow-primary);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-catalyst.light button[class*="bg-primary"]:hover,
+.theme-catalyst.light [class*="bg-primary"] button:hover {
+  box-shadow: var(--glow-hover);
+  transform: translateY(-1px);
+}
+
+/* Input focus - purple glow */
+.theme-catalyst.light input:focus,
+.theme-catalyst.light textarea:focus,
+.theme-catalyst.light select:focus {
+  box-shadow: var(--glow-secondary);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  border-color: var(--neon-purple);
+}
+
+/* Borders get opulent glow on hover */
+.theme-catalyst.light [class*="border"]:hover {
+  border-color: rgba(192, 38, 211, 0.4);
+  transition: border-color 0.3s ease;
+}
+
+/* Table rows - sunset hover */
+.theme-catalyst.light tbody tr:hover {
+  background: linear-gradient(90deg, rgba(192, 38, 211, 0.08), rgba(0, 180, 180, 0.06));
+  box-shadow: inset 0 0 20px rgba(192, 38, 211, 0.1);
+}
+
+/* Dropdown/Popover - opulent elevation */
+.theme-catalyst.light [role="menu"],
+.theme-catalyst.light [role="listbox"],
+.theme-catalyst.light [role="dialog"] {
+  box-shadow: var(--shadow-neon-lg);
+  border: 1px solid rgba(192, 38, 211, 0.25);
+  background: linear-gradient(135deg, hsl(330 35% 90%), hsl(280 30% 88%));
+}
+
+/* Tabs - opulent active state */
+.theme-catalyst.light [role="tab"][data-state="active"] {
+  background: linear-gradient(135deg, rgba(192, 38, 211, 0.15), rgba(0, 180, 180, 0.1));
+  border-bottom: 2px solid var(--neon-purple);
+  box-shadow: 0 4px 15px rgba(192, 38, 211, 0.25);
 }
 
 .theme-catalyst.dark {
-  --background: #09090bff;
-  --foreground: #fafafaff;
+  /**
+   * @tokens Dark Mode Colors
+   * @presenter Color
+   */
 
-  --card: #19141a;
-  --card-foreground: #fafafaff;
+  /* Cyberpunk color palette - sleek and professional */
 
-  --popover: #09090bff;
-  --popover-foreground: #fafafaff;
+  /**
+   * @tokens Dark Background Colors
+   * @presenter Color
+   */
+  --background: #0a0a0f; /* @token { "name": "Dark Background", "category": "Dark/Colors/Background" } */
+  --foreground: #e4e4e7; /* @token { "name": "Dark Foreground", "category": "Dark/Colors/Background" } */
 
-  --primary: #00fcd6;
-  --primary-foreground: #18181bff;
+  /**
+   * @tokens Dark Card Colors
+   * @presenter Color
+   */
+  --card: #16161d; /* @token { "name": "Dark Card", "category": "Dark/Colors/Card" } */
+  --card-foreground: #e4e4e7; /* @token { "name": "Dark Card Foreground", "category": "Dark/Colors/Card" } */
 
-  --secondary: #aa00ff;
-  --secondary-foreground: #fafafafff;
+  /**
+   * @tokens Dark Popover Colors
+   * @presenter Color
+   */
+  --popover: #0a0a0f; /* @token { "name": "Dark Popover", "category": "Dark/Colors/Popover" } */
+  --popover-foreground: #e4e4e7; /* @token { "name": "Dark Popover Foreground", "category": "Dark/Colors/Popover" } */
 
-  --muted: #27272aff;
-  --muted-foreground: #a1a1aaff;
+  /**
+   * @tokens Dark Primary Colors
+   * @presenter Color
+   */
+  --primary: #00fcd6; /* @token { "name": "Dark Primary", "category": "Dark/Colors/Primary" } */
+  --primary-foreground: #0a0a0f; /* @token { "name": "Dark Primary Foreground", "category": "Dark/Colors/Primary" } */
 
-  --accent: #27272aff;
-  --accent-foreground: #fafafaff;
+  /**
+   * @tokens Dark Secondary Colors
+   * @presenter Color
+   */
+  --secondary: #c026d3; /* @token { "name": "Dark Secondary", "category": "Dark/Colors/Secondary" } */
+  --secondary-foreground: #fafafa; /* @token { "name": "Dark Secondary Foreground", "category": "Dark/Colors/Secondary" } */
 
-  --destructive: #ee1111ff;
-  --destructive-foreground: #fafafaff;
+  /**
+   * @tokens Dark Muted Colors
+   * @presenter Color
+   */
+  --muted: #27272a; /* @token { "name": "Dark Muted", "category": "Dark/Colors/Muted" } */
+  --muted-foreground: #a1a1aa; /* @token { "name": "Dark Muted Foreground", "category": "Dark/Colors/Muted" } */
 
-  --border: #27272aff;
-  --input: #27272aff;
-  --ring: #d4d4d8ff;
+  /**
+   * @tokens Dark Accent Colors
+   * @presenter Color
+   */
+  --accent: #1e1e24; /* @token { "name": "Dark Accent", "category": "Dark/Colors/Accent" } */
+  --accent-foreground: #fafafa; /* @token { "name": "Dark Accent Foreground", "category": "Dark/Colors/Accent" } */
 
-  /* Synthwave glow effects - subtle, professional */
-  --glow-primary: 0 0 10px rgba(0, 252, 214, 0.3);
-  --glow-secondary: 0 0 10px rgba(170, 0, 255, 0.25);
-  --glow-accent: 0 0 6px rgba(0, 252, 214, 0.15);
+  /**
+   * @tokens Dark Destructive Colors
+   * @presenter Color
+   */
+  --destructive: #ff2975; /* @token { "name": "Dark Destructive", "category": "Dark/Colors/Destructive" } */
+  --destructive-foreground: #fafafa; /* @token { "name": "Dark Destructive Foreground", "category": "Dark/Colors/Destructive" } */
 
-  /* Scanline overlay */
-  --scanline-opacity: 0.03;
-  --scanline-color: rgba(0, 252, 214, var(--scanline-opacity));
+  /**
+   * @tokens Dark Form Colors
+   * @presenter Color
+   */
+  --border: #27272a; /* @token { "name": "Dark Border", "category": "Dark/Colors/Forms" } */
+  --input: #1e1e24; /* @token { "name": "Dark Input", "category": "Dark/Colors/Forms" } */
+  --ring: #00fcd6; /* @token { "name": "Dark Ring", "category": "Dark/Colors/Forms" } */
+
+  /**
+   * @tokens Dark Neon Colors
+   * @presenter Color
+   */
+  /* Extended cyberpunk palette */
+  --neon-cyan: #00fcd6; /* @token { "name": "Dark Neon Cyan", "category": "Dark/Colors/Neon" } */
+  --neon-pink: #ff6ec7; /* @token { "name": "Dark Neon Pink", "category": "Dark/Colors/Neon" } */
+  --neon-purple: #c026d3; /* @token { "name": "Dark Neon Purple", "category": "Dark/Colors/Neon" } */
+  --neon-blue: #00d4ff; /* @token { "name": "Dark Neon Blue", "category": "Dark/Colors/Neon" } */
+  --neon-red: #ff2975; /* @token { "name": "Dark Neon Red", "category": "Dark/Colors/Neon" } */
+  --neon-yellow: #fbbf24; /* @token { "name": "Dark Neon Yellow", "category": "Dark/Colors/Neon" } */
+
+  /**
+   * @tokens Dark Glow Effects
+   * @presenter Shadow
+   */
+  /* Professional cyberpunk glow effects - subtle but noticeable */
+  --glow-primary: 0 0 15px rgba(0, 252, 214, 0.4), 0 0 30px rgba(0, 252, 214, 0.2); /* @token { "name": "Dark Primary Glow", "category": "Dark/Effects/Glow" } */
+  --glow-secondary: 0 0 15px rgba(192, 38, 211, 0.35), 0 0 30px rgba(192, 38, 211, 0.15); /* @token { "name": "Dark Secondary Glow", "category": "Dark/Effects/Glow" } */
+  --glow-accent: 0 0 10px rgba(0, 252, 214, 0.25); /* @token { "name": "Dark Accent Glow", "category": "Dark/Effects/Glow" } */
+  --glow-hover: 0 0 20px rgba(0, 252, 214, 0.5), 0 0 40px rgba(0, 252, 214, 0.25); /* @token { "name": "Dark Hover Glow", "category": "Dark/Effects/Glow" } */
+
+  /**
+   * @tokens Dark Neon Shadows
+   * @presenter Shadow
+   */
+  /* Neon shadows for depth */
+  --shadow-neon-sm: 0 2px 10px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 252, 214, 0.15); /* @token { "name": "Dark Small Neon Shadow", "category": "Dark/Effects/Shadows" } */
+  --shadow-neon-md: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 252, 214, 0.2), 0 0 40px rgba(192, 38, 211, 0.1); /* @token { "name": "Dark Medium Neon Shadow", "category": "Dark/Effects/Shadows" } */
+  --shadow-neon-lg: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 252, 214, 0.3), 0 0 60px rgba(192, 38, 211, 0.15); /* @token { "name": "Dark Large Neon Shadow", "category": "Dark/Effects/Shadows" } */
+
+  /**
+   * @tokens Dark Effects
+   * @presenter Opacity
+   */
+  /* Scanline subtlety */
+  --scanline-opacity: 0.02; /* @token { "name": "Scanline Opacity", "category": "Dark/Effects/Scanline" } */
+  --scanline-color: rgba(0, 252, 214, var(--scanline-opacity)); /* @token { "name": "Scanline Color", "category": "Dark/Effects/Scanline" } */
+
+  /**
+   * @tokens Dark Grid
+   * @presenter Opacity
+   */
+  /* Grid pattern */
+  --grid-opacity: 0.04; /* @token { "name": "Grid Opacity", "category": "Dark/Effects/Grid" } */
+  --grid-color: rgba(0, 252, 214, var(--grid-opacity)); /* @token { "name": "Grid Color", "category": "Dark/Effects/Grid" } */
 }
 
-/* Scanline effect - dark only */
+/* Cyberpunk grid background - subtle depth */
 .theme-catalyst.dark body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.5;
+}
+
+/* Scanline effect - very subtle */
+.theme-catalyst.dark body::after {
   content: '';
   position: fixed;
   top: 0;
@@ -94,46 +399,233 @@
     transparent,
     transparent 2px,
     var(--scanline-color) 2px,
-    var(--scanline-color) 4px
+    var(--scanline-color) 3px
   );
   opacity: 1;
 }
 
-/* Links get a subtle glow - dark only */
+/* Links get that cyberpunk glow */
 .theme-catalyst.dark a {
-  text-shadow: 0 0 8px rgba(0, 252, 214, 0.2);
-  transition: text-shadow 0.2s ease;
+  text-shadow: 0 0 8px rgba(0, 252, 214, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .theme-catalyst.dark a:hover {
-  text-shadow: 0 0 12px rgba(0, 252, 214, 0.4);
+  text-shadow: 0 0 15px rgba(0, 252, 214, 0.6), 0 0 30px rgba(0, 252, 214, 0.3);
+  color: var(--neon-cyan);
 }
 
-/* === SHARED STYLES (both light & dark) === */
+/* === CYBERPUNK COMPONENT STYLES === */
 
-/* Primary button glow */
+/* Primary buttons - sleek with glow */
 .theme-catalyst button[class*="bg-primary"],
 .theme-catalyst [class*="bg-primary"] button {
   box-shadow: var(--glow-accent);
-  transition: box-shadow 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .theme-catalyst button[class*="bg-primary"]:hover,
 .theme-catalyst [class*="bg-primary"] button:hover {
-  box-shadow: var(--glow-primary);
+  box-shadow: var(--glow-hover);
+  transform: translateY(-1px);
 }
 
-/* Input focus glow - more pronounced */
+.theme-catalyst button[class*="bg-primary"]:active,
+.theme-catalyst [class*="bg-primary"] button:active {
+  transform: translateY(0);
+}
+
+/* Input focus - pronounced cyberpunk glow */
 .theme-catalyst input:focus,
 .theme-catalyst textarea:focus,
 .theme-catalyst select:focus {
   box-shadow: var(--glow-primary);
   outline: 2px solid transparent;
   outline-offset: 2px;
+  border-color: var(--neon-cyan);
 }
 
-/* Card hover glow */
+/* Cards - subtle elevation with neon accent */
+.theme-catalyst [class*="card"] {
+  box-shadow: var(--shadow-neon-sm);
+  border: 1px solid rgba(0, 252, 214, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .theme-catalyst [class*="card"]:hover {
-  box-shadow: var(--glow-primary);
-  transition: box-shadow 0.3s ease;
+  box-shadow: var(--shadow-neon-md);
+  border-color: rgba(0, 252, 214, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Headings - Sleek cyberpunk with chromatic edge */
+.theme-catalyst.dark h1,
+.theme-catalyst.dark h2,
+.theme-catalyst.dark h3,
+.theme-catalyst.dark h4,
+.theme-catalyst.dark h5,
+.theme-catalyst.dark h6 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  position: relative;
+  background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 12px rgba(0, 252, 214, 0.4)) drop-shadow(0 0 24px rgba(192, 38, 211, 0.2));
+}
+
+/* Chromatic aberration effect on large headings */
+.theme-catalyst.dark h1::after,
+.theme-catalyst.dark h2::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 2px;
+  top: 0;
+  z-index: -1;
+  background: linear-gradient(135deg, var(--neon-pink) 0%, var(--neon-blue) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0.3;
+  mix-blend-mode: screen;
+}
+
+/* Borders get subtle glow on hover */
+.theme-catalyst.dark [class*="border"]:hover {
+  border-color: rgba(0, 252, 214, 0.3);
+  transition: border-color 0.3s ease;
+}
+
+/* Enhanced focus states - cyberpunk style */
+.theme-catalyst.dark *:focus-visible {
+  outline: 2px solid var(--neon-cyan);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px rgba(0, 252, 214, 0.15), 0 0 20px rgba(0, 252, 214, 0.3);
+}
+
+/* Table rows - sleek hover */
+.theme-catalyst.dark tbody tr:hover {
+  background-color: rgba(0, 252, 214, 0.05);
+  box-shadow: inset 0 0 20px rgba(0, 252, 214, 0.08);
+}
+
+/* Dropdown/Popover - elevated with glow */
+.theme-catalyst [role="menu"],
+.theme-catalyst [role="listbox"],
+.theme-catalyst [role="dialog"] {
+  box-shadow: var(--shadow-neon-lg);
+  border: 1px solid rgba(0, 252, 214, 0.15);
+}
+
+/* Progress bars - neon fill */
+.theme-catalyst.dark [role="progressbar"] {
+  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+  box-shadow: 0 0 15px rgba(0, 252, 214, 0.4);
+}
+
+/* Tabs - cyberpunk active state */
+.theme-catalyst.dark [role="tab"][data-state="active"] {
+  background: linear-gradient(135deg, rgba(0, 252, 214, 0.1), rgba(192, 38, 211, 0.05));
+  border-bottom: 2px solid var(--neon-cyan);
+  box-shadow: 0 4px 15px rgba(0, 252, 214, 0.2);
+}
+
+/* Enhanced body text readability with Rajdhani */
+.theme-catalyst p,
+.theme-catalyst span,
+.theme-catalyst div {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.015em;
+}
+
+/* Button text - uppercase cyberpunk style */
+.theme-catalyst button {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.85em;
+}
+
+/* Link text - enhanced readability */
+.theme-catalyst a {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Input/Form text */
+.theme-catalyst input,
+.theme-catalyst textarea,
+.theme-catalyst select {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+/* Monospace refinement */
+.theme-catalyst code,
+.theme-catalyst pre {
+  font-family: 'Space Mono', monospace;
+  letter-spacing: -0.01em;
+  font-weight: 400;
+}
+
+/* Animations - smooth cyberpunk transitions */
+@keyframes cyberpunk-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes neon-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(0, 252, 214, 0.4), 0 0 30px rgba(0, 252, 214, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 252, 214, 0.6), 0 0 40px rgba(0, 252, 214, 0.3);
+  }
+}
+
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+    opacity: 1;
+  }
+  20% {
+    transform: translate(-2px, 2px);
+    opacity: 0.8;
+  }
+  40% {
+    transform: translate(-2px, -2px);
+    opacity: 0.9;
+  }
+  60% {
+    transform: translate(2px, 2px);
+    opacity: 0.8;
+  }
+  80% {
+    transform: translate(2px, -2px);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(0);
+    opacity: 1;
+  }
+}
+
+/* Optional glitch effect class */
+.theme-catalyst .glitch {
+  animation: glitch 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Heading hover states with enhanced glow */
+.theme-catalyst.dark h1:hover,
+.theme-catalyst.dark h2:hover,
+.theme-catalyst.dark h3:hover {
+  filter: drop-shadow(0 0 18px rgba(0, 252, 214, 0.6)) drop-shadow(0 0 36px rgba(192, 38, 211, 0.3));
+  transition: filter 0.3s ease;
 }

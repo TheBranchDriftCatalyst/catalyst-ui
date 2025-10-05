@@ -29,6 +29,35 @@
   --ring: hsl(28, 46%, 56%);
 }
 
+/* Light mode - warm luxury */
+.theme-gold.light body {
+  background: linear-gradient(135deg, hsl(38, 77%, 88%) 0%, hsl(35, 70%, 85%) 100%);
+  background-attachment: fixed;
+}
+
+.theme-gold.light [class*="card"] {
+  background: linear-gradient(145deg, hsl(38, 77%, 90%), hsl(38, 77%, 86%));
+  box-shadow: 0 2px 8px rgba(139, 87, 42, 0.1), 0 4px 16px rgba(218, 165, 32, 0.08);
+  transition: all 0.3s ease;
+}
+
+.theme-gold.light [class*="card"]:hover {
+  box-shadow: 0 4px 16px rgba(139, 87, 42, 0.15), 0 8px 24px rgba(218, 165, 32, 0.12);
+  transform: translateY(-2px);
+}
+
+.theme-gold.light button[class*="bg-primary"]:hover {
+  box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3);
+  transform: translateY(-1px);
+  transition: all 0.25s ease;
+}
+
+.theme-gold.light input:focus,
+.theme-gold.light textarea:focus {
+  box-shadow: 0 0 0 3px rgba(218, 165, 32, 0.15);
+  transition: box-shadow 0.2s ease;
+}
+
 .theme-gold.dark {
   --background: hsl(16, 43%, 34%);
   --foreground: hsl(38, 77%, 88%);
@@ -58,4 +87,31 @@
   --destructive-foreground: hsl(16, 43%, 34%);
 
   --ring: hsl(28, 46%, 56%);
+}
+
+/* Dark mode - rich warmth */
+.theme-gold.dark [class*="card"] {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 16px rgba(218, 165, 32, 0.08);
+  transition: all 0.3s ease;
+}
+
+.theme-gold.dark [class*="card"]:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 24px rgba(218, 165, 32, 0.12);
+  transform: translateY(-2px);
+}
+
+.theme-gold.dark button[class*="bg-primary"] {
+  box-shadow: 0 2px 8px rgba(218, 165, 32, 0.2);
+  transition: all 0.25s ease;
+}
+
+.theme-gold.dark button[class*="bg-primary"]:hover {
+  box-shadow: 0 4px 16px rgba(218, 165, 32, 0.35), 0 0 20px rgba(218, 165, 32, 0.15);
+  transform: translateY(-1px);
+}
+
+.theme-gold.dark input:focus,
+.theme-gold.dark textarea:focus {
+  box-shadow: 0 0 0 3px rgba(218, 165, 32, 0.2);
+  transition: box-shadow 0.2s ease;
 }

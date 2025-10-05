@@ -21,6 +21,7 @@ export interface CodeBlockHeaderProps extends React.HTMLAttributes<HTMLDivElemen
 }
 
 export const AVAILABLE_THEMES = [
+  { value: "catalyst", label: "Catalyst" },
   { value: "vitesse-dark", label: "Vitesse Dark" },
   { value: "vitesse-light", label: "Vitesse Light" },
   { value: "github-dark", label: "GitHub Dark" },
@@ -70,16 +71,16 @@ const CodeBlockHeader = React.forwardRef<HTMLDivElement, CodeBlockHeaderProps>(
       <div
         ref={ref}
         className={cn(
-          "flex items-center justify-between px-4 py-2 bg-[#1e1e1e] border-b border-gray-800",
+          "flex items-center justify-between px-4 py-2 bg-card border-b border-border",
           className,
         )}
         {...props}
       >
         <div className="flex items-center gap-2">
           {fileName && (
-            <span className="text-sm text-gray-300 font-mono">{fileName}</span>
+            <span className="text-sm text-foreground font-mono">{fileName}</span>
           )}
-          <span className="text-xs text-gray-500 font-mono uppercase px-2 py-0.5 bg-gray-800 rounded">
+          <span className="text-xs text-muted-foreground font-mono uppercase px-2 py-0.5 bg-muted rounded">
             {language}
           </span>
         </div>
@@ -87,7 +88,7 @@ const CodeBlockHeader = React.forwardRef<HTMLDivElement, CodeBlockHeaderProps>(
         <div className="flex items-center gap-2">
           {interactive && onThemeChange && !isEditMode && (
             <Select value={currentTheme} onValueChange={onThemeChange}>
-              <SelectTrigger className="h-8 w-[160px] bg-gray-800 border-gray-700 text-gray-300 text-xs">
+              <SelectTrigger className="h-8 w-[160px] bg-muted border-border text-foreground text-xs">
                 <Palette className="h-3 w-3 mr-1" />
                 <SelectValue placeholder="Theme" />
               </SelectTrigger>
@@ -106,7 +107,7 @@ const CodeBlockHeader = React.forwardRef<HTMLDivElement, CodeBlockHeaderProps>(
               pressed={showLineNumbers}
               onPressedChange={onLineNumbersChange}
               size="sm"
-              className="h-8 px-2 data-[state=on]:bg-gray-700 text-gray-400 hover:text-gray-200"
+              className="h-8 px-2 data-[state=on]:bg-accent text-muted-foreground hover:text-foreground"
               aria-label="Toggle line numbers"
             >
               <Hash className="h-4 w-4" />
@@ -118,7 +119,7 @@ const CodeBlockHeader = React.forwardRef<HTMLDivElement, CodeBlockHeaderProps>(
               pressed={isEditMode}
               onPressedChange={onEditModeChange}
               size="sm"
-              className="h-8 px-2 data-[state=on]:bg-gray-700 text-gray-400 hover:text-gray-200"
+              className="h-8 px-2 data-[state=on]:bg-accent text-muted-foreground hover:text-foreground"
               aria-label="Toggle edit mode"
             >
               {isEditMode ? <Eye className="h-4 w-4" /> : <Pencil className="h-4 w-4" />}
@@ -130,7 +131,7 @@ const CodeBlockHeader = React.forwardRef<HTMLDivElement, CodeBlockHeaderProps>(
               variant="ghost"
               size="sm"
               onClick={handleCopy}
-              className="h-8 px-2 text-gray-400 hover:text-gray-200 hover:bg-gray-800"
+              className="h-8 px-2 text-muted-foreground hover:text-foreground hover:bg-accent"
             >
               {copied ? (
                 <>
