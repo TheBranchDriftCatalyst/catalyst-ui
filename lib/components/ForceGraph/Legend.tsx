@@ -1,8 +1,10 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { NodeKind, EdgeKind } from './types';
 import { useGraphState } from './hooks/useGraphState';
 import { useGraphConfig } from './context/GraphContext';
 import { LayoutKind } from './utils/layouts';
+import { useDraggable } from './hooks/useDraggable';
 
 interface LegendProps {
   visibleNodes: Record<NodeKind, boolean>;
@@ -19,6 +21,11 @@ const Legend: React.FC<LegendProps> = ({
 }) => {
   const config = useGraphConfig();
   const { layout, setLayout, orthogonalEdges, toggleOrthogonalEdges } = useGraphState();
+  const [isCollapsed, setIsCollapsed] = React.useState(false);
+  const { elementRef, handleRef, style } = useDraggable({
+    initialPosition: { x: 24, y: 80 },
+    storageKey: 'catalyst-ui.forcegraph.legend.position',
+  });
 
   // Build node types from config
   const nodeTypes: { kind: NodeKind; label: string; color: string; icon: string }[] = Object.entries(
@@ -230,12 +237,51 @@ const Legend: React.FC<LegendProps> = ({
     }
   };
 
-  return (
-    <div className="absolute top-20 left-6 bg-background/95 border-2 border-primary rounded-xl p-3 backdrop-blur-md shadow-[0_8px_32px_rgba(var(--primary-rgb),0.3)]">
-      <h3 className="text-xs font-bold text-primary mb-2" style={{ textShadow: '0 0 8px var(--primary)' }}>
-        Legend
-      </h3>
-      <div className="flex flex-col gap-1 max-h-[60vh] overflow-y-auto pr-1">
+  return createPortal(
+    <div
+      ref={elementRef}
+      style={style}
+      className="bg-background/95 border-2 border-primary rounded-xl p-3 backdrop-blur-md shadow-[0_8px_32px_rgba(var(--primary-rgb),0.3)] pointer-events-auto z-50"
+    >
+      {/* Drag Handle and Collapse */}
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="text-xs font-bold text-primary" style={{ textShadow: '0 0 8px var(--primary)' }}>
+          Legend
+        </h3>
+        <div className="flex items-center gap-2">
+          {/* Collapse Button */}
+          <button
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="w-5 h-5 flex items-center justify-center cursor-pointer opacity-60 hover:opacity-100 transition-opacity text-primary"
+            title={isCollapsed ? 'Expand' : 'Collapse'}
+          >
+            <svg viewBox="0 0 16 16" fill="currentColor" className="w-3 h-3">
+              {isCollapsed ? (
+                <path d="M8 4l4 4H4l4-4z" />
+              ) : (
+                <path d="M4 6l4 4 4-4H4z" />
+              )}
+            </svg>
+          </button>
+          {/* Drag Handle */}
+          <div
+            ref={handleRef}
+            className="w-4 h-4 cursor-grab active:cursor-grabbing opacity-40 hover:opacity-80 transition-opacity"
+            title="Drag to move"
+          >
+            <svg viewBox="0 0 16 16" fill="currentColor" className="text-primary">
+              <circle cx="4" cy="4" r="1.5" />
+              <circle cx="12" cy="4" r="1.5" />
+              <circle cx="4" cy="8" r="1.5" />
+              <circle cx="12" cy="8" r="1.5" />
+              <circle cx="4" cy="12" r="1.5" />
+              <circle cx="12" cy="12" r="1.5" />
+            </svg>
+          </div>
+        </div>
+      </div>
+      {!isCollapsed && (
+        <div className="flex flex-col gap-1 max-h-[60vh] overflow-y-auto pr-1">
         {/* Nodes */}
         <div className="mb-1">
           <p className="text-[10px] font-semibold text-foreground/60 mb-0.5 uppercase tracking-wide">Nodes</p>
@@ -308,6 +354,7 @@ const Legend: React.FC<LegendProps> = ({
             <option value="structured">Structured (Columns)</option>
             <option value="community">Community (Smart)</option>
             <option value="dagre">Dagre (Mermaid)</option>
+            <option value="elk">ELK (Advanced)</option>
           </select>
         </div>
 
@@ -336,8 +383,10 @@ const Legend: React.FC<LegendProps> = ({
             📥 PNG
           </button>
         </div>
-      </div>
-    </div>
+        </div>
+      )}
+    </div>,
+    document.body
   );
 };
 

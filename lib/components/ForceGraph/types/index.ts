@@ -93,6 +93,7 @@ export interface ReactD3GraphProps extends VisibilityState, GraphEventHandlers {
 export interface ForceGraphProps {
   data: GraphData;
   config?: any; // GraphConfig type from config/types - using any to avoid circular import
+  storageKey?: string; // Optional key for localStorage persistence - allows multiple graphs with independent filter state
 }
 
 /** Type guards */

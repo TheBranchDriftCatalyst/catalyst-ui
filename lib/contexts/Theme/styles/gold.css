@@ -27,6 +27,40 @@
   --destructive-foreground: hsl(38, 77%, 88%);
 
   --ring: hsl(28, 46%, 56%);
+
+  /* @token Typography - Elegant luxury aesthetic */
+  --font-heading: 'Cormorant Garamond', 'Baskerville', serif; /* @token */
+  --font-body: 'Lora', 'Georgia', serif; /* @token */
+  --font-mono: 'IBM Plex Mono', 'Courier', monospace; /* @token */
+
+  /* @token Neon Colors - Luxury metallic palette */
+  --neon-cyan: hsl(180, 60%, 55%); /* @token - warm teal */
+  --neon-pink: hsl(340, 75%, 68%); /* @token - rose gold */
+  --neon-purple: hsl(280, 50%, 62%); /* @token - warm mauve */
+  --neon-blue: hsl(210, 60%, 60%); /* @token - warm blue */
+  --neon-red: hsl(15, 75%, 58%); /* @token - bronze copper */
+  --neon-yellow: hsl(42, 90%, 60%); /* @token - rich amber */
+  --neon-gold: hsl(38, 95%, 58%); /* @token - metallic gold */
+
+  /* @token RGB variants for rgba() usage */
+  --neon-cyan-rgb: 112, 200, 217; /* @token */
+  --neon-pink-rgb: 230, 141, 166; /* @token */
+  --neon-purple-rgb: 184, 133, 209; /* @token */
+  --neon-blue-rgb: 122, 163, 235; /* @token */
+  --neon-red-rgb: 227, 122, 89; /* @token */
+  --neon-yellow-rgb: 247, 202, 61; /* @token */
+  --neon-gold-rgb: 255, 194, 51; /* @token */
+
+  /* @token Glow Effects - Luxurious shimmer */
+  --glow-primary: 0 0 20px rgba(218, 165, 32, 0.35), 0 0 40px rgba(218, 165, 32, 0.18); /* @token */
+  --glow-secondary: 0 0 20px rgba(255, 194, 51, 0.4), 0 0 40px rgba(255, 194, 51, 0.2); /* @token */
+  --glow-accent: 0 0 15px rgba(247, 202, 61, 0.35); /* @token */
+  --glow-hover: 0 0 25px rgba(218, 165, 32, 0.45), 0 0 50px rgba(218, 165, 32, 0.22); /* @token */
+
+  /* @token Neon Shadows - Gilded elegance */
+  --shadow-neon-sm: 0 2px 8px rgba(218, 165, 32, 0.15), 0 4px 16px rgba(255, 194, 51, 0.1); /* @token */
+  --shadow-neon-md: 0 4px 16px rgba(218, 165, 32, 0.2), 0 8px 32px rgba(255, 194, 51, 0.12); /* @token */
+  --shadow-neon-lg: 0 8px 24px rgba(218, 165, 32, 0.25), 0 16px 48px rgba(255, 194, 51, 0.15); /* @token */
 }
 
 /* Light mode - warm luxury */
@@ -87,6 +121,40 @@
   --destructive-foreground: hsl(16, 43%, 34%);
 
   --ring: hsl(28, 46%, 56%);
+
+  /* @token Typography - Elegant luxury aesthetic */
+  --font-heading: 'Cormorant Garamond', 'Baskerville', serif; /* @token */
+  --font-body: 'Lora', 'Georgia', serif; /* @token */
+  --font-mono: 'IBM Plex Mono', 'Courier', monospace; /* @token */
+
+  /* @token Neon Colors - Luxury metallic palette */
+  --neon-cyan: hsl(180, 65%, 50%); /* @token - warm teal */
+  --neon-pink: hsl(340, 80%, 62%); /* @token - rose gold */
+  --neon-purple: hsl(280, 55%, 58%); /* @token - warm mauve */
+  --neon-blue: hsl(210, 65%, 56%); /* @token - warm blue */
+  --neon-red: hsl(15, 80%, 55%); /* @token - bronze copper */
+  --neon-yellow: hsl(42, 95%, 58%); /* @token - rich amber */
+  --neon-gold: hsl(38, 100%, 55%); /* @token - metallic gold */
+
+  /* @token RGB variants for rgba() usage */
+  --neon-cyan-rgb: 96, 191, 209; /* @token */
+  --neon-pink-rgb: 222, 126, 156; /* @token */
+  --neon-purple-rgb: 176, 122, 204; /* @token */
+  --neon-blue-rgb: 110, 155, 230; /* @token */
+  --neon-red-rgb: 222, 112, 79; /* @token */
+  --neon-yellow-rgb: 246, 199, 54; /* @token */
+  --neon-gold-rgb: 255, 187, 38; /* @token */
+
+  /* @token Glow Effects - Luxurious shimmer */
+  --glow-primary: 0 0 20px rgba(218, 165, 32, 0.4), 0 0 40px rgba(218, 165, 32, 0.2); /* @token */
+  --glow-secondary: 0 0 20px rgba(255, 187, 38, 0.45), 0 0 40px rgba(255, 187, 38, 0.22); /* @token */
+  --glow-accent: 0 0 15px rgba(246, 199, 54, 0.4); /* @token */
+  --glow-hover: 0 0 25px rgba(218, 165, 32, 0.5), 0 0 50px rgba(218, 165, 32, 0.25); /* @token */
+
+  /* @token Neon Shadows - Gilded elegance */
+  --shadow-neon-sm: 0 2px 8px rgba(218, 165, 32, 0.2), 0 4px 16px rgba(255, 187, 38, 0.12); /* @token */
+  --shadow-neon-md: 0 4px 16px rgba(218, 165, 32, 0.25), 0 8px 32px rgba(255, 187, 38, 0.15); /* @token */
+  --shadow-neon-lg: 0 8px 24px rgba(218, 165, 32, 0.3), 0 16px 48px rgba(255, 187, 38, 0.18); /* @token */
 }
 
 /* Dark mode - rich warmth */

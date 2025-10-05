@@ -27,6 +27,40 @@
   --destructive-foreground: hsl(60, 30%, 96%);
 
   --ring: hsl(225, 27%, 51%);
+
+  /* @token Typography - Gothic vampire aesthetic */
+  --font-heading: 'Cinzel', 'Playfair Display', serif; /* @token */
+  --font-body: 'Crimson Text', 'Georgia', serif; /* @token */
+  --font-mono: 'Fira Code', 'Consolas', monospace; /* @token */
+
+  /* @token Neon Colors - Dracula vampire palette */
+  --neon-cyan: hsl(195, 70%, 60%); /* @token */
+  --neon-pink: hsl(326, 100%, 74%); /* @token */
+  --neon-purple: hsl(265, 89%, 78%); /* @token */
+  --neon-blue: hsl(240, 80%, 70%); /* @token */
+  --neon-red: hsl(0, 85%, 65%); /* @token */
+  --neon-yellow: hsl(50, 75%, 65%); /* @token */
+  --neon-gold: hsl(40, 85%, 60%); /* @token */
+
+  /* @token RGB variants for rgba() usage */
+  --neon-cyan-rgb: 102, 194, 224; /* @token */
+  --neon-pink-rgb: 255, 121, 198; /* @token */
+  --neon-purple-rgb: 189, 147, 249; /* @token */
+  --neon-blue-rgb: 153, 153, 255; /* @token */
+  --neon-red-rgb: 255, 85, 85; /* @token */
+  --neon-yellow-rgb: 241, 213, 124; /* @token */
+  --neon-gold-rgb: 255, 184, 108; /* @token */
+
+  /* @token Glow Effects - Dracula vampire glow */
+  --glow-primary: 0 0 20px rgba(189, 147, 249, 0.35), 0 0 40px rgba(189, 147, 249, 0.15); /* @token */
+  --glow-secondary: 0 0 20px rgba(255, 121, 198, 0.4), 0 0 40px rgba(255, 121, 198, 0.2); /* @token */
+  --glow-accent: 0 0 15px rgba(255, 121, 198, 0.3); /* @token */
+  --glow-hover: 0 0 25px rgba(189, 147, 249, 0.5), 0 0 50px rgba(189, 147, 249, 0.25); /* @token */
+
+  /* @token Neon Shadows - Vampire mystique */
+  --shadow-neon-sm: 0 2px 8px rgba(189, 147, 249, 0.15), 0 4px 16px rgba(255, 121, 198, 0.1); /* @token */
+  --shadow-neon-md: 0 4px 16px rgba(189, 147, 249, 0.2), 0 8px 32px rgba(255, 121, 198, 0.12); /* @token */
+  --shadow-neon-lg: 0 8px 24px rgba(189, 147, 249, 0.25), 0 16px 48px rgba(255, 121, 198, 0.15); /* @token */
 }
 
 /* Light mode polish */
@@ -81,6 +115,40 @@
   --destructive-foreground: hsl(60, 30%, 96%);
 
   --ring: hsl(225, 27%, 51%);
+
+  /* @token Typography - Gothic vampire aesthetic */
+  --font-heading: 'Cinzel', 'Playfair Display', serif; /* @token */
+  --font-body: 'Crimson Text', 'Georgia', serif; /* @token */
+  --font-mono: 'Fira Code', 'Consolas', monospace; /* @token */
+
+  /* @token Neon Colors - Dracula vampire palette */
+  --neon-cyan: hsl(195, 85%, 55%); /* @token - darker cyan */
+  --neon-pink: hsl(326, 100%, 74%); /* @token */
+  --neon-purple: hsl(265, 89%, 78%); /* @token */
+  --neon-blue: hsl(240, 90%, 68%); /* @token - deeper blue */
+  --neon-red: hsl(0, 90%, 60%); /* @token - blood red */
+  --neon-yellow: hsl(50, 80%, 60%); /* @token */
+  --neon-gold: hsl(40, 90%, 58%); /* @token */
+
+  /* @token RGB variants for rgba() usage */
+  --neon-cyan-rgb: 71, 204, 227; /* @token */
+  --neon-pink-rgb: 255, 121, 198; /* @token */
+  --neon-purple-rgb: 189, 147, 249; /* @token */
+  --neon-blue-rgb: 133, 133, 255; /* @token */
+  --neon-red-rgb: 255, 77, 77; /* @token */
+  --neon-yellow-rgb: 235, 203, 107; /* @token */
+  --neon-gold-rgb: 247, 175, 94; /* @token */
+
+  /* @token Glow Effects - Dracula vampire glow */
+  --glow-primary: 0 0 20px rgba(189, 147, 249, 0.4), 0 0 40px rgba(189, 147, 249, 0.2); /* @token */
+  --glow-secondary: 0 0 20px rgba(255, 121, 198, 0.45), 0 0 40px rgba(255, 121, 198, 0.25); /* @token */
+  --glow-accent: 0 0 15px rgba(255, 121, 198, 0.35); /* @token */
+  --glow-hover: 0 0 25px rgba(189, 147, 249, 0.55), 0 0 50px rgba(189, 147, 249, 0.3); /* @token */
+
+  /* @token Neon Shadows - Vampire mystique */
+  --shadow-neon-sm: 0 2px 8px rgba(189, 147, 249, 0.2), 0 4px 16px rgba(255, 121, 198, 0.12); /* @token */
+  --shadow-neon-md: 0 4px 16px rgba(189, 147, 249, 0.25), 0 8px 32px rgba(255, 121, 198, 0.15); /* @token */
+  --shadow-neon-lg: 0 8px 24px rgba(189, 147, 249, 0.3), 0 16px 48px rgba(255, 121, 198, 0.2); /* @token */
 }
 
 /* Dark mode polish - vampire elegance */

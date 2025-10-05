@@ -72,12 +72,46 @@
 
   --radius: 0.5rem;
 
+  /* @token Typography - Romantic fantasy aesthetic */
+  --font-heading: 'Amatic SC', 'Dancing Script', cursive; /* @token */
+  --font-body: 'Spectral', 'Garamond', serif; /* @token */
+  --font-mono: 'Inconsolata', 'Courier New', monospace; /* @token */
+
   /* Romantic accent colors */
   --velvet-burgundy: hsl(345, 70%, 40%);
   --silk-rose: hsl(340, 85%, 65%);
   --midnight-violet: hsl(280, 60%, 35%);
   --champagne-gold: hsl(40, 75%, 60%);
   --emerald-shadow: hsl(155, 45%, 35%);
+
+  /* @token Neon Colors - Romantic fantasy palette */
+  --neon-cyan: hsl(185, 55%, 60%); /* @token - romantic aqua */
+  --neon-pink: hsl(340, 85%, 65%); /* @token - silk rose */
+  --neon-purple: hsl(280, 60%, 55%); /* @token - passionate violet */
+  --neon-blue: hsl(215, 65%, 62%); /* @token - sapphire dream */
+  --neon-red: hsl(345, 75%, 48%); /* @token - crimson desire */
+  --neon-yellow: hsl(40, 75%, 60%); /* @token - champagne gold */
+  --neon-gold: hsl(30, 80%, 55%); /* @token - rose gold */
+
+  /* @token RGB variants for rgba() usage */
+  --neon-cyan-rgb: 138, 211, 224; /* @token */
+  --neon-pink-rgb: 244, 130, 175; /* @token */
+  --neon-purple-rgb: 181, 133, 209; /* @token */
+  --neon-blue-rgb: 128, 174, 237; /* @token */
+  --neon-red-rgb: 220, 38, 88; /* @token */
+  --neon-yellow-rgb: 224, 181, 115; /* @token */
+  --neon-gold-rgb: 227, 141, 92; /* @token */
+
+  /* @token Glow Effects - Romantic passion */
+  --glow-primary: 0 0 20px rgba(220, 38, 88, 0.35), 0 0 40px rgba(220, 38, 88, 0.18); /* @token */
+  --glow-secondary: 0 0 20px rgba(158, 28, 133, 0.4), 0 0 40px rgba(158, 28, 133, 0.2); /* @token */
+  --glow-accent: 0 0 15px rgba(244, 130, 175, 0.3); /* @token */
+  --glow-hover: 0 0 25px rgba(220, 38, 88, 0.45), 0 0 50px rgba(220, 38, 88, 0.22); /* @token */
+
+  /* @token Neon Shadows - Intimate mystique */
+  --shadow-neon-sm: 0 2px 8px rgba(220, 38, 88, 0.15), 0 4px 16px rgba(158, 28, 133, 0.1); /* @token */
+  --shadow-neon-md: 0 4px 16px rgba(220, 38, 88, 0.2), 0 8px 32px rgba(158, 28, 133, 0.12); /* @token */
+  --shadow-neon-lg: 0 8px 24px rgba(220, 38, 88, 0.25), 0 16px 48px rgba(158, 28, 133, 0.15); /* @token */
 }
 
 /* Light mode romantic effects */
@@ -221,13 +255,42 @@
   --champagne-gold: #d4a574;
   --emerald-shadow: #2d5f4f;
 
-  /* Romantic glow effects */
+  /* @token Neon Colors - Romantic fantasy palette */
+  --neon-cyan: hsl(185, 60%, 55%); /* @token - romantic aqua */
+  --neon-pink: hsl(340, 100%, 72%); /* @token - silk rose */
+  --neon-purple: hsl(280, 65%, 52%); /* @token - passionate violet */
+  --neon-blue: hsl(215, 70%, 58%); /* @token - sapphire dream */
+  --neon-red: hsl(345, 80%, 45%); /* @token - crimson desire */
+  --neon-yellow: hsl(40, 60%, 62%); /* @token - champagne gold */
+  --neon-gold: hsl(30, 70%, 58%); /* @token - rose gold */
+
+  /* @token RGB variants for rgba() usage */
+  --neon-cyan-rgb: 112, 204, 217; /* @token */
+  --neon-pink-rgb: 255, 107, 157; /* @token */
+  --neon-purple-rgb: 163, 107, 194; /* @token */
+  --neon-blue-rgb: 99, 163, 230; /* @token */
+  --neon-red-rgb: 185, 29, 74; /* @token */
+  --neon-yellow-rgb: 212, 165, 116; /* @token */
+  --neon-gold-rgb: 217, 140, 94; /* @token */
+
+  /* @token Glow Effects - Romantic passion (standardized naming) */
+  --glow-primary: 0 0 20px rgba(220, 38, 88, 0.5), 0 0 40px rgba(220, 38, 88, 0.25); /* @token */
+  --glow-secondary: 0 0 20px rgba(158, 28, 133, 0.5), 0 0 40px rgba(158, 28, 133, 0.25); /* @token */
+  --glow-accent: 0 0 15px rgba(255, 107, 157, 0.4); /* @token */
+  --glow-hover: 0 0 25px rgba(220, 38, 88, 0.6), 0 0 50px rgba(220, 38, 88, 0.3); /* @token */
+
+  /* @token Neon Shadows - Intimate mystique (standardized naming) */
+  --shadow-neon-sm: 0 2px 12px rgba(220, 38, 88, 0.2), 0 4px 24px rgba(158, 28, 133, 0.15); /* @token */
+  --shadow-neon-md: 0 4px 24px rgba(220, 38, 88, 0.25), 0 8px 48px rgba(158, 28, 133, 0.2); /* @token */
+  --shadow-neon-lg: 0 8px 36px rgba(220, 38, 88, 0.3), 0 16px 72px rgba(158, 28, 133, 0.25); /* @token */
+
+  /* Romantic glow effects (theme-specific aliases) */
   --glow-crimson: 0 0 20px rgba(220, 38, 88, 0.5), 0 0 40px rgba(220, 38, 88, 0.25);
   --glow-violet: 0 0 20px rgba(158, 28, 133, 0.5), 0 0 40px rgba(158, 28, 133, 0.25);
   --glow-rose: 0 0 15px rgba(255, 107, 157, 0.4);
   --glow-gold: 0 0 15px rgba(212, 165, 116, 0.4);
 
-  /* Intimate shadows */
+  /* Intimate shadows (theme-specific aliases) */
   --shadow-romantic-sm: 0 2px 12px rgba(220, 38, 88, 0.2), 0 4px 24px rgba(158, 28, 133, 0.15);
   --shadow-romantic-md: 0 4px 24px rgba(220, 38, 88, 0.25), 0 8px 48px rgba(158, 28, 133, 0.2);
   --shadow-romantic-lg: 0 8px 36px rgba(220, 38, 88, 0.3), 0 16px 72px rgba(158, 28, 133, 0.25);

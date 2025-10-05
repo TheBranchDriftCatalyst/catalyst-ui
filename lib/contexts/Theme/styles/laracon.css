@@ -27,6 +27,40 @@
   --destructive-foreground: hsl(0, 0%, 100%);
 
   --ring: hsl(37, 19%, 58%);
+
+  /* @token Typography - Modern tech aesthetic */
+  --font-heading: 'Nunito', 'Montserrat', sans-serif; /* @token */
+  --font-body: 'Open Sans', 'Helvetica', sans-serif; /* @token */
+  --font-mono: 'Fira Code', 'Monaco', monospace; /* @token */
+
+  /* @token Neon Colors - Laravel vibrance */
+  --neon-cyan: hsl(185, 90%, 52%); /* @token - bright cyan */
+  --neon-pink: hsl(330, 100%, 65%); /* @token - hot magenta */
+  --neon-purple: hsl(280, 95%, 60%); /* @token - vibrant purple */
+  --neon-blue: hsl(215, 100%, 58%); /* @token - electric blue */
+  --neon-red: hsl(2, 94%, 57%); /* @token - Laravel red */
+  --neon-yellow: hsl(38, 100%, 58%); /* @token - orange yellow */
+  --neon-gold: hsl(35, 100%, 55%); /* @token - bright gold */
+
+  /* @token RGB variants for rgba() usage */
+  --neon-cyan-rgb: 13, 218, 227; /* @token */
+  --neon-pink-rgb: 255, 107, 168; /* @token */
+  --neon-purple-rgb: 184, 51, 230; /* @token */
+  --neon-blue-rgb: 54, 127, 255; /* @token */
+  --neon-red-rgb: 247, 56, 39; /* @token */
+  --neon-yellow-rgb: 255, 166, 38; /* @token */
+  --neon-gold-rgb: 255, 153, 26; /* @token */
+
+  /* @token Glow Effects - Laravel energy */
+  --glow-primary: 0 0 20px rgba(247, 56, 39, 0.4), 0 0 40px rgba(247, 56, 39, 0.2); /* @token */
+  --glow-secondary: 0 0 20px rgba(255, 153, 26, 0.4), 0 0 40px rgba(255, 153, 26, 0.2); /* @token */
+  --glow-accent: 0 0 15px rgba(255, 166, 38, 0.35); /* @token */
+  --glow-hover: 0 0 25px rgba(247, 56, 39, 0.5), 0 0 50px rgba(247, 56, 39, 0.25); /* @token */
+
+  /* @token Neon Shadows - Laravel brilliance */
+  --shadow-neon-sm: 0 2px 8px rgba(247, 56, 39, 0.2), 0 4px 16px rgba(255, 153, 26, 0.1); /* @token */
+  --shadow-neon-md: 0 4px 16px rgba(247, 56, 39, 0.25), 0 8px 32px rgba(255, 153, 26, 0.12); /* @token */
+  --shadow-neon-lg: 0 8px 24px rgba(247, 56, 39, 0.3), 0 16px 48px rgba(255, 153, 26, 0.15); /* @token */
 }
 
 /* Light mode - Laravel warmth */
@@ -87,6 +121,35 @@
 
   --link-text: hsl(2, 94%, 57%);
   --ring: hsl(2, 94%, 57%);
+
+  /* @token Neon Colors - Laravel vibrance */
+  --neon-cyan: hsl(185, 95%, 48%); /* @token - bright cyan */
+  --neon-pink: hsl(330, 100%, 60%); /* @token - hot magenta */
+  --neon-purple: hsl(280, 100%, 58%); /* @token - vibrant purple */
+  --neon-blue: hsl(215, 100%, 55%); /* @token - electric blue */
+  --neon-red: hsl(2, 94%, 57%); /* @token - Laravel red */
+  --neon-yellow: hsl(38, 100%, 55%); /* @token - orange yellow */
+  --neon-gold: hsl(35, 100%, 52%); /* @token - bright gold */
+
+  /* @token RGB variants for rgba() usage */
+  --neon-cyan-rgb: 6, 212, 222; /* @token */
+  --neon-pink-rgb: 255, 92, 158; /* @token */
+  --neon-purple-rgb: 179, 38, 230; /* @token */
+  --neon-blue-rgb: 46, 121, 255; /* @token */
+  --neon-red-rgb: 247, 56, 39; /* @token */
+  --neon-yellow-rgb: 255, 158, 26; /* @token */
+  --neon-gold-rgb: 255, 145, 13; /* @token */
+
+  /* @token Glow Effects - Laravel energy */
+  --glow-primary: 0 0 20px rgba(247, 56, 39, 0.5), 0 0 40px rgba(247, 56, 39, 0.25); /* @token */
+  --glow-secondary: 0 0 20px rgba(255, 145, 13, 0.45), 0 0 40px rgba(255, 145, 13, 0.22); /* @token */
+  --glow-accent: 0 0 15px rgba(255, 158, 26, 0.4); /* @token */
+  --glow-hover: 0 0 25px rgba(247, 56, 39, 0.6), 0 0 50px rgba(247, 56, 39, 0.3); /* @token */
+
+  /* @token Neon Shadows - Laravel brilliance */
+  --shadow-neon-sm: 0 2px 8px rgba(247, 56, 39, 0.25), 0 4px 16px rgba(255, 145, 13, 0.12); /* @token */
+  --shadow-neon-md: 0 4px 16px rgba(247, 56, 39, 0.3), 0 8px 32px rgba(255, 145, 13, 0.15); /* @token */
+  --shadow-neon-lg: 0 8px 24px rgba(247, 56, 39, 0.4), 0 16px 48px rgba(255, 145, 13, 0.2); /* @token */
 }
 
 /* Dark mode - Laravel elegance */

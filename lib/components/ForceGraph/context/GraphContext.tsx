@@ -7,13 +7,13 @@ import { LayoutKind } from '../utils/layouts';
 
 export type { GraphConnectionFilter, GraphFilters } from '../types/filterTypes';
 
-// Local storage key for persisted filters
-export const FILTERS_STORAGE_KEY = 'catalyst-ui.forcegraph.filters.v1';
+// Default local storage key for persisted filters
+export const DEFAULT_FILTERS_STORAGE_KEY = 'catalyst-ui.forcegraph.filters.v1';
 
 // Helper to clear persisted filters from localStorage
-export function clearPersistedFilters() {
+export function clearPersistedFilters(storageKey: string = DEFAULT_FILTERS_STORAGE_KEY) {
   try {
-    localStorage.removeItem(FILTERS_STORAGE_KEY);
+    localStorage.removeItem(storageKey);
   } catch (e) {
     // ignore
   }
@@ -160,10 +160,11 @@ const GraphContext = createContext<{
 export const GraphProvider: React.FC<{
   children: ReactNode;
   config?: GraphConfig<any, any>;
-}> = ({ children, config = DockerGraphConfig }) => {
+  storageKey?: string;
+}> = ({ children, config = DockerGraphConfig, storageKey = DEFAULT_FILTERS_STORAGE_KEY }) => {
   const [state, dispatch] = useReducer(graphReducer, getInitialState(config), (init) => {
     try {
-      const raw = localStorage.getItem(FILTERS_STORAGE_KEY);
+      const raw = localStorage.getItem(storageKey);
       if (raw) {
         const parsed = JSON.parse(raw);
         return { ...init, filters: { ...init.filters, ...parsed } };
@@ -177,11 +178,11 @@ export const GraphProvider: React.FC<{
   // Persist filters to localStorage whenever they change
   useEffect(() => {
     try {
-      localStorage.setItem(FILTERS_STORAGE_KEY, JSON.stringify(state.filters));
+      localStorage.setItem(storageKey, JSON.stringify(state.filters));
     } catch (e) {
       // ignore storage errors
     }
-  }, [state.filters]);
+  }, [state.filters, storageKey]);
 
   return (
     <GraphContext.Provider value={{ state, dispatch }}>

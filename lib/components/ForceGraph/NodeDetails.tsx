@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { NodeData } from './types';
 import JsonTreeView from './components/JsonTreeView';
+import { useDraggable } from './hooks/useDraggable';
+import { useResizable } from './hooks/useResizable';
 
 interface NodeDetailsProps {
   node?: NodeData;
@@ -10,6 +13,21 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
   const [activeTab, setActiveTab] = useState<'details' | 'attributes'>('details');
   const [visible, setVisible] = useState(false);
   const [delayedNode, setDelayedNode] = useState<NodeData | undefined>(undefined);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const { elementRef: dragRef, handleRef, style: dragStyle } = useDraggable({
+    initialPosition: { x: window.innerWidth - 600, y: 80 },
+    storageKey: 'catalyst-ui.forcegraph.nodedetails.position',
+  });
+
+  const { elementRef: resizeRef, resizeHandleRef, style: resizeStyle } = useResizable({
+    initialSize: { width: 520, height: 500 },
+    minWidth: 300,
+    minHeight: 200,
+    maxWidth: 800,
+    maxHeight: 1000,
+    storageKey: 'catalyst-ui.forcegraph.nodedetails.size',
+  });
 
   // Add delay to prevent rapid show/hide and hover loops
   useEffect(() => {
@@ -37,13 +55,63 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
   const attributes = delayedNode.attributes || {};
   const hasAttributes = Object.keys(attributes).length > 0;
 
-  return (
-    <div className="absolute top-20 right-6 bg-background/95 border-2 border-primary rounded-xl backdrop-blur-md shadow-[0_8px_32px_rgba(var(--primary-rgb),0.3)] max-w-[520px] max-h-[calc(100vh-120px)] w-[min(40vw,720px)] flex flex-col pointer-events-auto z-50">
-      {/* Header */}
-      <div className="p-4 border-b border-primary/20">
-        <h3 className="text-sm font-bold text-primary mb-2" style={{ textShadow: '0 0 8px var(--primary)' }}>
-          Node Details
-        </h3>
+  // Merge refs - we need both drag and resize on the same element
+  const mergedRef = (el: HTMLDivElement | null) => {
+    if (dragRef) {
+      (dragRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+    }
+    if (resizeRef) {
+      (resizeRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+    }
+  };
+
+  return createPortal(
+    <div
+      ref={mergedRef}
+      style={{
+        ...dragStyle,
+        ...(isCollapsed ? {} : resizeStyle),
+      }}
+      className="bg-background/95 border-2 border-primary rounded-xl backdrop-blur-md shadow-[0_8px_32px_rgba(var(--primary-rgb),0.3)] flex flex-col pointer-events-auto z-50"
+    >
+      {/* Header with Drag Handle and Collapse Button */}
+      <div className="p-4 border-b border-primary/20 flex-shrink-0">
+        <div className="flex items-start justify-between mb-2">
+          <h3 className="text-sm font-bold text-primary" style={{ textShadow: '0 0 8px var(--primary)' }}>
+            Node Details
+          </h3>
+          <div className="flex items-center gap-2">
+            {/* Collapse Button */}
+            <button
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className="w-5 h-5 flex items-center justify-center cursor-pointer opacity-60 hover:opacity-100 transition-opacity text-primary"
+              title={isCollapsed ? 'Expand' : 'Collapse'}
+            >
+              <svg viewBox="0 0 16 16" fill="currentColor" className="w-3 h-3">
+                {isCollapsed ? (
+                  <path d="M8 4l4 4H4l4-4z" />
+                ) : (
+                  <path d="M4 6l4 4 4-4H4z" />
+                )}
+              </svg>
+            </button>
+            {/* Drag Handle */}
+            <div
+              ref={handleRef}
+              className="w-4 h-4 cursor-grab active:cursor-grabbing opacity-40 hover:opacity-80 transition-opacity"
+              title="Drag to move"
+            >
+              <svg viewBox="0 0 16 16" fill="currentColor" className="text-primary">
+                <circle cx="4" cy="4" r="1.5" />
+                <circle cx="12" cy="4" r="1.5" />
+                <circle cx="4" cy="8" r="1.5" />
+                <circle cx="12" cy="8" r="1.5" />
+                <circle cx="4" cy="12" r="1.5" />
+                <circle cx="12" cy="12" r="1.5" />
+              </svg>
+            </div>
+          </div>
+        </div>
         <p className="text-lg font-semibold text-foreground truncate" title={name}>{name}</p>
         <div className="flex items-center gap-2 mt-1">
           <span className="text-xs text-muted-foreground uppercase tracking-wide">{delayedNode.kind}</span>
@@ -53,8 +121,8 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
       </div>
 
       {/* Tabs */}
-      {hasAttributes && (
-        <div className="flex border-b border-primary/20">
+      {!isCollapsed && hasAttributes && (
+        <div className="flex border-b border-primary/20 flex-shrink-0">
           <button
             onClick={() => setActiveTab('details')}
             className={`flex-1 px-4 py-2 text-xs font-semibold transition-colors ${
@@ -79,7 +147,8 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
       )}
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto p-4">
+      {!isCollapsed && (
+        <div className="flex-1 overflow-y-auto p-4">
         {activeTab === 'details' && (
           <div className="space-y-3">
             <div className="bg-card/50 rounded-lg p-3 border border-border">
@@ -134,8 +203,24 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
             />
           </div>
         )}
-      </div>
-    </div>
+        </div>
+      )}
+
+      {/* Resize Handle */}
+      {!isCollapsed && (
+        <div
+          ref={resizeHandleRef}
+          className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize opacity-40 hover:opacity-80 transition-opacity"
+          title="Drag to resize"
+        >
+          <svg viewBox="0 0 16 16" fill="currentColor" className="text-primary">
+            <path d="M14 14L10 14L14 10z" />
+            <path d="M14 8L6 8L14 0z" />
+          </svg>
+        </div>
+      )}
+    </div>,
+    document.body
   );
 };
 

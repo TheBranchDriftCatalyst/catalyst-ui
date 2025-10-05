@@ -13,6 +13,7 @@ const LAYOUT_OPTIONS = [
   { value: 'structured' as LayoutKind, label: 'Structured (Columns)' },
   { value: 'community' as LayoutKind, label: 'Community (Smart)' },
   { value: 'dagre' as LayoutKind, label: 'Dagre (Mermaid)' },
+  { value: 'elk' as LayoutKind, label: 'ELK (Advanced)' },
 ];
 
 const FilterPanelLayout: React.FC<FilterPanelLayoutProps> = ({

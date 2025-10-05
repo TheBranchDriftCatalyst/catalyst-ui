@@ -27,6 +27,40 @@
   --destructive-foreground: hsl(222, 20%, 16%);
 
   --ring: hsl(222, 20%, 70%);
+
+  /* @token Typography - Clean Nordic aesthetic */
+  --font-heading: 'Inter', 'Helvetica Neue', sans-serif; /* @token */
+  --font-body: 'Inter', 'Arial', sans-serif; /* @token */
+  --font-mono: 'JetBrains Mono', 'Monaco', monospace; /* @token */
+
+  /* @token Neon Colors - Nordic aurora palette */
+  --neon-cyan: hsl(193, 70%, 58%); /* @token - frost cyan */
+  --neon-pink: hsl(350, 60%, 68%); /* @token - aurora pink */
+  --neon-purple: hsl(270, 55%, 65%); /* @token - nordic purple */
+  --neon-blue: hsl(213, 75%, 62%); /* @token - glacier blue */
+  --neon-red: hsl(0, 70%, 58%); /* @token - aurora red */
+  --neon-yellow: hsl(40, 65%, 70%); /* @token - polar yellow */
+  --neon-gold: hsl(35, 75%, 60%); /* @token - arctic gold */
+
+  /* @token RGB variants for rgba() usage */
+  --neon-cyan-rgb: 108, 194, 224; /* @token */
+  --neon-pink-rgb: 224, 138, 153; /* @token */
+  --neon-purple-rgb: 172, 131, 205; /* @token */
+  --neon-blue-rgb: 112, 166, 235; /* @token */
+  --neon-red-rgb: 217, 92, 92; /* @token */
+  --neon-yellow-rgb: 235, 203, 139; /* @token */
+  --neon-gold-rgb: 229, 165, 92; /* @token */
+
+  /* @token Glow Effects - Nordic aurora glow */
+  --glow-primary: 0 0 20px rgba(112, 166, 235, 0.3), 0 0 40px rgba(112, 166, 235, 0.15); /* @token */
+  --glow-secondary: 0 0 20px rgba(108, 194, 224, 0.35), 0 0 40px rgba(108, 194, 224, 0.18); /* @token */
+  --glow-accent: 0 0 15px rgba(172, 131, 205, 0.25); /* @token */
+  --glow-hover: 0 0 25px rgba(112, 166, 235, 0.4), 0 0 50px rgba(112, 166, 235, 0.2); /* @token */
+
+  /* @token Neon Shadows - Arctic frost */
+  --shadow-neon-sm: 0 2px 8px rgba(112, 166, 235, 0.12), 0 4px 16px rgba(108, 194, 224, 0.08); /* @token */
+  --shadow-neon-md: 0 4px 16px rgba(112, 166, 235, 0.16), 0 8px 32px rgba(108, 194, 224, 0.1); /* @token */
+  --shadow-neon-lg: 0 8px 24px rgba(112, 166, 235, 0.2), 0 16px 48px rgba(108, 194, 224, 0.12); /* @token */
 }
 
 /* Light mode - arctic clarity */
@@ -81,6 +115,35 @@
   --destructive-foreground: hsl(222, 20%, 96%);
 
   --ring: hsl(222, 20%, 40%);
+
+  /* @token Neon Colors - Nordic aurora palette */
+  --neon-cyan: hsl(193, 80%, 52%); /* @token - frost cyan */
+  --neon-pink: hsl(350, 65%, 62%); /* @token - aurora pink */
+  --neon-purple: hsl(270, 60%, 60%); /* @token - nordic purple */
+  --neon-blue: hsl(213, 80%, 58%); /* @token - glacier blue */
+  --neon-red: hsl(0, 75%, 55%); /* @token - aurora red */
+  --neon-yellow: hsl(40, 70%, 65%); /* @token - polar yellow */
+  --neon-gold: hsl(35, 80%, 55%); /* @token - arctic gold */
+
+  /* @token RGB variants for rgba() usage */
+  --neon-cyan-rgb: 85, 186, 217; /* @token */
+  --neon-pink-rgb: 214, 123, 138; /* @token */
+  --neon-purple-rgb: 163, 117, 199; /* @token */
+  --neon-blue-rgb: 99, 156, 230; /* @token */
+  --neon-red-rgb: 209, 84, 84; /* @token */
+  --neon-yellow-rgb: 230, 196, 128; /* @token */
+  --neon-gold-rgb: 222, 156, 79; /* @token */
+
+  /* @token Glow Effects - Nordic aurora glow */
+  --glow-primary: 0 0 20px rgba(99, 156, 230, 0.35), 0 0 40px rgba(99, 156, 230, 0.18); /* @token */
+  --glow-secondary: 0 0 20px rgba(85, 186, 217, 0.4), 0 0 40px rgba(85, 186, 217, 0.2); /* @token */
+  --glow-accent: 0 0 15px rgba(163, 117, 199, 0.3); /* @token */
+  --glow-hover: 0 0 25px rgba(99, 156, 230, 0.45), 0 0 50px rgba(99, 156, 230, 0.22); /* @token */
+
+  /* @token Neon Shadows - Arctic frost */
+  --shadow-neon-sm: 0 2px 8px rgba(99, 156, 230, 0.15), 0 4px 16px rgba(85, 186, 217, 0.1); /* @token */
+  --shadow-neon-md: 0 4px 16px rgba(99, 156, 230, 0.2), 0 8px 32px rgba(85, 186, 217, 0.12); /* @token */
+  --shadow-neon-lg: 0 8px 24px rgba(99, 156, 230, 0.25), 0 16px 48px rgba(85, 186, 217, 0.15); /* @token */
 }
 
 /* Dark mode - nordic night */

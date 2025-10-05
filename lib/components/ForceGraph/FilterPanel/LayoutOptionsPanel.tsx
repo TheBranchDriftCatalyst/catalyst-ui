@@ -51,7 +51,47 @@ export const LayoutOptionsPanel: React.FC = () => {
   }
 
   return (
-    <div className="mb-3 pb-3 border-b border-primary/30">
+    <>
+      <style>{`
+        .range-slider {
+          background: rgba(0, 200, 255, 0.15);
+          border-radius: 3px;
+        }
+        .range-slider::-webkit-slider-track {
+          height: 6px;
+          border-radius: 3px;
+          background: rgba(0, 200, 255, 0.25);
+          border: 1px solid rgba(0, 200, 255, 0.5);
+        }
+        .range-slider::-moz-range-track {
+          height: 6px;
+          border-radius: 3px;
+          background: rgba(0, 200, 255, 0.25);
+          border: 1px solid rgba(0, 200, 255, 0.5);
+        }
+        .range-slider::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: var(--primary);
+          border: 2px solid var(--background);
+          box-shadow: 0 0 10px rgba(0, 200, 255, 0.6);
+          cursor: pointer;
+          margin-top: -5px;
+        }
+        .range-slider::-moz-range-thumb {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background: var(--primary);
+          border: 2px solid var(--background);
+          box-shadow: 0 0 10px rgba(0, 200, 255, 0.6);
+          cursor: pointer;
+        }
+      `}</style>
+      <div className="mb-3 pb-3 border-b border-primary/30">
       <div className="flex items-center justify-between mb-2">
         <h4 className="text-xs font-semibold text-primary/80 tracking-wide uppercase">
           Layout Options
@@ -114,7 +154,7 @@ export const LayoutOptionsPanel: React.FC = () => {
                   step={field.step}
                   value={value}
                   onChange={(e) => handleChange(field.key, parseFloat(e.target.value))}
-                  className="w-full h-1.5 bg-background/50 rounded-lg appearance-none cursor-pointer accent-primary"
+                  className="w-full h-2 appearance-none cursor-pointer range-slider"
                 />
                 {field.description && (
                   <p className="text-[10px] text-foreground/40">{field.description}</p>
@@ -127,5 +167,6 @@ export const LayoutOptionsPanel: React.FC = () => {
         })}
       </div>
     </div>
+    </>
   );
 };

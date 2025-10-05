@@ -42,7 +42,7 @@ function KitchenSink() {
   const [sliderValue, setSliderValue] = useState([50]);
   const [codeTheme, setCodeTheme] = useState("catalyst");
   const [showLineNumbers, setShowLineNumbers] = useState(true);
-  const [selectedMermaid, setSelectedMermaid] = useState("solar");
+  const [selectedGraphExample, setSelectedGraphExample] = useState("docker");
   const [editableCode, setEditableCode] = useState(`async function fetchUserData(userId: string): Promise<User> {
   try {
     const response = await fetch(\`/api/users/\${userId}\`);
@@ -120,10 +120,10 @@ console.log(user.name);`);
                 Cards
               </TabsTrigger>
               <TabsTrigger value="forcegraph" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
-                Graph
+                ForceGraph
               </TabsTrigger>
-              <TabsTrigger value="mermaid" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
-                Mermaid
+              <TabsTrigger value="animations" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+                Animations
               </TabsTrigger>
             </TabsList>
           }
@@ -353,27 +353,33 @@ console.log(user.name);`);
               </CardContent>
             </Card>
 
-            {/* Typography Fonts */}
+            {/* Typography Fonts - Dynamic */}
             <Card>
               <CardHeader>
-                <CardTitle>Cybersynthpunk Typography</CardTitle>
-                <CardDescription>Custom Google Fonts for unique aesthetic</CardDescription>
+                <CardTitle>Theme Typography</CardTitle>
+                <CardDescription>Fonts change with each theme for unique aesthetics</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-2">
                   <div className="text-sm text-muted-foreground">Display Font (Headings)</div>
-                  <div className="text-4xl font-display uppercase tracking-wider">Orbitron - Futuristic & Bold</div>
-                  <code className="text-xs">font-family: 'Orbitron', sans-serif</code>
+                  <div className="text-4xl uppercase tracking-wider" style={{ fontFamily: 'var(--font-heading)' }}>
+                    The Quick Brown Fox
+                  </div>
+                  <code className="text-xs">var(--font-heading)</code>
                 </div>
                 <div className="space-y-2">
                   <div className="text-sm text-muted-foreground">Body Font</div>
-                  <div className="text-2xl font-sans">Rajdhani - Condensed & Modern</div>
-                  <code className="text-xs">font-family: 'Rajdhani', sans-serif</code>
+                  <div className="text-2xl" style={{ fontFamily: 'var(--font-body)' }}>
+                    The quick brown fox jumps over the lazy dog
+                  </div>
+                  <code className="text-xs">var(--font-body)</code>
                 </div>
                 <div className="space-y-2">
                   <div className="text-sm text-muted-foreground">Monospace Font (Code)</div>
-                  <div className="text-xl font-mono">Space Mono - Technical & Retro</div>
-                  <code className="text-xs">font-family: 'Space Mono', monospace</code>
+                  <div className="text-xl" style={{ fontFamily: 'var(--font-mono)' }}>
+                    const code = "monospace";
+                  </div>
+                  <code className="text-xs">var(--font-mono)</code>
                 </div>
               </CardContent>
             </Card>
@@ -753,19 +759,167 @@ const styles = {
         </div>
           </TabsContent>
 
+          {/* Animations Tab */}
+          <TabsContent value="animations" className="space-y-4 mt-0">
+        <Card>
+          <CardHeader>
+            <CardTitle>CSS Animations</CardTitle>
+            <CardDescription>
+              Ultra-subtle animations from the Catalyst theme • Hover to see effects • Best viewed in dark mode
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Border Shimmer */}
+            <div className="space-y-2">
+              <Label className="text-sm font-semibold">Border Shimmer</Label>
+              <div
+                className="h-32 rounded-lg border-2 flex items-center justify-center text-sm"
+                style={{
+                  borderColor: 'var(--primary)',
+                  animation: 'border-shimmer 8s linear infinite',
+                  background: 'linear-gradient(90deg, transparent, rgba(var(--neon-cyan-rgb), 0.05), transparent)'
+                }}
+              >
+                Subtle shimmer animation (8s loop)
+              </div>
+              <code className="text-xs text-muted-foreground">animation: border-shimmer 8s linear infinite</code>
+            </div>
+
+            {/* Laser Pulse */}
+            <div className="space-y-2">
+              <Label className="text-sm font-semibold">Laser Pulse</Label>
+              <div
+                className="h-32 rounded-lg bg-card flex items-center justify-center text-sm"
+                style={{
+                  animation: 'laser-pulse 8s ease-in-out infinite'
+                }}
+              >
+                Ultra-subtle pulsing glow (8s loop)
+              </div>
+              <code className="text-xs text-muted-foreground">animation: laser-pulse 8s ease-in-out infinite</code>
+            </div>
+
+            {/* Glitter */}
+            <div className="space-y-2">
+              <Label className="text-sm font-semibold">Glitter / Sparkle</Label>
+              <div
+                className="h-32 rounded-lg bg-primary/10 border border-primary flex items-center justify-center text-sm relative overflow-hidden"
+                style={{
+                  animation: 'glitter 8s ease-in-out infinite'
+                }}
+              >
+                Glimmer effect (8s loop)
+              </div>
+              <code className="text-xs text-muted-foreground">animation: glitter 8s ease-in-out infinite</code>
+            </div>
+
+            {/* Border Scan */}
+            <div className="space-y-2">
+              <Label className="text-sm font-semibold">Border Scan</Label>
+              <div
+                className="h-32 rounded-lg border-2 border-primary/30 flex items-center justify-center text-sm relative"
+                style={{
+                  animation: 'border-scan 4s linear infinite'
+                }}
+              >
+                Traveling light along border (4s loop)
+              </div>
+              <code className="text-xs text-muted-foreground">animation: border-scan 4s linear infinite</code>
+            </div>
+
+            {/* Neon Underline */}
+            <div className="space-y-2">
+              <Label className="text-sm font-semibold">Neon Underline (for links)</Label>
+              <div className="h-32 flex items-center justify-center">
+                <a
+                  href="#"
+                  className="text-2xl relative inline-block"
+                  style={{
+                    animation: 'neon-underline 4s ease-in-out infinite'
+                  }}
+                >
+                  Hover me for subtle glow
+                </a>
+              </div>
+              <code className="text-xs text-muted-foreground">animation: neon-underline 4s ease-in-out infinite</code>
+            </div>
+
+            {/* Hover Card Demo */}
+            <div className="space-y-2">
+              <Label className="text-sm font-semibold">Card Hover Effect</Label>
+              <Card className="hover:shadow-[var(--shadow-neon-lg)] transition-all duration-300 cursor-pointer">
+                <CardHeader>
+                  <CardTitle>Interactive Card</CardTitle>
+                  <CardDescription>Hover to see the laser-pulse animation</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  In the Catalyst dark theme, cards automatically get the laser-pulse animation on hover.
+                  This creates a very subtle, almost imperceptible glow that adds depth.
+                </CardContent>
+              </Card>
+              <code className="text-xs text-muted-foreground">.theme-catalyst.dark [class*="card"]:hover</code>
+            </div>
+
+            {/* Button Shimmer */}
+            <div className="space-y-2">
+              <Label className="text-sm font-semibold">Button Shimmer on Hover</Label>
+              <div className="flex gap-4">
+                <Button className="relative overflow-hidden">
+                  Hover for shimmer
+                </Button>
+                <Button variant="outline" className="relative overflow-hidden">
+                  Outline variant
+                </Button>
+                <Button variant="secondary" className="relative overflow-hidden">
+                  Secondary variant
+                </Button>
+              </div>
+              <code className="text-xs text-muted-foreground">Buttons get button-shimmer animation on hover (applied via theme CSS)</code>
+            </div>
+          </CardContent>
+          <CardFooter className="flex flex-col items-start gap-2 border-t pt-4">
+            <Typography variant="h4" className="text-sm font-semibold">Animation Design Philosophy:</Typography>
+            <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+              <li><strong>Ultra-Subtle</strong> - Opacity values reduced by 60-85% for barely perceptible effects</li>
+              <li><strong>Slow Timing</strong> - 4-10 second durations to avoid being distracting</li>
+              <li><strong>Theme-Specific</strong> - Only applied in Catalyst theme for cybersynthpunk aesthetic</li>
+              <li><strong>Performance</strong> - Uses GPU-accelerated properties (box-shadow, opacity, transform)</li>
+              <li><strong>Contextual</strong> - Applied on hover or specific elements to add depth without overwhelming</li>
+            </ul>
+          </CardFooter>
+        </Card>
+          </TabsContent>
+
           {/* Force Graph Tab */}
           <TabsContent value="forcegraph" className="space-y-4 mt-0">
         <Card>
           <CardHeader>
             <CardTitle>Force Graph Visualization</CardTitle>
             <CardDescription>
-              Interactive graph with D3.js force simulation, advanced filtering, and Docker resource visualization.
-              Click the ⚙️ icon to open the filter panel and experiment with all filtering features!
+              Interactive graph with D3.js force simulation • Docker resource visualization • Mermaid flowchart converter
             </CardDescription>
           </CardHeader>
-          <CardContent className="p-0">
-            <div className="h-[800px] w-full relative">
-              <ForceGraph data={(() => {
+          <CardContent className="space-y-4">
+            <div className="flex items-center gap-2">
+              <Label>Select Example:</Label>
+              <Select value={selectedGraphExample} onValueChange={setSelectedGraphExample}>
+                <SelectTrigger className="w-[300px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="docker">Docker Resources (Advanced Filtering)</SelectItem>
+                  <SelectItem value="mermaid-solar">Mermaid: Solar Power System</SelectItem>
+                  <SelectItem value="mermaid-basic">Mermaid: Basic Flowchart</SelectItem>
+                  <SelectItem value="mermaid-network">Mermaid: Network Topology</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="h-[800px] w-full relative border-2 border-primary/20 rounded-lg overflow-hidden">
+              {selectedGraphExample === "docker" && (
+              <ForceGraph
+                storageKey={`catalyst-ui.forcegraph.${selectedGraphExample}`}
+                data={(() => {
                 // Comprehensive dataset demonstrating all filtering features
                 const nodes: GraphData['nodes'] = {};
                 const edges: any[] = [];
@@ -878,60 +1032,22 @@ const styles = {
 
                 return { nodes, edges };
               })()} />
-            </div>
-          </CardContent>
-          <CardFooter className="flex flex-col items-start gap-2 border-t pt-4">
-            <Typography variant="h4" className="text-sm font-semibold">Features to Try:</Typography>
-            <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-              <li><strong>Filter Panel</strong> - Click ⚙️ to open advanced filtering options</li>
-              <li><strong>Quick Presets</strong> - Try "🔍 Orphaned", "▶️ Running", or "🎯 Minimal" filters</li>
-              <li><strong>Search</strong> - Search nodes by name or ID in the filter panel</li>
-              <li><strong>Node Types</strong> - Toggle visibility of containers, images, networks, volumes</li>
-              <li><strong>Edge Types</strong> - Show/hide derived_from, connected_to, mounted_into relationships</li>
-              <li><strong>Status Filters</strong> - Filter containers by running/stopped status</li>
-              <li><strong>Advanced Filters</strong> - Hide system resources, show in-use only, etc.</li>
-              <li><strong>Interactions</strong> - Drag nodes, zoom/pan, click for details, right-click to exclude</li>
-            </ul>
-          </CardFooter>
-        </Card>
-          </TabsContent>
+              )}
 
-          {/* Mermaid Graphs Tab */}
-          <TabsContent value="mermaid" className="space-y-4 mt-0">
-        <Card>
-          <CardHeader>
-            <CardTitle>Mermaid Flowchart → ForceGraph</CardTitle>
-            <CardDescription>
-              Convert Mermaid flowchart diagrams to interactive force-directed graphs automatically.
-              Select an example below or create your own .mmd file!
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center gap-2">
-              <Label>Select Example:</Label>
-              <Select value={selectedMermaid} onValueChange={setSelectedMermaid}>
-                <SelectTrigger className="w-[250px]">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="solar">Solar Power System</SelectItem>
-                  <SelectItem value="basic">Basic Flowchart</SelectItem>
-                  <SelectItem value="network">Network Topology</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="h-[700px] w-full relative border-2 border-primary/20 rounded-lg overflow-hidden">
-              {selectedMermaid === "solar" && (
+              {selectedGraphExample === "mermaid-solar" && (
                 <MermaidFlowChartGraph
                   filename="/mermaid/solar-system.mmd"
                   configuratorOptions={{
                     title: "SOLAR POWER SYSTEM",
                     colorStrategy: 'subgraph',
                   }}
+                  forceGraphProps={{
+                    storageKey: `catalyst-ui.forcegraph.${selectedGraphExample}`
+                  }}
                 />
               )}
-              {selectedMermaid === "basic" && (
+
+              {selectedGraphExample === "mermaid-basic" && (
                 <MermaidFlowChartGraph
                   mermaidText={`flowchart TB
       A[Start] --> B{Is it working?}
@@ -942,9 +1058,13 @@ const styles = {
                   configuratorOptions={{
                     title: "BASIC FLOWCHART",
                   }}
+                  forceGraphProps={{
+                    storageKey: `catalyst-ui.forcegraph.${selectedGraphExample}`
+                  }}
                 />
               )}
-              {selectedMermaid === "network" && (
+
+              {selectedGraphExample === "mermaid-network" && (
                 <MermaidFlowChartGraph
                   mermaidText={`flowchart TB
       subgraph "DMZ"
@@ -973,22 +1093,45 @@ const styles = {
                     title: "NETWORK TOPOLOGY",
                     colorStrategy: 'subgraph',
                   }}
+                  forceGraphProps={{
+                    storageKey: `catalyst-ui.forcegraph.${selectedGraphExample}`
+                  }}
                 />
               )}
             </div>
           </CardContent>
           <CardFooter className="flex flex-col items-start gap-2 border-t pt-4">
-            <Typography variant="h4" className="text-sm font-semibold">How it Works:</Typography>
-            <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-              <li><strong>Auto-Detection</strong> - Node types detected from Mermaid shapes (rectangles, diamonds, circles, etc.)</li>
-              <li><strong>Subgraph Grouping</strong> - Subgraphs become node categories with coordinated colors</li>
-              <li><strong>Edge Types</strong> - Solid ({'-->'}{')'} and dotted ({'.->'}{')'} arrows mapped to different edge styles</li>
-              <li><strong>Fully Interactive</strong> - Drag nodes, zoom/pan, filter, and explore just like regular ForceGraph</li>
-              <li><strong>Custom Styling</strong> - Override colors, icons, and labels via configuratorOptions prop</li>
-            </ul>
+            {selectedGraphExample === "docker" && (
+              <>
+                <Typography variant="h4" className="text-sm font-semibold">Docker Resources Features:</Typography>
+                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+                  <li><strong>Filter Panel</strong> - Click ⚙️ to open advanced filtering options</li>
+                  <li><strong>Quick Presets</strong> - Try "🔍 Orphaned", "▶️ Running", or "🎯 Minimal" filters</li>
+                  <li><strong>Search</strong> - Search nodes by name or ID in the filter panel</li>
+                  <li><strong>Node Types</strong> - Toggle visibility of containers, images, networks, volumes</li>
+                  <li><strong>Edge Types</strong> - Show/hide derived_from, connected_to, mounted_into relationships</li>
+                  <li><strong>Status Filters</strong> - Filter containers by running/stopped status</li>
+                  <li><strong>Advanced Filters</strong> - Hide system resources, show in-use only, etc.</li>
+                  <li><strong>Interactions</strong> - Drag nodes, zoom/pan, click for details, right-click to exclude</li>
+                </ul>
+              </>
+            )}
+            {selectedGraphExample.startsWith("mermaid") && (
+              <>
+                <Typography variant="h4" className="text-sm font-semibold">Mermaid Converter Features:</Typography>
+                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+                  <li><strong>Auto-Detection</strong> - Node types detected from Mermaid shapes (rectangles, diamonds, circles, etc.)</li>
+                  <li><strong>Subgraph Grouping</strong> - Subgraphs become node categories with coordinated colors</li>
+                  <li><strong>Edge Types</strong> - Solid ({'-->'}{')'} and dotted ({'.->'}{')'} arrows mapped to different edge styles</li>
+                  <li><strong>Fully Interactive</strong> - Drag nodes, zoom/pan, filter, and explore just like regular ForceGraph</li>
+                  <li><strong>Custom Styling</strong> - Override colors, icons, and labels via configuratorOptions prop</li>
+                  <li><strong>File Support</strong> - Load from .mmd files or provide inline mermaidText</li>
+                </ul>
+              </>
+            )}
           </CardFooter>
         </Card>
-        </TabsContent>
+          </TabsContent>
         </div>
       </Tabs>
     </div>

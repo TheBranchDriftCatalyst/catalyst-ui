@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import { useGraphFilters } from './hooks/useGraphFilters';
 import { useGraphState } from './hooks/useGraphState';
 import { useGraphConfig } from './context/GraphContext';
@@ -69,11 +70,12 @@ const GraphContentPanel: React.FC<GraphContentPanelProps> = ({ activeTab, onClos
     return null;
   }
 
-  return (
+  return createPortal(
     <div
-      className="fixed top-16 right-0 w-96 bottom-0 bg-background/98 backdrop-blur-[20px] z-50 overflow-y-auto border-l-2 border-primary shadow-[-8px_0_30px_rgba(var(--primary-rgb),0.2)] transition-all duration-300"
+      className="fixed top-16 right-0 w-96 bottom-0 bg-background/98 backdrop-blur-[20px] z-50 overflow-y-auto border-l-2 border-primary shadow-[-8px_0_30px_rgba(var(--primary-rgb),0.2)]"
       style={{
         animation: 'slideInRight 0.3s ease-out',
+        transform: 'translateZ(0)',
       }}
     >
       <style>
@@ -94,7 +96,7 @@ const GraphContentPanel: React.FC<GraphContentPanelProps> = ({ activeTab, onClos
       {/* Close button */}
       <button
         onClick={onClose}
-        className="absolute top-3 right-3 w-8 h-8 bg-background/95 border border-primary/50 rounded-full text-primary cursor-pointer flex items-center justify-center transition-all duration-300 hover:border-primary hover:shadow-[0_0_15px_rgba(var(--primary-rgb),0.4)]"
+        className="absolute top-3 right-3 w-8 h-8 bg-background/95 border border-primary/50 rounded-full text-primary cursor-pointer flex items-center justify-center transition-[border-color,box-shadow] duration-200 hover:border-primary hover:shadow-[0_0_15px_rgba(var(--primary-rgb),0.4)]"
         title="Close Panel"
       >
         <span className="text-xs">✖</span>
@@ -206,7 +208,8 @@ const GraphContentPanel: React.FC<GraphContentPanelProps> = ({ activeTab, onClos
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

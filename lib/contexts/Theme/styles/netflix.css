@@ -27,6 +27,40 @@
   --destructive-foreground: hsl(0, 0%, 100%);
 
   --ring: hsl(0, 100%, 44%);
+
+  /* @token Typography - Bold cinematic aesthetic */
+  --font-heading: 'Bebas Neue', 'Impact', sans-serif; /* @token */
+  --font-body: 'Netflix Sans', 'Helvetica Neue', sans-serif; /* @token */
+  --font-mono: 'Source Code Pro', 'Courier New', monospace; /* @token */
+
+  /* @token Neon Colors - Cinematic palette */
+  --neon-cyan: hsl(180, 85%, 50%); /* @token - dramatic cyan */
+  --neon-pink: hsl(340, 100%, 65%); /* @token - hot pink */
+  --neon-purple: hsl(280, 90%, 58%); /* @token - theatrical purple */
+  --neon-blue: hsl(210, 100%, 58%); /* @token - electric blue */
+  --neon-red: hsl(0, 100%, 44%); /* @token - Netflix red */
+  --neon-yellow: hsl(45, 100%, 60%); /* @token - warm amber */
+  --neon-gold: hsl(38, 100%, 55%); /* @token - bright gold */
+
+  /* @token RGB variants for rgba() usage */
+  --neon-cyan-rgb: 19, 218, 218; /* @token */
+  --neon-pink-rgb: 255, 107, 153; /* @token */
+  --neon-purple-rgb: 182, 56, 227; /* @token */
+  --neon-blue-rgb: 54, 148, 255; /* @token */
+  --neon-red-rgb: 224, 9, 9; /* @token */
+  --neon-yellow-rgb: 255, 204, 51; /* @token */
+  --neon-gold-rgb: 255, 166, 38; /* @token */
+
+  /* @token Glow Effects - Cinematic drama */
+  --glow-primary: 0 0 20px rgba(224, 9, 9, 0.4), 0 0 40px rgba(224, 9, 9, 0.2); /* @token */
+  --glow-secondary: 0 0 20px rgba(255, 107, 153, 0.4), 0 0 40px rgba(255, 107, 153, 0.2); /* @token */
+  --glow-accent: 0 0 15px rgba(255, 204, 51, 0.35); /* @token */
+  --glow-hover: 0 0 25px rgba(224, 9, 9, 0.55), 0 0 50px rgba(224, 9, 9, 0.3); /* @token */
+
+  /* @token Neon Shadows - Hollywood spotlight */
+  --shadow-neon-sm: 0 2px 8px rgba(224, 9, 9, 0.2), 0 4px 16px rgba(255, 204, 51, 0.1); /* @token */
+  --shadow-neon-md: 0 4px 16px rgba(224, 9, 9, 0.25), 0 8px 32px rgba(255, 204, 51, 0.12); /* @token */
+  --shadow-neon-lg: 0 8px 24px rgba(224, 9, 9, 0.3), 0 16px 48px rgba(255, 204, 51, 0.15); /* @token */
 }
 
 /* Light mode - crisp modern */
@@ -85,6 +119,40 @@
   --destructive-foreground: hsl(0, 0%, 100%);
 
   --ring: hsl(0, 100%, 44%);
+
+  /* @token Typography - Bold cinematic aesthetic */
+  --font-heading: 'Bebas Neue', 'Impact', sans-serif; /* @token */
+  --font-body: 'Netflix Sans', 'Helvetica Neue', sans-serif; /* @token */
+  --font-mono: 'Source Code Pro', 'Courier New', monospace; /* @token */
+
+  /* @token Neon Colors - Cinematic palette */
+  --neon-cyan: hsl(180, 90%, 48%); /* @token - dramatic cyan */
+  --neon-pink: hsl(340, 100%, 60%); /* @token - hot pink */
+  --neon-purple: hsl(280, 95%, 55%); /* @token - theatrical purple */
+  --neon-blue: hsl(210, 100%, 55%); /* @token - electric blue */
+  --neon-red: hsl(0, 100%, 44%); /* @token - Netflix red */
+  --neon-yellow: hsl(45, 100%, 58%); /* @token - warm amber */
+  --neon-gold: hsl(38, 100%, 52%); /* @token - bright gold */
+
+  /* @token RGB variants for rgba() usage */
+  --neon-cyan-rgb: 12, 213, 213; /* @token */
+  --neon-pink-rgb: 255, 92, 143; /* @token */
+  --neon-purple-rgb: 176, 43, 224; /* @token */
+  --neon-blue-rgb: 46, 140, 255; /* @token */
+  --neon-red-rgb: 224, 9, 9; /* @token */
+  --neon-yellow-rgb: 255, 199, 46; /* @token */
+  --neon-gold-rgb: 255, 158, 26; /* @token */
+
+  /* @token Glow Effects - Cinematic drama */
+  --glow-primary: 0 0 20px rgba(224, 9, 9, 0.5), 0 0 40px rgba(224, 9, 9, 0.25); /* @token */
+  --glow-secondary: 0 0 20px rgba(255, 92, 143, 0.45), 0 0 40px rgba(255, 92, 143, 0.22); /* @token */
+  --glow-accent: 0 0 15px rgba(255, 199, 46, 0.4); /* @token */
+  --glow-hover: 0 0 25px rgba(224, 9, 9, 0.6), 0 0 50px rgba(224, 9, 9, 0.35); /* @token */
+
+  /* @token Neon Shadows - Hollywood spotlight */
+  --shadow-neon-sm: 0 2px 8px rgba(224, 9, 9, 0.25), 0 4px 16px rgba(255, 199, 46, 0.12); /* @token */
+  --shadow-neon-md: 0 4px 16px rgba(224, 9, 9, 0.3), 0 8px 32px rgba(255, 199, 46, 0.15); /* @token */
+  --shadow-neon-lg: 0 8px 24px rgba(224, 9, 9, 0.4), 0 16px 48px rgba(255, 199, 46, 0.2); /* @token */
 }
 
 /* Dark mode - bold cinematic */

@@ -27,6 +27,40 @@
   --destructive-foreground: hsl(58, 65%, 83%);
 
   --ring: hsl(93, 28%, 56%);
+
+  /* @token Typography - Organic earthy aesthetic */
+  --font-heading: 'Libre Baskerville', 'Palatino', serif; /* @token */
+  --font-body: 'Merriweather', 'Georgia', serif; /* @token */
+  --font-mono: 'Ubuntu Mono', 'Consolas', monospace; /* @token */
+
+  /* @token Neon Colors - Organic earth palette */
+  --neon-cyan: hsl(175, 60%, 55%); /* @token - sea green */
+  --neon-pink: hsl(10, 70%, 65%); /* @token - coral salmon */
+  --neon-purple: hsl(270, 40%, 65%); /* @token - organic lavender */
+  --neon-blue: hsl(200, 65%, 60%); /* @token - sky blue */
+  --neon-red: hsl(12, 60%, 55%); /* @token - terra cotta */
+  --neon-yellow: hsl(48, 75%, 65%); /* @token - soft sunny */
+  --neon-gold: hsl(35, 70%, 58%); /* @token - earthy gold */
+
+  /* @token RGB variants for rgba() usage */
+  --neon-cyan-rgb: 112, 209, 189; /* @token */
+  --neon-pink-rgb: 227, 138, 115; /* @token */
+  --neon-purple-rgb: 176, 143, 207; /* @token */
+  --neon-blue-rgb: 122, 184, 235; /* @token */
+  --neon-red-rgb: 207, 113, 92; /* @token */
+  --neon-yellow-rgb: 237, 212, 133; /* @token */
+  --neon-gold-rgb: 227, 156, 92; /* @token */
+
+  /* @token Glow Effects - Natural bioluminescence */
+  --glow-primary: 0 0 20px rgba(106, 153, 85, 0.35), 0 0 40px rgba(106, 153, 85, 0.18); /* @token */
+  --glow-secondary: 0 0 20px rgba(112, 209, 189, 0.35), 0 0 40px rgba(112, 209, 189, 0.18); /* @token */
+  --glow-accent: 0 0 15px rgba(237, 212, 133, 0.3); /* @token */
+  --glow-hover: 0 0 25px rgba(106, 153, 85, 0.45), 0 0 50px rgba(106, 153, 85, 0.22); /* @token */
+
+  /* @token Neon Shadows - Forest glade */
+  --shadow-neon-sm: 0 2px 8px rgba(106, 153, 85, 0.15), 0 4px 16px rgba(112, 209, 189, 0.1); /* @token */
+  --shadow-neon-md: 0 4px 16px rgba(106, 153, 85, 0.2), 0 8px 32px rgba(112, 209, 189, 0.12); /* @token */
+  --shadow-neon-lg: 0 8px 24px rgba(106, 153, 85, 0.25), 0 16px 48px rgba(112, 209, 189, 0.15); /* @token */
 }
 
 /* Light mode - organic freshness */
@@ -86,6 +120,40 @@
   --destructive-foreground: hsl(187, 33%, 43%);
 
   --ring: hsl(93, 28%, 56%);
+
+  /* @token Typography - Organic earthy aesthetic */
+  --font-heading: 'Libre Baskerville', 'Palatino', serif; /* @token */
+  --font-body: 'Merriweather', 'Georgia', serif; /* @token */
+  --font-mono: 'Ubuntu Mono', 'Consolas', monospace; /* @token */
+
+  /* @token Neon Colors - Organic earth palette */
+  --neon-cyan: hsl(175, 65%, 50%); /* @token - sea green */
+  --neon-pink: hsl(10, 75%, 60%); /* @token - coral salmon */
+  --neon-purple: hsl(270, 45%, 60%); /* @token - organic lavender */
+  --neon-blue: hsl(200, 70%, 56%); /* @token - sky blue */
+  --neon-red: hsl(12, 65%, 52%); /* @token - terra cotta */
+  --neon-yellow: hsl(48, 80%, 60%); /* @token - soft sunny */
+  --neon-gold: hsl(35, 75%, 55%); /* @token - earthy gold */
+
+  /* @token RGB variants for rgba() usage */
+  --neon-cyan-rgb: 96, 204, 182; /* @token */
+  --neon-pink-rgb: 222, 128, 102; /* @token */
+  --neon-purple-rgb: 166, 128, 199; /* @token */
+  --neon-blue-rgb: 110, 176, 230; /* @token */
+  --neon-red-rgb: 201, 105, 84; /* @token */
+  --neon-yellow-rgb: 235, 207, 122; /* @token */
+  --neon-gold-rgb: 222, 148, 79; /* @token */
+
+  /* @token Glow Effects - Natural bioluminescence */
+  --glow-primary: 0 0 20px rgba(106, 153, 85, 0.4), 0 0 40px rgba(106, 153, 85, 0.2); /* @token */
+  --glow-secondary: 0 0 20px rgba(96, 204, 182, 0.4), 0 0 40px rgba(96, 204, 182, 0.2); /* @token */
+  --glow-accent: 0 0 15px rgba(235, 207, 122, 0.35); /* @token */
+  --glow-hover: 0 0 25px rgba(106, 153, 85, 0.5), 0 0 50px rgba(106, 153, 85, 0.25); /* @token */
+
+  /* @token Neon Shadows - Forest glade */
+  --shadow-neon-sm: 0 2px 8px rgba(106, 153, 85, 0.2), 0 4px 16px rgba(96, 204, 182, 0.12); /* @token */
+  --shadow-neon-md: 0 4px 16px rgba(106, 153, 85, 0.25), 0 8px 32px rgba(96, 204, 182, 0.15); /* @token */
+  --shadow-neon-lg: 0 8px 24px rgba(106, 153, 85, 0.3), 0 16px 48px rgba(96, 204, 182, 0.18); /* @token */
 }
 
 /* Dark mode - forest depth */

@@ -162,9 +162,9 @@ const ForceGraphInner: React.FC<{ data: any; config?: GraphConfig<any, any> }> =
 };
 
 // Main component with provider
-const ForceGraph: React.FC<ForceGraphProps> = ({ data, config = DockerGraphConfig }) => {
+const ForceGraph: React.FC<ForceGraphProps> = ({ data, config = DockerGraphConfig, storageKey }) => {
   return (
-    <GraphProvider config={config}>
+    <GraphProvider key={storageKey} config={config} storageKey={storageKey}>
       <ForceGraphInner data={data} config={config} />
     </GraphProvider>
   );

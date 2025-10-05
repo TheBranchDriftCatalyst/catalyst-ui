@@ -10,6 +10,7 @@ import {
   applyStructuredLayout,
   applyCommunityLayout,
   applyDagreLayout,
+  applyELKLayout,
 } from './utils/layouts';
 
 const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
@@ -39,129 +40,157 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
       return;
     }
 
-    const { width, height } = dimensions;
-    const enriched = enrichGraph(data);
+    let cleanup = () => {};
+    let isCancelled = false;
 
-    const allNodes = Object.values(enriched.nodes) as NodeWithHelpers[];
-    const filteredNodes = allNodes.filter((n) => visibleNodes[n.kind]);
+    const applyLayoutAsync = async () => {
+      const { width, height } = dimensions;
+      const enriched = enrichGraph(data);
 
-    const rawLinks = enriched.edges as EdgeWithHelpers[];
-    const filteredLinks = rawLinks.filter(
-      (l) => visibleEdges[l.kind as EdgeKind] && l.source && l.target
-    );
+      const allNodes = Object.values(enriched.nodes) as NodeWithHelpers[];
+      const filteredNodes = allNodes.filter((n) => visibleNodes[n.kind]);
 
-    // Apply layout based on selected strategy
-    let simulation: d3.Simulation<any, undefined> | null = null;
+      const rawLinks = enriched.edges as EdgeWithHelpers[];
+      const filteredLinks = rawLinks.filter(
+        (l) => visibleEdges[l.kind as EdgeKind] && l.source && l.target
+      );
 
-    switch (layout) {
-      case 'structured':
-        // Column-based grouping by kind (static layout)
-        try {
-          applyStructuredLayout(
-            filteredNodes as NodeData[],
-            filteredLinks as EdgeData[],
-            { width, height },
-            layoutOptions
-          );
-        } catch (e) {
-          console.error('Structured layout failed:', e);
+      // Apply layout based on selected strategy
+      let simulation: d3.Simulation<any, undefined> | null = null;
+
+      switch (layout) {
+        case 'structured':
+          // Column-based grouping by kind (static layout)
+          try {
+            applyStructuredLayout(
+              filteredNodes as NodeData[],
+              filteredLinks as EdgeData[],
+              { width, height },
+              layoutOptions
+            );
+          } catch (e) {
+            console.error('Structured layout failed:', e);
+          }
+          break;
+
+        case 'community':
+          // Community detection + hierarchical force (dynamic layout)
+          try {
+            simulation = applyCommunityLayout(
+              filteredNodes as NodeData[],
+              filteredLinks as EdgeData[],
+              { width, height },
+              layoutOptions
+            );
+          } catch (e) {
+            console.error('Community layout failed:', e);
+          }
+          break;
+
+        case 'dagre':
+          // Dagre layered graph (Mermaid-style, static layout)
+          try {
+            applyDagreLayout(
+              filteredNodes as NodeData[],
+              filteredLinks as EdgeData[],
+              { width, height },
+              layoutOptions
+            );
+          } catch (e) {
+            console.error('Dagre layout failed:', e);
+          }
+          break;
+
+        case 'elk':
+          // ELK (Eclipse Layout Kernel) - Advanced hierarchical (async, static layout)
+          try {
+            await applyELKLayout(
+              filteredNodes as NodeData[],
+              filteredLinks as EdgeData[],
+              { width, height },
+              layoutOptions
+            );
+          } catch (e) {
+            console.error('ELK layout failed:', e);
+          }
+          break;
+
+        case 'force':
+        default:
+          // D3 force simulation (dynamic layout)
+          try {
+            simulation = applyForceLayout(
+              filteredNodes as NodeData[],
+              filteredLinks as EdgeData[],
+              { width, height },
+              layoutOptions
+            );
+          } catch (e) {
+            console.error('Force layout failed:', e);
+          }
+          break;
+      }
+
+      if (isCancelled) return;
+
+      // For static layouts (structured, dagre, elk), skip simulation
+      if (!simulation) {
+        setNodes(filteredNodes);
+        setEdges(filteredLinks);
+        return;
+      }
+
+      // For force-based layouts, set up simulation tick handler
+      const sim = simulation;
+
+      sim.on('tick', () => {
+        setNodes([...filteredNodes]);
+        setEdges([...filteredLinks]);
+      });
+
+      // Capture charge force for dynamic rebalancing
+      try {
+        const f = (sim.force as any) ? (sim.force as any)('charge') : null;
+        if (f) {
+          chargeForceRef.current = f;
         }
-        break;
+      } catch (e) { }
 
-      case 'community':
-        // Community detection + hierarchical force (dynamic layout)
+      // Rebalance on node count increase
+      const prevCount = prevNodeCountRef.current || 0;
+      const newCount = filteredNodes.length;
+      if (newCount > prevCount && simulationRef.current) {
         try {
-          simulation = applyCommunityLayout(
-            filteredNodes as NodeData[],
-            filteredLinks as EdgeData[],
-            { width, height },
-            layoutOptions
-          );
-        } catch (e) {
-          console.error('Community layout failed:', e);
-        }
-        break;
+          const boost = Math.min(3, Math.max(1.2, newCount / Math.max(1, prevCount || 1)));
+          if (chargeForceRef.current && typeof chargeForceRef.current.strength === 'function') {
+            const current = -80;
+            chargeForceRef.current.strength(-Math.abs(current * boost));
+          }
+          sim.alpha(0.6);
+          sim.restart();
+          setTimeout(() => {
+            if (chargeForceRef.current && typeof chargeForceRef.current.strength === 'function') {
+              chargeForceRef.current.strength(-80);
+            }
+          }, 1200);
+        } catch (e) { }
+      }
+      prevNodeCountRef.current = newCount;
 
-      case 'dagre':
-        // Dagre layered graph (Mermaid-style, static layout)
-        try {
-          applyDagreLayout(
-            filteredNodes as NodeData[],
-            filteredLinks as EdgeData[],
-            { width, height },
-            layoutOptions
-          );
-        } catch (e) {
-          console.error('Dagre layout failed:', e);
-        }
-        break;
-
-      case 'force':
-      default:
-        // D3 force simulation (dynamic layout)
-        try {
-          simulation = applyForceLayout(
-            filteredNodes as NodeData[],
-            filteredLinks as EdgeData[],
-            { width, height },
-            layoutOptions
-          );
-        } catch (e) {
-          console.error('Force layout failed:', e);
-        }
-        break;
-    }
-
-    // For static layouts (structured), skip simulation
-    if (!simulation) {
+      simulationRef.current = sim;
       setNodes(filteredNodes);
       setEdges(filteredLinks);
-      return () => { };
-    }
 
-    // For force-based layouts, set up simulation tick handler
-    const sim = simulation;
+      cleanup = () => {
+        sim.stop();
+      };
+    };
 
-    sim.on('tick', () => {
-      setNodes([...filteredNodes]);
-      setEdges([...filteredLinks]);
-    });
-
-    // Capture charge force for dynamic rebalancing
-    try {
-      const f = (sim.force as any) ? (sim.force as any)('charge') : null;
-      if (f) {
-        chargeForceRef.current = f;
-      }
-    } catch (e) { }
-
-    // Rebalance on node count increase
-    const prevCount = prevNodeCountRef.current || 0;
-    const newCount = filteredNodes.length;
-    if (newCount > prevCount && simulationRef.current) {
-      try {
-        const boost = Math.min(3, Math.max(1.2, newCount / Math.max(1, prevCount || 1)));
-        if (chargeForceRef.current && typeof chargeForceRef.current.strength === 'function') {
-          const current = -80;
-          chargeForceRef.current.strength(-Math.abs(current * boost));
-        }
-        sim.alpha(0.6);
-        sim.restart();
-        setTimeout(() => {
-          if (chargeForceRef.current && typeof chargeForceRef.current.strength === 'function') {
-            chargeForceRef.current.strength(-80);
-          }
-        }, 1200);
-      } catch (e) { }
-    }
-    prevNodeCountRef.current = newCount;
-
-    simulationRef.current = sim;
-    setNodes(filteredNodes);
-    setEdges(filteredLinks);
+    applyLayoutAsync();
 
     return () => {
-      sim.stop();
+      isCancelled = true;
+      cleanup();
     };
   }, [data, dimensions, visibleNodes, visibleEdges, layout, layoutOptions, orthogonalEdges]);
 
@@ -171,7 +200,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
       event?.sourceEvent?.stopPropagation();
     } catch (e) { }
 
-    if (layout === 'structured') {
+    if (layout === 'structured' || layout === 'dagre' || layout === 'elk') {
       node.fx = node.x;
       node.fy = node.y;
       return;
@@ -203,7 +232,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
       event?.sourceEvent?.stopPropagation();
     } catch (e) { }
 
-    if (layout === 'structured') {
+    if (layout === 'structured' || layout === 'dagre' || layout === 'elk') {
       node.fx = node.x;
       node.fy = node.y;
       // Trigger React update for static layouts
