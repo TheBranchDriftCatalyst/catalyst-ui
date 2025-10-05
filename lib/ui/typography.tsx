@@ -18,6 +18,8 @@ const typographyVariants = cva("", {
       lg: "text-lg sm:text-xl md:text-2xl",
       xl: "text-xl sm:text-2xl md:text-3xl",
       "2xl": "text-2xl sm:text-3xl md:text-4xl",
+      h6: "text-sm sm:text-base md:text-lg font-semibold tracking-wide",
+      h5: "text-base sm:text-lg md:text-xl font-semibold tracking-wide",
       h4: "text-lg sm:text-xl md:text-2xl font-bold tracking-[0.05em] uppercase",
       "3xl": "text-3xl sm:text-4xl md:text-5xl",
       h3: "text-xl sm:text-2xl md:text-3xl font-bold tracking-[0.05em] uppercase",
@@ -32,10 +34,14 @@ const typographyVariants = cva("", {
       h2: "font-display",
       h3: "font-display",
       h4: "font-display",
+      h5: "font-display text-base font-semibold tracking-wide",
+      h6: "font-display text-sm font-semibold tracking-wide",
       p: "font-sans",
       blockquote: "border-l-4 pl-4 italic font-sans",
       code: "font-mono text-sm bg-muted px-1 py-0.5 rounded",
       lead: "text-xl font-medium font-sans tracking-wide",
+      large: "text-lg font-sans",
+      small: "text-sm font-sans",
       muted: "text-muted-foreground font-sans",
     },
   },
@@ -105,11 +111,29 @@ const ResponsiveTypography = React.forwardRef<
   ) => {
     // const { width } = useWidgetWidth();
     // If variant is provided and matches a heading, use it as size and tag
-    const resolvedSize = variant && ['h1', 'h2', 'h3', 'h4'].includes(variant)
+    const resolvedSize = variant && ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(variant)
       ? variant as TypographySize
       : size;
-    const resolvedTag = variant && ['h1', 'h2', 'h3', 'h4'].includes(variant)
-      ? variant
+
+    // Map variant to valid HTML element type
+    const variantTagMap: Record<string, keyof JSX.IntrinsicElements> = {
+      h1: 'h1',
+      h2: 'h2',
+      h3: 'h3',
+      h4: 'h4',
+      h5: 'h5',
+      h6: 'h6',
+      p: 'p',
+      blockquote: 'blockquote',
+      code: 'code',
+      lead: 'p',
+      large: 'p',
+      small: 'small',
+      muted: 'p',
+    };
+
+    const resolvedTag = variant && variantTagMap[variant]
+      ? variantTagMap[variant]
       : tag;
 
     const Comp: React.ElementType = asChild ? Slot : resolvedTag || "p";
