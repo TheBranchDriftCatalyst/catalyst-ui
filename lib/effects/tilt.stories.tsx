@@ -92,144 +92,6 @@ export const Extreme: Story = {
   ),
 };
 
-export const NoScale: Story = {
-  render: () => (
-    <Tilt tiltMaxAngleX={15} tiltMaxAngleY={15} scale={1} perspective={1000}>
-      <DemoCard>
-        <p className="text-sm text-muted-foreground">
-          Tilt without scaling. The card tilts but maintains its original size.
-        </p>
-      </DemoCard>
-    </Tilt>
-  ),
-};
-
-export const HighPerspective: Story = {
-  render: () => (
-    <Tilt tiltMaxAngleX={20} tiltMaxAngleY={20} scale={1.05} perspective={3000}>
-      <DemoCard>
-        <p className="text-sm text-muted-foreground">
-          High perspective value (3000) creates a more distant, subtle 3D effect.
-        </p>
-      </DemoCard>
-    </Tilt>
-  ),
-};
-
-export const LowPerspective: Story = {
-  render: () => (
-    <Tilt tiltMaxAngleX={20} tiltMaxAngleY={20} scale={1.05} perspective={400}>
-      <DemoCard>
-        <p className="text-sm text-muted-foreground">
-          Low perspective value (400) creates a more pronounced, dramatic 3D effect.
-        </p>
-      </DemoCard>
-    </Tilt>
-  ),
-};
-
-export const FastTransition: Story = {
-  render: () => (
-    <Tilt tiltMaxAngleX={15} tiltMaxAngleY={15} scale={1.05} transitionSpeed={100}>
-      <DemoCard>
-        <p className="text-sm text-muted-foreground">
-          Fast transition (100ms). The card responds very quickly to mouse movement.
-        </p>
-      </DemoCard>
-    </Tilt>
-  ),
-};
-
-export const SlowTransition: Story = {
-  render: () => (
-    <Tilt tiltMaxAngleX={15} tiltMaxAngleY={15} scale={1.05} transitionSpeed={1500}>
-      <DemoCard>
-        <p className="text-sm text-muted-foreground">
-          Slow transition (1500ms). The card responds slowly and smoothly to mouse movement.
-        </p>
-      </DemoCard>
-    </Tilt>
-  ),
-};
-
-export const XAxisOnly: Story = {
-  render: () => (
-    <Tilt tiltMaxAngleX={25} tiltMaxAngleY={0} scale={1.05} perspective={1000}>
-      <DemoCard>
-        <p className="text-sm text-muted-foreground">
-          Tilt only on the X axis. The card tilts up and down but not left and right.
-        </p>
-      </DemoCard>
-    </Tilt>
-  ),
-};
-
-export const YAxisOnly: Story = {
-  render: () => (
-    <Tilt tiltMaxAngleX={0} tiltMaxAngleY={25} scale={1.05} perspective={1000}>
-      <DemoCard>
-        <p className="text-sm text-muted-foreground">
-          Tilt only on the Y axis. The card tilts left and right but not up and down.
-        </p>
-      </DemoCard>
-    </Tilt>
-  ),
-};
-
-export const Comparison: Story = {
-  render: () => (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-8">
-      <div className="text-center space-y-4">
-        <h3 className="text-sm font-semibold">Subtle</h3>
-        <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} perspective={1500}>
-          <Card className="w-[240px]">
-            <CardHeader>
-              <CardTitle className="text-base">Subtle</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-muted-foreground">
-                5° angles, 1.02 scale
-              </p>
-            </CardContent>
-          </Card>
-        </Tilt>
-      </div>
-
-      <div className="text-center space-y-4">
-        <h3 className="text-sm font-semibold">Default</h3>
-        <Tilt tiltMaxAngleX={20} tiltMaxAngleY={20} scale={1.05} perspective={1000}>
-          <Card className="w-[240px]">
-            <CardHeader>
-              <CardTitle className="text-base">Default</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-muted-foreground">
-                20° angles, 1.05 scale
-              </p>
-            </CardContent>
-          </Card>
-        </Tilt>
-      </div>
-
-      <div className="text-center space-y-4">
-        <h3 className="text-sm font-semibold">Extreme</h3>
-        <Tilt tiltMaxAngleX={35} tiltMaxAngleY={35} scale={1.2} perspective={500}>
-          <Card className="w-[240px]">
-            <CardHeader>
-              <CardTitle className="text-base">Extreme</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-xs text-muted-foreground">
-                35° angles, 1.2 scale
-              </p>
-            </CardContent>
-          </Card>
-        </Tilt>
-      </div>
-    </div>
-  ),
-};
-
 export const Interactive: Story = {
   render: () => {
     const [angleX, setAngleX] = useState(15);
@@ -316,64 +178,56 @@ export const Interactive: Story = {
   },
 };
 
-export const MultipleCards: Story = {
+export const Comparison: Story = {
   render: () => (
-    <div className="grid grid-cols-2 gap-6 p-8">
-      <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} scale={1.03} perspective={1200}>
-        <Card className="w-[280px]">
-          <CardHeader>
-            <CardTitle>Card 1</CardTitle>
-            <CardDescription>Each card tilts independently</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Hover over each card to see individual tilt effects.
-            </p>
-          </CardContent>
-        </Card>
-      </Tilt>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-8">
+      <div className="text-center space-y-4">
+        <h3 className="text-sm font-semibold">Subtle</h3>
+        <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} perspective={1500}>
+          <Card className="w-[240px]">
+            <CardHeader>
+              <CardTitle className="text-base">Subtle</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs text-muted-foreground">
+                5° angles, 1.02 scale
+              </p>
+            </CardContent>
+          </Card>
+        </Tilt>
+      </div>
 
-      <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} scale={1.03} perspective={1200}>
-        <Card className="w-[280px]">
-          <CardHeader>
-            <CardTitle>Card 2</CardTitle>
-            <CardDescription>Independent tilt instances</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Each Tilt wrapper maintains its own state.
-            </p>
-          </CardContent>
-        </Card>
-      </Tilt>
+      <div className="text-center space-y-4">
+        <h3 className="text-sm font-semibold">Default</h3>
+        <Tilt tiltMaxAngleX={20} tiltMaxAngleY={20} scale={1.05} perspective={1000}>
+          <Card className="w-[240px]">
+            <CardHeader>
+              <CardTitle className="text-base">Default</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs text-muted-foreground">
+                20° angles, 1.05 scale
+              </p>
+            </CardContent>
+          </Card>
+        </Tilt>
+      </div>
 
-      <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} scale={1.03} perspective={1200}>
-        <Card className="w-[280px]">
-          <CardHeader>
-            <CardTitle>Card 3</CardTitle>
-            <CardDescription>Consistent configuration</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              All cards use the same tilt settings.
-            </p>
-          </CardContent>
-        </Card>
-      </Tilt>
-
-      <Tilt tiltMaxAngleX={10} tiltMaxAngleY={10} scale={1.03} perspective={1200}>
-        <Card className="w-[280px]">
-          <CardHeader>
-            <CardTitle>Card 4</CardTitle>
-            <CardDescription>Synchronized styling</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Great for galleries and card grids.
-            </p>
-          </CardContent>
-        </Card>
-      </Tilt>
+      <div className="text-center space-y-4">
+        <h3 className="text-sm font-semibold">Extreme</h3>
+        <Tilt tiltMaxAngleX={35} tiltMaxAngleY={35} scale={1.2} perspective={500}>
+          <Card className="w-[240px]">
+            <CardHeader>
+              <CardTitle className="text-base">Extreme</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-xs text-muted-foreground">
+                35° angles, 1.2 scale
+              </p>
+            </CardContent>
+          </Card>
+        </Tilt>
+      </div>
     </div>
   ),
 };

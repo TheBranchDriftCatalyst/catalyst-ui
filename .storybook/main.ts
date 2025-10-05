@@ -9,30 +9,30 @@ const config: StorybookConfig = {
 
   addons: [
     "@storybook/addon-links",
-    "@storybook/addon-jest",
     "@storybook/addon-themes",
-    "@chromatic-com/storybook",
-    "storybook-addon-mock",
-    {
-      name: "@storybook/addon-coverage",
-      options: {
-        debug: true,
-      },
-    },
     "@storybook/addon-docs",
     "storybook-design-token"
   ],
 
   async viteFinal(config) {
     const { mergeConfig } = await import('vite');
+    const { resolve } = await import('path');
     const tailwindcss = (await import('@tailwindcss/vite')).default;
+    const tsconfigPaths = (await import('vite-tsconfig-paths')).default;
 
     return mergeConfig(config, {
-      plugins: [tailwindcss()],
+      plugins: [
+        // Path resolution MUST come first, before any transformations
+        tsconfigPaths({
+          projects: [resolve(__dirname, '../tsconfig.json')],
+        }),
+        tailwindcss(),
+      ],
       resolve: {
         ...config.resolve,
         alias: {
           ...config.resolve?.alias,
+          '@/catalyst-ui': resolve(__dirname, '../lib'),
         },
       },
       optimizeDeps: {
@@ -50,14 +50,6 @@ const config: StorybookConfig = {
     options: {},
   },
 
-  build: {
-    // https://github.com/storybookjs/addon-coverage
-    test: {
-      disabledAddons: [
-        "@storybook/addon-docs",
-      ],
-    },
-  }
 };
 
 export default config;

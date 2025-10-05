@@ -19,7 +19,7 @@ const MultiChoiceQuestionCard: React.FC<MultiChoiceQuestionCardProps> = ({ quest
   };
 
   return (
-    <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} perspective={1500}>
+    <Tilt tiltMaxAngleX={2} tiltMaxAngleY={3} scale={1.02} perspective={1200}>
       <Card className="w-[350px]">
         <CardHeader>
           <CardTitle>{question}</CardTitle>

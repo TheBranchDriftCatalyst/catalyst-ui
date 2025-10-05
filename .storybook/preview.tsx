@@ -1,10 +1,8 @@
-// import { withTests } from "@storybook/addon-jest";
 import { withThemeByClassName } from "@storybook/addon-themes";
 import { addons } from "storybook/internal/preview-api";
 import { themes as sbThemes } from "storybook/theming";
 import { DOCS_RENDERED } from "storybook/internal/core-events";
 import reduce from "lodash/reduce";
-// import results from "../coverage/storybook/coverage-storybook.json";
 import "../lib/global.css";
 // Frontload all theme CSS for Storybook (normally dynamically loaded by ThemeProvider)
 // Using Vite's glob import to automatically load all theme CSS files
@@ -360,7 +358,6 @@ const preview = {
     },
   },
   decorators: [
-    // withTests({ results, filesExt: ".stories.tsx" }),
     withBackgroundSync,
     withThemeByClassName({
       themes: reduce(

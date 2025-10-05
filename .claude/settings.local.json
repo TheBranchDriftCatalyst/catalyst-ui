@@ -24,7 +24,8 @@
       "Bash(yarn release)",
       "Read(//Users/panda/catalyst-devspace/**)",
       "Bash(yarn add:*)",
-      "WebFetch(domain:ui.shadcn.com)"
+      "WebFetch(domain:ui.shadcn.com)",
+      "Bash(yarn remove:*)"
     ],
     "deny": [],
     "ask": []

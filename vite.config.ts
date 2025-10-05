@@ -5,7 +5,6 @@ import { fileURLToPath } from "node:url";
 import { extname, relative, resolve } from "path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
-import istanbul from 'vite-plugin-istanbul';
 import tsconfigPaths from "vite-tsconfig-paths";
 
 // Plugin to preserve "use client" directives in build output
@@ -49,12 +48,6 @@ export default defineConfig({
     tailwindcss(),
     tsconfigPaths({
       projects: [resolve(__dirname, "tsconfig.json")],
-    }),
-    istanbul({
-      include: 'lib/*',
-      exclude: ['node_modules'],
-      extension: ['.ts', '.tsx', '.js', '.jsx'],
-      // requireEnv: true,
     }),
     dts({ include: ["lib"], exclude: ["**/*.stories.tsx"] }),
     preserveUseClient(),

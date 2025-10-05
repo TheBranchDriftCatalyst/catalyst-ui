@@ -1,6 +1,7 @@
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/catalyst-ui/ui/avatar";
+import { NavigationMenu, NavigationMenuList } from "@/catalyst-ui/ui/navigation-menu";
 import Typography from "@/catalyst-ui/ui/typography";
 import React from "react";
 
@@ -24,7 +25,13 @@ export const CatalystHeader = ({ navigationItems, title }: CatalystHeaderProps) 
         </div>
         {/* Right Subgroup */}
         <div className="ml-auto flex items-center gap-2">
-          {navigationItems}
+          {navigationItems && navigationItems.length > 0 && (
+            <NavigationMenu>
+              <NavigationMenuList>
+                {navigationItems}
+              </NavigationMenuList>
+            </NavigationMenu>
+          )}
           <Avatar className="h-8 w-8">
             {/* TODO: turn this into the login widget */}
             <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
