@@ -3,6 +3,22 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+### [0.4.1](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v0.4.0...v0.4.1) (2025-10-05)
+
+
+### ⚡ NEW FEATURES
+
+* add GitHub Pages deployment for app and Storybook ([56c95c5](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/56c95c581615413a543fec0563ed1286cbcb1ee7))
+* add Mermaid flowchart to ForceGraph converter ([984416e](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/984416e4f2bfce9cd6406378c32f734d55f64251))
+* refactor FilterPanel with modular components and stats ([c5c8fcb](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/c5c8fcbd1e6719ecf787696d3dd2a15a4b41ecbd))
+
+
+### 🔧 BUG FIXES
+
+* add [@ts-ignore](https://github.com/ts-ignore) for pre-existing type errors ([9de64c2](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/9de64c29da954457504c57fe6f8db7a924da6573))
+* improve ForceGraph performance and UX with layout enhancements ([8a81108](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/8a811085cc135efbffea32bc91fb40498c3ab252))
+* resolve TypeScript build errors ([9b04cc4](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/9b04cc4c5c10cde390dedfdd8d63666a55d834b0))
+
 ## [0.4.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v0.3.0...v0.4.0) (2025-10-05)
 
 
