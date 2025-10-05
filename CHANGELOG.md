@@ -3,6 +3,22 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+## [0.4.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v0.3.0...v0.4.0) (2025-10-05)
+
+
+### 🔧 BUG FIXES
+
+* resolve CSS import order and Typography type errors ([2f5ae8e](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/2f5ae8e9dc7c43a62961bb1dcdd51eaafa587c99))
+
+
+### ⚡ NEW FEATURES
+
+* add comprehensive Tilt 3D effect configuration story ([ebcda68](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/ebcda687a640d478bf587ad96d4c34d2c81b7831))
+* add comprehensive UI component stories and improve card consistency ([f3740e6](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/f3740e6f7c67d40d3b1db4d3e4080a8fe82e1c81))
+* comprehensive story coverage and Storybook organization ([f2d29c0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/f2d29c03a1c4f392bc9ea4e38ee045ebb9a05f52))
+* enhance ForceGraph, themes, and add JsonTreeView component ([a5a5f0b](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/a5a5f0b86bc1ad23e0228d453aacc55adc802bc4))
+* make ForceGraph fully config-driven and domain-agnostic ([316e4e1](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/316e4e15a3c9d4ecf25ff047061d8073f55aa9fe))
+
 ## [0.3.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v0.2.0...v0.3.0) (2025-10-04)
 
 
