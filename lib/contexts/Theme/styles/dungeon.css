@@ -1,0 +1,358 @@
+.theme-dungeon.light {
+  /**
+   * @tokens Dungeon Light Colors
+   * @presenter Color
+   */
+
+  /* Romantic fantasy light palette - sensual and luxurious */
+
+  /**
+   * @tokens Light Background Colors
+   * @presenter Color
+   */
+  --background: hsl(340, 25%, 96%); /* @token { "name": "Soft Rose Background", "category": "Dungeon-Light/Colors/Background" } */
+  --foreground: hsl(340, 45%, 12%); /* @token { "name": "Deep Wine Text", "category": "Dungeon-Light/Colors/Background" } */
+
+  /**
+   * @tokens Light Card Colors
+   * @presenter Color
+   */
+  --card: hsl(340, 30%, 92%); /* @token { "name": "Blush Card", "category": "Dungeon-Light/Colors/Card" } */
+  --card-foreground: hsl(340, 45%, 12%); /* @token { "name": "Wine Card Text", "category": "Dungeon-Light/Colors/Card" } */
+
+  /**
+   * @tokens Light Popover Colors
+   * @presenter Color
+   */
+  --popover: hsl(340, 30%, 92%); /* @token { "name": "Popover Background", "category": "Dungeon-Light/Colors/Popover" } */
+  --popover-foreground: hsl(340, 45%, 12%); /* @token { "name": "Popover Text", "category": "Dungeon-Light/Colors/Popover" } */
+
+  /**
+   * @tokens Light Primary Colors
+   * @presenter Color
+   */
+  --primary: hsl(345, 75%, 48%); /* @token { "name": "Crimson Desire", "category": "Dungeon-Light/Colors/Primary" } */
+  --primary-foreground: hsl(0, 0%, 100%); /* @token { "name": "Pure White", "category": "Dungeon-Light/Colors/Primary" } */
+
+  /**
+   * @tokens Light Secondary Colors
+   * @presenter Color
+   */
+  --secondary: hsl(280, 65%, 45%); /* @token { "name": "Violet Passion", "category": "Dungeon-Light/Colors/Secondary" } */
+  --secondary-foreground: hsl(0, 0%, 100%); /* @token { "name": "White Text", "category": "Dungeon-Light/Colors/Secondary" } */
+
+  /**
+   * @tokens Light Muted Colors
+   * @presenter Color
+   */
+  --muted: hsl(340, 20%, 88%); /* @token { "name": "Muted Rose", "category": "Dungeon-Light/Colors/Muted" } */
+  --muted-foreground: hsl(340, 30%, 35%); /* @token { "name": "Muted Wine", "category": "Dungeon-Light/Colors/Muted" } */
+
+  /**
+   * @tokens Light Accent Colors
+   * @presenter Color
+   */
+  --accent: hsl(30, 80%, 55%); /* @token { "name": "Rose Gold", "category": "Dungeon-Light/Colors/Accent" } */
+  --accent-foreground: hsl(340, 45%, 12%); /* @token { "name": "Dark Wine", "category": "Dungeon-Light/Colors/Accent" } */
+
+  /**
+   * @tokens Light Destructive Colors
+   * @presenter Color
+   */
+  --destructive: hsl(0, 85%, 55%); /* @token { "name": "Scarlet Warning", "category": "Dungeon-Light/Colors/Destructive" } */
+  --destructive-foreground: hsl(0, 0%, 100%); /* @token { "name": "White Text", "category": "Dungeon-Light/Colors/Destructive" } */
+
+  /**
+   * @tokens Light Form Colors
+   * @presenter Color
+   */
+  --border: hsl(340, 30%, 75%); /* @token { "name": "Rose Border", "category": "Dungeon-Light/Colors/Forms" } */
+  --input: hsl(340, 25%, 85%); /* @token { "name": "Input Background", "category": "Dungeon-Light/Colors/Forms" } */
+  --ring: hsl(345, 75%, 48%); /* @token { "name": "Focus Ring", "category": "Dungeon-Light/Colors/Forms" } */
+
+  --radius: 0.5rem;
+
+  /* Romantic accent colors */
+  --velvet-burgundy: hsl(345, 70%, 40%);
+  --silk-rose: hsl(340, 85%, 65%);
+  --midnight-violet: hsl(280, 60%, 35%);
+  --champagne-gold: hsl(40, 75%, 60%);
+  --emerald-shadow: hsl(155, 45%, 35%);
+}
+
+/* Light mode romantic effects */
+.theme-dungeon.light [class*="card"] {
+  box-shadow: 0 4px 16px rgba(220, 38, 90, 0.12), 0 8px 32px rgba(158, 28, 133, 0.08);
+  background: linear-gradient(135deg, hsl(340 30% 94%), hsl(330 25% 92%));
+  border: 1px solid rgba(220, 38, 90, 0.15);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-dungeon.light [class*="card"]:hover {
+  box-shadow: 0 8px 24px rgba(220, 38, 90, 0.18), 0 16px 48px rgba(158, 28, 133, 0.12);
+  border-color: rgba(220, 38, 90, 0.25);
+  transform: translateY(-2px);
+}
+
+/* Gradient background for romantic feel */
+.theme-dungeon.light body {
+  background: linear-gradient(135deg,
+    hsl(340 25% 96%) 0%,
+    hsl(330 20% 94%) 50%,
+    hsl(280 18% 92%) 100%);
+  background-attachment: fixed;
+}
+
+/* Romantic links */
+.theme-dungeon.light a {
+  color: var(--velvet-burgundy);
+  transition: all 0.3s ease;
+}
+
+.theme-dungeon.light a:hover {
+  color: var(--primary);
+  text-shadow: 0 0 12px rgba(220, 38, 90, 0.3);
+}
+
+/* Headings with romantic gradient */
+.theme-dungeon.light h1,
+.theme-dungeon.light h2,
+.theme-dungeon.light h3 {
+  background: linear-gradient(135deg, var(--velvet-burgundy), var(--midnight-violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Buttons with romantic glow */
+.theme-dungeon.light button[class*="bg-primary"] {
+  box-shadow: 0 0 20px rgba(220, 38, 90, 0.3), 0 4px 12px rgba(220, 38, 90, 0.2);
+  transition: all 0.3s ease;
+}
+
+.theme-dungeon.light button[class*="bg-primary"]:hover {
+  box-shadow: 0 0 30px rgba(220, 38, 90, 0.5), 0 8px 24px rgba(220, 38, 90, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Input focus with romantic glow */
+.theme-dungeon.light input:focus,
+.theme-dungeon.light textarea:focus {
+  box-shadow: 0 0 0 3px rgba(220, 38, 90, 0.2), 0 0 20px rgba(220, 38, 90, 0.15);
+  border-color: var(--primary);
+}
+
+.theme-dungeon.dark {
+  /**
+   * @tokens Dungeon Dark Colors
+   * @presenter Color
+   */
+
+  /* Dark romantic fantasy - mysterious and intimate */
+
+  /**
+   * @tokens Dark Background Colors
+   * @presenter Color
+   */
+  --background: #0d0508; /* @token { "name": "Midnight Background", "category": "Dungeon-Dark/Colors/Background" } */
+  --foreground: #f5e6ed; /* @token { "name": "Silk Text", "category": "Dungeon-Dark/Colors/Background" } */
+
+  /**
+   * @tokens Dark Card Colors
+   * @presenter Color
+   */
+  --card: #1a0e14; /* @token { "name": "Shadow Card", "category": "Dungeon-Dark/Colors/Card" } */
+  --card-foreground: #f5e6ed; /* @token { "name": "Silk Card Text", "category": "Dungeon-Dark/Colors/Card" } */
+
+  /**
+   * @tokens Dark Popover Colors
+   * @presenter Color
+   */
+  --popover: #1a0e14; /* @token { "name": "Popover Background", "category": "Dungeon-Dark/Colors/Popover" } */
+  --popover-foreground: #f5e6ed; /* @token { "name": "Popover Text", "category": "Dungeon-Dark/Colors/Popover" } */
+
+  /**
+   * @tokens Dark Primary Colors
+   * @presenter Color
+   */
+  --primary: #dc2658; /* @token { "name": "Crimson Fire", "category": "Dungeon-Dark/Colors/Primary" } */
+  --primary-foreground: #ffffff; /* @token { "name": "Pure White", "category": "Dungeon-Dark/Colors/Primary" } */
+
+  /**
+   * @tokens Dark Secondary Colors
+   * @presenter Color
+   */
+  --secondary: #9e1c85; /* @token { "name": "Violet Velvet", "category": "Dungeon-Dark/Colors/Secondary" } */
+  --secondary-foreground: #ffffff; /* @token { "name": "White Text", "category": "Dungeon-Dark/Colors/Secondary" } */
+
+  /**
+   * @tokens Dark Muted Colors
+   * @presenter Color
+   */
+  --muted: #2d1a23; /* @token { "name": "Muted Shadow", "category": "Dungeon-Dark/Colors/Muted" } */
+  --muted-foreground: #c4a3b3; /* @token { "name": "Dusty Rose", "category": "Dungeon-Dark/Colors/Muted" } */
+
+  /**
+   * @tokens Dark Accent Colors
+   * @presenter Color
+   */
+  --accent: #3d2430; /* @token { "name": "Deep Accent", "category": "Dungeon-Dark/Colors/Accent" } */
+  --accent-foreground: #f5e6ed; /* @token { "name": "Silk Text", "category": "Dungeon-Dark/Colors/Accent" } */
+
+  /**
+   * @tokens Dark Destructive Colors
+   * @presenter Color
+   */
+  --destructive: #ff4466; /* @token { "name": "Scarlet Flame", "category": "Dungeon-Dark/Colors/Destructive" } */
+  --destructive-foreground: #ffffff; /* @token { "name": "White Text", "category": "Dungeon-Dark/Colors/Destructive" } */
+
+  /**
+   * @tokens Dark Form Colors
+   * @presenter Color
+   */
+  --border: #3d2430; /* @token { "name": "Border Shadow", "category": "Dungeon-Dark/Colors/Forms" } */
+  --input: #2d1a23; /* @token { "name": "Input Background", "category": "Dungeon-Dark/Colors/Forms" } */
+  --ring: #dc2658; /* @token { "name": "Focus Ring", "category": "Dungeon-Dark/Colors/Forms" } */
+
+  /* Extended romantic palette */
+  --velvet-burgundy: #b91d4a;
+  --silk-rose: #ff6b9d;
+  --midnight-violet: #6b2e5f;
+  --champagne-gold: #d4a574;
+  --emerald-shadow: #2d5f4f;
+
+  /* Romantic glow effects */
+  --glow-crimson: 0 0 20px rgba(220, 38, 88, 0.5), 0 0 40px rgba(220, 38, 88, 0.25);
+  --glow-violet: 0 0 20px rgba(158, 28, 133, 0.5), 0 0 40px rgba(158, 28, 133, 0.25);
+  --glow-rose: 0 0 15px rgba(255, 107, 157, 0.4);
+  --glow-gold: 0 0 15px rgba(212, 165, 116, 0.4);
+
+  /* Intimate shadows */
+  --shadow-romantic-sm: 0 2px 12px rgba(220, 38, 88, 0.2), 0 4px 24px rgba(158, 28, 133, 0.15);
+  --shadow-romantic-md: 0 4px 24px rgba(220, 38, 88, 0.25), 0 8px 48px rgba(158, 28, 133, 0.2);
+  --shadow-romantic-lg: 0 8px 36px rgba(220, 38, 88, 0.3), 0 16px 72px rgba(158, 28, 133, 0.25);
+}
+
+/* Dark mode mysterious effects */
+.theme-dungeon.dark body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(220, 38, 88, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(220, 38, 88, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.4;
+}
+
+/* Candlelight flicker effect (very subtle) */
+.theme-dungeon.dark body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse at top, rgba(220, 38, 88, 0.05), transparent 50%);
+  animation: candlelight 4s ease-in-out infinite;
+}
+
+@keyframes candlelight {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.5; }
+}
+
+/* Romantic links */
+.theme-dungeon.dark a {
+  color: var(--silk-rose);
+  text-shadow: 0 0 10px rgba(255, 107, 157, 0.3);
+  transition: all 0.3s ease;
+}
+
+.theme-dungeon.dark a:hover {
+  text-shadow: 0 0 20px rgba(255, 107, 157, 0.6), 0 0 40px rgba(255, 107, 157, 0.3);
+  color: var(--primary);
+}
+
+/* Headings with intimate glow */
+.theme-dungeon.dark h1,
+.theme-dungeon.dark h2,
+.theme-dungeon.dark h3 {
+  background: linear-gradient(135deg, var(--primary), var(--midnight-violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 15px rgba(220, 38, 88, 0.4));
+}
+
+/* Cards with romantic shadows */
+.theme-dungeon.dark [class*="card"] {
+  box-shadow: var(--shadow-romantic-sm);
+  border: 1px solid rgba(220, 38, 88, 0.15);
+  background: linear-gradient(135deg, #1a0e14, #0d0508);
+  transition: all 0.3s ease;
+}
+
+.theme-dungeon.dark [class*="card"]:hover {
+  box-shadow: var(--shadow-romantic-md);
+  border-color: rgba(220, 38, 88, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Buttons with passionate glow */
+.theme-dungeon.dark button[class*="bg-primary"] {
+  box-shadow: var(--glow-crimson);
+  transition: all 0.3s ease;
+}
+
+.theme-dungeon.dark button[class*="bg-primary"]:hover {
+  box-shadow: 0 0 30px rgba(220, 38, 88, 0.7), 0 0 60px rgba(220, 38, 88, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Input focus with romantic glow */
+.theme-dungeon.dark input:focus,
+.theme-dungeon.dark textarea:focus {
+  box-shadow: var(--glow-crimson);
+  border-color: var(--primary);
+}
+
+/* Table rows - intimate hover */
+.theme-dungeon.dark tbody tr:hover {
+  background: linear-gradient(90deg, rgba(220, 38, 88, 0.08), rgba(158, 28, 133, 0.06));
+  box-shadow: inset 0 0 20px rgba(220, 38, 88, 0.15);
+}
+
+/* Progress bars - passionate fill */
+.theme-dungeon.dark [role="progressbar"] {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  box-shadow: 0 0 20px rgba(220, 38, 88, 0.5);
+}
+
+/* Tabs - romantic active state */
+.theme-dungeon.dark [role="tab"][data-state="active"] {
+  background: linear-gradient(135deg, rgba(220, 38, 88, 0.15), rgba(158, 28, 133, 0.1));
+  border-bottom: 2px solid var(--primary);
+  box-shadow: 0 4px 20px rgba(220, 38, 88, 0.25);
+}
+
+/* Romantic pulse animation */
+@keyframes romantic-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(220, 38, 88, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(220, 38, 88, 0.7), 0 0 60px rgba(158, 28, 133, 0.4);
+  }
+}
+
+.theme-dungeon .romantic-pulse {
+  animation: romantic-pulse 2s ease-in-out infinite;
+}

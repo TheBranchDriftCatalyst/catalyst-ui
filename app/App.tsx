@@ -25,6 +25,7 @@ import MultiChoiceQuestionCard from "@/catalyst-ui/cards/MultiChoiceQuetion/Mult
 import { CodeBlock } from "@/catalyst-ui/components/CodeBlock";
 import { ForceGraph } from "@/catalyst-ui/components/ForceGraph";
 import type { GraphData } from "@/catalyst-ui/components/ForceGraph";
+import JsonTreeView from "@/catalyst-ui/components/ForceGraph/components/JsonTreeView";
 import { DesignTokenDocBlock } from "storybook-design-token";
 import { useState } from "react";
 
@@ -647,6 +648,42 @@ const styles = {
               onCodeChange={setEditableCode}
               onThemeChange={setCodeTheme}
               onLineNumbersChange={setShowLineNumbers}
+            />
+          </CardContent>
+        </Card>
+
+        {/* JSON Tree View Section */}
+        <Card>
+          <CardHeader>
+            <CardTitle>JSON Tree View</CardTitle>
+            <CardDescription>
+              Collapsible JSON viewer with syntax highlighting • Click arrows to expand/collapse nodes
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <JsonTreeView
+              data={{
+                name: "catalyst-ui",
+                version: "0.2.0",
+                type: "library",
+                features: {
+                  components: ["ForceGraph", "CodeBlock", "JsonTreeView"],
+                  themes: ["catalyst", "dracula", "gold", "nature", "netflix", "nord", "laracon"],
+                  ui_primitives: ["button", "dialog", "tooltip", "dropdown-menu", "toast"],
+                },
+                config: {
+                  storybook: true,
+                  typescript: true,
+                  tailwind_version: "v4",
+                },
+                stats: {
+                  components_count: 15,
+                  stories_count: 12,
+                  themes_count: 7,
+                },
+              }}
+              rootName="package"
+              initialExpanded={["package", "package.features"]}
             />
           </CardContent>
         </Card>

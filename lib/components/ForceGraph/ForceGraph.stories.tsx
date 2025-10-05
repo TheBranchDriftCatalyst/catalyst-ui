@@ -185,7 +185,7 @@ const enrichEdges = (data: GraphData): GraphData => {
 const fullGraphData = enrichEdges(sampleGraphData);
 
 const meta = {
-  title: 'Components/ForceGraph',
+  title: 'Display/ForceGraph',
   component: ForceGraph,
   parameters: {
     layout: 'fullscreen',

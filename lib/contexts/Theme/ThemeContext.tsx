@@ -6,6 +6,7 @@ export type ThemeVariant = "dark" | "light";
 // TODO: lets dynamically create these from ./styles/*.css ????
 export const THEMES = [
   "dracula",
+  "dungeon",
   "gold",
   "laracon",
   "nature",

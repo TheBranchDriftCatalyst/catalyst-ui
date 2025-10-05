@@ -364,7 +364,7 @@ const preview = {
     withBackgroundSync,
     withThemeByClassName({
       themes: reduce(
-        ["catalyst", "dracula", "gold", "laracon", "nature", "netflix", "nord"],
+        ["catalyst", "dracula", "dungeon", "gold", "laracon", "nature", "netflix", "nord"],
         (a, tName) => {
           a[`${tName}`] = `theme-${tName}`;
           return a;

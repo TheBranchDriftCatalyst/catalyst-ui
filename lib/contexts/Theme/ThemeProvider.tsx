@@ -10,6 +10,8 @@ const themeStyles: Record<string, () => Promise<any>> = {
   // @ts-ignore - Vite handles CSS imports
   dracula: () => import("./styles/dracula.css"),
   // @ts-ignore - Vite handles CSS imports
+  dungeon: () => import("./styles/dungeon.css"),
+  // @ts-ignore - Vite handles CSS imports
   gold: () => import("./styles/gold.css"),
   // @ts-ignore - Vite handles CSS imports
   laracon: () => import("./styles/laracon.css"),
@@ -51,6 +53,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       allThemes: [
         "catalyst",
         "dracula",
+        "dungeon",
         "gold",
         "laracon",
         "nature",
