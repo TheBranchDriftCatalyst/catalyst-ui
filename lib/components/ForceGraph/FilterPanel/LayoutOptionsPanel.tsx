@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useGraphState } from '../hooks/useGraphState';
 import { LayoutConfigs } from '../utils/layouts';
 import { Label } from '@/catalyst-ui/ui/label';

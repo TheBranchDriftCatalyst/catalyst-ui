@@ -88,13 +88,17 @@ const ForceGraphInner: React.FC<{ data: any; config?: GraphConfig<any, any> }> =
   }, [filters.visibleEdges, toggleEdgeVisibility]);
 
   // Wrapper for setSelectedNode - memoized to prevent re-renders
-  const wrappedSetSelectedNode: React.Dispatch<React.SetStateAction<string | null>> = useCallback((value) => {
+  // Since setSelectedNode from context only accepts string | null, not functions,
+  // we handle the function case by getting current value manually
+  const wrappedSetSelectedNode = useCallback<React.Dispatch<React.SetStateAction<string | null>>>((value) => {
     if (typeof value === 'function') {
-      setSelectedNode((prev) => value(prev));
+      const fn = value as (prev: string | null) => string | null;
+      const newValue = fn(selectedNode);
+      setSelectedNode(newValue);
     } else {
       setSelectedNode(value);
     }
-  }, [setSelectedNode]);
+  }, [setSelectedNode, selectedNode]);
 
   // Keyboard handling: Delete/Backspace to exclude selected node, Escape to clear selection
   useEffect(() => {

@@ -4,14 +4,12 @@ import { useGraphState } from './hooks/useGraphState';
 import { useGraphConfig } from './context/GraphContext';
 import {
   FilterPanelSearch,
-  FilterPanelQuickFilters,
   FilterPanelNodeTypes,
   FilterPanelEdgeTypes,
   FilterPanelDropdown,
   FilterPanelAdvanced,
   FilterPanelAttributeFilters,
   FilterPanelExcluded,
-  FilterPanelSummary,
   FilterPanelStats,
   FilterPanelActions,
   FilterPanelLayout,
@@ -40,7 +38,6 @@ const GraphContentPanel: React.FC<GraphContentPanelProps> = ({ activeTab, onClos
     resetFilters,
     includeNode,
     clearExcluded,
-    updateFilters,
   } = useGraphFilters();
 
   const { getNodeInfo, rawData, filteredData, layout, orthogonalEdges, setLayout, toggleOrthogonalEdges } = useGraphState();
