@@ -26,6 +26,7 @@ import { CodeBlock } from "@/catalyst-ui/components/CodeBlock";
 import { ForceGraph } from "@/catalyst-ui/components/ForceGraph";
 import type { GraphData } from "@/catalyst-ui/components/ForceGraph";
 import JsonTreeView from "@/catalyst-ui/components/ForceGraph/components/JsonTreeView";
+import { MermaidFlowChartGraph } from "@/catalyst-ui/components/MermaidForceGraph";
 import { DesignTokenDocBlock } from "storybook-design-token";
 import { useState, useEffect } from "react";
 
@@ -41,6 +42,7 @@ function KitchenSink() {
   const [sliderValue, setSliderValue] = useState([50]);
   const [codeTheme, setCodeTheme] = useState("catalyst");
   const [showLineNumbers, setShowLineNumbers] = useState(true);
+  const [selectedMermaid, setSelectedMermaid] = useState("solar");
   const [editableCode, setEditableCode] = useState(`async function fetchUserData(userId: string): Promise<User> {
   try {
     const response = await fetch(\`/api/users/\${userId}\`);
@@ -100,7 +102,7 @@ console.log(user.name);`);
       <div className="max-w-7xl mx-auto space-y-8 p-8">
         {/* Tabbed Component Library */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-7 h-auto">
+          <TabsList className="grid w-full grid-cols-8 h-auto">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="tokens">Design Tokens</TabsTrigger>
             <TabsTrigger value="typography">Typography</TabsTrigger>
@@ -108,6 +110,7 @@ console.log(user.name);`);
             <TabsTrigger value="display">Display</TabsTrigger>
             <TabsTrigger value="cards">Cards</TabsTrigger>
             <TabsTrigger value="forcegraph">Force Graph</TabsTrigger>
+            <TabsTrigger value="mermaid">Mermaid</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
@@ -872,6 +875,100 @@ const styles = {
               <li><strong>Status Filters</strong> - Filter containers by running/stopped status</li>
               <li><strong>Advanced Filters</strong> - Hide system resources, show in-use only, etc.</li>
               <li><strong>Interactions</strong> - Drag nodes, zoom/pan, click for details, right-click to exclude</li>
+            </ul>
+          </CardFooter>
+        </Card>
+          </TabsContent>
+
+          {/* Mermaid Graphs Tab */}
+          <TabsContent value="mermaid" className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Mermaid Flowchart → ForceGraph</CardTitle>
+            <CardDescription>
+              Convert Mermaid flowchart diagrams to interactive force-directed graphs automatically.
+              Select an example below or create your own .mmd file!
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center gap-2">
+              <Label>Select Example:</Label>
+              <Select value={selectedMermaid} onValueChange={setSelectedMermaid}>
+                <SelectTrigger className="w-[250px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="solar">Solar Power System</SelectItem>
+                  <SelectItem value="basic">Basic Flowchart</SelectItem>
+                  <SelectItem value="network">Network Topology</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="h-[700px] w-full relative border-2 border-primary/20 rounded-lg overflow-hidden">
+              {selectedMermaid === "solar" && (
+                <MermaidFlowChartGraph
+                  filename="/mermaid/solar-system.mmd"
+                  configuratorOptions={{
+                    title: "SOLAR POWER SYSTEM",
+                    colorStrategy: 'subgraph',
+                  }}
+                />
+              )}
+              {selectedMermaid === "basic" && (
+                <MermaidFlowChartGraph
+                  mermaidText={`flowchart TB
+      A[Start] --> B{Is it working?}
+      B -->|Yes| C[Great!]
+      B -->|No| D[Fix it]
+      D --> B
+      C --> E[End]`}
+                  configuratorOptions={{
+                    title: "BASIC FLOWCHART",
+                  }}
+                />
+              )}
+              {selectedMermaid === "network" && (
+                <MermaidFlowChartGraph
+                  mermaidText={`flowchart TB
+      subgraph "DMZ"
+        LB[Load Balancer]
+        Web1[Web Server 1]
+        Web2[Web Server 2]
+      end
+
+      subgraph "Internal Network"
+        App1[App Server 1]
+        App2[App Server 2]
+        DB[(Database Cluster)]
+        Cache[(Redis Cache)]
+      end
+
+      Internet[Internet] --> LB
+      LB --> Web1
+      LB --> Web2
+      Web1 --> App1
+      Web2 --> App2
+      App1 --> DB
+      App2 --> DB
+      App1 --> Cache
+      App2 --> Cache`}
+                  configuratorOptions={{
+                    title: "NETWORK TOPOLOGY",
+                    colorStrategy: 'subgraph',
+                  }}
+                />
+              )}
+            </div>
+          </CardContent>
+          <CardFooter className="flex flex-col items-start gap-2 border-t pt-4">
+            <Typography variant="h4" className="text-sm font-semibold">How it Works:</Typography>
+            <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+              <li><strong>Auto-Detection</strong> - Node types detected from Mermaid shapes (rectangles, diamonds, circles, etc.)</li>
+              <li><strong>Subgraph Grouping</strong> - Subgraphs become node categories with coordinated colors</li>
+              <li><strong>Edge Types</strong> - Solid ({'-->'}{')'} and dotted ({'.->'}{')'} arrows mapped to different edge styles</li>
+              <li><strong>Fully Interactive</strong> - Drag nodes, zoom/pan, filter, and explore just like regular ForceGraph</li>
+              <li><strong>Custom Styling</strong> - Override colors, icons, and labels via configuratorOptions prop</li>
             </ul>
           </CardFooter>
         </Card>

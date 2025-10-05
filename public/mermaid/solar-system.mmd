@@ -1,0 +1,75 @@
+flowchart TB
+    %% Main Solar Input
+    subgraph "Main Solar Input"
+      direction TB
+      Panels["5× Victron BlueSolar 200 W PV Modules<br/>(1 000 W array)"]
+      Combiner["PV Combiner Box<br/>(6 × 15 A PV fuses)"]
+      MPPT["Victron SmartSolar MPPT 100/20<br/>(12 V, 20 A)"]
+      Panels -->|"MC4 / Y-branch"| Combiner
+      Combiner -->|"10 AWG PV Wire"| MPPT
+    end
+
+    %% Alternator Input
+    subgraph "Alternator Input"
+      direction TB
+      Alt["Vehicle Alternator<br/>12 V system"]
+      BProtect["Victron BatteryProtect 65 A"]
+      ANLFuse["ANL Fuse 150 A"]
+      Alt -->|"4 AWG"| BProtect
+      BProtect -->|"4 AWG"| ANLFuse
+      ANLFuse -->|"4 AWG"| LynxDistributor
+    end
+
+    %% Backup System (12V)
+    subgraph "Backup System (12V)"
+      direction TB
+      BackupPanel["50 W Solar Panel"]
+      BackupMPPT["Victron SmartSolar MPPT 75/10"]
+      BackupBattery["12 V 20 Ah LiFePO₄ Battery"]
+      BackupRouter["4G Router"]
+      BackupCam["Backup Camera"]
+      BackupTemp["Temp Sensor"]
+      BackupPanel -->|"12 AWG PV Wire"| BackupMPPT
+      BackupMPPT -->|"10 AWG"| BackupBattery
+      BackupBattery -->|"14 AWG"| BackupRouter
+      BackupBattery -->|"14 AWG"| BackupCam
+      BackupBattery -->|"14 AWG"| BackupTemp
+    end
+
+    %% Main Battery Bank (12 V × 1 000 Ah)
+    subgraph "Main Battery Bank"
+      direction TB
+      Batt1["Victron Lithium NG Smart<br/>12.8 V, 200 Ah"]
+      Batt2["Victron Lithium NG Smart<br/>12.8 V, 200 Ah"]
+      Batt3["Victron Lithium NG Smart<br/>12.8 V, 200 Ah"]
+      Batt4["Victron Lithium NG Smart<br/>12.8 V, 200 Ah"]
+      Batt5["Victron Lithium NG Smart<br/>12.8 V, 200 Ah"]
+      LynxDistributor["Victron Lynx Distributor Busbar"]
+      SmartShunt["Victron SmartShunt 500 A"]
+      Batt1 -->|"2/0 AWG"| LynxDistributor
+      Batt2 -->|"2/0 AWG"| LynxDistributor
+      Batt3 -->|"2/0 AWG"| LynxDistributor
+      Batt4 -->|"2/0 AWG"| LynxDistributor
+      Batt5 -->|"2/0 AWG"| LynxDistributor
+      LynxDistributor -->|"2/0 AWG"| SmartShunt
+    end
+
+    %% Inverter, Loads and Shore Power
+    Multi["Victron MultiPlus<br/>12 V, 2000 VA/80 A Inverter/Charger"]
+    DCLoads["DC Loads<br/>12 V appliances"]
+    ACLoads["AC Loads<br/>120 V outlets"]
+    Shore["Shore Power Inlet<br/>120 V AC"]
+    SmartShunt -->|"2/0 AWG"| Multi
+    Shore -->|"10 AWG AC"| Multi
+    Multi -->|"10 AWG AC"| ACLoads
+    LynxDistributor -->|"6 AWG"| DCLoads
+
+    %% System Monitoring & Comms
+    Cerbo["Victron Cerbo GX MK2"]
+    VBUS["VE.Bus Smart Dongle"]
+    VEDC["VE.Direct Cable"]
+    Cerbo -.->|"VE.Bus"| VBUS
+    VBUS -.->|"CAN"| Multi
+    Cerbo -.->|"VE.Direct"| VEDC
+    VEDC -.->|"VE.Direct"| MPPT
+    VEDC -.->|"VE.Direct"| SmartShunt

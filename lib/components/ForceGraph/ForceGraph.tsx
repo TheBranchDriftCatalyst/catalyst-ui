@@ -135,7 +135,9 @@ const ForceGraphInner: React.FC<{ data: any; config?: GraphConfig<any, any> }> =
           setVisibleEdges={setVisibleEdges}
         />
       )}
-      <NodeDetails node={getNodeInfo(hoveredNode || selectedNode)} />
+      <div className="pointer-events-none">
+        <NodeDetails node={getNodeInfo(hoveredNode || selectedNode)} />
+      </div>
       <Title />
 
       <FilterPanel

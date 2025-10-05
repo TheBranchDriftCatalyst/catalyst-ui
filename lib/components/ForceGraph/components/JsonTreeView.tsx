@@ -57,15 +57,16 @@ const JsonTreeView: React.FC<JsonTreeViewProps> = ({
           const isObject = v && typeof v === 'object';
           return (
             <div key={childPath} className="mt-1.5">
-              <div className="flex items-center gap-2">
+              <div
+                className={`flex items-center gap-2 ${isObject ? 'cursor-pointer hover:bg-foreground/5 rounded px-1 -mx-1 transition-colors' : ''}`}
+                onClick={isObject ? () => toggle(childPath) : undefined}
+                role={isObject ? 'button' : undefined}
+                aria-label={isObject ? (expanded[childPath] ? `collapse ${k}` : `expand ${k}`) : undefined}
+              >
                 {isObject ? (
-                  <button
-                    onClick={() => toggle(childPath)}
-                    className="bg-transparent border-none text-cyan-400 cursor-pointer hover:text-cyan-300 transition-colors"
-                    aria-label={expanded[childPath] ? 'collapse' : 'expand'}
-                  >
+                  <span className="text-cyan-400 select-none">
                     {expanded[childPath] ? '\u25be' : '\u25b8'}
-                  </button>
+                  </span>
                 ) : (
                   <span className="w-3.5" />
                 )}

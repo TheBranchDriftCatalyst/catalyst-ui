@@ -27,7 +27,8 @@
       "WebFetch(domain:ui.shadcn.com)",
       "Bash(yarn remove:*)",
       "mcp__ide__getDiagnostics",
-      "Bash(yarn release:*)"
+      "Bash(yarn release:*)",
+      "WebFetch(domain:mermaid.js.org)"
     ],
     "deny": [],
     "ask": []

@@ -56,6 +56,3 @@ export interface EdgeTypeOption {
   kind: EdgeKind;
   label: string;
 }
-
-// NOTE: Concrete filter option constants (e.g., NODE_TYPE_OPTIONS, STATUS_FILTER_OPTIONS)
-// should be defined in the domain-specific config (e.g., DockerGraphConfig.ts)
