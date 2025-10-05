@@ -61,7 +61,7 @@ export const CreateAccountCard = ({ oidcProviders, onLogin, onCreateAccount }: C
   });
 
   return (
-    <Tilt>
+    <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} perspective={1500}>
       <Card className="w-[350px]">
       <CardHeader>
         <CardTitle>Login</CardTitle>
