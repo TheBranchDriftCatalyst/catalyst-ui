@@ -144,6 +144,7 @@ export const catalystTheme: ThemeRegistration = {
         fontStyle: 'italic underline',
         background: '#c026d3',
         foreground: '#0a0a0f',
+        // @ts-ignore - content is a valid field for this decorator
         content: '^M',
       },
     },
