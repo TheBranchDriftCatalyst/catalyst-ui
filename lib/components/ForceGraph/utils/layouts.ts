@@ -1,49 +1,32 @@
 // Layout utilities for force graph
 
-import { NodeData, NodeKind } from '../types';
-
-export type LayoutKind = 'force' | 'structured';
+export type LayoutKind =
+  | 'force'       // D3 force simulation
+  | 'structured'  // Column-based grouping by kind
+  | 'community'   // Community detection + hierarchical force
+  | 'dagre';      // Dagre layered graph (Mermaid-style)
 
 export interface LayoutDimensions {
   width: number;
   height: number;
 }
 
-/**
- * Apply structured layout: group nodes by kind into columns, evenly spaced rows
- * This creates a clean columnar layout where each node type gets its own vertical column
- */
-export function applyStructuredLayout(
-  nodes: NodeData[],
-  dimensions: LayoutDimensions
-): NodeData[] {
-  const { width, height } = dimensions;
+// Re-export layout algorithms
+export { applyForceLayout, type ForceLayoutOptions } from './layering/force';
+export { applyStructuredLayout, type StructuredLayoutOptions } from './layering/structured';
+export { applyCommunityLayout, type CommunityLayoutOptions } from './layering/community';
+export { applyDagreLayout, type DagreLayoutOptions } from './layering/dagre';
 
-  // Get unique node kinds and create groups
-  const kinds = Array.from(new Set(nodes.map((n) => n.kind))) as NodeKind[];
-  const colCount = kinds.length || 1;
-  const colWidth = width / Math.max(1, colCount);
+// Import configs
+import { ForceLayoutConfig } from './layering/force';
+import { StructuredLayoutConfig } from './layering/structured';
+import { CommunityLayoutConfig } from './layering/community';
+import { DagreLayoutConfig } from './layering/dagre';
 
-  // Group nodes by kind
-  const grouped: Record<string, NodeData[]> = {};
-  kinds.forEach((k) => (grouped[k] = []));
-  nodes.forEach((n) => grouped[n.kind].push(n));
-
-  // For each group, place nodes vertically centered within their column
-  kinds.forEach((k, idx) => {
-    const colNodes = grouped[k];
-    const perCol = colNodes.length;
-    const spacing = Math.max(80, (height - 80) / Math.max(1, perCol));
-    const startY = (height - (spacing * (perCol - 1 || 1))) / 2;
-    const x = colWidth * idx + colWidth / 2;
-
-    colNodes.forEach((node, i) => {
-      node.x = x;
-      node.y = startY + i * spacing;
-      node.fx = node.x; // Fix position for structured layout
-      node.fy = node.y;
-    });
-  });
-
-  return nodes;
-}
+// Layout configuration registry
+export const LayoutConfigs = {
+  force: ForceLayoutConfig,
+  structured: StructuredLayoutConfig,
+  community: CommunityLayoutConfig,
+  dagre: DagreLayoutConfig,
+};

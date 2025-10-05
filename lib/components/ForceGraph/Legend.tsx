@@ -2,6 +2,7 @@ import React from 'react';
 import { NodeKind, EdgeKind } from './types';
 import { useGraphState } from './hooks/useGraphState';
 import { useGraphConfig } from './context/GraphContext';
+import { LayoutKind } from './utils/layouts';
 
 interface LegendProps {
   visibleNodes: Record<NodeKind, boolean>;
@@ -230,7 +231,7 @@ const Legend: React.FC<LegendProps> = ({
   };
 
   return (
-    <div className="absolute top-7 left-6 bg-background/95 border-2 border-primary rounded-xl p-3 backdrop-blur-md shadow-[0_8px_32px_rgba(var(--primary-rgb),0.3)]">
+    <div className="absolute top-20 left-6 bg-background/95 border-2 border-primary rounded-xl p-3 backdrop-blur-md shadow-[0_8px_32px_rgba(var(--primary-rgb),0.3)]">
       <h3 className="text-xs font-bold text-primary mb-2" style={{ textShadow: '0 0 8px var(--primary)' }}>
         Legend
       </h3>
@@ -298,28 +299,16 @@ const Legend: React.FC<LegendProps> = ({
         {/* Layout Controls */}
         <div className="mb-1 pt-1 border-t border-primary/20">
           <p className="text-[10px] font-semibold text-foreground/60 mb-1 uppercase tracking-wide">Layout</p>
-          <div className="flex gap-0.5">
-            <button
-              onClick={() => setLayout('force')}
-              className={`flex-1 px-1.5 py-0.5 text-[11px] rounded transition-all ${
-                layout === 'force'
-                  ? 'text-primary font-semibold border-b-2 border-primary'
-                  : 'text-foreground/70 hover:text-foreground'
-              }`}
-            >
-              Force
-            </button>
-            <button
-              onClick={() => setLayout('structured')}
-              className={`flex-1 px-1.5 py-0.5 text-[11px] rounded transition-all ${
-                layout === 'structured'
-                  ? 'text-primary font-semibold border-b-2 border-primary'
-                  : 'text-foreground/70 hover:text-foreground'
-              }`}
-            >
-              Structured
-            </button>
-          </div>
+          <select
+            value={layout}
+            onChange={(e) => setLayout(e.target.value as LayoutKind)}
+            className="w-full px-1.5 py-0.5 text-[11px] bg-background/50 border border-primary/30 rounded text-foreground cursor-pointer transition-all duration-200 hover:border-primary/50 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+          >
+            <option value="force">Force-Directed</option>
+            <option value="structured">Structured (Columns)</option>
+            <option value="community">Community (Smart)</option>
+            <option value="dagre">Dagre (Mermaid)</option>
+          </select>
         </div>
 
         {/* Edge Routing */}

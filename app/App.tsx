@@ -95,26 +95,42 @@ console.log(user.name);`);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <CatalystHeader
-        title="Catalyst UI Kitchen Sink"
-        navigationItems={navigationItems}
-      />
-      <div className="max-w-7xl mx-auto space-y-8 p-8">
-        {/* Tabbed Component Library */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-8 h-auto">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="tokens">Design Tokens</TabsTrigger>
-            <TabsTrigger value="typography">Typography</TabsTrigger>
-            <TabsTrigger value="forms">Forms</TabsTrigger>
-            <TabsTrigger value="display">Display</TabsTrigger>
-            <TabsTrigger value="cards">Cards</TabsTrigger>
-            <TabsTrigger value="forcegraph">Force Graph</TabsTrigger>
-            <TabsTrigger value="mermaid">Mermaid</TabsTrigger>
-          </TabsList>
-
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <CatalystHeader
+          title="CATALYST"
+          navigationItems={navigationItems}
+          tabs={
+            <TabsList className="inline-flex h-auto items-center gap-1 bg-transparent p-0">
+              <TabsTrigger value="overview" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+                Overview
+              </TabsTrigger>
+              <TabsTrigger value="tokens" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+                Tokens
+              </TabsTrigger>
+              <TabsTrigger value="typography" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+                Type
+              </TabsTrigger>
+              <TabsTrigger value="forms" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+                Forms
+              </TabsTrigger>
+              <TabsTrigger value="display" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+                Display
+              </TabsTrigger>
+              <TabsTrigger value="cards" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+                Cards
+              </TabsTrigger>
+              <TabsTrigger value="forcegraph" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+                Graph
+              </TabsTrigger>
+              <TabsTrigger value="mermaid" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+                Mermaid
+              </TabsTrigger>
+            </TabsList>
+          }
+        />
+        <div className="w-full p-6 md:p-8">
           {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-4">
+          <TabsContent value="overview" className="space-y-4 mt-0">
         {/* Frameworks & Resources */}
         <Card>
           <CardHeader>
@@ -237,7 +253,7 @@ console.log(user.name);`);
           </TabsContent>
 
           {/* Design Tokens Tab */}
-          <TabsContent value="tokens" className="space-y-4">
+          <TabsContent value="tokens" className="space-y-4 mt-0">
             {/* Neon Colors */}
             <Card>
               <CardHeader>
@@ -419,7 +435,7 @@ const styles = {
           </TabsContent>
 
           {/* Typography Tab */}
-          <TabsContent value="typography" className="space-y-4">
+          <TabsContent value="typography" className="space-y-4 mt-0">
         {/* Typography Section */}
         <Card>
           <CardHeader>
@@ -441,7 +457,7 @@ const styles = {
           </TabsContent>
 
           {/* Forms Tab */}
-          <TabsContent value="forms" className="space-y-4">
+          <TabsContent value="forms" className="space-y-4 mt-0">
         {/* Buttons Section */}
         <Card>
           <CardHeader>
@@ -586,7 +602,7 @@ const styles = {
           </TabsContent>
 
           {/* Display Tab */}
-          <TabsContent value="display" className="space-y-4">
+          <TabsContent value="display" className="space-y-4 mt-0">
         {/* Accordion */}
         <Card>
           <CardHeader>
@@ -720,7 +736,7 @@ const styles = {
           </TabsContent>
 
           {/* Cards Tab */}
-          <TabsContent value="cards" className="space-y-4">
+          <TabsContent value="cards" className="space-y-4 mt-0">
         {/* Cards Section */}
         <div className="grid md:grid-cols-2 gap-4">
           <CreateAccountCard
@@ -738,7 +754,7 @@ const styles = {
           </TabsContent>
 
           {/* Force Graph Tab */}
-          <TabsContent value="forcegraph" className="space-y-4">
+          <TabsContent value="forcegraph" className="space-y-4 mt-0">
         <Card>
           <CardHeader>
             <CardTitle>Force Graph Visualization</CardTitle>
@@ -881,7 +897,7 @@ const styles = {
           </TabsContent>
 
           {/* Mermaid Graphs Tab */}
-          <TabsContent value="mermaid" className="space-y-4">
+          <TabsContent value="mermaid" className="space-y-4 mt-0">
         <Card>
           <CardHeader>
             <CardTitle>Mermaid Flowchart → ForceGraph</CardTitle>
@@ -972,9 +988,9 @@ const styles = {
             </ul>
           </CardFooter>
         </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
+        </TabsContent>
+        </div>
+      </Tabs>
     </div>
   );
 }

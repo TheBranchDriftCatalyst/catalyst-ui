@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { ForceGraphProps } from './types';
 import Legend from './Legend';
 import NodeDetails from './NodeDetails';
-import Title from './Title';
 import ReactD3Graph from './ReactD3Graph';
-import FilterPanel from './FilterPanel';
+import GraphHeader from './GraphHeader';
+import GraphContentPanel from './GraphContentPanel';
 import { GraphProvider } from './context/GraphContext';
 import { useGraphState } from './hooks/useGraphState';
 import { useGraphFilters } from './hooks/useGraphFilters';
@@ -25,7 +25,7 @@ const ForceGraphInner: React.FC<{ data: any; config?: GraphConfig<any, any> }> =
   } = useGraphState();
 
   const { filters, toggleNodeVisibility, toggleEdgeVisibility, excludeNode } = useGraphFilters(config);
-  const [filterPanelVisible, setFilterPanelVisible] = useState(false);
+  const [activeTab, setActiveTab] = useState<'filters' | 'layout' | null>(null);
 
   // Update raw data when props change
   useEffect(() => {
@@ -39,16 +39,17 @@ const ForceGraphInner: React.FC<{ data: any; config?: GraphConfig<any, any> }> =
 
   if (!displayData) {
     return (
-      <div className="w-full h-[calc(100vh-120px)] relative bg-background overflow-hidden flex items-center justify-center">
-        <div className="text-foreground text-lg">
+      <div className="w-full h-screen relative bg-background overflow-hidden flex items-center justify-center">
+        <GraphHeader activeTab={activeTab} onTabChange={setActiveTab} />
+        <div className="text-foreground text-lg mt-16">
           Loading graph data...
         </div>
       </div>
     );
   }
 
-  // Legacy setters for Legend component compatibility
-  const setVisibleNodes = (setter: React.SetStateAction<Record<any, boolean>>) => {
+  // Legacy setters for Legend component compatibility - memoized to prevent re-renders
+  const setVisibleNodes = useCallback((setter: React.SetStateAction<Record<any, boolean>>) => {
     if (typeof setter === 'function') {
       const newVisibility = setter(filters.visibleNodes);
       Object.entries(newVisibility).forEach(([nodeKind, visible]) => {
@@ -65,9 +66,9 @@ const ForceGraphInner: React.FC<{ data: any; config?: GraphConfig<any, any> }> =
         }
       });
     }
-  };
+  }, [filters.visibleNodes, toggleNodeVisibility]);
 
-  const setVisibleEdges = (setter: React.SetStateAction<Record<any, boolean>>) => {
+  const setVisibleEdges = useCallback((setter: React.SetStateAction<Record<any, boolean>>) => {
     if (typeof setter === 'function') {
       const newVisibility = setter(filters.visibleEdges);
       Object.entries(newVisibility).forEach(([edgeKind, visible]) => {
@@ -84,16 +85,16 @@ const ForceGraphInner: React.FC<{ data: any; config?: GraphConfig<any, any> }> =
         }
       });
     }
-  };
+  }, [filters.visibleEdges, toggleEdgeVisibility]);
 
-  // Wrapper for setSelectedNode
-  const wrappedSetSelectedNode: React.Dispatch<React.SetStateAction<string | null>> = (value) => {
+  // Wrapper for setSelectedNode - memoized to prevent re-renders
+  const wrappedSetSelectedNode: React.Dispatch<React.SetStateAction<string | null>> = useCallback((value) => {
     if (typeof value === 'function') {
-      setSelectedNode(value(selectedNode));
+      setSelectedNode((prev) => value(prev));
     } else {
       setSelectedNode(value);
     }
-  };
+  }, [setSelectedNode]);
 
   // Keyboard handling: Delete/Backspace to exclude selected node, Escape to clear selection
   useEffect(() => {
@@ -114,36 +115,44 @@ const ForceGraphInner: React.FC<{ data: any; config?: GraphConfig<any, any> }> =
     return () => window.removeEventListener('keydown', handler);
   }, [selectedNode, excludeNode, setSelectedNode]);
 
-  return (
-    <div className="w-full h-[calc(100vh-120px)] relative bg-background overflow-hidden font-mono">
-      <ReactD3Graph
-        data={displayData}
-        dimensions={dimensions}
-        visibleNodes={filters.visibleNodes}
-        visibleEdges={filters.visibleEdges}
-        setHoveredNode={setHoveredNode}
-        setSelectedNode={wrappedSetSelectedNode}
-        hoveredNode={hoveredNode}
-        selectedNode={selectedNode}
-        config={config}
-      />
-      {!filterPanelVisible && (
-        <Legend
-          visibleNodes={filters.visibleNodes}
-          setVisibleNodes={setVisibleNodes}
-          visibleEdges={filters.visibleEdges}
-          setVisibleEdges={setVisibleEdges}
-        />
-      )}
-      <div className="pointer-events-none">
-        <NodeDetails node={getNodeInfo(hoveredNode || selectedNode)} />
-      </div>
-      <Title />
+  // Memoize dimensions to prevent ReactD3Graph re-renders
+  // Reduce width by 384px (w-96) when side panel is open
+  const graphDimensions = useMemo(
+    () => ({
+      width: activeTab ? dimensions.width - 384 : dimensions.width,
+      height: dimensions.height - 64
+    }),
+    [dimensions.width, dimensions.height, activeTab]
+  );
 
-      <FilterPanel
-        isVisible={filterPanelVisible}
-        onToggle={() => setFilterPanelVisible(!filterPanelVisible)}
-      />
+  return (
+    <div className="w-full h-screen relative bg-background overflow-hidden font-mono">
+      <GraphHeader activeTab={activeTab} onTabChange={setActiveTab} />
+
+      <div className="absolute top-16 left-0 right-0 bottom-0">
+        <ReactD3Graph
+          data={displayData}
+          dimensions={graphDimensions}
+          visibleNodes={filters.visibleNodes}
+          visibleEdges={filters.visibleEdges}
+          setHoveredNode={setHoveredNode}
+          setSelectedNode={wrappedSetSelectedNode}
+          hoveredNode={hoveredNode}
+          selectedNode={selectedNode}
+          config={config}
+        />
+        {!activeTab && (
+          <Legend
+            visibleNodes={filters.visibleNodes}
+            setVisibleNodes={setVisibleNodes}
+            visibleEdges={filters.visibleEdges}
+            setVisibleEdges={setVisibleEdges}
+          />
+        )}
+        {!activeTab && <NodeDetails node={getNodeInfo(hoveredNode || selectedNode)} />}
+      </div>
+
+      <GraphContentPanel activeTab={activeTab} onClose={() => setActiveTab(null)} />
     </div>
   );
 };

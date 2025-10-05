@@ -1,6 +1,7 @@
 import { useEffect, useCallback } from 'react';
 import { useGraphContext } from '../context/GraphContext';
 import { GraphData } from '../types';
+import { LayoutKind } from '../utils/layouts';
 
 export const useGraphState = () => {
   const { state, dispatch } = useGraphContext();
@@ -25,8 +26,13 @@ export const useGraphState = () => {
   }, [dispatch]);
 
   // Layout handler
-  const setLayout = useCallback((layout: 'force' | 'structured') => {
+  const setLayout = useCallback((layout: LayoutKind) => {
     dispatch({ type: 'SET_LAYOUT', payload: layout });
+  }, [dispatch]);
+
+  // Layout options handler
+  const setLayoutOptions = useCallback((options: Record<string, any>) => {
+    dispatch({ type: 'SET_LAYOUT_OPTIONS', payload: options });
   }, [dispatch]);
 
   // Orthogonal edges toggle
@@ -74,6 +80,7 @@ export const useGraphState = () => {
     selectedNode: state.selectedNode,
     dimensions: state.dimensions,
     layout: state.layout,
+    layoutOptions: state.layoutOptions,
     orthogonalEdges: state.orthogonalEdges,
     filters: state.filters,
 
@@ -83,6 +90,7 @@ export const useGraphState = () => {
     setSelectedNode,
     setDimensions,
     setLayout,
+    setLayoutOptions,
     toggleOrthogonalEdges,
 
     // Helpers

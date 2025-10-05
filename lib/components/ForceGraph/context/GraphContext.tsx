@@ -3,6 +3,7 @@ import { NodeKind, EdgeKind, GraphData } from '../types';
 import { GraphFilters } from '../types/filterTypes';
 import { GraphConfig } from '../config/types';
 import { DockerGraphConfig } from '../config/DockerGraphConfig';
+import { LayoutKind } from '../utils/layouts';
 
 export type { GraphConnectionFilter, GraphFilters } from '../types/filterTypes';
 
@@ -26,7 +27,8 @@ export interface GraphState {
   hoveredNode: string | null;
   selectedNode: string | null;
   dimensions: { width: number; height: number };
-  layout: 'force' | 'structured';
+  layout: LayoutKind;
+  layoutOptions: Record<string, any>;
   orthogonalEdges: boolean;
 }
 
@@ -41,7 +43,8 @@ type GraphAction =
   | { type: 'TOGGLE_NODE_VISIBILITY'; payload: NodeKind }
   | { type: 'TOGGLE_EDGE_VISIBILITY'; payload: EdgeKind }
   | { type: 'RESET_FILTERS' }
-  | { type: 'SET_LAYOUT'; payload: 'force' | 'structured' }
+  | { type: 'SET_LAYOUT'; payload: LayoutKind }
+  | { type: 'SET_LAYOUT_OPTIONS'; payload: Record<string, any> }
   | { type: 'TOGGLE_ORTHOGONAL_EDGES' };
 
 // Default state
@@ -75,6 +78,7 @@ const getInitialState = (config: GraphConfig<any, any>): GraphState => ({
   selectedNode: null,
   dimensions: { width: window.innerWidth, height: window.innerHeight },
   layout: 'force',
+  layoutOptions: {},
   orthogonalEdges: false,
 });
 
@@ -134,6 +138,9 @@ function graphReducer(state: GraphState, action: GraphAction): GraphState {
 
     case 'SET_LAYOUT':
       return { ...state, layout: action.payload };
+
+    case 'SET_LAYOUT_OPTIONS':
+      return { ...state, layoutOptions: action.payload };
 
     case 'TOGGLE_ORTHOGONAL_EDGES':
       return { ...state, orthogonalEdges: !state.orthogonalEdges };

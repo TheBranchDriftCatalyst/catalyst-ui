@@ -5,7 +5,12 @@ import ReactD3Edge from './ReactD3Edge';
 import { EdgeKind, ReactD3GraphProps, NodeData, EdgeData } from './types';
 import { enrichGraph, NodeWithHelpers, EdgeWithHelpers } from './utils/GraphNavigator';
 import { useGraphState } from './hooks/useGraphState';
-import { applyStructuredLayout } from './utils/layouts';
+import {
+  applyForceLayout,
+  applyStructuredLayout,
+  applyCommunityLayout,
+  applyDagreLayout,
+} from './utils/layouts';
 
 const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
   data,
@@ -27,7 +32,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
   const chargeForceRef = useRef<any>(null);
   const prevNodeCountRef = useRef<number>(0);
 
-  const { layout, orthogonalEdges } = useGraphState();
+  const { layout, layoutOptions, orthogonalEdges } = useGraphState();
 
   useEffect(() => {
     if (!data || !svgRef.current) {
@@ -45,64 +50,86 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
       (l) => visibleEdges[l.kind as EdgeKind] && l.source && l.target
     );
 
-    // Apply structured layout if needed
-    if (layout === 'structured') {
-      try {
-        applyStructuredLayout(filteredNodes as any, { width, height });
-      } catch (e) {
-        // fallthrough
-      }
+    // Apply layout based on selected strategy
+    let simulation: d3.Simulation<any, undefined> | null = null;
+
+    switch (layout) {
+      case 'structured':
+        // Column-based grouping by kind (static layout)
+        try {
+          applyStructuredLayout(
+            filteredNodes as NodeData[],
+            filteredLinks as EdgeData[],
+            { width, height },
+            layoutOptions
+          );
+        } catch (e) {
+          console.error('Structured layout failed:', e);
+        }
+        break;
+
+      case 'community':
+        // Community detection + hierarchical force (dynamic layout)
+        try {
+          simulation = applyCommunityLayout(
+            filteredNodes as NodeData[],
+            filteredLinks as EdgeData[],
+            { width, height },
+            layoutOptions
+          );
+        } catch (e) {
+          console.error('Community layout failed:', e);
+        }
+        break;
+
+      case 'dagre':
+        // Dagre layered graph (Mermaid-style, static layout)
+        try {
+          applyDagreLayout(
+            filteredNodes as NodeData[],
+            filteredLinks as EdgeData[],
+            { width, height },
+            layoutOptions
+          );
+        } catch (e) {
+          console.error('Dagre layout failed:', e);
+        }
+        break;
+
+      case 'force':
+      default:
+        // D3 force simulation (dynamic layout)
+        try {
+          simulation = applyForceLayout(
+            filteredNodes as NodeData[],
+            filteredLinks as EdgeData[],
+            { width, height },
+            layoutOptions
+          );
+        } catch (e) {
+          console.error('Force layout failed:', e);
+        }
+        break;
     }
 
-    if (layout === 'force') {
-      // Release fixed positions for force layout
-      filteredNodes.forEach((n) => {
-        n.fx = null;
-        n.fy = null;
-      });
-    }
-
-    // For structured layout, skip simulation
-    if (layout === 'structured') {
+    // For static layouts (structured), skip simulation
+    if (!simulation) {
       setNodes(filteredNodes);
       setEdges(filteredLinks);
       return () => { };
     }
 
-    // D3 force simulation for force layout
-    const simulation = d3.forceSimulation(filteredNodes)
-      .force(
-        'link',
-        d3
-          .forceLink(filteredLinks)
-          .id((d: any) => d.id)
-          .distance((d: any) => {
-            switch (d.kind) {
-              case 'derived_from':
-                return 200;
-              case 'connected_to':
-                return 250;
-              case 'mounted_into':
-                return 200;
-              default:
-                return 200;
-            }
-          })
-          .strength(0.08)
-      )
-      .force('charge', d3.forceManyBody().strength(-80))
-      .force('collision', d3.forceCollide().radius(60))
-      .alphaDecay(0.05)
-      .alpha(0.2);
+    // For force-based layouts, set up simulation tick handler
+    const sim = simulation;
 
-    simulation.on('tick', () => {
+    sim.on('tick', () => {
       setNodes([...filteredNodes]);
       setEdges([...filteredLinks]);
     });
 
     // Capture charge force for dynamic rebalancing
     try {
-      const f = (simulation.force as any) ? (simulation.force as any)('charge') : null;
+      const f = (sim.force as any) ? (sim.force as any)('charge') : null;
       if (f) {
         chargeForceRef.current = f;
       }
@@ -118,8 +145,8 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
           const current = -80;
           chargeForceRef.current.strength(-Math.abs(current * boost));
         }
-        simulation.alpha(0.6);
-        simulation.restart();
+        sim.alpha(0.6);
+        sim.restart();
         setTimeout(() => {
           if (chargeForceRef.current && typeof chargeForceRef.current.strength === 'function') {
             chargeForceRef.current.strength(-80);
@@ -129,14 +156,14 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
     }
     prevNodeCountRef.current = newCount;
 
-    simulationRef.current = simulation;
+    simulationRef.current = sim;
     setNodes(filteredNodes);
     setEdges(filteredLinks);
 
     return () => {
-      simulation.stop();
+      sim.stop();
     };
-  }, [data, dimensions, visibleNodes, visibleEdges, layout]);
+  }, [data, dimensions, visibleNodes, visibleEdges, layout, layoutOptions, orthogonalEdges]);
 
   // Drag handlers
   const handleDragStart = (node: NodeData) => (event: any) => {
@@ -167,12 +194,8 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
 
     node.fx = event.x;
     node.fy = event.y;
-
-    if (layout === 'structured') {
-      node.x = event.x;
-      node.y = event.y;
-      setNodes([...nodes]);
-    }
+    node.x = event.x;
+    node.y = event.y;
   };
 
   const handleDragEnd = (node: NodeData) => (event: any) => {
@@ -183,6 +206,8 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
     if (layout === 'structured') {
       node.fx = node.x;
       node.fy = node.y;
+      // Trigger React update for static layouts
+      setNodes((currentNodes) => [...currentNodes]);
       return;
     }
 
@@ -194,6 +219,8 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
     }
     node.fx = node.x;
     node.fy = node.y;
+
+    // No setState needed - simulation tick will resume and handle updates
   };
 
   // Zoom / pan setup

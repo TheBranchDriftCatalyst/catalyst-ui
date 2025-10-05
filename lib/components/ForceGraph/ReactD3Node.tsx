@@ -89,6 +89,10 @@ const ReactD3Node: React.FC<ReactD3NodeProps> = ({
     d3.select(groupRef.current).call(drag as any);
   }, [onDragStart, onDrag, onDragEnd]);
 
+  // Get position (D3 will update this directly during ticks)
+  const x = data.x || 0;
+  const y = data.y || 0;
+
   // If custom renderer is provided, use it
   if (customRenderer) {
     const CustomRenderer = customRenderer;
@@ -96,7 +100,7 @@ const ReactD3Node: React.FC<ReactD3NodeProps> = ({
     return (
       <g
         ref={groupRef}
-        transform={`translate(${data.x || 0}, ${data.y || 0})`}
+        transform={`translate(${x}, ${y})`}
         style={{
           cursor: 'pointer',
           opacity: isDimmed ? 0.35 : 1,
@@ -166,7 +170,7 @@ const ReactD3Node: React.FC<ReactD3NodeProps> = ({
   return (
     <g
       ref={groupRef}
-      transform={`translate(${data.x || 0}, ${data.y || 0})`}
+      transform={`translate(${x}, ${y})`}
       style={{
         cursor: 'pointer',
         opacity: isDimmed ? 0.35 : 1,
@@ -271,6 +275,8 @@ const ReactD3Node: React.FC<ReactD3NodeProps> = ({
     </g>
   );
 };
+
+ReactD3Node.displayName = 'ReactD3Node';
 
 export default ReactD3Node;
 export type { ReactD3NodeProps };

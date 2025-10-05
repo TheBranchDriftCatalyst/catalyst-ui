@@ -1,66 +1,8 @@
-import React, { useMemo } from 'react';
-import { useGraphFilters } from '../hooks/useGraphFilters';
-import { useGraphState } from '../hooks/useGraphState';
-import { useGraphConfig } from '../context/GraphContext';
-import { FilterPanelProps, GRAPH_CONNECTION_FILTER_OPTIONS } from '../types/filterTypes';
-import {
-  FilterPanelSearch,
-  FilterPanelQuickFilters,
-  FilterPanelNodeTypes,
-  FilterPanelEdgeTypes,
-  FilterPanelDropdown,
-  FilterPanelAdvanced,
-  FilterPanelAttributeFilters,
-  FilterPanelExcluded,
-  FilterPanelSummary,
-  FilterPanelStats,
-  FilterPanelActions,
-} from '.';
+import React from 'react';
+import { FilterPanelProps } from '../types/filterTypes';
+import FilterPanelTabs from './FilterPanelTabs';
 
 const FilterPanel: React.FC<FilterPanelProps> = ({ isVisible, onToggle }) => {
-  const config = useGraphConfig();
-  const {
-    filters,
-    toggleNodeVisibility,
-    toggleEdgeVisibility,
-    setStatusFilter,
-    setConnectionFilter,
-    setSearchQuery,
-    toggleOrphanedOnly,
-    toggleRunningOnly,
-    toggleInUseOnly,
-    setAttributeFilterValue,
-    resetFilters,
-    includeNode,
-    clearExcluded,
-    updateFilters,
-  } = useGraphFilters();
-
-  const { getNodeInfo, rawData, filteredData } = useGraphState();
-
-  // Build filter options from config
-  const NODE_TYPE_OPTIONS = useMemo(
-    () =>
-      Object.entries(config.nodeTypes).map(([kind, typeConfig]) => ({
-        kind: kind as keyof typeof config.nodeTypes,
-        label: typeConfig.label,
-        color: typeConfig.color,
-      })),
-    [config.nodeTypes]
-  );
-
-  const EDGE_TYPE_OPTIONS = useMemo(
-    () =>
-      Object.entries(config.edgeTypes).map(([kind, typeConfig]) => ({
-        kind: kind as keyof typeof config.edgeTypes,
-        label: typeConfig.label,
-      })),
-    [config.edgeTypes]
-  );
-
-  const STATUS_FILTER_OPTIONS = config.statusFilterOptions || [];
-  const CONNECTION_FILTER_OPTIONS = GRAPH_CONNECTION_FILTER_OPTIONS;
-
   return (
     <>
       {/* Toggle Button */}
@@ -90,72 +32,10 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ isVisible, onToggle }) => {
           style={{ right: 0 }}
         >
           <h3 className="mb-3 text-sm font-bold text-primary tracking-wide uppercase" style={{ textShadow: '0 0 12px var(--primary)' }}>
-            Filters
+            Graph Controls
           </h3>
 
-          <FilterPanelSearch searchQuery={filters.searchQuery} onSearchChange={setSearchQuery} />
-
-          <FilterPanelQuickFilters
-            quickFilters={config.quickFilters || []}
-            currentFilters={filters}
-            onApplyFilter={updateFilters}
-            onReset={resetFilters}
-          />
-
-          <FilterPanelNodeTypes
-            nodeTypes={NODE_TYPE_OPTIONS}
-            visibleNodes={filters.visibleNodes}
-            onToggle={toggleNodeVisibility}
-          />
-
-          <FilterPanelEdgeTypes
-            edgeTypes={EDGE_TYPE_OPTIONS}
-            visibleEdges={filters.visibleEdges}
-            onToggle={toggleEdgeVisibility}
-            config={config}
-          />
-
-          {STATUS_FILTER_OPTIONS.length > 0 && (
-            <FilterPanelDropdown
-              label="Status"
-              value={filters.statusFilter}
-              options={STATUS_FILTER_OPTIONS}
-              onChange={setStatusFilter}
-            />
-          )}
-
-          <FilterPanelDropdown
-            label="Connection"
-            value={filters.connectionFilter}
-            options={CONNECTION_FILTER_OPTIONS}
-            onChange={(value: string) => setConnectionFilter(value as any)}
-          />
-
-          <FilterPanelAdvanced
-            filters={filters}
-            onToggleOrphanedOnly={toggleOrphanedOnly}
-            onToggleRunningOnly={toggleRunningOnly}
-            onToggleInUseOnly={toggleInUseOnly}
-          />
-
-          <FilterPanelAttributeFilters
-            attributeFilters={config.attributeFilters || []}
-            currentValues={filters.attributeFilterValues || {}}
-            onSetValue={setAttributeFilterValue}
-          />
-
-          <FilterPanelExcluded
-            excludedNodeIds={filters.excludedNodeIds || []}
-            getNodeInfo={getNodeInfo}
-            onInclude={includeNode}
-            onClearAll={clearExcluded}
-          />
-
-          <FilterPanelStats rawData={rawData} filteredData={filteredData} />
-
-          <FilterPanelSummary filters={filters} />
-
-          <FilterPanelActions onReset={resetFilters} />
+          <FilterPanelTabs />
         </div>
       )}
     </>

@@ -9,5 +9,7 @@ export { FilterPanelExcluded } from './FilterPanelExcluded';
 export { FilterPanelSummary } from './FilterPanelSummary';
 export { FilterPanelStats } from './FilterPanelStats';
 export { FilterPanelActions } from './FilterPanelActions';
+export { default as FilterPanelLayout } from './FilterPanelLayout';
+export { LayoutOptionsPanel } from './LayoutOptionsPanel';
 
 export { default } from './FilterPanel';

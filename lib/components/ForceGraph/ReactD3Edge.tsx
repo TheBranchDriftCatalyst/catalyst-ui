@@ -302,19 +302,15 @@ const ReactD3Edge: React.FC<ReactD3EdgeProps> = ({
   isDimmed = false,
 }) => {
   // Calculate label text
-  const getLabelText = () => {
-    if (data.kind === 'connected_to' && data.attributes?.ip) {
-      const { ip } = data.attributes;
-      return ip.length > 12 ? ip.substring(0, 12) + '...' : ip;
-    }
-    if (data.kind === 'mounted_into' && data.attributes?.target) {
-      const { target } = data.attributes;
-      return target.length > 12 ? target.substring(0, 12) + '...' : target;
-    }
-    return null;
-  };
+  let labelText = null;
+  if (data.kind === 'connected_to' && data.attributes?.ip) {
+    const { ip } = data.attributes;
+    labelText = ip.length > 12 ? ip.substring(0, 12) + '...' : ip;
+  } else if (data.kind === 'mounted_into' && data.attributes?.target) {
+    const { target } = data.attributes;
+    labelText = target.length > 12 ? target.substring(0, 12) + '...' : target;
+  }
 
-  const labelText = getLabelText();
   const showLabel = labelText !== null;
 
   // Calculate edge endpoints
@@ -327,24 +323,23 @@ const ReactD3Edge: React.FC<ReactD3EdgeProps> = ({
     data.target
   );
 
-  // Generate path
+  // Calculate path
   const edgePath = orthogonal
     ? calculateOrthogonalPath(
-      edgePoints.x1,
-      edgePoints.y1,
-      edgePoints.x2,
-      edgePoints.y2,
-      data.source,
-      data.target,
-      allNodes,
-      edgeIndex,
-      totalEdgesBetweenNodes
-    )
+        edgePoints.x1,
+        edgePoints.y1,
+        edgePoints.x2,
+        edgePoints.y2,
+        data.source,
+        data.target,
+        allNodes,
+        edgeIndex,
+        totalEdgesBetweenNodes
+      )
     : null;
 
-  // Calculate midpoint for label
+  // Calculate midpoint
   let midX, midY;
-
   if (orthogonal && edgePath) {
     const pathMidpoint = getOrthogonalPathMidpoint(edgePath);
     midX = pathMidpoint.x;

@@ -39,3 +39,49 @@ badges:
 highlights:
   - "Shared React component library"
   - "Built with Vite library mode"
+
+# Automated Screenshot Configuration
+# NOTE: not currently implemented at all
+# throwing shit around, thinkin bout it
+screenshots:
+  enabled: true
+  base_url: "http://localhost:5173"
+  output_dir: "screenshots"
+
+  # Pages/tabs to screenshot
+  targets:
+    - name: "overview"
+      url: "/?tab=overview"
+      wait_for: "h1:has-text('Frameworks')"
+    - name: "tokens"
+      url: "/?tab=tokens"
+      wait_for: ".design-token"
+    - name: "forcegraph"
+      url: "/?tab=forcegraph"
+      wait_for: "svg"
+      delay: 2000  # Extra wait for graph simulation
+    - name: "forms"
+      url: "/?tab=forms"
+      wait_for: "button"
+    - name: "cards"
+      url: "/?tab=cards"
+      wait_for: ".card"
+
+  # Themes to capture
+  themes:
+    - "catalyst"
+    - "dracula"
+    - "gold"
+    - "nord"
+
+  # Viewports to test
+  viewports:
+    - name: "desktop"
+      width: 1920
+      height: 1080
+    - name: "tablet"
+      width: 768
+      height: 1024
+    - name: "mobile"
+      width: 375
+      height: 812
