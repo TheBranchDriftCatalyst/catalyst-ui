@@ -52,18 +52,19 @@ Error messages or problem manifestation
 
 ### System Diagram
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     Component/System                         │
-│  ┌────────────┐  ┌────────────┐  ┌────────────┐            │
-│  │   Part 1   │  │   Part 2   │  │   Part 3   │            │
-│  └────────────┘  └────────────┘  └────────────┘            │
-└─────────────────────────────────────────────────────────────┘
-                            │
-                            ▼
-┌─────────────────────────────────────────────────────────────┐
-│                    Next Layer                                │
-└─────────────────────────────────────────────────────────────┘
+```mermaid
+graph TD
+  A[Input] --> B[Processing]
+  B --> C[Output]
+  
+  subgraph "System Components"
+    B --> D[Component A]
+    B --> E[Component B]
+    D --> F[Result]
+    E --> F
+  end
+  
+  F --> C
 ```
 
 ### Data Flow
