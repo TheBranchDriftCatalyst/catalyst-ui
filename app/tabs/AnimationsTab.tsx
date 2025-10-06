@@ -59,7 +59,8 @@ export function AnimationsTab() {
           </div>
 
           {/* Border Scan */}
-          <div className="space-y-2">
+          {/* TODO: Note border scab doesnt really look good/work */}
+          {/* <div className="space-y-2">
             <Label className="text-sm font-semibold">Border Scan</Label>
             <div
               className="h-32 rounded-lg border-2 border-primary/30 flex items-center justify-center text-sm relative"
@@ -70,7 +71,7 @@ export function AnimationsTab() {
               Traveling light along border (4s loop)
             </div>
             <code className="text-xs text-muted-foreground">animation: border-scan 4s linear infinite</code>
-          </div>
+          </div> */}
 
           {/* Neon Underline */}
           <div className="space-y-2">
