@@ -3,10 +3,13 @@
 import * as React from "react";
 import { cn } from "@/catalyst-ui/utils";
 import { CodeBlock, CodeBlockProps } from "@/catalyst-ui/components/CodeBlock";
-import { Card, CardContent } from "@/catalyst-ui/ui/card";
+import { CodeBlockHeader } from "@/catalyst-ui/components/CodeBlock/CodeBlockHeader";
+import { CardContent } from "@/catalyst-ui/ui/card";
 import { Button } from "@/catalyst-ui/ui/button";
 import { RotateCcw, Code2 } from "lucide-react";
 import { processSourceCode, LineRange, LineRangeTuple } from "./utils";
+import { CardProvider } from "@/catalyst-ui/contexts/Card";
+import { CardWithContext } from "@/catalyst-ui/components/Card";
 
 export interface CodeFlipCardProps
   extends Omit<CodeBlockProps, "code" | "language"> {
@@ -92,12 +95,6 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
       setComputedStartLine(result.startLineNumber);
     }, [sourceCode, lineRange, stripImports, stripComments, extractFunction]);
 
-    const handleFlip = () => {
-      if (flipTrigger === "click") {
-        setIsFlipped(!isFlipped);
-      }
-    };
-
     const handleMouseEnter = () => {
       if (flipTrigger === "hover") {
         setIsFlipped(true);
@@ -158,16 +155,16 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
     return (
       <div
         ref={ref}
-        className={cn("code-flip-card-container", className)}
+        className={className}
         style={containerStyle}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         {...props}
       >
-        <div className="code-flip-card-flipper" style={flipperStyle}>
+        <div style={flipperStyle}>
           {/* Front Face - Card with flip styles applied directly */}
           {React.cloneElement(childElement, {
-            className: cn(childElement.props.className, "code-flip-card-front relative"),
+            className: cn(childElement.props.className, "relative"),
             style: {
               ...childElement.props.style,
               ...frontFaceStyle,
@@ -195,40 +192,60 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
           })}
 
           {/* Back Face - Card with CodeBlock */}
-          <Card
-            className="code-flip-card-back relative"
-            style={backFaceStyle}
-            onClick={handleFlip}
-          >
-            <Button
-              size="icon"
-              variant="ghost"
-              className="absolute top-2 right-2 z-10"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsFlipped(false);
-              }}
-              title="Back to component"
+          <CardProvider>
+            <CardWithContext
+              style={backFaceStyle}
+              interactive={false}
+              header={
+                <div className="flex items-center justify-between w-full">
+                  <div className="flex-1">
+                    <CodeBlockHeader
+                      fileName={fileName}
+                      language={language}
+                      code={processedCode}
+                      showCopyButton={showCopyButton}
+                      interactive={interactive}
+                      editable={editable}
+                      currentTheme={theme}
+                      showLineNumbers={showLineNumbers}
+                      onThemeChange={onThemeChange}
+                      onLineNumbersChange={onLineNumbersChange}
+                      className="border-0 px-0 py-0 bg-transparent"
+                    />
+                  </div>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsFlipped(false);
+                    }}
+                    title="Back to component"
+                  >
+                    <RotateCcw className="h-4 w-4" />
+                  </Button>
+                </div>
+              }
             >
-              <RotateCcw className="h-4 w-4" />
-            </Button>
-            <CardContent className="p-0">
-              <CodeBlock
-                code={processedCode}
-                language={language}
-                fileName={fileName}
-                theme={theme}
-                showLineNumbers={showLineNumbers}
-                showCopyButton={showCopyButton}
-                startLineNumber={startLineNumber ?? computedStartLine}
-                interactive={interactive}
-                editable={editable}
-                onThemeChange={onThemeChange}
-                onLineNumbersChange={onLineNumbersChange}
-                onCodeChange={onCodeChange}
-              />
-            </CardContent>
-          </Card>
+              <CardContent className="p-0">
+                <CodeBlock
+                  code={processedCode}
+                  language={language}
+                  theme={theme}
+                  showLineNumbers={showLineNumbers}
+                  startLineNumber={startLineNumber ?? computedStartLine}
+                  interactive={interactive}
+                  editable={editable}
+                  onThemeChange={onThemeChange}
+                  onLineNumbersChange={onLineNumbersChange}
+                  onCodeChange={onCodeChange}
+                  useCardContext={false}
+                  showCopyButton={false}
+                  fileName={undefined}
+                />
+              </CardContent>
+            </CardWithContext>
+          </CardProvider>
         </div>
       </div>
     );

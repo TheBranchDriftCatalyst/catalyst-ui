@@ -3,6 +3,40 @@ import { createHighlighter, type Highlighter, type BundledLanguage, type Bundled
 import * as React from "react";
 import CodeBlockHeader from "./CodeBlockHeader";
 import { catalystTheme } from "./catalyst-theme";
+import { CardContext } from "@/catalyst-ui/contexts/Card";
+
+/**
+ * Internal component that registers CodeBlock header elements in CardContext
+ */
+const CodeBlockHeaderInCard: React.FC<{
+  fileName?: string;
+  language: string;
+  code: string;
+  showCopyButton?: boolean;
+  interactive?: boolean;
+  editable?: boolean;
+  isEditMode?: boolean;
+  currentTheme?: string;
+  showLineNumbers?: boolean;
+  onThemeChange?: (theme: string) => void;
+  onLineNumbersChange?: (show: boolean) => void;
+  onEditModeChange?: (editMode: boolean) => void;
+}> = (props) => {
+  const { registerHeaderComponent } = React.useContext(CardContext);
+
+  React.useEffect(() => {
+    const headerElement = (
+      <div className="flex-1">
+        <CodeBlockHeader {...props} className="border-0 px-0 py-0 bg-transparent" />
+      </div>
+    );
+
+    const cleanup = registerHeaderComponent(headerElement);
+    return cleanup;
+  }, [props, registerHeaderComponent]);
+
+  return null;
+};
 
 // Cache for the highlighter instance to avoid recreation
 let highlighterInstance: Highlighter | null = null;
@@ -51,6 +85,8 @@ export interface CodeBlockProps extends React.HTMLAttributes<HTMLDivElement> {
   onThemeChange?: (theme: string) => void;
   onLineNumbersChange?: (show: boolean) => void;
   onCodeChange?: (code: string) => void;
+  /** Whether to use CardContext for header registration (default: true) */
+  useCardContext?: boolean;
 }
 
 const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
@@ -68,6 +104,7 @@ const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
       onThemeChange,
       onLineNumbersChange,
       onCodeChange,
+      useCardContext = true,
       className,
       ...props
     },
@@ -76,6 +113,13 @@ const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
     const [html, setHtml] = React.useState<string>("");
     const [isLoading, setIsLoading] = React.useState(true);
     const [isEditMode, setIsEditMode] = React.useState(false);
+
+    // Check if we should use CardContext
+    const cardContext = React.useContext(CardContext);
+    const shouldUseCardContext = React.useMemo(() => {
+      // Only use if explicitly enabled and we're in a real provider
+      return useCardContext && Array.isArray(cardContext.headerComponents);
+    }, [useCardContext, cardContext]);
 
     React.useEffect(() => {
       const highlight = async () => {
@@ -130,27 +174,34 @@ const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
       highlight();
     }, [code, language, theme, showLineNumbers, startLineNumber]);
 
+    const headerProps = {
+      fileName,
+      language,
+      code,
+      showCopyButton,
+      interactive,
+      editable,
+      isEditMode,
+      currentTheme: theme,
+      showLineNumbers,
+      onThemeChange,
+      onLineNumbersChange,
+      onEditModeChange: setIsEditMode,
+    };
+
     return (
       <div
         ref={ref}
         className={cn("catalyst-code-block rounded-lg overflow-hidden", className)}
         {...props}
       >
+        {/* If using CardContext, register header to context; otherwise render inline */}
         {(fileName || showCopyButton || interactive || editable) && (
-          <CodeBlockHeader
-            fileName={fileName}
-            language={language}
-            code={code}
-            showCopyButton={showCopyButton}
-            interactive={interactive}
-            editable={editable}
-            isEditMode={isEditMode}
-            currentTheme={theme}
-            showLineNumbers={showLineNumbers}
-            onThemeChange={onThemeChange}
-            onLineNumbersChange={onLineNumbersChange}
-            onEditModeChange={setIsEditMode}
-          />
+          shouldUseCardContext ? (
+            <CodeBlockHeaderInCard {...headerProps} />
+          ) : (
+            <CodeBlockHeader {...headerProps} />
+          )
         )}
         {isEditMode && editable && onCodeChange ? (
           <textarea
