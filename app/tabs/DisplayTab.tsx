@@ -37,40 +37,38 @@ console.log(user.name);`);
   return (
     <div className="space-y-4 mt-0">
       {/* Accordion */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Accordion</CardTitle>
-          <CardDescription>Expandable content sections with smooth animations • Click to view source</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <CodeFlipCard
-            sourceCode={AccordionDemoSource}
-            fileName="AccordionDemo.tsx"
-            language="tsx"
-            minHeight={150}
-          >
+      <CodeFlipCard
+        sourceCode={AccordionDemoSource}
+        fileName="AccordionDemo.tsx"
+        language="tsx"
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle>Accordion</CardTitle>
+            <CardDescription>Expandable content sections with smooth animations • Click to view source</CardDescription>
+          </CardHeader>
+          <CardContent>
             <AccordionDemo />
-          </CodeFlipCard>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </CodeFlipCard>
 
       {/* Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Table</CardTitle>
-          <CardDescription>Data table component with hover effects and row highlighting • Click to view source</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <CodeFlipCard
-            sourceCode={TableDemoSource}
-            fileName="TableDemo.tsx"
-            language="tsx"
-            minHeight={200}
-          >
+      <CodeFlipCard
+        sourceCode={TableDemoSource}
+        fileName="TableDemo.tsx"
+        language="tsx"
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle>Table</CardTitle>
+            <CardDescription>Data table component with hover effects and row highlighting • Click to view source</CardDescription>
+          </CardHeader>
+          <CardContent>
             <TableDemo />
-          </CodeFlipCard>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </CodeFlipCard>
 
       {/* Code Block */}
       <Card>

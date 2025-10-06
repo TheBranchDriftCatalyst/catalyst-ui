@@ -30,104 +30,99 @@ export function ComponentsTab() {
       </Card>
 
       {/* Dialog Component */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Dialog</CardTitle>
-          <CardDescription>
-            A modal dialog component with overlay and focus management • Click card to view source
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex items-center justify-center p-6">
-          <CodeFlipCard
-            sourceCode={DialogDemoSource}
-            fileName="DialogDemo.tsx"
-            language="tsx"
-            minHeight={100}
-          >
+      <CodeFlipCard
+        sourceCode={DialogDemoSource}
+        fileName="DialogDemo.tsx"
+        language="tsx"
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle>Dialog</CardTitle>
+            <CardDescription>
+              A modal dialog component with overlay and focus management • Click card to view source
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex items-center justify-center p-6">
             <DialogDemo />
-          </CodeFlipCard>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </CodeFlipCard>
 
       {/* Dropdown Menu Component */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Dropdown Menu</CardTitle>
-          <CardDescription>
-            A menu component with keyboard navigation and portal rendering • Click card to view source
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex items-center justify-center p-6">
-          <CodeFlipCard
-            sourceCode={DropdownMenuDemoSource}
-            fileName="DropdownMenuDemo.tsx"
-            language="tsx"
-            minHeight={100}
-          >
+      <CodeFlipCard
+        sourceCode={DropdownMenuDemoSource}
+        fileName="DropdownMenuDemo.tsx"
+        language="tsx"
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle>Dropdown Menu</CardTitle>
+            <CardDescription>
+              A menu component with keyboard navigation and portal rendering • Click card to view source
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex items-center justify-center p-6">
             <DropdownMenuDemo />
-          </CodeFlipCard>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </CodeFlipCard>
 
       {/* Tooltip Component */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Tooltip</CardTitle>
-          <CardDescription>
-            A popup that displays information when hovering over an element • Click card to view source
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="p-6">
-          <CodeFlipCard
-            sourceCode={TooltipDemoSource}
-            fileName="TooltipDemo.tsx"
-            language="tsx"
-            minHeight={100}
-          >
+      <CodeFlipCard
+        sourceCode={TooltipDemoSource}
+        fileName="TooltipDemo.tsx"
+        language="tsx"
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle>Tooltip</CardTitle>
+            <CardDescription>
+              A popup that displays information when hovering over an element • Click card to view source
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="p-6">
             <TooltipDemo />
-          </CodeFlipCard>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </CodeFlipCard>
 
       {/* Toast Component */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Toast</CardTitle>
-          <CardDescription>
-            Temporary notifications that appear and auto-dismiss • Click card to view source
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="p-6">
-          <CodeFlipCard
-            sourceCode={ToastDemoSource}
-            fileName="ToastDemo.tsx"
-            language="tsx"
-            minHeight={100}
-          >
+      <CodeFlipCard
+        sourceCode={ToastDemoSource}
+        fileName="ToastDemo.tsx"
+        language="tsx"
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle>Toast</CardTitle>
+            <CardDescription>
+              Temporary notifications that appear and auto-dismiss • Click card to view source
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="p-6">
             <ToastDemo />
-          </CodeFlipCard>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </CodeFlipCard>
 
       {/* Sheet Component */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Sheet</CardTitle>
-          <CardDescription>
-            Slide-out panel from any side with overlay • Click card to view source
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex items-center justify-center p-6">
-          <CodeFlipCard
-            sourceCode={SheetDemoSource}
-            fileName="SheetDemo.tsx"
-            language="tsx"
-            minHeight={100}
-          >
+      <CodeFlipCard
+        sourceCode={SheetDemoSource}
+        fileName="SheetDemo.tsx"
+        language="tsx"
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle>Sheet</CardTitle>
+            <CardDescription>
+              Slide-out panel from any side with overlay • Click card to view source
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex items-center justify-center p-6">
             <SheetDemo />
-          </CodeFlipCard>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </CodeFlipCard>
     </div>
   );
 }

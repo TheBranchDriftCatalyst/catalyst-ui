@@ -21,94 +21,89 @@ export function FormsTab() {
   return (
     <div className="space-y-4 mt-0">
       {/* Buttons */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Buttons</CardTitle>
-          <CardDescription>All button variants and sizes with hover/active animations • Click to view source</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <CodeFlipCard
-            sourceCode={ButtonsDemoSource}
-            fileName="ButtonsDemo.tsx"
-            language="tsx"
-            minHeight={120}
-          >
+      <CodeFlipCard
+        sourceCode={ButtonsDemoSource}
+        fileName="ButtonsDemo.tsx"
+        language="tsx"
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle>Buttons</CardTitle>
+            <CardDescription>All button variants and sizes with hover/active animations • Click to view source</CardDescription>
+          </CardHeader>
+          <CardContent>
             <ButtonsDemo />
-          </CodeFlipCard>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </CodeFlipCard>
 
       {/* Form Inputs */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Form Inputs</CardTitle>
-          <CardDescription>Input fields, labels, and checkboxes with focus animations • Click to view source</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <CodeFlipCard
-            sourceCode={InputsDemoSource}
-            fileName="InputsDemo.tsx"
-            language="tsx"
-            minHeight={200}
-          >
+      <CodeFlipCard
+        sourceCode={InputsDemoSource}
+        fileName="InputsDemo.tsx"
+        language="tsx"
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle>Form Inputs</CardTitle>
+            <CardDescription>Input fields, labels, and checkboxes with focus animations • Click to view source</CardDescription>
+          </CardHeader>
+          <CardContent>
             <InputsDemo />
-          </CodeFlipCard>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </CodeFlipCard>
 
       {/* Select & Radio */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Select & Radio</CardTitle>
-          <CardDescription>Dropdown selects and radio button groups • Click to view source</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <CodeFlipCard
-            sourceCode={SelectRadioDemoSource}
-            fileName="SelectRadioDemo.tsx"
-            language="tsx"
-            minHeight={200}
-          >
+      <CodeFlipCard
+        sourceCode={SelectRadioDemoSource}
+        fileName="SelectRadioDemo.tsx"
+        language="tsx"
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle>Select & Radio</CardTitle>
+            <CardDescription>Dropdown selects and radio button groups • Click to view source</CardDescription>
+          </CardHeader>
+          <CardContent>
             <SelectRadioDemo />
-          </CodeFlipCard>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </CodeFlipCard>
 
       {/* Slider & Progress */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Slider & Progress</CardTitle>
-          <CardDescription>Interactive slider control and progress indicators with smooth animations • Click to view source</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <CodeFlipCard
-            sourceCode={SliderProgressDemoSource}
-            fileName="SliderProgressDemo.tsx"
-            language="tsx"
-            minHeight={180}
-          >
+      <CodeFlipCard
+        sourceCode={SliderProgressDemoSource}
+        fileName="SliderProgressDemo.tsx"
+        language="tsx"
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle>Slider & Progress</CardTitle>
+            <CardDescription>Interactive slider control and progress indicators with smooth animations • Click to view source</CardDescription>
+          </CardHeader>
+          <CardContent>
             <SliderProgressDemo />
-          </CodeFlipCard>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </CodeFlipCard>
 
       {/* Avatar & Toggle */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Avatars & Toggles</CardTitle>
-          <CardDescription>User avatars with fallbacks and toggle switches • Click to view source</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <CodeFlipCard
-            sourceCode={AvatarToggleDemoSource}
-            fileName="AvatarToggleDemo.tsx"
-            language="tsx"
-            minHeight={120}
-          >
+      <CodeFlipCard
+        sourceCode={AvatarToggleDemoSource}
+        fileName="AvatarToggleDemo.tsx"
+        language="tsx"
+      >
+        <Card>
+          <CardHeader>
+            <CardTitle>Avatars & Toggles</CardTitle>
+            <CardDescription>User avatars with fallbacks and toggle switches • Click to view source</CardDescription>
+          </CardHeader>
+          <CardContent>
             <AvatarToggleDemo />
-          </CodeFlipCard>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </CodeFlipCard>
     </div>
   );
 }
