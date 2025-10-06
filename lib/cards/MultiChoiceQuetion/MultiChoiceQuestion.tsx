@@ -8,9 +8,10 @@ interface MultiChoiceQuestionCardProps {
   question: string;
   options: string[];
   onChange: (value: string) => void;
+  enableTilt?: boolean;
 }
 
-const MultiChoiceQuestionCard: React.FC<MultiChoiceQuestionCardProps> = ({ question, options, onChange }) => {
+const MultiChoiceQuestionCard: React.FC<MultiChoiceQuestionCardProps> = ({ question, options, onChange, enableTilt = true }) => {
   const [selectedOption, setSelectedOption] = useState<string>("");
 
   const handleOptionChange = (value: string) => {
@@ -18,10 +19,8 @@ const MultiChoiceQuestionCard: React.FC<MultiChoiceQuestionCardProps> = ({ quest
     onChange(value);
   };
 
-  return (
-    // @ts-ignore - Tilt prop types issue
-    <Tilt tiltMaxAngleX={2} tiltMaxAngleY={3} scale={1.02} perspective={1200}>
-      <Card className="w-[350px]">
+  const cardContent = (
+    <Card className="w-[350px]">
         <CardHeader>
           <CardTitle>{question}</CardTitle>
           <CardDescription>Select one option from the choices below</CardDescription>
@@ -39,8 +38,14 @@ const MultiChoiceQuestionCard: React.FC<MultiChoiceQuestionCardProps> = ({ quest
           </RadioGroup>
         </CardContent>
       </Card>
-    </Tilt>
   );
+
+  return enableTilt ? (
+    // @ts-ignore - Tilt prop types issue
+    <Tilt tiltMaxAngleX={2} tiltMaxAngleY={3} scale={1.02} perspective={1200}>
+      {cardContent}
+    </Tilt>
+  ) : cardContent;
 };
 
 export default MultiChoiceQuestionCard;

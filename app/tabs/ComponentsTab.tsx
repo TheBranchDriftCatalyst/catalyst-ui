@@ -1,5 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
 import { CodeFlipCard } from "@/catalyst-ui/components/CodeFlipCard";
+import { ImportFooter } from "../shared/ImportFooter";
 
 // Import demo components and their source code
 import { DialogDemo } from "../demos/DialogDemo";
@@ -45,6 +46,7 @@ export function ComponentsTab() {
           <CardContent className="flex items-center justify-center p-6">
             <DialogDemo />
           </CardContent>
+          <ImportFooter sourceCode={DialogDemoSource} />
         </Card>
       </CodeFlipCard>
 
@@ -64,6 +66,7 @@ export function ComponentsTab() {
           <CardContent className="flex items-center justify-center p-6">
             <DropdownMenuDemo />
           </CardContent>
+          <ImportFooter sourceCode={DropdownMenuDemoSource} />
         </Card>
       </CodeFlipCard>
 
@@ -83,6 +86,7 @@ export function ComponentsTab() {
           <CardContent className="p-6">
             <TooltipDemo />
           </CardContent>
+          <ImportFooter sourceCode={TooltipDemoSource} />
         </Card>
       </CodeFlipCard>
 
@@ -102,6 +106,7 @@ export function ComponentsTab() {
           <CardContent className="p-6">
             <ToastDemo />
           </CardContent>
+          <ImportFooter sourceCode={ToastDemoSource} />
         </Card>
       </CodeFlipCard>
 
@@ -121,6 +126,7 @@ export function ComponentsTab() {
           <CardContent className="flex items-center justify-center p-6">
             <SheetDemo />
           </CardContent>
+          <ImportFooter sourceCode={SheetDemoSource} />
         </Card>
       </CodeFlipCard>
     </div>

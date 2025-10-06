@@ -83,6 +83,7 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
     const [processedCode, setProcessedCode] = React.useState("");
     const [computedStartLine, setComputedStartLine] = React.useState(1);
     const [isFlipped, setIsFlipped] = React.useState(false);
+    const unflipTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
     // Process source code when options change
     React.useEffect(() => {
@@ -96,34 +97,53 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
       setComputedStartLine(result.startLineNumber);
     }, [sourceCode, lineRange, stripImports, stripComments, extractFunction]);
 
-    // Type-safe handling of child element
-    const childElement = children as React.ReactElement<{
-      className?: string;
-      style?: React.CSSProperties;
-      children?: React.ReactNode;
-    }>;
+    // Auto-unflip on mouse leave with delay
+    const handleMouseLeave = () => {
+      if (isFlipped && flipTrigger === "click") {
+        unflipTimeoutRef.current = setTimeout(() => {
+          setIsFlipped(false);
+        }, 500); // 500ms delay before unflipping
+      }
+    };
 
-    // Compose front face (child component with flip button)
-    const frontFace = React.cloneElement(childElement, {
-      className: cn(childElement.props.className, "relative"),
-      children: (
-        <>
-          {childElement.props.children}
-          {/* Flip Button overlaid on card */}
-          {flipTrigger === "click" && (
-            <Button
-              size="icon"
-              variant="outline"
-              className="absolute top-2 right-2 opacity-60 hover:opacity-100 transition-opacity shadow-lg z-10"
-              onClick={() => setIsFlipped(true)}
-              title="View source code"
-            >
-              <Code2 className="h-4 w-4" />
-            </Button>
-          )}
-        </>
-      ),
-    });
+    const handleMouseEnter = () => {
+      // Cancel auto-unflip if mouse re-enters
+      if (unflipTimeoutRef.current) {
+        clearTimeout(unflipTimeoutRef.current);
+        unflipTimeoutRef.current = null;
+      }
+    };
+
+    // Cleanup timeout on unmount
+    React.useEffect(() => {
+      return () => {
+        if (unflipTimeoutRef.current) {
+          clearTimeout(unflipTimeoutRef.current);
+        }
+      };
+    }, []);
+
+    // Compose front face (child component with flip button overlaid)
+    const frontFace = (
+      <div className="relative group/flip">
+        {children}
+        {/* Flip Button overlaid on card */}
+        {flipTrigger === "click" && (
+          <Button
+            size="icon"
+            variant="ghost"
+            className="absolute top-2 right-2 h-7 w-7 opacity-0 group-hover/flip:opacity-70 hover:opacity-100 transition-all duration-200 bg-background/60 backdrop-blur-sm z-10"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsFlipped(true);
+            }}
+            title="View source code"
+          >
+            <Code2 className="h-3.5 w-3.5 text-primary/80 transition-all duration-200 hover:drop-shadow-[0_0_6px_rgba(var(--primary-rgb),0.6)]" />
+          </Button>
+        )}
+      </div>
+    );
 
     // Compose back face (code view with header)
     const backFace = (
@@ -150,10 +170,11 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
               <Button
                 size="icon"
                 variant="ghost"
+                className="h-7 w-7 opacity-70 hover:opacity-100 transition-all duration-200 bg-background/60 backdrop-blur-sm"
                 onClick={() => setIsFlipped(false)}
                 title="Back to component"
               >
-                <RotateCcw className="h-4 w-4" />
+                <RotateCcw className="h-3.5 w-3.5 text-primary/80 transition-all duration-200 hover:drop-shadow-[0_0_6px_rgba(var(--primary-rgb),0.6)]" />
               </Button>
             </div>
           }
@@ -180,18 +201,20 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
     );
 
     return (
-      <AnimatedFlip
-        ref={ref}
-        front={frontFace}
-        back={backFace}
-        trigger={flipTrigger}
-        direction={flipDirection}
-        duration={flipDuration}
-        className={className}
-        isFlipped={isFlipped}
-        onFlipChange={setIsFlipped}
-        {...props}
-      />
+      <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <AnimatedFlip
+          ref={ref}
+          front={frontFace}
+          back={backFace}
+          trigger={flipTrigger}
+          direction={flipDirection}
+          duration={flipDuration}
+          className={className}
+          isFlipped={isFlipped}
+          onFlipChange={setIsFlipped}
+          {...props}
+        />
+      </div>
     );
   }
 );

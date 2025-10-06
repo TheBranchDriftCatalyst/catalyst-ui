@@ -1,5 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
 import { CodeFlipCard } from "@/catalyst-ui/components/CodeFlipCard";
+import { ImportFooter } from "../shared/ImportFooter";
 
 // Import demo components and their source code
 import { ButtonsDemo } from "../demos/ButtonsDemo";
@@ -34,6 +35,7 @@ export function FormsTab() {
           <CardContent>
             <ButtonsDemo />
           </CardContent>
+          <ImportFooter sourceCode={ButtonsDemoSource} />
         </Card>
       </CodeFlipCard>
 
@@ -51,6 +53,7 @@ export function FormsTab() {
           <CardContent>
             <InputsDemo />
           </CardContent>
+          <ImportFooter sourceCode={InputsDemoSource} />
         </Card>
       </CodeFlipCard>
 
@@ -68,6 +71,7 @@ export function FormsTab() {
           <CardContent>
             <SelectRadioDemo />
           </CardContent>
+          <ImportFooter sourceCode={SelectRadioDemoSource} />
         </Card>
       </CodeFlipCard>
 
@@ -85,6 +89,7 @@ export function FormsTab() {
           <CardContent>
             <SliderProgressDemo />
           </CardContent>
+          <ImportFooter sourceCode={SliderProgressDemoSource} />
         </Card>
       </CodeFlipCard>
 
@@ -102,6 +107,7 @@ export function FormsTab() {
           <CardContent>
             <AvatarToggleDemo />
           </CardContent>
+          <ImportFooter sourceCode={AvatarToggleDemoSource} />
         </Card>
       </CodeFlipCard>
     </div>

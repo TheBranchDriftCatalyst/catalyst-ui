@@ -1,5 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
 import { CodeFlipCard } from "@/catalyst-ui/components/CodeFlipCard";
+import { ImportFooter } from "../shared/ImportFooter";
 
 // Import demo components and their source code
 import { AccordionDemo } from "../demos/AccordionDemo";
@@ -31,6 +32,7 @@ export function DisplayTab() {
           <CardContent>
             <AccordionDemo />
           </CardContent>
+          <ImportFooter sourceCode={AccordionDemoSource} />
         </Card>
       </CodeFlipCard>
 
@@ -48,6 +50,7 @@ export function DisplayTab() {
           <CardContent>
             <TableDemo />
           </CardContent>
+          <ImportFooter sourceCode={TableDemoSource} />
         </Card>
       </CodeFlipCard>
 
@@ -67,6 +70,7 @@ export function DisplayTab() {
           <CardContent>
             <CodeBlockDemo />
           </CardContent>
+          <ImportFooter sourceCode={CodeBlockDemoSource} />
         </Card>
       </CodeFlipCard>
 
@@ -86,6 +90,7 @@ export function DisplayTab() {
           <CardContent>
             <JsonTreeViewDemo />
           </CardContent>
+          <ImportFooter sourceCode={JsonTreeViewDemoSource} />
         </Card>
       </CodeFlipCard>
     </div>

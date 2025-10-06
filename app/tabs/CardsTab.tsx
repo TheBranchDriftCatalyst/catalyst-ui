@@ -3,6 +3,7 @@ import { Button } from "@/catalyst-ui/ui/button";
 import { CodeFlipCard } from "@/catalyst-ui/components/CodeFlipCard";
 import { CreateAccountCard } from "@/catalyst-ui/cards/CreateAccountCard/CreateAccountCard";
 import MultiChoiceQuestionCard from "@/catalyst-ui/cards/MultiChoiceQuetion/MultiChoiceQuestion";
+import { ImportFooter } from "../shared/ImportFooter";
 
 // Import demo components
 import { CardPrimitiveDemo } from "../demos/CardPrimitiveDemo";
@@ -33,60 +34,47 @@ export function CardsTab() {
         <CardHeader>
           <CardTitle>Card Primitive</CardTitle>
           <CardDescription>
-            Base card component with header, content, and footer slots
+            Base card component with header, content, and footer slots • Click to view source
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent>
           <CodeFlipCard
             sourceCode={CardPrimitiveDemoSource}
             fileName="CardPrimitiveDemo.tsx"
             language="tsx"
-            className="group"
+            stripImports={true}
           >
             <CardPrimitiveDemo />
           </CodeFlipCard>
         </CardContent>
+        <ImportFooter sourceCode={CardPrimitiveDemoSource} />
       </Card>
 
-      {/* SECTION 2: CodeFlipCard Component */}
+      {/* SECTION 2: CodeFlipCard Features */}
       <Card>
         <CardHeader>
           <CardTitle>CodeFlipCard Component</CardTitle>
           <CardDescription>
-            Interactive card that flips to show source code • Click cards below to see their implementation
+            Interactive card that flips to show source code • Click to flip, or hover over the examples below
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Full Source */}
+        <CardContent className="space-y-6">
+          {/* Click to Flip */}
           <div className="space-y-2">
-            <h4 className="text-sm font-semibold">Full Source Code</h4>
-            <CodeFlipCard
-              sourceCode={CodeFlipCardExampleDemoSource}
-              fileName="CodeFlipCardExampleDemo.tsx"
-              language="tsx"
-              className="group"
-            >
-              <CodeFlipCardExampleDemo />
-            </CodeFlipCard>
-          </div>
-
-          {/* Without Imports */}
-          <div className="space-y-2">
-            <h4 className="text-sm font-semibold">Source Without Imports</h4>
+            <h4 className="text-sm font-medium text-muted-foreground">Click to Flip</h4>
             <CodeFlipCard
               sourceCode={CodeFlipCardExampleDemoSource}
               fileName="CodeFlipCardExampleDemo.tsx"
               language="tsx"
               stripImports={true}
-              className="group"
             >
               <CodeFlipCardExampleDemo />
             </CodeFlipCard>
           </div>
 
-          {/* Hover to Flip */}
+          {/* Hover to Flip Examples */}
           <div className="space-y-2">
-            <h4 className="text-sm font-semibold">Hover to Flip</h4>
+            <h4 className="text-sm font-medium text-muted-foreground">Hover to Flip (Horizontal & Vertical)</h4>
             <div className="grid md:grid-cols-2 gap-4">
               <CodeFlipCard
                 sourceCode={CodeFlipCardExampleDemoSource}
@@ -94,7 +82,6 @@ export function CardsTab() {
                 language="tsx"
                 stripImports={true}
                 flipTrigger="hover"
-                className="group"
               >
                 <CodeFlipCardExampleDemo />
               </CodeFlipCard>
@@ -106,13 +93,13 @@ export function CardsTab() {
                 stripImports={true}
                 flipTrigger="hover"
                 flipDirection="vertical"
-                className="group"
               >
                 <CodeFlipCardExampleDemo />
               </CodeFlipCard>
             </div>
           </div>
         </CardContent>
+        <ImportFooter sourceCode={CodeFlipCardExampleDemoSource} />
       </Card>
 
       {/* SECTION 3: Complex Cards */}
@@ -120,144 +107,44 @@ export function CardsTab() {
         <CardHeader>
           <CardTitle>Complex Card Components</CardTitle>
           <CardDescription>
-            Full-featured card components with forms, validation, and interactive elements
+            Full-featured card components with forms, validation, and interactive elements • Click to view implementation
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          {/* CreateAccountCard - Full Source */}
-          <div className="space-y-2">
-            <h4 className="text-sm font-semibold">CreateAccountCard - Full Source</h4>
-            <div className="grid md:grid-cols-2 gap-4">
-              <CodeFlipCard
-                sourceCode={CreateAccountCardSource}
-                fileName="CreateAccountCard.tsx"
-                language="tsx"
-                className="group"
-              >
-                <CreateAccountCard
-                  oidcProviders={[
-                    { name: "GitHub", onClick: () => alert("GitHub login") },
-                    { name: "Google", onClick: () => alert("Google login") },
-                  ]}
-                  onLogin={(values) => console.log("Login:", values)}
-                  onCreateAccount={() => alert("Create account")}
-                />
-              </CodeFlipCard>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-4">
+            <CodeFlipCard
+              sourceCode={CreateAccountCardSource}
+              fileName="CreateAccountCard.tsx"
+              language="tsx"
+              stripImports={true}
+            >
+              <CreateAccountCard
+                enableTilt={false}
+                oidcProviders={[
+                  { name: "GitHub", onClick: () => alert("GitHub login") },
+                  { name: "Google", onClick: () => alert("Google login") },
+                ]}
+                onLogin={(values) => console.log("Login:", values)}
+                onCreateAccount={() => alert("Create account")}
+              />
+            </CodeFlipCard>
 
-              <CodeFlipCard
-                sourceCode={MultiChoiceQuestionSource}
-                fileName="MultiChoiceQuestion.tsx"
-                language="tsx"
-                className="group"
-              >
-                <MultiChoiceQuestionCard
-                  question="What's your favorite synthwave artist?"
-                  options={["The Midnight", "Carpenter Brut", "FM-84", "Gunship"]}
-                  onChange={(value) => console.log("Selected:", value)}
-                />
-              </CodeFlipCard>
-            </div>
-          </div>
-
-          {/* Without Imports */}
-          <div className="space-y-2">
-            <h4 className="text-sm font-semibold">Without Imports</h4>
-            <div className="grid md:grid-cols-2 gap-4">
-              <CodeFlipCard
-                sourceCode={CreateAccountCardSource}
-                fileName="CreateAccountCard.tsx"
-                language="tsx"
-                stripImports={true}
-                className="group"
-              >
-                <CreateAccountCard
-                  oidcProviders={[
-                    { name: "GitHub", onClick: () => alert("GitHub login") },
-                    { name: "Google", onClick: () => alert("Google login") },
-                  ]}
-                  onLogin={(values) => console.log("Login:", values)}
-                  onCreateAccount={() => alert("Create account")}
-                />
-              </CodeFlipCard>
-
-              <CodeFlipCard
-                sourceCode={MultiChoiceQuestionSource}
-                fileName="MultiChoiceQuestion.tsx"
-                language="tsx"
-                stripImports={true}
-                className="group"
-              >
-                <MultiChoiceQuestionCard
-                  question="What's your favorite synthwave artist?"
-                  options={["The Midnight", "Carpenter Brut", "FM-84", "Gunship"]}
-                  onChange={(value) => console.log("Selected:", value)}
-                />
-              </CodeFlipCard>
-            </div>
-          </div>
-
-          {/* Extracted Component Only */}
-          <div className="space-y-2">
-            <h4 className="text-sm font-semibold">Extracted Component Function</h4>
-            <div className="flex justify-center">
-              <CodeFlipCard
-                sourceCode={CreateAccountCardSource}
-                fileName="CreateAccountCard.tsx"
-                language="tsx"
-                extractFunction="CreateAccountCard"
-                className="group"
-              >
-                <CreateAccountCard
-                  oidcProviders={[
-                    { name: "GitHub", onClick: () => alert("GitHub login") },
-                    { name: "Google", onClick: () => alert("Google login") },
-                  ]}
-                  onLogin={(values) => console.log("Login:", values)}
-                  onCreateAccount={() => alert("Create account")}
-                />
-              </CodeFlipCard>
-            </div>
-          </div>
-
-          {/* Hover to Flip */}
-          <div className="space-y-2">
-            <h4 className="text-sm font-semibold">Hover to Flip</h4>
-            <div className="grid md:grid-cols-2 gap-4">
-              <CodeFlipCard
-                sourceCode={CreateAccountCardSource}
-                fileName="CreateAccountCard.tsx"
-                language="tsx"
-                stripImports={true}
-                flipTrigger="hover"
-                className="group"
-              >
-                <CreateAccountCard
-                  oidcProviders={[
-                    { name: "GitHub", onClick: () => alert("GitHub login") },
-                    { name: "Google", onClick: () => alert("Google login") },
-                  ]}
-                  onLogin={(values) => console.log("Login:", values)}
-                  onCreateAccount={() => alert("Create account")}
-                />
-              </CodeFlipCard>
-
-              <CodeFlipCard
-                sourceCode={MultiChoiceQuestionSource}
-                fileName="MultiChoiceQuestion.tsx"
-                language="tsx"
-                stripImports={true}
-                flipTrigger="hover"
-                className="group"
-              >
-                <MultiChoiceQuestionCard
-                  question="What's your favorite synthwave artist?"
-                  options={["The Midnight", "Carpenter Brut", "FM-84", "Gunship"]}
-                  onChange={(value) => console.log("Selected:", value)}
-                />
-              </CodeFlipCard>
-            </div>
+            <CodeFlipCard
+              sourceCode={MultiChoiceQuestionSource}
+              fileName="MultiChoiceQuestion.tsx"
+              language="tsx"
+              stripImports={true}
+            >
+              <MultiChoiceQuestionCard
+                enableTilt={false}
+                question="What's your favorite synthwave artist?"
+                options={["The Midnight", "Carpenter Brut", "FM-84", "Gunship"]}
+                onChange={(value) => console.log("Selected:", value)}
+              />
+            </CodeFlipCard>
           </div>
         </CardContent>
+        <ImportFooter sourceCode={CreateAccountCardSource} />
       </Card>
     </div>
   );
