@@ -1,5 +1,7 @@
 # Design Token Documentation System
 
+> TODO: updating this framework soon see [Design Tokens RFC](../features/design-tokens-autogen.md)
+
 ## Overview
 
 This project uses **storybook-design-token** addon to auto-generate documentation for all CSS design tokens. The system extracts tokens from annotated CSS files and displays them in interactive Storybook documentation.
@@ -278,7 +280,7 @@ Tokens can be exported via Style Dictionary or custom scripts:
 
 - [Storybook Design Token Addon](https://github.com/UX-and-I/storybook-design-token)
 - [Design Tokens W3C Spec](https://design-tokens.github.io/community-group/format/)
-- [Style Dictionary](https://amzn.github.io/style-dictionary/)
+- [Style Dictionary](https://github.com/style-dictionary/style-dictionary))
 
 ---
 
