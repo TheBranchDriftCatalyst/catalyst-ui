@@ -3,6 +3,7 @@
 import * as React from "react";
 import { cn } from "@/catalyst-ui/utils";
 import { CodeBlock, CodeBlockProps } from "@/catalyst-ui/components/CodeBlock";
+import { Card, CardContent } from "@/catalyst-ui/ui/card";
 import { Button } from "@/catalyst-ui/ui/button";
 import { RotateCcw, Code2 } from "lucide-react";
 import { processSourceCode, LineRange, LineRangeTuple } from "./utils";
@@ -111,17 +112,14 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
 
     const containerStyle: React.CSSProperties = {
       position: "relative",
-      minHeight: typeof minHeight === "number" ? `${minHeight}px` : minHeight,
       perspective: "1500px",
-      width: "100%",
+      display: "inline-block",
     };
 
     const flipperStyle: React.CSSProperties = {
       transition: `transform ${flipDuration}ms`,
       transformStyle: "preserve-3d",
       position: "relative",
-      width: "100%",
-      minHeight: typeof minHeight === "number" ? `${minHeight}px` : minHeight,
       transform: isFlipped
         ? flipDirection === "horizontal"
           ? "rotateY(180deg)"
@@ -130,15 +128,12 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
     };
 
     const faceStyle: React.CSSProperties = {
-      width: "100%",
       backfaceVisibility: "hidden",
       WebkitBackfaceVisibility: "hidden",
-      cursor: "default",
     };
 
     const frontFaceStyle: React.CSSProperties = {
       ...faceStyle,
-      // Front face: visible when not flipped, use relative positioning to establish height
       position: isFlipped ? "absolute" : "relative",
       top: isFlipped ? 0 : undefined,
       left: isFlipped ? 0 : undefined,
@@ -146,7 +141,6 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
 
     const backFaceStyle: React.CSSProperties = {
       ...faceStyle,
-      // Back face: hidden when not flipped (absolute), visible when flipped (relative)
       position: isFlipped ? "relative" : "absolute",
       top: isFlipped ? undefined : 0,
       left: isFlipped ? undefined : 0,
@@ -154,9 +148,12 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
         flipDirection === "horizontal" ? "rotateY(180deg)" : "rotateX(180deg)",
     };
 
-    const childWrapperStyle: React.CSSProperties = {
-      pointerEvents: "auto",
-    };
+    // Type-safe handling of child element
+    const childElement = children as React.ReactElement<{
+      className?: string;
+      style?: React.CSSProperties;
+      children?: React.ReactNode;
+    }>;
 
     return (
       <div
@@ -168,75 +165,70 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
         {...props}
       >
         <div className="code-flip-card-flipper" style={flipperStyle}>
-          {/* Front Face - Rendered Component */}
-          <div
-            className="code-flip-card-front"
-            style={frontFaceStyle}
-          >
-            <div
-              className="relative w-full h-full flex items-center justify-center"
-              style={childWrapperStyle}
-            >
-              {children}
-              {/* Flip Button - Only clickable element */}
-              {flipTrigger === "click" && (
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className="absolute top-2 right-2 opacity-60 hover:opacity-100 transition-opacity shadow-lg"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsFlipped(true);
-                  }}
-                  title="View source code"
-                >
-                  <Code2 className="h-4 w-4" />
-                </Button>
-              )}
-            </div>
-          </div>
+          {/* Front Face - Card with flip styles applied directly */}
+          {React.cloneElement(childElement, {
+            className: cn(childElement.props.className, "code-flip-card-front relative"),
+            style: {
+              ...childElement.props.style,
+              ...frontFaceStyle,
+            },
+            children: (
+              <>
+                {childElement.props.children}
+                {/* Flip Button overlaid on card */}
+                {flipTrigger === "click" && (
+                  <Button
+                    size="icon"
+                    variant="outline"
+                    className="absolute top-2 right-2 opacity-60 hover:opacity-100 transition-opacity shadow-lg z-10"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsFlipped(true);
+                    }}
+                    title="View source code"
+                  >
+                    <Code2 className="h-4 w-4" />
+                  </Button>
+                )}
+              </>
+            ),
+          })}
 
-          {/* Back Face - Source Code */}
-          <div
-            className="code-flip-card-back"
+          {/* Back Face - Card with CodeBlock */}
+          <Card
+            className="code-flip-card-back relative"
             style={backFaceStyle}
             onClick={handleFlip}
           >
-            <div
-              className="relative w-full h-full"
-              style={childWrapperStyle}
+            <Button
+              size="icon"
+              variant="ghost"
+              className="absolute top-2 right-2 z-10"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsFlipped(false);
+              }}
+              title="Back to component"
             >
-              <div className="absolute top-2 right-2 z-10">
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsFlipped(false);
-                  }}
-                  title="Back to component"
-                >
-                  <RotateCcw className="h-4 w-4" />
-                </Button>
-              </div>
-              <div className="h-full overflow-auto">
-                <CodeBlock
-                  code={processedCode}
-                  language={language}
-                  fileName={fileName}
-                  theme={theme}
-                  showLineNumbers={showLineNumbers}
-                  showCopyButton={showCopyButton}
-                  startLineNumber={startLineNumber ?? computedStartLine}
-                  interactive={interactive}
-                  editable={editable}
-                  onThemeChange={onThemeChange}
-                  onLineNumbersChange={onLineNumbersChange}
-                  onCodeChange={onCodeChange}
-                />
-              </div>
-            </div>
-          </div>
+              <RotateCcw className="h-4 w-4" />
+            </Button>
+            <CardContent className="p-0">
+              <CodeBlock
+                code={processedCode}
+                language={language}
+                fileName={fileName}
+                theme={theme}
+                showLineNumbers={showLineNumbers}
+                showCopyButton={showCopyButton}
+                startLineNumber={startLineNumber ?? computedStartLine}
+                interactive={interactive}
+                editable={editable}
+                onThemeChange={onThemeChange}
+                onLineNumbersChange={onLineNumbersChange}
+                onCodeChange={onCodeChange}
+              />
+            </CardContent>
+          </Card>
         </div>
       </div>
     );
