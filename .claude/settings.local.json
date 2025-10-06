@@ -34,7 +34,8 @@
       "Read(//private/tmp/**)",
       "Bash(git push:*)",
       "Bash(yarn dev:preview:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(npm view:*)"
     ],
     "deny": [],
     "ask": []
