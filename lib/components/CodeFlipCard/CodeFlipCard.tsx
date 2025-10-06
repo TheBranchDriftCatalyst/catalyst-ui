@@ -113,7 +113,7 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
     const containerStyle: React.CSSProperties = {
       position: "relative",
       perspective: "1500px",
-      display: "inline-block",
+      display: "block",
     };
 
     const flipperStyle: React.CSSProperties = {
