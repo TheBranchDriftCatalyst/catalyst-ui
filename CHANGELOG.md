@@ -3,6 +3,36 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+## [1.0.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v0.6.0...v1.0.0) (2025-10-06)
+
+
+### 📚 DOCUMENTATION
+
+* reorganize documentation with logical folder structure ([ff797a2](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/ff797a2f1799f4e045dcc5ada3091999729c0887))
+
+
+### ♻️  REFACTORING
+
+* consolidate build outputs to unified dist/ structure ([c410fdb](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/c410fdb5324d0e726d1a76caa6e35ed8eaa03d86))
+* convert demo app to SPA with tab-based navigation ([868dd2e](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/868dd2e93d77f7846dab356285ed2cd00b77c318))
+
+
+### ⚡ NEW FEATURES
+
+* add comprehensive animation system with smooth transitions throughout app ([04faaae](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/04faaae6fb80ad3e4a3ca5e75a452f908e80b68c))
+* add sheet UI component ([54ea0b5](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/54ea0b5b31b2783f97d18d08e91e3457ee9ab9c0))
+
+
+### 🔧 BUG FIXES
+
+* **CodeFlipCard:** fix it ([de9f325](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/de9f3252ed7143ebdc7fbef989db25379ca08e07))
+* update UI components for better UX ([6025bb1](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/6025bb1a62a0683b98ea0fa022e56276d5c40f0c))
+
+
+### 🛠️  MAINTENANCE
+
+* remove obsolete build artifacts and templates ([fb54153](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/fb54153891a62bcb3967e86f9d63262b22b8fdba))
+
 ## [0.6.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v0.5.0...v0.6.0) (2025-10-06)
 
 
