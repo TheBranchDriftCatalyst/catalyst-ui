@@ -4,6 +4,7 @@ import { CodeFlipCard } from "@/catalyst-ui/components/CodeFlipCard";
 import { CreateAccountCard } from "@/catalyst-ui/cards/CreateAccountCard/CreateAccountCard";
 import MultiChoiceQuestionCard from "@/catalyst-ui/cards/MultiChoiceQuetion/MultiChoiceQuestion";
 import { ImportFooter } from "../shared/ImportFooter";
+import { ScrollSnapItem } from "@/catalyst-ui/components/AnimationHOC";
 
 // Import demo components
 import { CardPrimitiveDemo } from "../demos/CardPrimitiveDemo";
@@ -20,132 +21,140 @@ export function CardsTab() {
   return (
     <div className="space-y-4 mt-0">
       {/* Introduction */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Card Components</CardTitle>
-          <CardDescription>
-            Base card primitives, flip card components, and complex card implementations
-          </CardDescription>
-        </CardHeader>
-      </Card>
+      <ScrollSnapItem align="start" offset={80}>
+        <Card>
+          <CardHeader>
+            <CardTitle>Card Components</CardTitle>
+            <CardDescription>
+              Base card primitives, flip card components, and complex card implementations
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      </ScrollSnapItem>
 
       {/* SECTION 1: Card Primitive */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Card Primitive</CardTitle>
-          <CardDescription>
-            Base card component with header, content, and footer slots • Click to view source
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <CodeFlipCard
-            sourceCode={CardPrimitiveDemoSource}
-            fileName="CardPrimitiveDemo.tsx"
-            language="tsx"
-            stripImports={true}
-          >
-            <CardPrimitiveDemo />
-          </CodeFlipCard>
-        </CardContent>
-        <ImportFooter sourceCode={CardPrimitiveDemoSource} />
-      </Card>
-
-      {/* SECTION 2: CodeFlipCard Features */}
-      <Card>
-        <CardHeader>
-          <CardTitle>CodeFlipCard Component</CardTitle>
-          <CardDescription>
-            Interactive card that flips to show source code • Click to flip, or hover over the examples below
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {/* Click to Flip */}
-          <div className="space-y-2">
-            <h4 className="text-sm font-medium text-muted-foreground">Click to Flip</h4>
+      <ScrollSnapItem align="start" offset={80}>
+        <Card>
+          <CardHeader>
+            <CardTitle>Card Primitive</CardTitle>
+            <CardDescription>
+              Base card component with header, content, and footer slots • Click to view source
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
             <CodeFlipCard
-              sourceCode={CodeFlipCardExampleDemoSource}
-              fileName="CodeFlipCardExampleDemo.tsx"
+              sourceCode={CardPrimitiveDemoSource}
+              fileName="CardPrimitiveDemo.tsx"
               language="tsx"
               stripImports={true}
             >
-              <CodeFlipCardExampleDemo />
+              <CardPrimitiveDemo />
             </CodeFlipCard>
-          </div>
+          </CardContent>
+          <ImportFooter sourceCode={CardPrimitiveDemoSource} />
+        </Card>
+      </ScrollSnapItem>
 
-          {/* Hover to Flip Examples */}
-          <div className="space-y-2">
-            <h4 className="text-sm font-medium text-muted-foreground">Hover to Flip (Horizontal & Vertical)</h4>
-            <div className="grid md:grid-cols-2 gap-4">
+      {/* SECTION 2: CodeFlipCard Features */}
+      <ScrollSnapItem align="start" offset={80}>
+        <Card>
+          <CardHeader>
+            <CardTitle>CodeFlipCard Component</CardTitle>
+            <CardDescription>
+              Interactive card that flips to show source code • Click to flip, or hover over the examples below
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Click to Flip */}
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium text-muted-foreground">Click to Flip</h4>
               <CodeFlipCard
                 sourceCode={CodeFlipCardExampleDemoSource}
                 fileName="CodeFlipCardExampleDemo.tsx"
                 language="tsx"
                 stripImports={true}
-                flipTrigger="hover"
-              >
-                <CodeFlipCardExampleDemo />
-              </CodeFlipCard>
-
-              <CodeFlipCard
-                sourceCode={CodeFlipCardExampleDemoSource}
-                fileName="CodeFlipCardExampleDemo.tsx"
-                language="tsx"
-                stripImports={true}
-                flipTrigger="hover"
-                flipDirection="vertical"
               >
                 <CodeFlipCardExampleDemo />
               </CodeFlipCard>
             </div>
-          </div>
-        </CardContent>
-        <ImportFooter sourceCode={CodeFlipCardExampleDemoSource} />
-      </Card>
+
+            {/* Hover to Flip Examples */}
+            <div className="space-y-2">
+              <h4 className="text-sm font-medium text-muted-foreground">Hover to Flip (Horizontal & Vertical)</h4>
+              <div className="grid md:grid-cols-2 gap-4">
+                <CodeFlipCard
+                  sourceCode={CodeFlipCardExampleDemoSource}
+                  fileName="CodeFlipCardExampleDemo.tsx"
+                  language="tsx"
+                  stripImports={true}
+                  flipTrigger="hover"
+                >
+                  <CodeFlipCardExampleDemo />
+                </CodeFlipCard>
+
+                <CodeFlipCard
+                  sourceCode={CodeFlipCardExampleDemoSource}
+                  fileName="CodeFlipCardExampleDemo.tsx"
+                  language="tsx"
+                  stripImports={true}
+                  flipTrigger="hover"
+                  flipDirection="vertical"
+                >
+                  <CodeFlipCardExampleDemo />
+                </CodeFlipCard>
+              </div>
+            </div>
+          </CardContent>
+          <ImportFooter sourceCode={CodeFlipCardExampleDemoSource} />
+        </Card>
+      </ScrollSnapItem>
 
       {/* SECTION 3: Complex Cards */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Complex Card Components</CardTitle>
-          <CardDescription>
-            Full-featured card components with forms, validation, and interactive elements • Click to view implementation
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid md:grid-cols-2 gap-4">
-            <CodeFlipCard
-              sourceCode={CreateAccountCardSource}
-              fileName="CreateAccountCard.tsx"
-              language="tsx"
-              stripImports={true}
-            >
-              <CreateAccountCard
-                enableTilt={false}
-                oidcProviders={[
-                  { name: "GitHub", onClick: () => alert("GitHub login") },
-                  { name: "Google", onClick: () => alert("Google login") },
-                ]}
-                onLogin={(values) => console.log("Login:", values)}
-                onCreateAccount={() => alert("Create account")}
-              />
-            </CodeFlipCard>
+      <ScrollSnapItem align="start" offset={80}>
+        <Card>
+          <CardHeader>
+            <CardTitle>Complex Card Components</CardTitle>
+            <CardDescription>
+              Full-featured card components with forms, validation, and interactive elements • Click to view implementation
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-2 gap-4">
+              <CodeFlipCard
+                sourceCode={CreateAccountCardSource}
+                fileName="CreateAccountCard.tsx"
+                language="tsx"
+                stripImports={true}
+              >
+                <CreateAccountCard
+                  enableTilt={false}
+                  oidcProviders={[
+                    { name: "GitHub", onClick: () => alert("GitHub login") },
+                    { name: "Google", onClick: () => alert("Google login") },
+                  ]}
+                  onLogin={(values) => console.log("Login:", values)}
+                  onCreateAccount={() => alert("Create account")}
+                />
+              </CodeFlipCard>
 
-            <CodeFlipCard
-              sourceCode={MultiChoiceQuestionSource}
-              fileName="MultiChoiceQuestion.tsx"
-              language="tsx"
-              stripImports={true}
-            >
-              <MultiChoiceQuestionCard
-                enableTilt={false}
-                question="What's your favorite synthwave artist?"
-                options={["The Midnight", "Carpenter Brut", "FM-84", "Gunship"]}
-                onChange={(value) => console.log("Selected:", value)}
-              />
-            </CodeFlipCard>
-          </div>
-        </CardContent>
-        <ImportFooter sourceCode={CreateAccountCardSource} />
-      </Card>
+              <CodeFlipCard
+                sourceCode={MultiChoiceQuestionSource}
+                fileName="MultiChoiceQuestion.tsx"
+                language="tsx"
+                stripImports={true}
+              >
+                <MultiChoiceQuestionCard
+                  enableTilt={false}
+                  question="What's your favorite synthwave artist?"
+                  options={["The Midnight", "Carpenter Brut", "FM-84", "Gunship"]}
+                  onChange={(value) => console.log("Selected:", value)}
+                />
+              </CodeFlipCard>
+            </div>
+          </CardContent>
+          <ImportFooter sourceCode={CreateAccountCardSource} />
+        </Card>
+      </ScrollSnapItem>
     </div>
   );
 }

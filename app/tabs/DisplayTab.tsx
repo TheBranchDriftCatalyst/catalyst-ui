@@ -1,6 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
 import { CodeFlipCard } from "@/catalyst-ui/components/CodeFlipCard";
 import { ImportFooter } from "../shared/ImportFooter";
+import { ScrollSnapItem } from "@/catalyst-ui/components/AnimationHOC";
 
 // Import demo components and their source code
 import { AccordionDemo } from "../demos/AccordionDemo";
@@ -19,80 +20,88 @@ export function DisplayTab() {
   return (
     <div className="space-y-4 mt-0">
       {/* Accordion */}
-      <CodeFlipCard
-        sourceCode={AccordionDemoSource}
-        fileName="AccordionDemo.tsx"
-        language="tsx"
-      >
-        <Card>
-          <CardHeader>
-            <CardTitle>Accordion</CardTitle>
-            <CardDescription>Expandable content sections with smooth animations • Click to view source</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <AccordionDemo />
-          </CardContent>
-          <ImportFooter sourceCode={AccordionDemoSource} />
-        </Card>
-      </CodeFlipCard>
+      <ScrollSnapItem align="start" offset={80}>
+        <CodeFlipCard
+          sourceCode={AccordionDemoSource}
+          fileName="AccordionDemo.tsx"
+          language="tsx"
+        >
+          <Card>
+            <CardHeader>
+              <CardTitle>Accordion</CardTitle>
+              <CardDescription>Expandable content sections with smooth animations • Click to view source</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <AccordionDemo />
+            </CardContent>
+            <ImportFooter sourceCode={AccordionDemoSource} />
+          </Card>
+        </CodeFlipCard>
+      </ScrollSnapItem>
 
       {/* Table */}
-      <CodeFlipCard
-        sourceCode={TableDemoSource}
-        fileName="TableDemo.tsx"
-        language="tsx"
-      >
-        <Card>
-          <CardHeader>
-            <CardTitle>Table</CardTitle>
-            <CardDescription>Data table component with hover effects and row highlighting • Click to view source</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <TableDemo />
-          </CardContent>
-          <ImportFooter sourceCode={TableDemoSource} />
-        </Card>
-      </CodeFlipCard>
+      <ScrollSnapItem align="start" offset={80}>
+        <CodeFlipCard
+          sourceCode={TableDemoSource}
+          fileName="TableDemo.tsx"
+          language="tsx"
+        >
+          <Card>
+            <CardHeader>
+              <CardTitle>Table</CardTitle>
+              <CardDescription>Data table component with hover effects and row highlighting • Click to view source</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <TableDemo />
+            </CardContent>
+            <ImportFooter sourceCode={TableDemoSource} />
+          </Card>
+        </CodeFlipCard>
+      </ScrollSnapItem>
 
       {/* Code Block */}
-      <CodeFlipCard
-        sourceCode={CodeBlockDemoSource}
-        fileName="CodeBlockDemo.tsx"
-        language="tsx"
-      >
-        <Card>
-          <CardHeader>
-            <CardTitle>Code Block</CardTitle>
-            <CardDescription>
-              Syntax highlighting with Shiki (VS Code quality) • ✏️ Click pencil to edit • 🎨 Change theme • #️⃣ Toggle line numbers • Click to view source
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <CodeBlockDemo />
-          </CardContent>
-          <ImportFooter sourceCode={CodeBlockDemoSource} />
-        </Card>
-      </CodeFlipCard>
+      <ScrollSnapItem align="start" offset={80}>
+        <CodeFlipCard
+          sourceCode={CodeBlockDemoSource}
+          fileName="CodeBlockDemo.tsx"
+          language="tsx"
+        >
+          <Card>
+            <CardHeader>
+              <CardTitle>Code Block</CardTitle>
+              <CardDescription>
+                Syntax highlighting with Shiki (VS Code quality) • ✏️ Click pencil to edit • 🎨 Change theme • #️⃣ Toggle line numbers • Click to view source
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <CodeBlockDemo />
+            </CardContent>
+            <ImportFooter sourceCode={CodeBlockDemoSource} />
+          </Card>
+        </CodeFlipCard>
+      </ScrollSnapItem>
 
       {/* JSON Tree View */}
-      <CodeFlipCard
-        sourceCode={JsonTreeViewDemoSource}
-        fileName="JsonTreeViewDemo.tsx"
-        language="tsx"
-      >
-        <Card>
-          <CardHeader>
-            <CardTitle>JSON Tree View</CardTitle>
-            <CardDescription>
-              Collapsible JSON viewer with syntax highlighting • Click arrows to expand/collapse nodes • Click to view source
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <JsonTreeViewDemo />
-          </CardContent>
-          <ImportFooter sourceCode={JsonTreeViewDemoSource} />
-        </Card>
-      </CodeFlipCard>
+      <ScrollSnapItem align="start" offset={80}>
+        <CodeFlipCard
+          sourceCode={JsonTreeViewDemoSource}
+          fileName="JsonTreeViewDemo.tsx"
+          language="tsx"
+        >
+          <Card>
+            <CardHeader>
+              <CardTitle>JSON Tree View</CardTitle>
+              <CardDescription>
+                Collapsible JSON viewer with syntax highlighting • Click arrows to expand/collapse nodes • Click to view source
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <JsonTreeViewDemo />
+            </CardContent>
+            <ImportFooter sourceCode={JsonTreeViewDemoSource} />
+          </Card>
+        </CodeFlipCard>
+      </ScrollSnapItem>
     </div>
   );
 }

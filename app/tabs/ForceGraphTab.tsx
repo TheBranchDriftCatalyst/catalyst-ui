@@ -6,6 +6,7 @@ import { Typography } from "@/catalyst-ui/ui/typography";
 import { ForceGraph } from "@/catalyst-ui/components/ForceGraph";
 import type { GraphData } from "@/catalyst-ui/components/ForceGraph";
 import { MermaidFlowChartGraph } from "@/catalyst-ui/components/MermaidForceGraph";
+import { ScrollSnapItem } from "@/catalyst-ui/components/AnimationHOC";
 
 export function ForceGraphTab() {
   const [selectedGraphExample, setSelectedGraphExample] = useState("docker");
@@ -13,13 +14,14 @@ export function ForceGraphTab() {
   return (
     <div className="space-y-4 mt-0">
       {/* Documentation Card */}
-      <Card>
-        <CardHeader>
-          <CardTitle>📊 ForceGraph Component</CardTitle>
-          <CardDescription>
-            Enterprise-grade D3.js wrapper with advanced layout algorithms and filtering capabilities
-          </CardDescription>
-        </CardHeader>
+      <ScrollSnapItem align="start" offset={80}>
+        <Card>
+          <CardHeader>
+            <CardTitle>📊 ForceGraph Component</CardTitle>
+            <CardDescription>
+              Enterprise-grade D3.js wrapper with advanced layout algorithms and filtering capabilities
+            </CardDescription>
+          </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <Typography variant="p" className="text-muted-foreground">
@@ -97,10 +99,12 @@ export function ForceGraphTab() {
             </div>
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      </ScrollSnapItem>
 
       {/* Interactive Demo */}
-      <Card>
+      <ScrollSnapItem align="start" offset={80}>
+        <Card>
         <CardHeader>
           <CardTitle>Interactive Demo</CardTitle>
           <CardDescription>
@@ -338,7 +342,8 @@ export function ForceGraphTab() {
             </>
           )}
         </CardFooter>
-      </Card>
+        </Card>
+      </ScrollSnapItem>
     </div>
   );
 }

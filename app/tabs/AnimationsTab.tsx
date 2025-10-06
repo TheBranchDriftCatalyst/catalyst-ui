@@ -7,47 +7,50 @@ import { AnimatedFlipDemo } from "../demos/AnimatedFlipDemo";
 import { AnimatedFadeDemo } from "../demos/AnimatedFadeDemo";
 import { AnimatedSlideDemo } from "../demos/AnimatedSlideDemo";
 import { AnimatedBounceDemo } from "../demos/AnimatedBounceDemo";
+import { ScrollSnapItem } from "@/catalyst-ui/components/AnimationHOC";
 
 export function AnimationsTab() {
   return (
     <div className="space-y-6 mt-0">
       {/* Overview Card */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Animation System</CardTitle>
-          <CardDescription>
-            Two approaches to animations: React HOCs for interactive components • CSS keyframes for theme effects
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Typography variant="h4" className="text-sm font-semibold">React Animation HOCs</Typography>
-              <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                <li>AnimatedFlip - 3D card flipping</li>
-                <li>AnimatedFade - Opacity transitions</li>
-                <li>AnimatedSlide - Directional sliding</li>
-                <li>AnimatedBounce - Spring-like scaling</li>
-              </ul>
-              <p className="text-xs text-muted-foreground italic pt-2">
-                ✅ Best for: Custom components, state-driven animations, CodeFlipCard-style interactions
-              </p>
+      <ScrollSnapItem align="start" offset={80}>
+        <Card>
+          <CardHeader>
+            <CardTitle>Animation System</CardTitle>
+            <CardDescription>
+              Two approaches to animations: React HOCs for interactive components • CSS keyframes for theme effects
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Typography variant="h4" className="text-sm font-semibold">React Animation HOCs</Typography>
+                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+                  <li>AnimatedFlip - 3D card flipping</li>
+                  <li>AnimatedFade - Opacity transitions</li>
+                  <li>AnimatedSlide - Directional sliding</li>
+                  <li>AnimatedBounce - Spring-like scaling</li>
+                </ul>
+                <p className="text-xs text-muted-foreground italic pt-2">
+                  ✅ Best for: Custom components, state-driven animations, CodeFlipCard-style interactions
+                </p>
+              </div>
+              <div className="space-y-2">
+                <Typography variant="h4" className="text-sm font-semibold">CSS Theme Animations</Typography>
+                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+                  <li>Glow Pulse - Subtle shadow pulse</li>
+                  <li>Border Shimmer - Gradient shimmer</li>
+                  <li>Pulse Scale - Fade + scale effect</li>
+                  <li>Text Glow - Text shadow pulse</li>
+                </ul>
+                <p className="text-xs text-muted-foreground italic pt-2">
+                  ✅ Best for: Theme-specific effects, hover states, cyberpunk aesthetic
+                </p>
+              </div>
             </div>
-            <div className="space-y-2">
-              <Typography variant="h4" className="text-sm font-semibold">CSS Theme Animations</Typography>
-              <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                <li>Glow Pulse - Subtle shadow pulse</li>
-                <li>Border Shimmer - Gradient shimmer</li>
-                <li>Pulse Scale - Fade + scale effect</li>
-                <li>Text Glow - Text shadow pulse</li>
-              </ul>
-              <p className="text-xs text-muted-foreground italic pt-2">
-                ✅ Best for: Theme-specific effects, hover states, cyberpunk aesthetic
-              </p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </ScrollSnapItem>
 
       {/* Tabbed Content */}
       <Tabs defaultValue="hocs" className="w-full">
@@ -58,7 +61,8 @@ export function AnimationsTab() {
 
         {/* React HOCs Tab */}
         <TabsContent value="hocs" className="space-y-6 mt-4">
-          <Card>
+          <ScrollSnapItem align="start" offset={80}>
+            <Card>
             <CardHeader>
               <CardTitle>AnimatedFlip</CardTitle>
               <CardDescription>
@@ -74,8 +78,10 @@ export function AnimationsTab() {
               </code>
             </CardFooter>
           </Card>
+          </ScrollSnapItem>
 
-          <Card>
+          <ScrollSnapItem align="start" offset={80}>
+            <Card>
             <CardHeader>
               <CardTitle>AnimatedFade</CardTitle>
               <CardDescription>
@@ -91,8 +97,10 @@ export function AnimationsTab() {
               </code>
             </CardFooter>
           </Card>
+          </ScrollSnapItem>
 
-          <Card>
+          <ScrollSnapItem align="start" offset={80}>
+            <Card>
             <CardHeader>
               <CardTitle>AnimatedSlide</CardTitle>
               <CardDescription>
@@ -108,8 +116,10 @@ export function AnimationsTab() {
               </code>
             </CardFooter>
           </Card>
+          </ScrollSnapItem>
 
-          <Card>
+          <ScrollSnapItem align="start" offset={80}>
+            <Card>
             <CardHeader>
               <CardTitle>AnimatedBounce</CardTitle>
               <CardDescription>
@@ -125,9 +135,11 @@ export function AnimationsTab() {
               </code>
             </CardFooter>
           </Card>
+          </ScrollSnapItem>
 
           {/* Design Principles */}
-          <Card>
+          <ScrollSnapItem align="start" offset={80}>
+            <Card>
             <CardHeader>
               <CardTitle>Design Principles</CardTitle>
             </CardHeader>
@@ -141,11 +153,13 @@ export function AnimationsTab() {
               </ul>
             </CardContent>
           </Card>
+          </ScrollSnapItem>
         </TabsContent>
 
         {/* CSS Animations Tab */}
         <TabsContent value="css" className="space-y-4 mt-4">
-          <Card>
+          <ScrollSnapItem align="start" offset={80}>
+            <Card>
             <CardHeader>
               <CardTitle>CSS Keyframe Animations</CardTitle>
               <CardDescription>
@@ -258,6 +272,7 @@ export function AnimationsTab() {
               </ul>
             </CardFooter>
           </Card>
+          </ScrollSnapItem>
         </TabsContent>
       </Tabs>
     </div>

@@ -1,12 +1,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
 import { Typography } from "@/catalyst-ui/ui/typography";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/catalyst-ui/ui/table";
+import { ScrollSnapItem } from "@/catalyst-ui/components/AnimationHOC";
 
 export function OverviewTab() {
   return (
     <div className="space-y-4 mt-0">
       {/* Welcome Section */}
-      <Card>
+      <ScrollSnapItem align="start" offset={80}>
+        <Card>
         <CardHeader>
           <CardTitle>Welcome to Catalyst UI 👋</CardTitle>
         </CardHeader>
@@ -32,9 +34,11 @@ export function OverviewTab() {
           </Typography>
         </CardContent>
       </Card>
+      </ScrollSnapItem>
 
       {/* Features Highlight */}
-      <Card>
+      <ScrollSnapItem align="start" offset={80}>
+        <Card>
         <CardHeader>
           <CardTitle>🚀 Key Features</CardTitle>
           <CardDescription>What makes Catalyst UI special</CardDescription>
@@ -193,9 +197,11 @@ export function OverviewTab() {
           </div>
         </CardContent>
       </Card>
+      </ScrollSnapItem>
 
       {/* Frameworks & Resources */}
-      <Card>
+      <ScrollSnapItem align="start" offset={80}>
+        <Card>
         <CardHeader>
           <CardTitle>Frameworks & Resources</CardTitle>
           <CardDescription>External libraries and tools powering this UI library</CardDescription>
@@ -439,6 +445,7 @@ export function OverviewTab() {
           </Table>
         </CardContent>
       </Card>
+      </ScrollSnapItem>
     </div>
   );
 }

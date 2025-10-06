@@ -1,16 +1,18 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
 import { CodeBlock } from "@/catalyst-ui/components/CodeBlock";
 import { DesignTokenDocBlock } from "storybook-design-token";
+import { ScrollSnapItem } from "@/catalyst-ui/components/AnimationHOC";
 
 export function TokensTab() {
   return (
     <div className="space-y-4 mt-0">
       {/* Neon Colors */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Neon Color Palette</CardTitle>
-          <CardDescription>Cybersynthpunk accent colors with live examples</CardDescription>
-        </CardHeader>
+      <ScrollSnapItem align="start" offset={80}>
+        <Card>
+          <CardHeader>
+            <CardTitle>Neon Color Palette</CardTitle>
+            <CardDescription>Cybersynthpunk accent colors with live examples</CardDescription>
+          </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="space-y-2 group">
@@ -43,10 +45,12 @@ export function TokensTab() {
             </div>
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      </ScrollSnapItem>
 
       {/* Glow Effects */}
-      <Card>
+      <ScrollSnapItem align="start" offset={80}>
+        <Card>
         <CardHeader>
           <CardTitle>Glow Effects</CardTitle>
           <CardDescription>Cyberpunk shadow glows for depth and atmosphere</CardDescription>
@@ -75,10 +79,12 @@ export function TokensTab() {
             </div>
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      </ScrollSnapItem>
 
       {/* Neon Shadows */}
-      <Card>
+      <ScrollSnapItem align="start" offset={80}>
+        <Card>
         <CardHeader>
           <CardTitle>Neon Shadow System</CardTitle>
           <CardDescription>Multi-layered elevation shadows</CardDescription>
@@ -102,10 +108,12 @@ export function TokensTab() {
             </div>
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      </ScrollSnapItem>
 
       {/* Typography Fonts - Dynamic */}
-      <Card>
+      <ScrollSnapItem align="start" offset={80}>
+        <Card>
         <CardHeader>
           <CardTitle>Theme Typography</CardTitle>
           <CardDescription>Fonts change with each theme for unique aesthetics</CardDescription>
@@ -133,10 +141,12 @@ export function TokensTab() {
             <code className="text-xs">var(--font-mono)</code>
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      </ScrollSnapItem>
 
       {/* Auto-Generated Token List */}
-      <Card>
+      <ScrollSnapItem align="start" offset={80}>
+        <Card>
         <CardHeader>
           <CardTitle>Complete Design Token Reference</CardTitle>
           <CardDescription>Auto-generated from CSS annotations • All tokens documented</CardDescription>
@@ -147,10 +157,12 @@ export function TokensTab() {
             maxHeight={600}
           />
         </CardContent>
-      </Card>
+        </Card>
+      </ScrollSnapItem>
 
       {/* Usage Examples */}
-      <Card>
+      <ScrollSnapItem align="start" offset={80}>
+        <Card>
         <CardHeader>
           <CardTitle>Usage in Code</CardTitle>
           <CardDescription>How to use design tokens in your components</CardDescription>
@@ -188,7 +200,8 @@ const styles = {
             showCopyButton={true}
           />
         </CardContent>
-      </Card>
+        </Card>
+      </ScrollSnapItem>
     </div>
   );
 }

@@ -7,6 +7,7 @@ import { HeaderProvider } from "@/catalyst-ui/components/CatalystHeader/HeaderPr
 import { Menubar } from "@/catalyst-ui/ui/menubar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/catalyst-ui/ui/tabs";
 import { Toaster } from "@/catalyst-ui/ui/toaster";
+import { ScrollSnapContainer } from "@/catalyst-ui/components/AnimationHOC";
 import { useState, useEffect } from "react";
 
 // Import tab components
@@ -97,7 +98,7 @@ function KitchenSink() {
             </TabsList>
           }
         />
-        <div className="w-full p-6 md:p-8">
+        <ScrollSnapContainer type="y" behavior="proximity" className="w-full p-6 md:p-8">
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-4 mt-0">
             <OverviewTab />
@@ -143,7 +144,7 @@ function KitchenSink() {
           <TabsContent value="forcegraph" className="space-y-4 mt-0">
             <ForceGraphTab />
           </TabsContent>
-        </div>
+        </ScrollSnapContainer>
       </Tabs>
     </div>
   );
