@@ -150,7 +150,6 @@ export function applyCommunityLayout(
   const nodeToCommunity = detectCommunities(nodes, edges);
   const communityGroups = getCommunityGroups(nodes, nodeToCommunity);
 
-  console.log(`Detected ${communityGroups.length} communities`);
 
   // Step 2: Layout each community locally
   const communityLayouts: CommunityLayout[] = [];
@@ -168,8 +167,6 @@ export function applyCommunityLayout(
 
       // Estimate dimensions for this community
       const estimatedWidth = colCount * 150; // Column width
-      const maxNodesPerCol = Math.max(...kinds.map(k => communityNodes.filter(n => n.kind === k).length));
-      const estimatedHeight = maxNodesPerCol * internalNodeSpacing;
 
       const colWidth = estimatedWidth / colCount;
 
@@ -264,7 +261,6 @@ export function applyCommunityLayout(
     });
   }
 
-  console.log(`[Community Layout] Strategy: ${layoutStrategy}, Internal: ${internalLayout}, Communities: ${communityLayouts.length}`);
 
   // Step 4: Calculate community positions based on layout strategy
   switch (layoutStrategy) {
@@ -286,7 +282,6 @@ export function applyCommunityLayout(
       const startX = (width - gridWidth) / 2;
       const startY = (height - gridHeight) / 2;
 
-      console.log(`[Community Layout] Grid: ${cols} cols × ${rows} rows, Cell: ${cellWidth.toFixed(0)}×${cellHeight.toFixed(0)}`);
 
       // Position each community in grid cells
       communityLayouts.forEach((layout, index) => {
@@ -296,7 +291,6 @@ export function applyCommunityLayout(
         const centerY = startY + row * cellHeight + cellHeight / 2;
 
         layout.center = { x: centerX, y: centerY };
-        console.log(`[Community ${layout.id}] Position: (${centerX.toFixed(0)}, ${centerY.toFixed(0)}), Nodes: ${layout.nodes.length}`);
       });
       break;
     }
@@ -315,7 +309,6 @@ export function applyCommunityLayout(
         const centerY = height / 2;
 
         layout.center = { x: centerX, y: centerY };
-        console.log(`[Community ${layout.id}] Position: (${centerX.toFixed(0)}, ${centerY.toFixed(0)}), Nodes: ${layout.nodes.length}`);
 
         currentX += scaledWidth + communityPadding;
       });
@@ -336,7 +329,6 @@ export function applyCommunityLayout(
         const centerY = currentY + scaledHeight / 2;
 
         layout.center = { x: centerX, y: centerY };
-        console.log(`[Community ${layout.id}] Position: (${centerX.toFixed(0)}, ${centerY.toFixed(0)}), Nodes: ${layout.nodes.length}`);
 
         currentY += scaledHeight + communityPadding;
       });
@@ -356,7 +348,6 @@ export function applyCommunityLayout(
         const y = centerY + radius * Math.sin(angle);
 
         layout.center = { x, y };
-        console.log(`[Community ${layout.id}] Position: (${x.toFixed(0)}, ${y.toFixed(0)}), Angle: ${(angle * 180 / Math.PI).toFixed(0)}°, Nodes: ${layout.nodes.length}`);
       });
       break;
     }

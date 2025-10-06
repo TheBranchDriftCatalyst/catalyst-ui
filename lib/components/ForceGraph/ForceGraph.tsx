@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { ForceGraphProps } from './types';
+import { ForceGraphProps, NodeKind, EdgeKind } from './types';
 import Legend from './Legend';
 import NodeDetails from './NodeDetails';
 import ReactD3Graph from './ReactD3Graph';
@@ -12,7 +12,7 @@ import { GraphConfig } from './config/types';
 import { DockerGraphConfig } from './config/DockerGraphConfig';
 
 // Inner component that uses the context
-const ForceGraphInner: React.FC<{ data: any; config?: GraphConfig<any, any> }> = ({ data, config }) => {
+const ForceGraphInner: React.FC<{ data: any; config?: GraphConfig<any, any>; storageKey?: string }> = ({ data, config, storageKey }) => {
   const {
     filteredData,
     hoveredNode,
@@ -49,39 +49,35 @@ const ForceGraphInner: React.FC<{ data: any; config?: GraphConfig<any, any> }> =
   }
 
   // Legacy setters for Legend component compatibility - memoized to prevent re-renders
-  const setVisibleNodes = useCallback((setter: React.SetStateAction<Record<any, boolean>>) => {
+  const setVisibleNodes = useCallback((setter: React.SetStateAction<Record<string, boolean>>) => {
     if (typeof setter === 'function') {
       const newVisibility = setter(filters.visibleNodes);
       Object.entries(newVisibility).forEach(([nodeKind, visible]) => {
-        // @ts-ignore - nodeKind from config can be any node type
-        if (visible !== filters.visibleNodes[nodeKind as any]) {
-          toggleNodeVisibility(nodeKind as any);
+        if (visible !== filters.visibleNodes[nodeKind as NodeKind]) {
+          toggleNodeVisibility(nodeKind as NodeKind);
         }
       });
     } else {
       Object.entries(setter).forEach(([nodeKind, visible]) => {
-        // @ts-ignore - nodeKind from config can be any node type
-        if (visible !== filters.visibleNodes[nodeKind as any]) {
-          toggleNodeVisibility(nodeKind as any);
+        if (visible !== filters.visibleNodes[nodeKind as NodeKind]) {
+          toggleNodeVisibility(nodeKind as NodeKind);
         }
       });
     }
   }, [filters.visibleNodes, toggleNodeVisibility]);
 
-  const setVisibleEdges = useCallback((setter: React.SetStateAction<Record<any, boolean>>) => {
+  const setVisibleEdges = useCallback((setter: React.SetStateAction<Record<string, boolean>>) => {
     if (typeof setter === 'function') {
       const newVisibility = setter(filters.visibleEdges);
       Object.entries(newVisibility).forEach(([edgeKind, visible]) => {
-        // @ts-ignore - edgeKind from config can be any edge type
-        if (visible !== filters.visibleEdges[edgeKind as any]) {
-          toggleEdgeVisibility(edgeKind as any);
+        if (visible !== filters.visibleEdges[edgeKind as EdgeKind]) {
+          toggleEdgeVisibility(edgeKind as EdgeKind);
         }
       });
     } else {
       Object.entries(setter).forEach(([edgeKind, visible]) => {
-        // @ts-ignore - edgeKind from config can be any edge type
-        if (visible !== filters.visibleEdges[edgeKind as any]) {
-          toggleEdgeVisibility(edgeKind as any);
+        if (visible !== filters.visibleEdges[edgeKind as EdgeKind]) {
+          toggleEdgeVisibility(edgeKind as EdgeKind);
         }
       });
     }
@@ -144,6 +140,7 @@ const ForceGraphInner: React.FC<{ data: any; config?: GraphConfig<any, any> }> =
           hoveredNode={hoveredNode}
           selectedNode={selectedNode}
           config={config}
+          storageKey={storageKey}
         />
         {!activeTab && (
           <Legend
@@ -151,12 +148,13 @@ const ForceGraphInner: React.FC<{ data: any; config?: GraphConfig<any, any> }> =
             setVisibleNodes={setVisibleNodes}
             visibleEdges={filters.visibleEdges}
             setVisibleEdges={setVisibleEdges}
+            storageKey={storageKey}
           />
         )}
         {!activeTab && <NodeDetails node={getNodeInfo(hoveredNode || selectedNode)} />}
       </div>
 
-      <GraphContentPanel activeTab={activeTab} onClose={() => setActiveTab(null)} />
+      <GraphContentPanel activeTab={activeTab} onClose={() => setActiveTab(null)} storageKey={storageKey} />
     </div>
   );
 };
@@ -165,7 +163,7 @@ const ForceGraphInner: React.FC<{ data: any; config?: GraphConfig<any, any> }> =
 const ForceGraph: React.FC<ForceGraphProps> = ({ data, config = DockerGraphConfig, storageKey }) => {
   return (
     <GraphProvider key={storageKey} config={config} storageKey={storageKey}>
-      <ForceGraphInner data={data} config={config} />
+      <ForceGraphInner data={data} config={config} storageKey={storageKey} />
     </GraphProvider>
   );
 };

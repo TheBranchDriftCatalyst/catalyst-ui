@@ -23,6 +23,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/catalyst-ui/ui/tabs"
 import { CreateAccountCard } from "@/catalyst-ui/cards/CreateAccountCard/CreateAccountCard";
 import MultiChoiceQuestionCard from "@/catalyst-ui/cards/MultiChoiceQuetion/MultiChoiceQuestion";
 import { CodeBlock } from "@/catalyst-ui/components/CodeBlock";
+import { CodeFlipCard } from "@/catalyst-ui/components/CodeFlipCard";
+
+// Import card source code as raw strings
+import CreateAccountCardSource from "@/catalyst-ui/cards/CreateAccountCard/CreateAccountCard.tsx?raw";
+import MultiChoiceQuestionSource from "@/catalyst-ui/cards/MultiChoiceQuetion/MultiChoiceQuestion.tsx?raw";
 import { ForceGraph } from "@/catalyst-ui/components/ForceGraph";
 import type { GraphData } from "@/catalyst-ui/components/ForceGraph";
 import JsonTreeView from "@/catalyst-ui/components/ForceGraph/components/JsonTreeView";
@@ -743,20 +748,169 @@ const styles = {
 
           {/* Cards Tab */}
           <TabsContent value="cards" className="space-y-4 mt-0">
-        {/* Cards Section */}
-        <div className="grid md:grid-cols-2 gap-4">
-          <CreateAccountCard
-            oidcProviders={[
-              { name: "GitHub", onClick: () => alert("GitHub login") },
-              { name: "Google", onClick: () => alert("Google login") },
-            ]}
-          />
-          <MultiChoiceQuestionCard
-            question="What's your favorite synthwave artist?"
-            options={["The Midnight", "Carpenter Brut", "FM-84", "Gunship"]}
-            onChange={(value) => console.log("Selected:", value)}
-          />
-        </div>
+        {/* Info Card */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Interactive Card Components</CardTitle>
+            <CardDescription>
+              Click any card to flip and view its source code • Try different examples with various configurations
+            </CardDescription>
+          </CardHeader>
+        </Card>
+
+        {/* Cards Section - Full Source */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Full Source Code</CardTitle>
+            <CardDescription>Click cards to view complete source code</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-2 gap-4">
+              <CodeFlipCard
+                sourceCode={CreateAccountCardSource}
+                fileName="CreateAccountCard.tsx"
+                language="tsx"
+                className="group"
+              >
+                <CreateAccountCard
+                  oidcProviders={[
+                    { name: "GitHub", onClick: () => alert("GitHub login") },
+                    { name: "Google", onClick: () => alert("Google login") },
+                  ]}
+                  onLogin={(values) => console.log("Login:", values)}
+                  onCreateAccount={() => alert("Create account")}
+                />
+              </CodeFlipCard>
+
+              <CodeFlipCard
+                sourceCode={MultiChoiceQuestionSource}
+                fileName="MultiChoiceQuestion.tsx"
+                language="tsx"
+                className="group"
+              >
+                <MultiChoiceQuestionCard
+                  question="What's your favorite synthwave artist?"
+                  options={["The Midnight", "Carpenter Brut", "FM-84", "Gunship"]}
+                  onChange={(value) => console.log("Selected:", value)}
+                />
+              </CodeFlipCard>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Cards Section - Without Imports */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Source Without Imports</CardTitle>
+            <CardDescription>Same cards with imports stripped for cleaner view</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-2 gap-4">
+              <CodeFlipCard
+                sourceCode={CreateAccountCardSource}
+                fileName="CreateAccountCard.tsx"
+                language="tsx"
+                stripImports={true}
+                className="group"
+              >
+                <CreateAccountCard
+                  oidcProviders={[
+                    { name: "GitHub", onClick: () => alert("GitHub login") },
+                    { name: "Google", onClick: () => alert("Google login") },
+                  ]}
+                  onLogin={(values) => console.log("Login:", values)}
+                  onCreateAccount={() => alert("Create account")}
+                />
+              </CodeFlipCard>
+
+              <CodeFlipCard
+                sourceCode={MultiChoiceQuestionSource}
+                fileName="MultiChoiceQuestion.tsx"
+                language="tsx"
+                stripImports={true}
+                className="group"
+              >
+                <MultiChoiceQuestionCard
+                  question="What's your favorite synthwave artist?"
+                  options={["The Midnight", "Carpenter Brut", "FM-84", "Gunship"]}
+                  onChange={(value) => console.log("Selected:", value)}
+                />
+              </CodeFlipCard>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Cards Section - Component Only */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Extracted Component</CardTitle>
+            <CardDescription>View only the main component function (CreateAccountCard)</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex justify-center">
+              <CodeFlipCard
+                sourceCode={CreateAccountCardSource}
+                fileName="CreateAccountCard.tsx"
+                language="tsx"
+                extractFunction="CreateAccountCard"
+                className="group"
+              >
+                <CreateAccountCard
+                  oidcProviders={[
+                    { name: "GitHub", onClick: () => alert("GitHub login") },
+                    { name: "Google", onClick: () => alert("Google login") },
+                  ]}
+                  onLogin={(values) => console.log("Login:", values)}
+                  onCreateAccount={() => alert("Create account")}
+                />
+              </CodeFlipCard>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Cards Section - Hover to Flip */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Hover to Flip</CardTitle>
+            <CardDescription>These cards flip on hover instead of click</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-2 gap-4">
+              <CodeFlipCard
+                sourceCode={CreateAccountCardSource}
+                fileName="CreateAccountCard.tsx"
+                language="tsx"
+                stripImports={true}
+                flipTrigger="hover"
+                className="group"
+              >
+                <CreateAccountCard
+                  oidcProviders={[
+                    { name: "GitHub", onClick: () => alert("GitHub login") },
+                    { name: "Google", onClick: () => alert("Google login") },
+                  ]}
+                  onLogin={(values) => console.log("Login:", values)}
+                  onCreateAccount={() => alert("Create account")}
+                />
+              </CodeFlipCard>
+
+              <CodeFlipCard
+                sourceCode={MultiChoiceQuestionSource}
+                fileName="MultiChoiceQuestion.tsx"
+                language="tsx"
+                stripImports={true}
+                flipTrigger="hover"
+                className="group"
+              >
+                <MultiChoiceQuestionCard
+                  question="What's your favorite synthwave artist?"
+                  options={["The Midnight", "Carpenter Brut", "FM-84", "Gunship"]}
+                  onChange={(value) => console.log("Selected:", value)}
+                />
+              </CodeFlipCard>
+            </div>
+          </CardContent>
+        </Card>
           </TabsContent>
 
           {/* Animations Tab */}

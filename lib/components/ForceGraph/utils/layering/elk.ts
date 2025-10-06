@@ -167,16 +167,16 @@ export async function applyELKLayout(
     })),
   };
 
-  console.log(`[ELK Layout] Algorithm: ${algorithm}, Direction: ${direction}, Nodes: ${nodes.length}`);
 
   // Perform layout
   const layoutedGraph = await elk.layout(elkGraph);
 
-  console.log(`[ELK Layout] Calculated dimensions: ${layoutedGraph.width}×${layoutedGraph.height}`);
+  // ELK adds width/height to the result, but types don't reflect this
+  const elkResult = layoutedGraph as any;
 
   // Extract positions and center in viewport
-  const graphWidth = layoutedGraph.width || dimensions.width;
-  const graphHeight = layoutedGraph.height || dimensions.height;
+  const graphWidth = (elkResult.width as number) || dimensions.width;
+  const graphHeight = (elkResult.height as number) || dimensions.height;
   const offsetX = (dimensions.width - graphWidth) / 2;
   const offsetY = (dimensions.height - graphHeight) / 2;
 
@@ -190,7 +190,6 @@ export async function applyELKLayout(
       node.fx = node.x;  // Fix positions
       node.fy = node.y;
 
-      console.log(`[ELK] ${node.id}: (${node.x.toFixed(0)}, ${node.y.toFixed(0)})`);
     }
   });
 

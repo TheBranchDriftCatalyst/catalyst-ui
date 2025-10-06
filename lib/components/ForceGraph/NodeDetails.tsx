@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { NodeData } from './types';
 import JsonTreeView from './components/JsonTreeView';
-import { useDraggable } from './hooks/useDraggable';
-import { useResizable } from './hooks/useResizable';
+import { useFloatingPanel } from './hooks/useFloatingPanel';
 
 interface NodeDetailsProps {
   node?: NodeData;
@@ -13,20 +12,26 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
   const [activeTab, setActiveTab] = useState<'details' | 'attributes'>('details');
   const [visible, setVisible] = useState(false);
   const [delayedNode, setDelayedNode] = useState<NodeData | undefined>(undefined);
-  const [isCollapsed, setIsCollapsed] = useState(false);
 
-  const { elementRef: dragRef, handleRef, style: dragStyle } = useDraggable({
+  const {
+    panelRef,
+    dragHandleRef,
+    resizeHandleRef,
+    isCollapsed,
+    toggleCollapse,
+    style,
+  } = useFloatingPanel({
     initialPosition: { x: window.innerWidth - 600, y: 80 },
-    storageKey: 'catalyst-ui.forcegraph.nodedetails.position',
-  });
-
-  const { elementRef: resizeRef, resizeHandleRef, style: resizeStyle } = useResizable({
+    positionStorageKey: 'catalyst-ui.forcegraph.nodedetails.position',
     initialSize: { width: 520, height: 500 },
     minWidth: 300,
     minHeight: 200,
     maxWidth: 800,
     maxHeight: 1000,
-    storageKey: 'catalyst-ui.forcegraph.nodedetails.size',
+    sizeStorageKey: 'catalyst-ui.forcegraph.nodedetails.size',
+    enableDragging: true,
+    enableResizing: true,
+    enableCollapse: true,
   });
 
   // Add delay to prevent rapid show/hide and hover loops
@@ -55,23 +60,10 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
   const attributes = delayedNode.attributes || {};
   const hasAttributes = Object.keys(attributes).length > 0;
 
-  // Merge refs - we need both drag and resize on the same element
-  const mergedRef = (el: HTMLDivElement | null) => {
-    if (dragRef) {
-      (dragRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
-    }
-    if (resizeRef) {
-      (resizeRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
-    }
-  };
-
   return createPortal(
     <div
-      ref={mergedRef}
-      style={{
-        ...dragStyle,
-        ...(isCollapsed ? {} : resizeStyle),
-      }}
+      ref={panelRef}
+      style={style}
       className="bg-background/95 border-2 border-primary rounded-xl backdrop-blur-md shadow-[0_8px_32px_rgba(var(--primary-rgb),0.3)] flex flex-col pointer-events-auto z-50"
     >
       {/* Header with Drag Handle and Collapse Button */}
@@ -83,7 +75,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
           <div className="flex items-center gap-2">
             {/* Collapse Button */}
             <button
-              onClick={() => setIsCollapsed(!isCollapsed)}
+              onClick={toggleCollapse}
               className="w-5 h-5 flex items-center justify-center cursor-pointer opacity-60 hover:opacity-100 transition-opacity text-primary"
               title={isCollapsed ? 'Expand' : 'Collapse'}
             >
@@ -97,7 +89,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
             </button>
             {/* Drag Handle */}
             <div
-              ref={handleRef}
+              ref={dragHandleRef}
               className="w-4 h-4 cursor-grab active:cursor-grabbing opacity-40 hover:opacity-80 transition-opacity"
               title="Drag to move"
             >

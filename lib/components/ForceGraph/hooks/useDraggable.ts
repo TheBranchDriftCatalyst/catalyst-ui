@@ -1,11 +1,11 @@
 import { useRef, useEffect, useState } from 'react';
 
-interface Position {
+export interface Position {
   x: number;
   y: number;
 }
 
-interface UseDraggableOptions {
+export interface UseDraggableOptions {
   initialPosition?: Position;
   storageKey?: string;
 }

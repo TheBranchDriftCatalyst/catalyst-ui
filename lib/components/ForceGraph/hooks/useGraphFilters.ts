@@ -3,96 +3,18 @@ import { useGraphContext } from '../context/GraphContext';
 import { NodeData, EdgeData, NodeKind, EdgeKind } from '../types';
 import { GraphFilters, GraphConnectionFilter } from '../types/filterTypes';
 import { GraphConfig } from '../config/types';
+import {
+  isOrphanedNode,
+  matchesStatusFilter,
+  matchesConnectionFilter,
+  matchesSearchQuery,
+  matchesAttributeFilters,
+  matchesRunningOnly,
+  matchesInUseOnly,
+} from '../utils/filterPredicates';
 
 export const useGraphFilters = (config?: GraphConfig<any, any>) => {
   const { state, dispatch } = useGraphContext();
-
-  // Helper function to check if a node is orphaned (no edges)
-  // This is a graph-level property, not domain-specific
-  const isOrphanedNode = (nodeId: string, edges: EdgeData[]): boolean => {
-    return !edges.some(edge => edge.src === nodeId || edge.dst === nodeId);
-  };
-
-  // Helper function to check if a node matches status filter
-  // NOTE: This is domain-specific logic (e.g., Docker container statuses)
-  const matchesStatusFilter = (node: NodeData, filter: string): boolean => {
-    if (filter === 'all') {
-      return true;
-    }
-
-    const status = node.attributes?.status?.toLowerCase();
-
-    // Domain-specific status matching (currently Docker-focused)
-    switch (filter) {
-      case 'running':
-        return status === 'running';
-      case 'stopped':
-        return status === 'stopped' || status === 'exited';
-      case 'in-use':
-        return status === 'in-use' || status === 'running';
-      default:
-        return true;
-    }
-  };
-
-  // Helper function to check if a node matches connection filter
-  // This is a graph-level property (connected/orphaned), not domain-specific
-  const matchesConnectionFilter = (nodeId: string, filter: GraphConnectionFilter, edges: EdgeData[]): boolean => {
-    if (filter === 'all') {
-      return true;
-    }
-
-    const isOrphaned = isOrphanedNode(nodeId, edges);
-
-    switch (filter) {
-      case 'connected':
-        return !isOrphaned;
-      case 'orphaned':
-        return isOrphaned;
-      default:
-        return true;
-    }
-  };
-
-  // Helper function to check if a node matches search query
-  const matchesSearchQuery = (node: NodeData, query: string): boolean => {
-    if (!query.trim()) {
-      return true;
-    }
-
-    const searchLower = query.toLowerCase();
-    const nodeName = (node.name || node.Name || '').toLowerCase();
-    const nodeId = node.id.toLowerCase();
-
-    return nodeName.includes(searchLower) || nodeId.includes(searchLower);
-  };
-
-  // Helper function to apply attribute filters from config
-  const matchesAttributeFilters = (node: NodeData, filters: GraphFilters): boolean => {
-    if (!config?.attributeFilters || config.attributeFilters.length === 0) {
-      return true; // No attribute filters configured
-    }
-
-    if (!filters.attributeFilterValues) {
-      return true; // No filter values set
-    }
-
-    // All attribute filters must pass
-    return config.attributeFilters.every(filter => {
-      const filterValue = filters.attributeFilterValues?.[filter.name];
-
-      // If no value is set for this filter, use default or skip
-      if (filterValue === undefined || filterValue === null) {
-        if (filter.defaultValue !== undefined) {
-          return filter.predicate(filter.defaultValue, node, filter);
-        }
-        return true; // Skip this filter if no value set
-      }
-
-      // Apply the predicate function with filter config as 3rd param
-      return filter.predicate(filterValue, node, filter);
-    });
-  };
 
   // Main filtering function
   const applyFilters = useMemo(() => {
@@ -107,13 +29,19 @@ export const useGraphFilters = (config?: GraphConfig<any, any>) => {
     const nodeArray = Object.values(rawNodes) as NodeData[];
     const edgeArray = rawEdges as EdgeData[];
 
+    // Optimize excluded nodes lookup with Set (O(1) instead of O(n))
+    const excludedSet = filters.excludedNodeIds
+      ? new Set(filters.excludedNodeIds)
+      : null;
+
     // Filter nodes
     let filteredNodes = nodeArray.filter(node => {
-      // Excluded nodes filter
-      if (filters.excludedNodeIds && filters.excludedNodeIds.includes(node.id)) {
+      // Excluded nodes filter (O(1) lookup)
+      if (excludedSet?.has(node.id)) {
         return false;
       }
-      // Basic visibility filter
+
+      // Basic visibility filter (early exit for hidden types)
       if (!filters.visibleNodes[node.kind]) {
         return false;
       }
@@ -129,23 +57,17 @@ export const useGraphFilters = (config?: GraphConfig<any, any>) => {
       }
 
       // Running only filter
-      if (filters.showRunningOnly) {
-        const status = node.attributes?.status?.toLowerCase();
-        if (status !== 'running') {
-          return false;
-        }
+      if (!matchesRunningOnly(node, filters.showRunningOnly)) {
+        return false;
       }
 
       // In-use only filter
-      if (filters.showInUseOnly) {
-        const status = node.attributes?.status?.toLowerCase();
-        if (status !== 'in-use' && status !== 'running') {
-          return false;
-        }
+      if (!matchesInUseOnly(node, filters.showInUseOnly)) {
+        return false;
       }
 
       // Apply generic attribute filters from config
-      if (!matchesAttributeFilters(node, filters)) {
+      if (!matchesAttributeFilters(node, filters, config)) {
         return false;
       }
 
@@ -195,7 +117,7 @@ export const useGraphFilters = (config?: GraphConfig<any, any>) => {
       nodes: filteredNodesObj,
       edges: filteredEdges
     };
-  }, [state.rawData, state.filters]);
+  }, [state.rawData, state.filters, config]);
 
   // Update filtered data when filters change
   useEffect(() => {

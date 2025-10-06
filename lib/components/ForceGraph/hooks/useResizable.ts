@@ -1,11 +1,11 @@
 import { useRef, useEffect, useState } from 'react';
 
-interface Size {
+export interface Size {
   width: number;
   height: number;
 }
 
-interface UseResizableOptions {
+export interface UseResizableOptions {
   initialSize?: Size;
   minWidth?: number;
   minHeight?: number;

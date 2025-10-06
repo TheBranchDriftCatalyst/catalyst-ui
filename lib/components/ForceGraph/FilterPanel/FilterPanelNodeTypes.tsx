@@ -2,9 +2,9 @@ import React from 'react';
 import { NodeKind } from '../types';
 
 interface FilterPanelNodeTypesProps {
-  nodeTypes: Array<{ kind: any; label: string; color: string }>;
+  nodeTypes: Array<{ kind: NodeKind; label: string; color: string }>;
   visibleNodes: Record<NodeKind, boolean>;
-  onToggle: (kind: any) => void;
+  onToggle: (kind: NodeKind) => void;
 }
 
 export const FilterPanelNodeTypes: React.FC<FilterPanelNodeTypesProps> = ({
@@ -19,7 +19,6 @@ export const FilterPanelNodeTypes: React.FC<FilterPanelNodeTypesProps> = ({
       </div>
       <div className="flex flex-col gap-0.5">
         {nodeTypes.map(({ kind, label, color }) => {
-          // @ts-ignore - kind is from config which can be any node type
           const isVisible = visibleNodes[kind];
           return (
             <button

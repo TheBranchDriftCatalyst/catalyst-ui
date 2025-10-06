@@ -21,9 +21,10 @@ import { LayoutOptionsPanel } from './FilterPanel/LayoutOptionsPanel';
 interface GraphContentPanelProps {
   activeTab: 'filters' | 'layout' | null;
   onClose: () => void;
+  storageKey?: string;
 }
 
-const GraphContentPanel: React.FC<GraphContentPanelProps> = ({ activeTab, onClose }) => {
+const GraphContentPanel: React.FC<GraphContentPanelProps> = ({ activeTab, onClose, storageKey }) => {
   const config = useGraphConfig();
   const {
     filters,
@@ -203,7 +204,7 @@ const GraphContentPanel: React.FC<GraphContentPanelProps> = ({ activeTab, onClos
             </div>
 
             <div className="space-y-3">
-              <LayoutOptionsPanel />
+              <LayoutOptionsPanel storageKey={storageKey} />
             </div>
           </div>
         )}

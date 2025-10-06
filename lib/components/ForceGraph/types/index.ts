@@ -87,6 +87,7 @@ export interface ReactD3GraphProps extends VisibilityState, GraphEventHandlers {
   data: GraphData;
   dimensions: GraphDimensions;
   config?: any; // GraphConfig from config/types - using any to avoid circular import
+  storageKey?: string; // Optional key for localStorage persistence of node positions
 }
 
 /** Props for main ForceGraph component */

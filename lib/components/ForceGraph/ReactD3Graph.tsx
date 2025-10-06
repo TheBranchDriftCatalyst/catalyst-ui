@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import * as d3 from 'd3';
 import ReactD3Node from './ReactD3Node';
 import ReactD3Edge from './ReactD3Edge';
@@ -12,6 +12,8 @@ import {
   applyDagreLayout,
   applyELKLayout,
 } from './utils/layouts';
+import { safeStopPropagation } from './utils/eventHelpers';
+import { useNodePositions } from './hooks/useNodePositions';
 
 const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
   data,
@@ -23,6 +25,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
   hoveredNode,
   selectedNode,
   config,
+  storageKey,
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const zoomLayerRef = useRef<SVGGElement>(null);
@@ -34,6 +37,27 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
   const prevNodeCountRef = useRef<number>(0);
 
   const { layout, layoutOptions, orthogonalEdges } = useGraphState();
+  const { applyPositions, savePositions } = useNodePositions(storageKey, layout);
+
+  // Memoize expensive graph enrichment to prevent unnecessary recalculation
+  const enrichedGraph = useMemo(() => {
+    if (!data) return { nodes: {}, edges: [] };
+    return enrichGraph(data);
+  }, [data]);
+
+  // Memoize filtered nodes based on visibility
+  const filteredNodes = useMemo(() => {
+    const allNodes = Object.values(enrichedGraph.nodes) as NodeWithHelpers[];
+    return allNodes.filter((n) => visibleNodes[n.kind]);
+  }, [enrichedGraph, visibleNodes]);
+
+  // Memoize filtered edges based on visibility
+  const filteredEdges = useMemo(() => {
+    const rawLinks = enrichedGraph.edges as EdgeWithHelpers[];
+    return rawLinks.filter(
+      (l) => visibleEdges[l.kind as EdgeKind] && l.source && l.target
+    );
+  }, [enrichedGraph, visibleEdges]);
 
   useEffect(() => {
     if (!data || !svgRef.current) {
@@ -45,17 +69,8 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
 
     const applyLayoutAsync = async () => {
       const { width, height } = dimensions;
-      const enriched = enrichGraph(data);
 
-      const allNodes = Object.values(enriched.nodes) as NodeWithHelpers[];
-      const filteredNodes = allNodes.filter((n) => visibleNodes[n.kind]);
-
-      const rawLinks = enriched.edges as EdgeWithHelpers[];
-      const filteredLinks = rawLinks.filter(
-        (l) => visibleEdges[l.kind as EdgeKind] && l.source && l.target
-      );
-
-      // Apply layout based on selected strategy
+      // Apply layout based on selected strategy using memoized filtered data
       let simulation: d3.Simulation<any, undefined> | null = null;
 
       switch (layout) {
@@ -64,7 +79,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
           try {
             applyStructuredLayout(
               filteredNodes as NodeData[],
-              filteredLinks as EdgeData[],
+              filteredEdges as EdgeData[],
               { width, height },
               layoutOptions
             );
@@ -78,7 +93,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
           try {
             simulation = applyCommunityLayout(
               filteredNodes as NodeData[],
-              filteredLinks as EdgeData[],
+              filteredEdges as EdgeData[],
               { width, height },
               layoutOptions
             );
@@ -92,7 +107,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
           try {
             applyDagreLayout(
               filteredNodes as NodeData[],
-              filteredLinks as EdgeData[],
+              filteredEdges as EdgeData[],
               { width, height },
               layoutOptions
             );
@@ -106,7 +121,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
           try {
             await applyELKLayout(
               filteredNodes as NodeData[],
-              filteredLinks as EdgeData[],
+              filteredEdges as EdgeData[],
               { width, height },
               layoutOptions
             );
@@ -121,7 +136,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
           try {
             simulation = applyForceLayout(
               filteredNodes as NodeData[],
-              filteredLinks as EdgeData[],
+              filteredEdges as EdgeData[],
               { width, height },
               layoutOptions
             );
@@ -133,10 +148,13 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
 
       if (isCancelled) return;
 
+      // Apply saved positions from localStorage before rendering
+      applyPositions(filteredNodes);
+
       // For static layouts (structured, dagre, elk), skip simulation
       if (!simulation) {
         setNodes(filteredNodes);
-        setEdges(filteredLinks);
+        setEdges(filteredEdges);
         return;
       }
 
@@ -145,7 +163,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
 
       sim.on('tick', () => {
         setNodes([...filteredNodes]);
-        setEdges([...filteredLinks]);
+        setEdges([...filteredEdges]);
       });
 
       // Capture charge force for dynamic rebalancing
@@ -179,7 +197,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
 
       simulationRef.current = sim;
       setNodes(filteredNodes);
-      setEdges(filteredLinks);
+      setEdges(filteredEdges);
 
       cleanup = () => {
         sim.stop();
@@ -192,13 +210,11 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
       isCancelled = true;
       cleanup();
     };
-  }, [data, dimensions, visibleNodes, visibleEdges, layout, layoutOptions, orthogonalEdges]);
+  }, [filteredNodes, filteredEdges, dimensions, layout, layoutOptions, orthogonalEdges]);
 
   // Drag handlers
   const handleDragStart = (node: NodeData) => (event: any) => {
-    try {
-      event?.sourceEvent?.stopPropagation();
-    } catch (e) { }
+    safeStopPropagation(event);
 
     if (layout === 'structured' || layout === 'dagre' || layout === 'elk') {
       node.fx = node.x;
@@ -217,9 +233,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
   };
 
   const handleDrag = (node: NodeData) => (event: any) => {
-    try {
-      event?.sourceEvent?.stopPropagation();
-    } catch (e) { }
+    safeStopPropagation(event);
 
     node.fx = event.x;
     node.fy = event.y;
@@ -228,15 +242,15 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
   };
 
   const handleDragEnd = (node: NodeData) => (event: any) => {
-    try {
-      event?.sourceEvent?.stopPropagation();
-    } catch (e) { }
+    safeStopPropagation(event);
 
     if (layout === 'structured' || layout === 'dagre' || layout === 'elk') {
       node.fx = node.x;
       node.fy = node.y;
       // Trigger React update for static layouts
       setNodes((currentNodes) => [...currentNodes]);
+      // Save positions after drag in static layouts
+      savePositions(nodes);
       return;
     }
 
@@ -248,6 +262,9 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
     }
     node.fx = node.x;
     node.fy = node.y;
+
+    // Save positions after drag in force layouts
+    savePositions(nodes);
 
     // No setState needed - simulation tick will resume and handle updates
   };

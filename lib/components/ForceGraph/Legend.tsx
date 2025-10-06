@@ -4,13 +4,15 @@ import { NodeKind, EdgeKind } from './types';
 import { useGraphState } from './hooks/useGraphState';
 import { useGraphConfig } from './context/GraphContext';
 import { LayoutKind } from './utils/layouts';
-import { useDraggable } from './hooks/useDraggable';
+import { useFloatingPanel } from './hooks/useFloatingPanel';
+import { useNodePositions } from './hooks/useNodePositions';
 
 interface LegendProps {
   visibleNodes: Record<NodeKind, boolean>;
   setVisibleNodes: (setter: React.SetStateAction<Record<NodeKind, boolean>>) => void;
   visibleEdges: Record<EdgeKind, boolean>;
   setVisibleEdges: (setter: React.SetStateAction<Record<EdgeKind, boolean>>) => void;
+  storageKey?: string;
 }
 
 const Legend: React.FC<LegendProps> = ({
@@ -18,13 +20,25 @@ const Legend: React.FC<LegendProps> = ({
   setVisibleNodes,
   visibleEdges,
   setVisibleEdges,
+  storageKey,
 }) => {
   const config = useGraphConfig();
   const { layout, setLayout, orthogonalEdges, toggleOrthogonalEdges } = useGraphState();
-  const [isCollapsed, setIsCollapsed] = React.useState(false);
-  const { elementRef, handleRef, style } = useDraggable({
+  const { clearPositions } = useNodePositions(storageKey, layout);
+
+  const {
+    panelRef,
+    dragHandleRef,
+    isCollapsed,
+    toggleCollapse,
+    style,
+  } = useFloatingPanel({
     initialPosition: { x: 24, y: 80 },
-    storageKey: 'catalyst-ui.forcegraph.legend.position',
+    positionStorageKey: 'catalyst-ui.forcegraph.legend.position',
+    collapseStorageKey: 'catalyst-ui.forcegraph.legend.collapsed',
+    enableDragging: true,
+    enableResizing: false,
+    enableCollapse: true,
   });
 
   // Build node types from config
@@ -108,7 +122,6 @@ const Legend: React.FC<LegendProps> = ({
         backgroundColor = bgVar;
       }
 
-      console.log('Export - Background color:', backgroundColor);
 
       // Resolve ALL CSS variables in SVG attributes (including defs)
       const resolveElementAttributes = (element: Element) => {
@@ -119,7 +132,6 @@ const Legend: React.FC<LegendProps> = ({
           const value = element.getAttribute(attr);
           if (value && value.includes('var(')) {
             const resolved = resolveCSSVariable(value);
-            console.log(`Resolved ${attr}: ${value} -> ${resolved}`);
             element.setAttribute(attr, resolved);
           }
         });
@@ -134,7 +146,6 @@ const Legend: React.FC<LegendProps> = ({
 
       // Process all elements including defs, gradients, filters
       const allElements = svgClone.querySelectorAll('*');
-      console.log(`Processing ${allElements.length} SVG elements`);
       allElements.forEach(resolveElementAttributes);
 
       // Also resolve on the SVG root
@@ -142,7 +153,6 @@ const Legend: React.FC<LegendProps> = ({
 
       // Inline computed styles for visual elements
       const visualElements = svgClone.querySelectorAll('.nodes *, .edges *');
-      console.log(`Inlining styles for ${visualElements.length} visual elements`);
 
       visualElements.forEach((element) => {
         const computedStyle = window.getComputedStyle(element as Element);
@@ -182,7 +192,6 @@ const Legend: React.FC<LegendProps> = ({
 
       // Convert SVG to data URL
       const svgData = new XMLSerializer().serializeToString(svgClone);
-      console.log('SVG Data (first 500 chars):', svgData.substring(0, 500));
 
       const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
       const svgUrl = URL.createObjectURL(svgBlob);
@@ -239,7 +248,7 @@ const Legend: React.FC<LegendProps> = ({
 
   return createPortal(
     <div
-      ref={elementRef}
+      ref={panelRef}
       style={style}
       className="bg-background/95 border-2 border-primary rounded-xl p-3 backdrop-blur-md shadow-[0_8px_32px_rgba(var(--primary-rgb),0.3)] pointer-events-auto z-50"
     >
@@ -251,7 +260,7 @@ const Legend: React.FC<LegendProps> = ({
         <div className="flex items-center gap-2">
           {/* Collapse Button */}
           <button
-            onClick={() => setIsCollapsed(!isCollapsed)}
+            onClick={toggleCollapse}
             className="w-5 h-5 flex items-center justify-center cursor-pointer opacity-60 hover:opacity-100 transition-opacity text-primary"
             title={isCollapsed ? 'Expand' : 'Collapse'}
           >
@@ -265,7 +274,7 @@ const Legend: React.FC<LegendProps> = ({
           </button>
           {/* Drag Handle */}
           <div
-            ref={handleRef}
+            ref={dragHandleRef}
             className="w-4 h-4 cursor-grab active:cursor-grabbing opacity-40 hover:opacity-80 transition-opacity"
             title="Drag to move"
           >
@@ -344,7 +353,20 @@ const Legend: React.FC<LegendProps> = ({
 
         {/* Layout Controls */}
         <div className="mb-1 pt-1 border-t border-primary/20">
-          <p className="text-[10px] font-semibold text-foreground/60 mb-1 uppercase tracking-wide">Layout</p>
+          <div className="flex items-center justify-between mb-1">
+            <p className="text-[10px] font-semibold text-foreground/60 uppercase tracking-wide">Layout</p>
+            {storageKey && (
+              <button
+                onClick={clearPositions}
+                className="p-0.5 hover:bg-primary/10 rounded transition-colors opacity-60 hover:opacity-100"
+                title="Reset saved node positions for this layout"
+              >
+                <svg viewBox="0 0 16 16" fill="currentColor" className="w-3 h-3 text-primary">
+                  <path d="M13.65 2.35a7.958 7.958 0 00-11.3 0A7.958 7.958 0 000 8c0 2.137.833 4.146 2.35 5.65l1.06-1.06A6.459 6.459 0 011.5 8c0-1.736.676-3.369 1.904-4.596a6.459 6.459 0 014.596-1.904c1.736 0 3.369.676 4.596 1.904A6.459 6.459 0 0114.5 8c0 1.736-.676 3.369-1.904 4.596l-1.06 1.06A7.958 7.958 0 0016 8c0-2.137-.833-4.146-2.35-5.65zM8 4v5l3.5 2-1 1.5L6 10V4h2z" />
+                </svg>
+              </button>
+            )}
+          </div>
           <select
             value={layout}
             onChange={(e) => setLayout(e.target.value as LayoutKind)}

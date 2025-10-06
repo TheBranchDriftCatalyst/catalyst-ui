@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useGraphState } from '../hooks/useGraphState';
+import { useNodePositions } from '../hooks/useNodePositions';
 import { LayoutConfigs } from '../utils/layouts';
 import { Label } from '@/catalyst-ui/ui/label';
 import { Button } from '@/catalyst-ui/ui/button';
@@ -16,8 +17,13 @@ interface LayoutField {
   options?: Array<{ value: any; label: string }>;
 }
 
-export const LayoutOptionsPanel: React.FC = () => {
+interface LayoutOptionsPanelProps {
+  storageKey?: string;
+}
+
+export const LayoutOptionsPanel: React.FC<LayoutOptionsPanelProps> = ({ storageKey }) => {
   const { layout, layoutOptions, setLayoutOptions } = useGraphState();
+  const { clearPositions } = useNodePositions(storageKey, layout);
   const config = LayoutConfigs[layout];
 
   // Initialize with defaults when layout changes
@@ -96,14 +102,27 @@ export const LayoutOptionsPanel: React.FC = () => {
         <h4 className="text-xs font-semibold text-primary/80 tracking-wide uppercase">
           Layout Options
         </h4>
-        <Button
-          onClick={handleReset}
-          variant="ghost"
-          size="sm"
-          className="h-6 px-2 text-[10px] text-foreground/60 hover:text-primary"
-        >
-          Reset
-        </Button>
+        <div className="flex items-center gap-1">
+          {storageKey && (
+            <button
+              onClick={clearPositions}
+              className="p-1 hover:bg-primary/10 rounded transition-colors opacity-60 hover:opacity-100"
+              title="Reset saved node positions for this layout"
+            >
+              <svg viewBox="0 0 16 16" fill="currentColor" className="w-3.5 h-3.5 text-primary">
+                <path d="M13.65 2.35a7.958 7.958 0 00-11.3 0A7.958 7.958 0 000 8c0 2.137.833 4.146 2.35 5.65l1.06-1.06A6.459 6.459 0 011.5 8c0-1.736.676-3.369 1.904-4.596a6.459 6.459 0 014.596-1.904c1.736 0 3.369.676 4.596 1.904A6.459 6.459 0 0114.5 8c0 1.736-.676 3.369-1.904 4.596l-1.06 1.06A7.958 7.958 0 0016 8c0-2.137-.833-4.146-2.35-5.65zM8 4v5l3.5 2-1 1.5L6 10V4h2z" />
+              </svg>
+            </button>
+          )}
+          <Button
+            onClick={handleReset}
+            variant="ghost"
+            size="sm"
+            className="h-6 px-2 text-[10px] text-foreground/60 hover:text-primary"
+          >
+            Reset
+          </Button>
+        </div>
       </div>
 
       <p className="text-[10px] text-foreground/50 mb-3">{config.description}</p>

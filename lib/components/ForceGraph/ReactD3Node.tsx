@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import { NodeData } from './types';
 import { NodeRenderer } from './config/types';
 import { useGraphConfig } from './context/GraphContext';
+import { getNodeDimensions } from './utils/nodeDimensions';
 
 interface ReactD3NodeProps {
   data: NodeData;
@@ -21,35 +22,6 @@ interface ReactD3NodeProps {
   onDrag?: (event: any) => void;
   onDragEnd?: (event: any) => void;
 }
-
-// Dynamic node dimensions calculation
-export const getNodeDimensions = (d: NodeData) => {
-  const name = d.name || d.Name || d.id || '';
-  const status = (d.attributes && d.attributes.status) || '';
-
-  const minWidth = 160;
-  const minHeight = 60;
-  const maxWidth = 280;
-  const maxHeight = 80;
-
-  const nameLength = name.length;
-  const hasStatus = status.length > 0;
-  const hasAttributes = d.attributes && Object.keys(d.attributes).length > 1;
-
-  let width = Math.max(minWidth, Math.min(maxWidth, nameLength * 8 + 100));
-
-  let height = minHeight;
-  if (hasStatus) {
-    height += 0;
-  }
-  if (hasAttributes) {
-    height += 10;
-  }
-
-  height = Math.min(maxHeight, height);
-
-  return { width, height };
-};
 
 const ReactD3Node: React.FC<ReactD3NodeProps> = ({
   data,

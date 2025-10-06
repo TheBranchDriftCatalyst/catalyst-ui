@@ -1,11 +1,12 @@
 import React from 'react';
 import { EdgeKind } from '../types';
+import { GraphConfig } from '../config/types';
 
 interface FilterPanelEdgeTypesProps {
-  edgeTypes: Array<{ kind: any; label: string }>;
+  edgeTypes: Array<{ kind: EdgeKind; label: string }>;
   visibleEdges: Record<EdgeKind, boolean>;
-  onToggle: (kind: any) => void;
-  config: any;
+  onToggle: (kind: EdgeKind) => void;
+  config: GraphConfig<any, any>;
 }
 
 export const FilterPanelEdgeTypes: React.FC<FilterPanelEdgeTypesProps> = ({
@@ -21,7 +22,6 @@ export const FilterPanelEdgeTypes: React.FC<FilterPanelEdgeTypesProps> = ({
       </div>
       <div className="flex flex-col gap-0.5">
         {edgeTypes.map(({ kind, label }) => {
-          // @ts-ignore - kind is from config which can be any edge type
           const isVisible = visibleEdges[kind];
           const edgeConfig = config.edgeTypes[kind];
           const color = edgeConfig?.color || 'var(--primary)';

@@ -31,7 +31,9 @@
       "WebFetch(domain:mermaid.js.org)",
       "Bash(lsof:*)",
       "Bash(yarn dev:*)",
-      "Read(//private/tmp/**)"
+      "Read(//private/tmp/**)",
+      "Bash(git push:*)",
+      "Bash(yarn dev:preview:*)"
     ],
     "deny": [],
     "ask": []
