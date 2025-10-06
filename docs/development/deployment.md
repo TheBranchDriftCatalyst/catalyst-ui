@@ -39,10 +39,10 @@ This repository is configured to automatically deploy both the demo app and Stor
 The GitHub Actions workflow (`.github/workflows/deploy-pages.yml`) automatically:
 
 1. **Builds the demo app** using `yarn build:app`
-   - Output: `dist-app/` (gitignored)
+   - Output: `dist/app/` (gitignored)
 
 2. **Builds Storybook** using `yarn build:storybook`
-   - Output: `storybook-static/` (gitignored)
+   - Output: `dist/storybook/` (gitignored)
 
 3. **Combines both builds** into a single deployment:
    - Renames app's `index.html` to `demo.html`
@@ -71,10 +71,10 @@ yarn build:app
 yarn build:storybook
 
 # Preview app build
-yarn dev:preview
+yarn preview:app
 
-# Preview Storybook build (serve storybook-static manually)
-npx serve storybook-static
+# Preview Storybook build
+npx serve dist/storybook
 ```
 
 ## Troubleshooting
@@ -97,6 +97,6 @@ npx serve storybook-static
 ## Notes
 
 - **Auto-deployment**: Every push to `main` triggers a new deployment
-- **Build artifacts**: `dist-app/` and `storybook-static/` are gitignored
+- **Build artifacts**: All build outputs in `dist/` are gitignored
 - **Caching**: Node modules are cached in GitHub Actions for faster builds
 - **Permissions**: Workflow has minimal required permissions for Pages deployment
