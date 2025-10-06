@@ -110,8 +110,10 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
     };
 
     const containerStyle: React.CSSProperties = {
+      position: "relative",
       minHeight: typeof minHeight === "number" ? `${minHeight}px` : minHeight,
       perspective: "1500px",
+      width: "100%",
     };
 
     const flipperStyle: React.CSSProperties = {
@@ -119,7 +121,7 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
       transformStyle: "preserve-3d",
       position: "relative",
       width: "100%",
-      height: "100%",
+      minHeight: typeof minHeight === "number" ? `${minHeight}px` : minHeight,
       transform: isFlipped
         ? flipDirection === "horizontal"
           ? "rotateY(180deg)"
@@ -128,16 +130,26 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
     };
 
     const faceStyle: React.CSSProperties = {
-      position: "absolute",
       width: "100%",
-      height: "100%",
       backfaceVisibility: "hidden",
       WebkitBackfaceVisibility: "hidden",
       cursor: flipTrigger === "click" ? "pointer" : "default",
     };
 
+    const frontFaceStyle: React.CSSProperties = {
+      ...faceStyle,
+      // Front face: visible when not flipped, use relative positioning to establish height
+      position: isFlipped ? "absolute" : "relative",
+      top: isFlipped ? 0 : undefined,
+      left: isFlipped ? 0 : undefined,
+    };
+
     const backFaceStyle: React.CSSProperties = {
       ...faceStyle,
+      // Back face: hidden when not flipped (absolute), visible when flipped (relative)
+      position: isFlipped ? "relative" : "absolute",
+      top: isFlipped ? undefined : 0,
+      left: isFlipped ? undefined : 0,
       transform:
         flipDirection === "horizontal" ? "rotateY(180deg)" : "rotateX(180deg)",
     };
@@ -159,7 +171,7 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
           {/* Front Face - Rendered Component */}
           <div
             className="code-flip-card-front"
-            style={faceStyle}
+            style={frontFaceStyle}
             onClick={handleFlip}
           >
             <div

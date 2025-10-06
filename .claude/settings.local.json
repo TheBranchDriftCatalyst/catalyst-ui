@@ -33,7 +33,8 @@
       "Bash(yarn dev:*)",
       "Read(//private/tmp/**)",
       "Bash(git push:*)",
-      "Bash(yarn dev:preview:*)"
+      "Bash(yarn dev:preview:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []

@@ -6,17 +6,29 @@ import { catalystTheme } from "./catalyst-theme";
 
 // Cache for the highlighter instance to avoid recreation
 let highlighterInstance: Highlighter | null = null;
+let highlighterPromise: Promise<Highlighter> | null = null;
 const loadedLanguages = new Set<string>();
 const loadedThemes = new Set<string>();
 
-// Get or create the highlighter with lazy-loaded languages
+// Get or create the highlighter with lazy-loaded languages (singleton pattern)
 async function getHighlighter() {
-  if (!highlighterInstance) {
-    highlighterInstance = await createHighlighter({
-      themes: [],
-      langs: [],
-    });
+  // If already created, return it immediately
+  if (highlighterInstance) {
+    return highlighterInstance;
   }
+
+  // If creation is in progress, wait for it
+  if (highlighterPromise) {
+    return highlighterPromise;
+  }
+
+  // Start creation and cache the promise
+  highlighterPromise = createHighlighter({
+    themes: [],
+    langs: [],
+  });
+
+  highlighterInstance = await highlighterPromise;
   return highlighterInstance;
 }
 

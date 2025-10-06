@@ -93,7 +93,7 @@ export const CreateAccountCard = ({ oidcProviders, onLogin, onCreateAccount }: C
                   <FormItem>
                     <FormLabel>Username</FormLabel>
                     <FormControl>
-                      <Input placeholder="someone@somewhere.com" {...field} />
+                      <Input placeholder="someone@somewhere.com" autoComplete="username" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -109,7 +109,7 @@ export const CreateAccountCard = ({ oidcProviders, onLogin, onCreateAccount }: C
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" {...field} />
+                      <Input type="password" autoComplete="current-password" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
