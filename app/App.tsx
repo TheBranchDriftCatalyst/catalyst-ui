@@ -180,9 +180,9 @@ console.log(user.name);`);
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow>
+                <TableRow className="transition-colors hover:bg-accent/50">
                   <TableCell className="font-medium">
-                    <a href="https://react.dev" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                    <a href="https://react.dev" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline transition-all">
                       React
                     </a>
                   </TableCell>
@@ -421,8 +421,8 @@ console.log(user.name);`);
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="space-y-2">
-                    <div className="h-20 rounded-lg" style={{ backgroundColor: 'var(--neon-cyan)', boxShadow: 'var(--glow-primary)' }} />
+                  <div className="space-y-2 group">
+                    <div className="h-20 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer" style={{ backgroundColor: 'var(--neon-cyan)', boxShadow: 'var(--glow-primary)' }} />
                     <div className="text-sm font-mono">--neon-cyan</div>
                   </div>
                   <div className="space-y-2">

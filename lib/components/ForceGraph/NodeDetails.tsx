@@ -64,7 +64,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
     <div
       ref={panelRef}
       style={style}
-      className="bg-background/95 border-2 border-primary rounded-xl backdrop-blur-md shadow-[0_8px_32px_rgba(var(--primary-rgb),0.3)] flex flex-col pointer-events-auto z-50"
+      className="bg-background/95 border-2 border-primary rounded-xl backdrop-blur-md shadow-[0_8px_32px_rgba(var(--primary-rgb),0.3)] flex flex-col pointer-events-auto z-50 animate-[scale-in_0.3s_cubic-bezier(0.16,1,0.3,1)]"
     >
       {/* Header with Drag Handle and Collapse Button */}
       <div className="p-4 border-b border-primary/20 flex-shrink-0">
@@ -76,7 +76,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
             {/* Collapse Button */}
             <button
               onClick={toggleCollapse}
-              className="w-5 h-5 flex items-center justify-center cursor-pointer opacity-60 hover:opacity-100 transition-opacity text-primary"
+              className="w-5 h-5 flex items-center justify-center cursor-pointer opacity-60 hover:opacity-100 transition-all hover:scale-110 active:scale-95 text-primary"
               title={isCollapsed ? 'Expand' : 'Collapse'}
             >
               <svg viewBox="0 0 16 16" fill="currentColor" className="w-3 h-3">
@@ -90,7 +90,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
             {/* Drag Handle */}
             <div
               ref={dragHandleRef}
-              className="w-4 h-4 cursor-grab active:cursor-grabbing opacity-40 hover:opacity-80 transition-opacity"
+              className="w-4 h-4 cursor-grab active:cursor-grabbing opacity-40 hover:opacity-80 transition-all hover:scale-110"
               title="Drag to move"
             >
               <svg viewBox="0 0 16 16" fill="currentColor" className="text-primary">
@@ -117,20 +117,20 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
         <div className="flex border-b border-primary/20 flex-shrink-0">
           <button
             onClick={() => setActiveTab('details')}
-            className={`flex-1 px-4 py-2 text-xs font-semibold transition-colors ${
+            className={`flex-1 px-4 py-2 text-xs font-semibold transition-all ${
               activeTab === 'details'
                 ? 'text-primary border-b-2 border-primary'
-                : 'text-muted-foreground hover:text-foreground'
+                : 'text-muted-foreground hover:text-foreground hover:bg-accent/30'
             }`}
           >
             Details
           </button>
           <button
             onClick={() => setActiveTab('attributes')}
-            className={`flex-1 px-4 py-2 text-xs font-semibold transition-colors ${
+            className={`flex-1 px-4 py-2 text-xs font-semibold transition-all ${
               activeTab === 'attributes'
                 ? 'text-primary border-b-2 border-primary'
-                : 'text-muted-foreground hover:text-foreground'
+                : 'text-muted-foreground hover:text-foreground hover:bg-accent/30'
             }`}
           >
             Attributes
@@ -140,9 +140,9 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
 
       {/* Content */}
       {!isCollapsed && (
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex-1 overflow-y-auto p-4 animate-[fade-in_0.2s_ease-out]">
         {activeTab === 'details' && (
-          <div className="space-y-3">
+          <div className="space-y-3 animate-[slide-in-up_0.3s_ease-out]">
             <div className="bg-card/50 rounded-lg p-3 border border-border">
               <h4 className="text-xs font-semibold text-foreground/70 mb-2">BASIC INFO</h4>
               <div className="space-y-1.5 text-xs">
@@ -187,7 +187,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
         )}
 
         {activeTab === 'attributes' && hasAttributes && (
-          <div className="bg-card/30 rounded-lg p-3 border border-border">
+          <div className="bg-card/30 rounded-lg p-3 border border-border animate-[slide-in-up_0.3s_ease-out]">
             <JsonTreeView
               data={attributes}
               rootName="attributes"
@@ -202,7 +202,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
       {!isCollapsed && (
         <div
           ref={resizeHandleRef}
-          className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize opacity-40 hover:opacity-80 transition-opacity"
+          className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize opacity-40 hover:opacity-80 transition-all hover:scale-125"
           title="Drag to resize"
         >
           <svg viewBox="0 0 16 16" fill="currentColor" className="text-primary">
