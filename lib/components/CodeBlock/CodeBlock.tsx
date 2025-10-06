@@ -26,6 +26,12 @@ async function getHighlighter() {
   highlighterPromise = createHighlighter({
     themes: [],
     langs: [],
+  }).catch((error) => {
+    console.warn('Shiki WASM loading failed, falling back to basic highlighting:', error);
+    // Reset so it can retry
+    highlighterPromise = null;
+    highlighterInstance = null;
+    throw error;
   });
 
   highlighterInstance = await highlighterPromise;

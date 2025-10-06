@@ -133,7 +133,7 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
       width: "100%",
       backfaceVisibility: "hidden",
       WebkitBackfaceVisibility: "hidden",
-      cursor: flipTrigger === "click" ? "pointer" : "default",
+      cursor: "default",
     };
 
     const frontFaceStyle: React.CSSProperties = {
@@ -155,7 +155,7 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
     };
 
     const childWrapperStyle: React.CSSProperties = {
-      pointerEvents: flipTrigger === "click" ? "auto" : "none",
+      pointerEvents: "auto",
     };
 
     return (
@@ -172,29 +172,27 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
           <div
             className="code-flip-card-front"
             style={frontFaceStyle}
-            onClick={handleFlip}
           >
             <div
               className="relative w-full h-full flex items-center justify-center"
               style={childWrapperStyle}
             >
               {children}
-              {/* Flip Indicator */}
-              <Button
-                size="icon"
-                variant="ghost"
-                className={cn(
-                  "absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity",
-                  flipTrigger === "click" && "opacity-100"
-                )}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsFlipped(true);
-                }}
-                title="View source code"
-              >
-                <Code2 className="h-4 w-4" />
-              </Button>
+              {/* Flip Button - Only clickable element */}
+              {flipTrigger === "click" && (
+                <Button
+                  size="icon"
+                  variant="outline"
+                  className="absolute top-2 right-2 opacity-60 hover:opacity-100 transition-opacity shadow-lg"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsFlipped(true);
+                  }}
+                  title="View source code"
+                >
+                  <Code2 className="h-4 w-4" />
+                </Button>
+              )}
             </div>
           </div>
 
