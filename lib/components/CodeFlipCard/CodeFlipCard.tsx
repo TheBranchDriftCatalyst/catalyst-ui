@@ -10,6 +10,7 @@ import { RotateCcw, Code2 } from "lucide-react";
 import { processSourceCode, LineRange, LineRangeTuple } from "./utils";
 import { CardProvider } from "@/catalyst-ui/contexts/Card";
 import { CardWithContext } from "@/catalyst-ui/components/Card";
+import { AnimatedFlip } from "@/catalyst-ui/components/AnimationHOC";
 
 export interface CodeFlipCardProps
   extends Omit<CodeBlockProps, "code" | "language"> {
@@ -79,9 +80,9 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
     },
     ref
   ) => {
-    const [isFlipped, setIsFlipped] = React.useState(false);
     const [processedCode, setProcessedCode] = React.useState("");
     const [computedStartLine, setComputedStartLine] = React.useState(1);
+    const [isFlipped, setIsFlipped] = React.useState(false);
 
     // Process source code when options change
     React.useEffect(() => {
@@ -95,56 +96,6 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
       setComputedStartLine(result.startLineNumber);
     }, [sourceCode, lineRange, stripImports, stripComments, extractFunction]);
 
-    const handleMouseEnter = () => {
-      if (flipTrigger === "hover") {
-        setIsFlipped(true);
-      }
-    };
-
-    const handleMouseLeave = () => {
-      if (flipTrigger === "hover") {
-        setIsFlipped(false);
-      }
-    };
-
-    const containerStyle: React.CSSProperties = {
-      position: "relative",
-      perspective: "1500px",
-      display: "block",
-    };
-
-    const flipperStyle: React.CSSProperties = {
-      transition: `transform ${flipDuration}ms`,
-      transformStyle: "preserve-3d",
-      position: "relative",
-      transform: isFlipped
-        ? flipDirection === "horizontal"
-          ? "rotateY(180deg)"
-          : "rotateX(180deg)"
-        : "none",
-    };
-
-    const faceStyle: React.CSSProperties = {
-      backfaceVisibility: "hidden",
-      WebkitBackfaceVisibility: "hidden",
-    };
-
-    const frontFaceStyle: React.CSSProperties = {
-      ...faceStyle,
-      position: isFlipped ? "absolute" : "relative",
-      top: isFlipped ? 0 : undefined,
-      left: isFlipped ? 0 : undefined,
-    };
-
-    const backFaceStyle: React.CSSProperties = {
-      ...faceStyle,
-      position: isFlipped ? "relative" : "absolute",
-      top: isFlipped ? undefined : 0,
-      left: isFlipped ? undefined : 0,
-      transform:
-        flipDirection === "horizontal" ? "rotateY(180deg)" : "rotateX(180deg)",
-    };
-
     // Type-safe handling of child element
     const childElement = children as React.ReactElement<{
       className?: string;
@@ -152,102 +103,95 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
       children?: React.ReactNode;
     }>;
 
-    return (
-      <div
-        ref={ref}
-        className={className}
-        style={containerStyle}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        {...props}
-      >
-        <div style={flipperStyle}>
-          {/* Front Face - Card with flip styles applied directly */}
-          {React.cloneElement(childElement, {
-            className: cn(childElement.props.className, "relative"),
-            style: {
-              ...childElement.props.style,
-              ...frontFaceStyle,
-            },
-            children: (
-              <>
-                {childElement.props.children}
-                {/* Flip Button overlaid on card */}
-                {flipTrigger === "click" && (
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    className="absolute top-2 right-2 opacity-60 hover:opacity-100 transition-opacity shadow-lg z-10"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIsFlipped(true);
-                    }}
-                    title="View source code"
-                  >
-                    <Code2 className="h-4 w-4" />
-                  </Button>
-                )}
-              </>
-            ),
-          })}
-
-          {/* Back Face - Card with CodeBlock */}
-          <CardProvider>
-            <CardWithContext
-              style={backFaceStyle}
-              interactive={false}
-              header={
-                <div className="flex items-center justify-between w-full">
-                  <div className="flex-1">
-                    <CodeBlockHeader
-                      fileName={fileName}
-                      language={language}
-                      code={processedCode}
-                      showCopyButton={showCopyButton}
-                      interactive={interactive}
-                      editable={editable}
-                      currentTheme={theme}
-                      showLineNumbers={showLineNumbers}
-                      onThemeChange={onThemeChange}
-                      onLineNumbersChange={onLineNumbersChange}
-                      className="border-0 px-0 py-0 bg-transparent"
-                    />
-                  </div>
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIsFlipped(false);
-                    }}
-                    title="Back to component"
-                  >
-                    <RotateCcw className="h-4 w-4" />
-                  </Button>
-                </div>
-              }
+    // Compose front face (child component with flip button)
+    const frontFace = React.cloneElement(childElement, {
+      className: cn(childElement.props.className, "relative"),
+      children: (
+        <>
+          {childElement.props.children}
+          {/* Flip Button overlaid on card */}
+          {flipTrigger === "click" && (
+            <Button
+              size="icon"
+              variant="outline"
+              className="absolute top-2 right-2 opacity-60 hover:opacity-100 transition-opacity shadow-lg z-10"
+              onClick={() => setIsFlipped(true)}
+              title="View source code"
             >
-              <CardContent className="p-0">
-                <CodeBlock
-                  code={processedCode}
+              <Code2 className="h-4 w-4" />
+            </Button>
+          )}
+        </>
+      ),
+    });
+
+    // Compose back face (code view with header)
+    const backFace = (
+      <CardProvider>
+        <CardWithContext
+          interactive={false}
+          header={
+            <div className="flex items-center justify-between w-full">
+              <div className="flex-1">
+                <CodeBlockHeader
+                  fileName={fileName}
                   language={language}
-                  theme={theme}
-                  showLineNumbers={showLineNumbers}
-                  startLineNumber={startLineNumber ?? computedStartLine}
+                  code={processedCode}
+                  showCopyButton={showCopyButton}
                   interactive={interactive}
                   editable={editable}
+                  currentTheme={theme}
+                  showLineNumbers={showLineNumbers}
                   onThemeChange={onThemeChange}
                   onLineNumbersChange={onLineNumbersChange}
-                  onCodeChange={onCodeChange}
-                  useCardContext={false}
-                  showCopyButton={false}
-                  fileName={undefined}
+                  className="border-0 px-0 py-0 bg-transparent"
                 />
-              </CardContent>
-            </CardWithContext>
-          </CardProvider>
-        </div>
-      </div>
+              </div>
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => setIsFlipped(false)}
+                title="Back to component"
+              >
+                <RotateCcw className="h-4 w-4" />
+              </Button>
+            </div>
+          }
+        >
+          <CardContent className="p-0">
+            <CodeBlock
+              code={processedCode}
+              language={language}
+              theme={theme}
+              showLineNumbers={showLineNumbers}
+              startLineNumber={startLineNumber ?? computedStartLine}
+              interactive={interactive}
+              editable={editable}
+              onThemeChange={onThemeChange}
+              onLineNumbersChange={onLineNumbersChange}
+              onCodeChange={onCodeChange}
+              useCardContext={false}
+              showCopyButton={false}
+              fileName={undefined}
+            />
+          </CardContent>
+        </CardWithContext>
+      </CardProvider>
+    );
+
+    return (
+      <AnimatedFlip
+        ref={ref}
+        front={frontFace}
+        back={backFace}
+        trigger={flipTrigger}
+        direction={flipDirection}
+        duration={flipDuration}
+        className={className}
+        isFlipped={isFlipped}
+        onFlipChange={setIsFlipped}
+        {...props}
+      />
     );
   }
 );
