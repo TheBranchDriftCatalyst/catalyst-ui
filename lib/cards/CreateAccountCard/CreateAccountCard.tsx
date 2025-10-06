@@ -48,10 +48,11 @@ interface CreateAccountCardProps {
   oidcProviders: OIDCProviderShape[];
   onLogin: (values: z.infer<typeof InputFormSchema>) => void;
   onCreateAccount: () => void;
+  enableTilt?: boolean;
 }
 
 // @ts-ignore
-export const CreateAccountCard = ({ oidcProviders, onLogin, onCreateAccount }: CreateAccountCardProps) => {
+export const CreateAccountCard = ({ oidcProviders, onLogin, onCreateAccount, enableTilt = true }: CreateAccountCardProps) => {
   const form = useForm<z.infer<typeof InputFormSchema>>({
     resolver: zodResolver(InputFormSchema),
     defaultValues: {
@@ -60,10 +61,8 @@ export const CreateAccountCard = ({ oidcProviders, onLogin, onCreateAccount }: C
     },
   });
 
-  return (
-    // @ts-ignore - Tilt prop types issue
-    <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} perspective={1500}>
-      <Card className="w-[350px]">
+  const cardContent = (
+    <Card className="w-[350px]">
       <CardHeader>
         <CardTitle>Login</CardTitle>
         <CardDescription>Enter your email below to login</CardDescription>
@@ -137,8 +136,14 @@ export const CreateAccountCard = ({ oidcProviders, onLogin, onCreateAccount }: C
         </form>
       </Form>
     </Card>
-    </Tilt>
   );
+
+  return enableTilt ? (
+    // @ts-ignore - Tilt prop types issue
+    <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} perspective={1500}>
+      {cardContent}
+    </Tilt>
+  ) : cardContent;
 };
 
 const OIDCButton: React.FC<{ provider: OIDCProviderShape }> = ({ provider }) => {
