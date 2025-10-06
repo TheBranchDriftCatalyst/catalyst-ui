@@ -585,7 +585,7 @@
 }
 
 /* Animations - smooth cyberpunk transitions */
-@keyframes cyberpunk-pulse {
+@keyframes opacity-pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.8; }
 }
@@ -651,8 +651,8 @@
   }
 }
 
-/* Laser pulse - extremely subtle pulsing border glow */
-@keyframes laser-pulse {
+/* Glow pulse - extremely subtle pulsing shadow glow */
+@keyframes glow-pulse {
   0%, 100% {
     box-shadow:
       0 0 5px rgba(0, 252, 214, 0.08),
@@ -668,8 +668,8 @@
   }
 }
 
-/* Glitter sparkle effect - barely perceptible */
-@keyframes glitter {
+/* Pulse scale effect - fade in/out while scaling */
+@keyframes pulse-scale {
   0%, 100% {
     opacity: 0;
     transform: scale(0);
@@ -780,24 +780,24 @@
 }
 
 /* Laser pulse border - extremely subtle pulsing glow */
-.theme-catalyst .border-laser-pulse {
-  animation: laser-pulse 6s ease-in-out infinite;
+.theme-catalyst .border-glow-pulse {
+  animation: glow-pulse 6s ease-in-out infinite;
   border: 1px solid rgba(0, 252, 214, 0.15);
 }
 
-/* Apply very subtle laser pulse to cards on hover */
+/* Apply very subtle glow pulse to cards on hover */
 .theme-catalyst.dark [class*="card"]:hover {
-  animation: laser-pulse 8s ease-in-out infinite;
+  animation: glow-pulse 8s ease-in-out infinite;
 }
 
-/* Glitter effect container - ultra subtle sparkles */
-.theme-catalyst .glitter-container {
+/* Pulse scale container - ultra subtle pulsing dots */
+.theme-catalyst .pulse-scale-container {
   position: relative;
   overflow: hidden;
 }
 
-.theme-catalyst .glitter-container::before,
-.theme-catalyst .glitter-container::after {
+.theme-catalyst .pulse-scale-container::before,
+.theme-catalyst .pulse-scale-container::after {
   content: '';
   position: absolute;
   width: 1.5px;
@@ -805,16 +805,16 @@
   background: radial-gradient(circle, rgba(0, 252, 214, 0.6), transparent);
   border-radius: 50%;
   pointer-events: none;
-  animation: glitter 8s ease-in-out infinite;
+  animation: pulse-scale 8s ease-in-out infinite;
 }
 
-.theme-catalyst .glitter-container::before {
+.theme-catalyst .pulse-scale-container::before {
   top: 20%;
   left: 30%;
   animation-delay: 0s;
 }
 
-.theme-catalyst .glitter-container::after {
+.theme-catalyst .pulse-scale-container::after {
   top: 60%;
   left: 70%;
   animation-delay: 4s;
@@ -905,11 +905,11 @@
 /* Extremely subtle pulse on focus states - barely noticeable */
 .theme-catalyst input:focus,
 .theme-catalyst textarea:focus {
-  animation: laser-pulse 10s ease-in-out infinite;
+  animation: glow-pulse 10s ease-in-out infinite;
 }
 
-/* Neon underline animation for links - ultra subtle */
-@keyframes neon-underline {
+/* Text glow animation for links - ultra subtle text-shadow pulse */
+@keyframes text-glow {
   0%, 100% {
     text-shadow:
       0 0 8px rgba(0, 252, 214, 0.3),
@@ -923,5 +923,5 @@
 }
 
 .theme-catalyst.dark a:hover {
-  animation: neon-underline 4s ease-in-out infinite;
+  animation: text-glow 4s ease-in-out infinite;
 }
