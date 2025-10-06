@@ -1,3 +1,4 @@
+export * from './AnimationHOC';
 export * from './Card';
 export * from './CatalystHeader';
 export * from './NavigationHeader';
