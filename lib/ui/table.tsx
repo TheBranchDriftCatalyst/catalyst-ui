@@ -1,4 +1,5 @@
 import * as React from "react"
+import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/catalyst-ui/utils"
 
@@ -6,7 +7,7 @@ const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
 >(({ className, ...props }, ref) => (
-  <div className="relative w-full overflow-auto [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-muted [&::-webkit-scrollbar-thumb]:bg-muted-foreground/20 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-muted-foreground/30">
+  <div className="relative w-full overflow-auto scrollbar-styled">
     <table
       ref={ref}
       className={cn("w-full caption-bottom text-sm", className)}
@@ -51,19 +52,38 @@ const TableFooter = React.forwardRef<
 ))
 TableFooter.displayName = "TableFooter"
 
-const TableRow = React.forwardRef<
-  HTMLTableRowElement,
-  React.HTMLAttributes<HTMLTableRowElement>
->(({ className, ...props }, ref) => (
-  <tr
-    ref={ref}
-    className={cn(
-      "border-b transition-all duration-200 hover:bg-muted/50 data-[state=selected]:bg-muted hover:shadow-sm hover:scale-[1.005]",
-      className
-    )}
-    {...props}
-  />
-))
+const tableRowVariants = cva(
+  "border-b transition-all duration-200",
+  {
+    variants: {
+      interactive: {
+        true: "hover:bg-muted/50 hover:shadow-sm hover:scale-[1.005]",
+        false: "",
+      },
+    },
+    defaultVariants: {
+      interactive: true,
+    },
+  }
+)
+
+export interface TableRowProps
+  extends React.HTMLAttributes<HTMLTableRowElement>,
+    VariantProps<typeof tableRowVariants> {}
+
+const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
+  ({ className, interactive, ...props }, ref) => (
+    <tr
+      ref={ref}
+      className={cn(
+        tableRowVariants({ interactive }),
+        "data-[state=selected]:bg-muted",
+        className
+      )}
+      {...props}
+    />
+  )
+)
 TableRow.displayName = "TableRow"
 
 const TableHead = React.forwardRef<
