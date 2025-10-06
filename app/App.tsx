@@ -5,35 +5,26 @@ import { ChangeThemeDropdown } from "@/catalyst-ui/contexts/Theme/ChangeThemeDro
 import { CatalystHeader } from "@/catalyst-ui/components/CatalystHeader/CatalystHeader";
 import { HeaderProvider } from "@/catalyst-ui/components/CatalystHeader/HeaderProvider";
 import { Button } from "@/catalyst-ui/ui/button";
-import { Input } from "@/catalyst-ui/ui/input";
-import { Label } from "@/catalyst-ui/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
-import { Checkbox } from "@/catalyst-ui/ui/checkbox";
-import { RadioGroup, RadioGroupItem } from "@/catalyst-ui/ui/radio-group";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/catalyst-ui/ui/select";
-import { Slider } from "@/catalyst-ui/ui/slider";
-import { Progress } from "@/catalyst-ui/ui/progress";
-import { Toggle } from "@/catalyst-ui/ui/toggle";
-import { Avatar, AvatarFallback, AvatarImage } from "@/catalyst-ui/ui/avatar";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/catalyst-ui/ui/accordion";
 import { Typography } from "@/catalyst-ui/ui/typography";
 import { Menubar } from "@/catalyst-ui/ui/menubar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/catalyst-ui/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/catalyst-ui/ui/tabs";
-import { CreateAccountCard } from "@/catalyst-ui/cards/CreateAccountCard/CreateAccountCard";
-import MultiChoiceQuestionCard from "@/catalyst-ui/cards/MultiChoiceQuetion/MultiChoiceQuestion";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/catalyst-ui/ui/select";
+import { Label } from "@/catalyst-ui/ui/label";
 import { CodeBlock } from "@/catalyst-ui/components/CodeBlock";
-import { CodeFlipCard } from "@/catalyst-ui/components/CodeFlipCard";
-
-// Import card source code as raw strings
-import CreateAccountCardSource from "@/catalyst-ui/cards/CreateAccountCard/CreateAccountCard.tsx?raw";
-import MultiChoiceQuestionSource from "@/catalyst-ui/cards/MultiChoiceQuetion/MultiChoiceQuestion.tsx?raw";
+import { Toaster } from "@/catalyst-ui/ui/toaster";
 import { ForceGraph } from "@/catalyst-ui/components/ForceGraph";
 import type { GraphData } from "@/catalyst-ui/components/ForceGraph";
-import JsonTreeView from "@/catalyst-ui/components/ForceGraph/components/JsonTreeView";
 import { MermaidFlowChartGraph } from "@/catalyst-ui/components/MermaidForceGraph";
-import { DesignTokenDocBlock } from "storybook-design-token";
 import { useState, useEffect } from "react";
+
+// Import tab components
+import { TypographyTab } from "./tabs/TypographyTab";
+import { FormsTab } from "./tabs/FormsTab";
+import { ComponentsTab } from "./tabs/ComponentsTab";
+import { DisplayTab } from "./tabs/DisplayTab";
+import { CardsTab } from "./tabs/CardsTab";
 
 function KitchenSink() {
   // Read initial tab from URL params
@@ -117,6 +108,9 @@ console.log(user.name);`);
               </TabsTrigger>
               <TabsTrigger value="forms" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
                 Forms
+              </TabsTrigger>
+              <TabsTrigger value="components" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+                Components
               </TabsTrigger>
               <TabsTrigger value="display" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
                 Display
@@ -543,17 +537,50 @@ console.log(user.name);`);
               </CardContent>
             </Card>
 
-            {/* Auto-Generated Token List */}
+            {/* Color System Reference */}
             <Card>
               <CardHeader>
-                <CardTitle>Complete Design Token Reference</CardTitle>
-                <CardDescription>Auto-generated from CSS annotations • All tokens documented</CardDescription>
+                <CardTitle>Complete Color System</CardTitle>
+                <CardDescription>All CSS custom properties available in the theme</CardDescription>
               </CardHeader>
               <CardContent>
-                <DesignTokenDocBlock
-                  viewType="table"
-                  maxHeight={600}
-                />
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-sm font-semibold mb-2">Semantic Colors</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                      <div className="p-2 rounded border"><code>--background</code></div>
+                      <div className="p-2 rounded border"><code>--foreground</code></div>
+                      <div className="p-2 rounded border"><code>--card</code></div>
+                      <div className="p-2 rounded border"><code>--card-foreground</code></div>
+                      <div className="p-2 rounded border"><code>--popover</code></div>
+                      <div className="p-2 rounded border"><code>--popover-foreground</code></div>
+                      <div className="p-2 rounded border"><code>--primary</code></div>
+                      <div className="p-2 rounded border"><code>--primary-foreground</code></div>
+                      <div className="p-2 rounded border"><code>--secondary</code></div>
+                      <div className="p-2 rounded border"><code>--secondary-foreground</code></div>
+                      <div className="p-2 rounded border"><code>--muted</code></div>
+                      <div className="p-2 rounded border"><code>--muted-foreground</code></div>
+                      <div className="p-2 rounded border"><code>--accent</code></div>
+                      <div className="p-2 rounded border"><code>--accent-foreground</code></div>
+                      <div className="p-2 rounded border"><code>--destructive</code></div>
+                      <div className="p-2 rounded border"><code>--destructive-foreground</code></div>
+                      <div className="p-2 rounded border"><code>--border</code></div>
+                      <div className="p-2 rounded border"><code>--input</code></div>
+                      <div className="p-2 rounded border"><code>--ring</code></div>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold mb-2">Typography</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs">
+                      <div className="p-2 rounded border"><code>--font-heading</code></div>
+                      <div className="p-2 rounded border"><code>--font-body</code></div>
+                      <div className="p-2 rounded border"><code>--font-mono</code></div>
+                    </div>
+                  </div>
+                  <Typography variant="muted" className="text-xs">
+                    View full token documentation in Storybook or inspect CSS custom properties in DevTools
+                  </Typography>
+                </div>
               </CardContent>
             </Card>
 
@@ -601,470 +628,28 @@ const styles = {
 
           {/* Typography Tab */}
           <TabsContent value="typography" className="space-y-4 mt-0">
-        {/* Typography Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Typography</CardTitle>
-            <CardDescription>Various text styles and headings</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <Typography variant="h1" className="text-primary border-b-2 border-primary pb-2">Heading 1</Typography>
-            <Typography variant="h2" className="text-secondary tracking-tight">Heading 2</Typography>
-            <Typography variant="h3" className="text-accent-foreground font-semibold">Heading 3</Typography>
-            <Typography variant="h4" className="tracking-wide">Heading 4</Typography>
-            <Typography variant="p" className="leading-relaxed">This is a paragraph with some text content.</Typography>
-            <Typography variant="blockquote" className="text-muted-foreground border-l-4 border-primary pl-4 italic">This is a blockquote element.</Typography>
-            <Typography variant="code" className="text-primary bg-primary/10 px-2 py-1 rounded">const code = "inline code";</Typography>
-            <Typography variant="lead" className="text-secondary font-medium tracking-tight">This is lead text for emphasis.</Typography>
-            <Typography variant="muted" className="text-xs">This is muted text.</Typography>
-          </CardContent>
-        </Card>
+            <TypographyTab />
           </TabsContent>
 
           {/* Forms Tab */}
           <TabsContent value="forms" className="space-y-4 mt-0">
-        {/* Buttons Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Buttons</CardTitle>
-            <CardDescription>All button variants and sizes</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex flex-wrap gap-2">
-              <Button>Default</Button>
-              <Button variant="secondary">Secondary</Button>
-              <Button variant="destructive">Destructive</Button>
-              <Button variant="outline">Outline</Button>
-              <Button variant="ghost">Ghost</Button>
-              <Button variant="link">Link</Button>
-            </div>
-            <div className="flex flex-wrap gap-2 items-center">
-              <Button size="sm">Small</Button>
-              <Button size="default">Default</Button>
-              <Button size="lg">Large</Button>
-              <Button size="icon">🔥</Button>
-            </div>
-          </CardContent>
-        </Card>
+            <FormsTab />
+          </TabsContent>
 
-        {/* Form Inputs Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Form Inputs</CardTitle>
-            <CardDescription>Input fields and form controls</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" placeholder="Enter your name" />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="email@example.com" />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" placeholder="••••••••" />
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox id="terms" />
-              <Label htmlFor="terms" className="text-sm font-normal">Accept terms and conditions</Label>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Select & Radio Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Select & Radio</CardTitle>
-            <CardDescription>Dropdown and radio controls</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label>Select Framework</Label>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a framework" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="react">React</SelectItem>
-                  <SelectItem value="vue">Vue</SelectItem>
-                  <SelectItem value="angular">Angular</SelectItem>
-                  <SelectItem value="svelte">Svelte</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label>Choose an option</Label>
-              <RadioGroup defaultValue="option-one">
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="option-one" id="option-one" />
-                  <Label htmlFor="option-one">Option One</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="option-two" id="option-two" />
-                  <Label htmlFor="option-two">Option Two</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="option-three" id="option-three" />
-                  <Label htmlFor="option-three">Option Three</Label>
-                </div>
-              </RadioGroup>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Slider & Progress */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Slider & Progress</CardTitle>
-            <CardDescription>Interactive controls and progress indicators</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-2">
-              <Label>Slider Value: {sliderValue[0]}</Label>
-              <Slider value={sliderValue} onValueChange={setSliderValue} max={100} step={1} />
-            </div>
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <Label>Progress: {progress}%</Label>
-                <div className="flex gap-2">
-                  <Button size="sm" onClick={() => setProgress(Math.max(0, progress - 10))}>-</Button>
-                  <Button size="sm" onClick={() => setProgress(Math.min(100, progress + 10))}>+</Button>
-                </div>
-              </div>
-              <Progress value={progress} />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Avatar & Toggle */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Avatars & Toggles</CardTitle>
-            <CardDescription>User avatars and toggle switches</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex gap-4 items-center">
-              <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
-              <Avatar>
-                <AvatarFallback>AB</AvatarFallback>
-              </Avatar>
-              <Avatar>
-                <AvatarFallback>CD</AvatarFallback>
-              </Avatar>
-            </div>
-            <div className="flex gap-2">
-              <Toggle>Toggle 1</Toggle>
-              <Toggle>Toggle 2</Toggle>
-              <Toggle>Toggle 3</Toggle>
-            </div>
-          </CardContent>
-        </Card>
+          {/* Components Tab */}
+          <TabsContent value="components" className="space-y-4 mt-0">
+            <ComponentsTab />
           </TabsContent>
 
           {/* Display Tab */}
           <TabsContent value="display" className="space-y-4 mt-0">
-        {/* Accordion */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Accordion</CardTitle>
-            <CardDescription>Expandable content sections</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Accordion type="single" collapsible>
-              <AccordionItem value="item-1">
-                <AccordionTrigger>Is it accessible?</AccordionTrigger>
-                <AccordionContent>
-                  Yes. It adheres to the WAI-ARIA design pattern.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-2">
-                <AccordionTrigger>Is it styled?</AccordionTrigger>
-                <AccordionContent>
-                  Yes. It comes with default styles that match the other components.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-3">
-                <AccordionTrigger>Is it animated?</AccordionTrigger>
-                <AccordionContent>
-                  Yes. It's animated by default, but you can disable it if you prefer.
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </CardContent>
-        </Card>
+            <DisplayTab />
 
-        {/* Table */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Table</CardTitle>
-            <CardDescription>Data table component</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableCell className="font-medium">John Doe</TableCell>
-                  <TableCell>john@example.com</TableCell>
-                  <TableCell>Developer</TableCell>
-                  <TableCell>Active</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">Jane Smith</TableCell>
-                  <TableCell>jane@example.com</TableCell>
-                  <TableCell>Designer</TableCell>
-                  <TableCell>Active</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">Bob Johnson</TableCell>
-                  <TableCell>bob@example.com</TableCell>
-                  <TableCell>Manager</TableCell>
-                  <TableCell>Away</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-
-        {/* Code Block Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Code Block</CardTitle>
-            <CardDescription>
-              Syntax highlighting with Shiki (VS Code quality) • ✏️ Click pencil to edit • 🎨 Change theme • #️⃣ Toggle line numbers
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <CodeBlock
-              code={editableCode}
-              language="typescript"
-              fileName="api.ts"
-              theme={codeTheme}
-              showLineNumbers={showLineNumbers}
-              showCopyButton={true}
-              interactive={true}
-              editable={true}
-              onCodeChange={setEditableCode}
-              onThemeChange={setCodeTheme}
-              onLineNumbersChange={setShowLineNumbers}
-            />
-          </CardContent>
-        </Card>
-
-        {/* JSON Tree View Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle>JSON Tree View</CardTitle>
-            <CardDescription>
-              Collapsible JSON viewer with syntax highlighting • Click arrows to expand/collapse nodes
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <JsonTreeView
-              data={{
-                name: "catalyst-ui",
-                version: "0.2.0",
-                type: "library",
-                features: {
-                  components: ["ForceGraph", "CodeBlock", "JsonTreeView"],
-                  themes: ["catalyst", "dracula", "gold", "nature", "netflix", "nord", "laracon"],
-                  ui_primitives: ["button", "dialog", "tooltip", "dropdown-menu", "toast"],
-                },
-                config: {
-                  storybook: true,
-                  typescript: true,
-                  tailwind_version: "v4",
-                },
-                stats: {
-                  components_count: 15,
-                  stories_count: 12,
-                  themes_count: 7,
-                },
-              }}
-              rootName="package"
-              initialExpanded={["package", "package.features"]}
-            />
-          </CardContent>
-        </Card>
           </TabsContent>
 
           {/* Cards Tab */}
           <TabsContent value="cards" className="space-y-4 mt-0">
-        {/* Info Card */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Interactive Card Components</CardTitle>
-            <CardDescription>
-              Click any card to flip and view its source code • Try different examples with various configurations
-            </CardDescription>
-          </CardHeader>
-        </Card>
-
-        {/* Cards Section - Full Source */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Full Source Code</CardTitle>
-            <CardDescription>Click cards to view complete source code</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-2 gap-4">
-              <CodeFlipCard
-                sourceCode={CreateAccountCardSource}
-                fileName="CreateAccountCard.tsx"
-                language="tsx"
-                className="group"
-              >
-                <CreateAccountCard
-                  oidcProviders={[
-                    { name: "GitHub", onClick: () => alert("GitHub login") },
-                    { name: "Google", onClick: () => alert("Google login") },
-                  ]}
-                  onLogin={(values) => console.log("Login:", values)}
-                  onCreateAccount={() => alert("Create account")}
-                />
-              </CodeFlipCard>
-
-              <CodeFlipCard
-                sourceCode={MultiChoiceQuestionSource}
-                fileName="MultiChoiceQuestion.tsx"
-                language="tsx"
-                className="group"
-              >
-                <MultiChoiceQuestionCard
-                  question="What's your favorite synthwave artist?"
-                  options={["The Midnight", "Carpenter Brut", "FM-84", "Gunship"]}
-                  onChange={(value) => console.log("Selected:", value)}
-                />
-              </CodeFlipCard>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Cards Section - Without Imports */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Source Without Imports</CardTitle>
-            <CardDescription>Same cards with imports stripped for cleaner view</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-2 gap-4">
-              <CodeFlipCard
-                sourceCode={CreateAccountCardSource}
-                fileName="CreateAccountCard.tsx"
-                language="tsx"
-                stripImports={true}
-                className="group"
-              >
-                <CreateAccountCard
-                  oidcProviders={[
-                    { name: "GitHub", onClick: () => alert("GitHub login") },
-                    { name: "Google", onClick: () => alert("Google login") },
-                  ]}
-                  onLogin={(values) => console.log("Login:", values)}
-                  onCreateAccount={() => alert("Create account")}
-                />
-              </CodeFlipCard>
-
-              <CodeFlipCard
-                sourceCode={MultiChoiceQuestionSource}
-                fileName="MultiChoiceQuestion.tsx"
-                language="tsx"
-                stripImports={true}
-                className="group"
-              >
-                <MultiChoiceQuestionCard
-                  question="What's your favorite synthwave artist?"
-                  options={["The Midnight", "Carpenter Brut", "FM-84", "Gunship"]}
-                  onChange={(value) => console.log("Selected:", value)}
-                />
-              </CodeFlipCard>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Cards Section - Component Only */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Extracted Component</CardTitle>
-            <CardDescription>View only the main component function (CreateAccountCard)</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex justify-center">
-              <CodeFlipCard
-                sourceCode={CreateAccountCardSource}
-                fileName="CreateAccountCard.tsx"
-                language="tsx"
-                extractFunction="CreateAccountCard"
-                className="group"
-              >
-                <CreateAccountCard
-                  oidcProviders={[
-                    { name: "GitHub", onClick: () => alert("GitHub login") },
-                    { name: "Google", onClick: () => alert("Google login") },
-                  ]}
-                  onLogin={(values) => console.log("Login:", values)}
-                  onCreateAccount={() => alert("Create account")}
-                />
-              </CodeFlipCard>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Cards Section - Hover to Flip */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Hover to Flip</CardTitle>
-            <CardDescription>These cards flip on hover instead of click</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-2 gap-4">
-              <CodeFlipCard
-                sourceCode={CreateAccountCardSource}
-                fileName="CreateAccountCard.tsx"
-                language="tsx"
-                stripImports={true}
-                flipTrigger="hover"
-                className="group"
-              >
-                <CreateAccountCard
-                  oidcProviders={[
-                    { name: "GitHub", onClick: () => alert("GitHub login") },
-                    { name: "Google", onClick: () => alert("Google login") },
-                  ]}
-                  onLogin={(values) => console.log("Login:", values)}
-                  onCreateAccount={() => alert("Create account")}
-                />
-              </CodeFlipCard>
-
-              <CodeFlipCard
-                sourceCode={MultiChoiceQuestionSource}
-                fileName="MultiChoiceQuestion.tsx"
-                language="tsx"
-                stripImports={true}
-                flipTrigger="hover"
-                className="group"
-              >
-                <MultiChoiceQuestionCard
-                  question="What's your favorite synthwave artist?"
-                  options={["The Midnight", "Carpenter Brut", "FM-84", "Gunship"]}
-                  onChange={(value) => console.log("Selected:", value)}
-                />
-              </CodeFlipCard>
-            </div>
-          </CardContent>
-        </Card>
+            <CardsTab />
           </TabsContent>
 
           {/* Animations Tab */}
@@ -1451,6 +1036,7 @@ function App() {
     <ThemeProvider>
       <HeaderProvider>
         <KitchenSink />
+        <Toaster />
       </HeaderProvider>
     </ThemeProvider>
   );

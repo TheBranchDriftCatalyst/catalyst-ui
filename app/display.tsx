@@ -1,9 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import { Layout } from "./shared/Layout";
+import { DisplayTab } from "./tabs/DisplayTab";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
+    <Layout currentPage="display">
+      <DisplayTab />
+    </Layout>
   </React.StrictMode>,
 );
