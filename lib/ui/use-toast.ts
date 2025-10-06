@@ -3,14 +3,23 @@ import * as React from "react";
 
 import type { ToastActionElement, ToastProps } from "./toast";
 
-const TOAST_LIMIT = 1;
+const TOAST_LIMIT = 5; // Allow up to 5 toasts to stack
 const TOAST_REMOVE_DELAY = 1000000;
+
+export type ToastAnimation =
+  | "slide"
+  | "fade"
+  | "bounce"
+  | "scale"
+  | "slide-up"
+  | "slide-down";
 
 type ToasterToast = ToastProps & {
   id: string;
   title?: React.ReactNode;
   description?: React.ReactNode;
   action?: ToastActionElement;
+  animation?: ToastAnimation;
 };
 
 const actionTypes = {
