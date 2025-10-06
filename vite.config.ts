@@ -64,7 +64,20 @@ export default defineConfig({
       formats: ["es"],
     },
     rollupOptions: {
-      external: ["react", "react/jsx-runtime"],
+      external: [
+        "react",
+        "react/jsx-runtime",
+        "react-dom",
+        // Heavy dependencies - let consumers provide these
+        "elkjs",
+        "elkjs/lib/elk.bundled.js",
+        "dagre",
+        "shiki",
+        "shiki/bundle/web",
+        /^shiki\//,  // Matches shiki/langs/*, shiki/themes/*, etc.
+        "d3",
+        /^d3-/,      // Matches all d3 submodules (d3-force, d3-selection, etc.)
+      ],
       onwarn(warning, defaultHandler) {
         // See this issue, its a non issue just... unfortunate. TL:DR: directives fuck up source maps, vite
         // compares the old and new with the sourcemap and sees a discrepancy and warns us
@@ -96,6 +109,25 @@ export default defineConfig({
           return 'assets/[name][extname]';
         },
         entryFileNames: "[name].js",
+        chunkFileNames: "chunks/[name]-[hash].js",
+        // Share common vendor chunks across components
+        manualChunks(id) {
+          // Only apply to non-externalized dependencies
+          if (id.includes('node_modules')) {
+            // Group Radix UI components together
+            if (id.includes('@radix-ui')) {
+              return 'vendor-radix';
+            }
+            // Group React ecosystem
+            if (id.includes('react-hook-form') || id.includes('@hookform')) {
+              return 'vendor-forms';
+            }
+            // Group utility libraries
+            if (id.includes('clsx') || id.includes('tailwind-merge') || id.includes('class-variance-authority')) {
+              return 'vendor-utils';
+            }
+          }
+        },
       },
     },
   },

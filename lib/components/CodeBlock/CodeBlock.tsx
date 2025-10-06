@@ -1,8 +1,24 @@
 import { cn } from "@/catalyst-ui/utils";
-import { codeToHtml } from "shiki";
+import { createHighlighter, type Highlighter, type BundledLanguage, type BundledTheme } from "shiki";
 import * as React from "react";
 import CodeBlockHeader from "./CodeBlockHeader";
 import { catalystTheme } from "./catalyst-theme";
+
+// Cache for the highlighter instance to avoid recreation
+let highlighterInstance: Highlighter | null = null;
+const loadedLanguages = new Set<string>();
+const loadedThemes = new Set<string>();
+
+// Get or create the highlighter with lazy-loaded languages
+async function getHighlighter() {
+  if (!highlighterInstance) {
+    highlighterInstance = await createHighlighter({
+      themes: [],
+      langs: [],
+    });
+  }
+  return highlighterInstance;
+}
 
 export interface CodeBlockProps extends React.HTMLAttributes<HTMLDivElement> {
   code: string;
@@ -48,10 +64,27 @@ const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
         try {
           setIsLoading(true);
 
+          const highlighter = await getHighlighter();
+
+          // Lazy-load language if not already loaded
+          if (!loadedLanguages.has(language)) {
+            await highlighter.loadLanguage(language as BundledLanguage);
+            loadedLanguages.add(language);
+          }
+
           // Use custom theme if "catalyst", otherwise use built-in
           const themeToUse = theme === "catalyst" ? catalystTheme : theme;
 
-          const highlighted = await codeToHtml(code, {
+          // Lazy-load theme if not "catalyst" and not already loaded
+          if (theme !== "catalyst" && !loadedThemes.has(theme)) {
+            await highlighter.loadTheme(theme as BundledTheme);
+            loadedThemes.add(theme);
+          } else if (theme === "catalyst" && !loadedThemes.has("catalyst")) {
+            await highlighter.loadTheme(catalystTheme);
+            loadedThemes.add("catalyst");
+          }
+
+          const highlighted = highlighter.codeToHtml(code, {
             lang: language,
             theme: themeToUse,
             transformers: showLineNumbers
