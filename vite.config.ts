@@ -53,7 +53,7 @@ export default defineConfig({
     preserveUseClient(),
   ],
   build: {
-    outDir: "../dist",
+    outDir: "../dist/lib",
     copyPublicDir: false,
     cssMinify: false,
     cssCodeSplit: true,

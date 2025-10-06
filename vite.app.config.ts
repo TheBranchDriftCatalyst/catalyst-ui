@@ -14,9 +14,22 @@ export default defineConfig({
       projects: [resolve(__dirname, "tsconfig.json")],
     }),
   ],
+  optimizeDeps: {
+    exclude: ['shiki'],
+  },
   build: {
-    outDir: "../dist-app",
+    outDir: "../dist/app",
     emptyOutDir: true,
     sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          // Keep shiki in its own chunk to avoid WASM loading issues
+          if (id.includes('node_modules/shiki')) {
+            return 'shiki';
+          }
+        },
+      },
+    },
   },
 });

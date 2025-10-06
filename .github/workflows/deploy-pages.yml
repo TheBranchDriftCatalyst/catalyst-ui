@@ -42,12 +42,12 @@ jobs:
       - name: Combine builds for GitHub Pages
         run: |
           mkdir -p gh-pages
-          cp -r dist-app/* gh-pages/
+          cp -r dist/app/* gh-pages/
 
           # Rename app's index.html to demo.html
           mv gh-pages/index.html gh-pages/demo.html
 
-          cp -r storybook-static gh-pages/storybook
+          cp -r dist/storybook gh-pages/storybook
 
           # Create index redirect page at root
           cat > gh-pages/index.html << 'EOF'
