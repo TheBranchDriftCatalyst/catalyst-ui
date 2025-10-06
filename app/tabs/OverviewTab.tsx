@@ -33,6 +33,167 @@ export function OverviewTab() {
         </CardContent>
       </Card>
 
+      {/* Features Highlight */}
+      <Card>
+        <CardHeader>
+          <CardTitle>🚀 Key Features</CardTitle>
+          <CardDescription>What makes Catalyst UI special</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Build & Performance */}
+            <div className="space-y-3">
+              <Typography variant="h4" className="font-semibold flex items-center gap-2">
+                <span className="text-primary">⚡</span> Build & Performance
+              </Typography>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>Tree Shaking:</strong> Granular ES module exports with per-file entry points for minimal bundle sizes</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>CSS Code Splitting:</strong> Per-component CSS files loaded only when needed</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>Source Maps:</strong> Debug original TypeScript source in production builds</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>Next.js Ready:</strong> Automatic "use client" directive preservation for App Router</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Animation System */}
+            <div className="space-y-3">
+              <Typography variant="h4" className="font-semibold flex items-center gap-2">
+                <span className="text-primary">🎬</span> Animation System
+              </Typography>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>Animation HOCs:</strong> Reusable components (AnimatedFlip, AnimatedFade, AnimatedSlide, AnimatedBounce)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>Controlled/Uncontrolled:</strong> Both modes supported with onFlipChange callbacks</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>Hardware Accelerated:</strong> CSS transforms with GPU acceleration</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>Theme Animations:</strong> Subtle CSS keyframes (glow-pulse, border-shimmer) for cyberpunk aesthetic</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Developer Experience */}
+            <div className="space-y-3">
+              <Typography variant="h4" className="font-semibold flex items-center gap-2">
+                <span className="text-primary">🛠️</span> Developer Experience
+              </Typography>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>CodeFlipCard:</strong> Interactive cards that flip to show source code with auto-import extraction</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>Import Footers:</strong> Auto-parsed import statements from source code (no manual strings!)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>Hot Module Replacement:</strong> Lightning-fast dev with Vite HMR</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>Yarn Link Support:</strong> Real-time concurrent development with auto-rebuild</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Theme System */}
+            <div className="space-y-3">
+              <Typography variant="h4" className="font-semibold flex items-center gap-2">
+                <span className="text-primary">🎨</span> Theme System
+              </Typography>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>7 Themes:</strong> Catalyst, Dracula, Gold, Laracon, Nature, Netflix, Nord</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>Dark/Light Variants:</strong> Each theme supports both modes</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>CSS Variables:</strong> Full customization via design tokens</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>LocalStorage Persistence:</strong> Theme preferences automatically saved</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Data Visualization */}
+            <div className="space-y-3">
+              <Typography variant="h4" className="font-semibold flex items-center gap-2">
+                <span className="text-primary">📊</span> Data Visualization
+              </Typography>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>ForceGraph:</strong> Enterprise D3.js wrapper with force-directed, Dagre, ELK layouts</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>Smart Edge Routing:</strong> Orthogonal paths with collision detection</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>Position Persistence:</strong> Remember node layouts per algorithm type</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>Performance:</strong> Memoized enrichment, O(1) filters for 100+ node graphs</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Advanced Components */}
+            <div className="space-y-3">
+              <Typography variant="h4" className="font-semibold flex items-center gap-2">
+                <span className="text-primary">🧩</span> Advanced Components
+              </Typography>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>CodeBlock:</strong> Shiki-powered syntax highlighting with editable mode</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>JsonTreeView:</strong> Collapsible JSON viewer with syntax coloring</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>Toast System:</strong> Stack up to 5 toasts with 6 animation variants</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span>
+                  <span><strong>Smart Slider:</strong> Inside/outside labels, shapes, custom text mapping</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Frameworks & Resources */}
       <Card>
         <CardHeader>

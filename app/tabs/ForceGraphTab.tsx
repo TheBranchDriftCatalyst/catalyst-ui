@@ -12,11 +12,99 @@ export function ForceGraphTab() {
 
   return (
     <div className="space-y-4 mt-0">
+      {/* Documentation Card */}
       <Card>
         <CardHeader>
-          <CardTitle>Force Graph Visualization</CardTitle>
+          <CardTitle>📊 ForceGraph Component</CardTitle>
           <CardDescription>
-            Interactive graph with D3.js force simulation • Docker resource visualization • Mermaid flowchart converter
+            Enterprise-grade D3.js wrapper with advanced layout algorithms and filtering capabilities
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <Typography variant="p" className="text-muted-foreground">
+              The ForceGraph component is a production-ready abstraction layer over D3.js with a comprehensive 5-phase
+              architecture refactor. It provides multiple layout algorithms, intelligent edge routing, position persistence,
+              and performance optimizations for handling 100+ node graphs.
+            </Typography>
+
+            <div className="grid md:grid-cols-2 gap-4 mt-4">
+              <div className="space-y-2">
+                <Typography variant="h4" className="font-semibold text-sm">🎯 Layout Algorithms</Typography>
+                <ul className="text-xs text-muted-foreground space-y-1">
+                  <li>• <strong>Force-Directed:</strong> Physics-based simulation for organic layouts</li>
+                  <li>• <strong>Dagre:</strong> Hierarchical directed graph layout</li>
+                  <li>• <strong>ELK:</strong> Eclipse Layout Kernel for complex hierarchies</li>
+                  <li>• <strong>Community Detection:</strong> Automatic cluster identification</li>
+                </ul>
+              </div>
+
+              <div className="space-y-2">
+                <Typography variant="h4" className="font-semibold text-sm">🎨 Edge Routing</Typography>
+                <ul className="text-xs text-muted-foreground space-y-1">
+                  <li>• <strong>Orthogonal Routing:</strong> Smart 90° angle paths</li>
+                  <li>• <strong>Collision Detection:</strong> Automatic path optimization</li>
+                  <li>• <strong>Bundled Edges:</strong> Reduce visual clutter for dense graphs</li>
+                  <li>• <strong>Custom Styling:</strong> Per-edge type styling support</li>
+                </ul>
+              </div>
+
+              <div className="space-y-2">
+                <Typography variant="h4" className="font-semibold text-sm">💾 Persistence</Typography>
+                <ul className="text-xs text-muted-foreground space-y-1">
+                  <li>• <strong>Position Memory:</strong> Remember node positions per layout type</li>
+                  <li>• <strong>LocalStorage:</strong> Automatic save/restore on reload</li>
+                  <li>• <strong>Panel State:</strong> Filter panel positions and collapse state</li>
+                  <li>• <strong>Storage Keys:</strong> Unique keys per graph instance</li>
+                </ul>
+              </div>
+
+              <div className="space-y-2">
+                <Typography variant="h4" className="font-semibold text-sm">⚡ Performance</Typography>
+                <ul className="text-xs text-muted-foreground space-y-1">
+                  <li>• <strong>Memoized Enrichment:</strong> Cache computed graph properties</li>
+                  <li>• <strong>O(1) Filters:</strong> Set-based lookups for instant filtering</li>
+                  <li>• <strong>Cached Paths:</strong> Pre-computed orthogonal edge routes</li>
+                  <li>• <strong>Optimized Re-renders:</strong> React.memo and useMemo throughout</li>
+                </ul>
+              </div>
+
+              <div className="space-y-2">
+                <Typography variant="h4" className="font-semibold text-sm">🎭 Floating Panels</Typography>
+                <ul className="text-xs text-muted-foreground space-y-1">
+                  <li>• <strong>Unified Hook System:</strong> useFloatingPanel for all panels</li>
+                  <li>• <strong>Draggable:</strong> Move panels anywhere on canvas</li>
+                  <li>• <strong>Resizable:</strong> Adjust panel dimensions (future)</li>
+                  <li>• <strong>Collapsible:</strong> Minimize to save screen space</li>
+                </ul>
+              </div>
+
+              <div className="space-y-2">
+                <Typography variant="h4" className="font-semibold text-sm">🔍 Advanced Filtering</Typography>
+                <ul className="text-xs text-muted-foreground space-y-1">
+                  <li>• <strong>Pure Functions:</strong> Stateless filter predicates</li>
+                  <li>• <strong>Quick Presets:</strong> One-click filter combinations</li>
+                  <li>• <strong>Search:</strong> Real-time node/edge searching</li>
+                  <li>• <strong>Type Toggles:</strong> Show/hide specific node/edge types</li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="mt-4 p-3 bg-accent/10 border border-primary/20 rounded">
+              <Typography variant="small" className="text-xs text-muted-foreground">
+                <strong>Import:</strong> <code className="text-primary">import {'{ ForceGraph }'} from '@/catalyst-ui/components/ForceGraph';</code>
+              </Typography>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Interactive Demo */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Interactive Demo</CardTitle>
+          <CardDescription>
+            Try different examples below • Docker resource visualization • Mermaid flowchart converter
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
