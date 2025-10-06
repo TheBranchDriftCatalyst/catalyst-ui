@@ -3,6 +3,18 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+## [0.6.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v0.5.0...v0.6.0) (2025-10-06)
+
+
+### ♻️  REFACTORING
+
+* **ForceGraph:** comprehensive 5-phase refactoring with position persistence ([6753940](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/675394095c8e24220be11a9764bf43a47e3186bf))
+
+
+### 🚀 PERFORMANCE
+
+* optimize bundle size with tree-shaking and lazy-loading ([87ec8a7](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/87ec8a74e516792209f5ec1d6556e4f5153e4471))
+
 ## [0.5.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v0.4.1...v0.5.0) (2025-10-05)
 
 
