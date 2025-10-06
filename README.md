@@ -12,14 +12,41 @@ A production-ready React component library featuring cyberpunk aesthetics, built
 
 ## ⚡ Features
 
-- 🎨 **Radix UI Primitives** - Accessible, unstyled components
-- 🌈 **7 Synthwave Themes** - Catalyst, Dracula, Gold, Laracon, Nature, Netflix, Nord
-- 📊 **D3.js Visualizations** - Force graphs and data visualization components
-- 🎭 **Storybook Integration** - Interactive component development and documentation
+### 🏗️ Architecture & Build
+
+- 🌲 **Tree Shaking** - Granular ES module exports with per-file entry points for optimal bundle sizes
+- 📦 **Zero Config Imports** - Import only what you need: `import { Button } from 'catalyst-ui/ui/button'`
+- ✂️ **CSS Code Splitting** - Per-component CSS for lightning-fast page loads
+- 🔗 **Source Maps** - Debug original TypeScript source in production builds
+- 🚀 **Next.js Ready** - Automatic "use client" directive preservation for App Router compatibility
+- 💯 **Full Type Safety** - Zero `@ts-ignore` across entire codebase with strict TypeScript
+
+### 🎨 Components & UI
+
+- 🎭 **Radix UI Primitives** - Accessible, unstyled components as foundation
+- 🌈 **7 Synthwave Themes** - Catalyst, Dracula, Gold, Laracon, Nature, Netflix, Nord with dark/light variants
+- 🎚️ **Advanced Slider** - Inside/outside labels, custom shapes (circle/rectangle/rounded), text label mapping
+- 🍞 **Smart Toast System** - Stack up to 5 toasts with 6 animation variants (slide/fade/bounce/scale/slide-up/slide-down)
+- 🎬 **Configurable Animations** - Customizable entrance/exit animations for Dialog, Sheet, and Toast components
+- 📊 **Production-Ready Forms** - React Hook Form + Zod validation with accessible error handling
+
+### 📊 Data Visualization
+
+- 🕸️ **ForceGraph Abstraction Layer** - Enterprise-grade D3.js wrapper with 5-phase architecture refactoring
+  - 🎯 **Layout Algorithms** - Force-directed, Dagre, ELK hierarchical, and community detection
+  - 🎨 **Orthogonal Edge Routing** - Smart collision detection and path optimization
+  - 💾 **Position Persistence** - Remember node arrangements per layout type with localStorage
+  - 🎭 **Floating Panels** - Unified hook system for draggable/resizable/collapsible panels
+  - ⚡ **Performance Optimized** - Memoized graph enrichment, O(1) filter predicates, cached path calculations
+  - 🔍 **Advanced Filtering** - Pure filter functions with Set-based lookups for 100+ node graphs
+
+### 🛠️ Developer Experience
+
+- 🎭 **Storybook Integration** - Interactive component development with coverage reporting
 - 🔥 **Hot Module Replacement** - Lightning-fast development with Vite
-- 📦 **TypeScript** - Full type safety and IntelliSense support
-- 🧪 **Conventional Commits** - Automated changelog and versioning
-- 🔗 **Source Maps** - Debug to original source, not dist files
+- 🧪 **Conventional Commits** - Automated changelog and semantic versioning
+- 🔄 **Yarn Link Support** - Real-time concurrent development with auto-rebuild
+- 💾 **LocalStorage Persistence** - Theme preferences, panel positions, and graph layouts automatically saved
 
 ## 📦 Installation
 
