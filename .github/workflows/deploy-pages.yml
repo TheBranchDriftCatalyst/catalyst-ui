@@ -37,6 +37,8 @@ jobs:
 
       - name: Build App
         run: yarn build:app
+        env:
+          VITE_BASE_PATH: /catalyst-ui/
 
       - name: Prepare GitHub Pages deployment
         run: |
