@@ -8,6 +8,9 @@
 [![Vite](https://img.shields.io/badge/Vite-7.1-646cff?logo=vite)](https://vitejs.dev/)
 [![Storybook](https://img.shields.io/badge/Storybook-9.1-ff4785?logo=storybook)](https://storybook.js.org/)
 
+[![Deploy to GitHub Pages](https://github.com/TheBranchDriftCatalyst/catalyst-ui/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/TheBranchDriftCatalyst/catalyst-ui/actions/workflows/deploy-pages.yml)
+[![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-Live-success?logo=github)](https://thebranchdriftcatalyst.github.io/catalyst-ui/)
+
 A production-ready React component library featuring cyberpunk aesthetics, built on modern web technologies with comprehensive tooling for development, testing, and documentation.
 
 ## ⚡ Features
