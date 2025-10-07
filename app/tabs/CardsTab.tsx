@@ -21,7 +21,7 @@ export function CardsTab() {
   return (
     <div className="space-y-4 mt-0">
       {/* Introduction */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <Card>
           <CardHeader>
             <CardTitle>Card Components</CardTitle>
@@ -33,7 +33,7 @@ export function CardsTab() {
       </ScrollSnapItem>
 
       {/* SECTION 1: Card Primitive */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <Card>
           <CardHeader>
             <CardTitle>Card Primitive</CardTitle>
@@ -56,7 +56,7 @@ export function CardsTab() {
       </ScrollSnapItem>
 
       {/* SECTION 2: CodeFlipCard Features */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <Card>
           <CardHeader>
             <CardTitle>CodeFlipCard Component</CardTitle>
@@ -110,7 +110,7 @@ export function CardsTab() {
       </ScrollSnapItem>
 
       {/* SECTION 3: Complex Cards */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <Card>
           <CardHeader>
             <CardTitle>Complex Card Components</CardTitle>

@@ -7,7 +7,7 @@ export function OverviewTab() {
   return (
     <div className="space-y-4 mt-0">
       {/* Welcome Section */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <Card>
         <CardHeader>
           <CardTitle>Welcome to Catalyst UI 👋</CardTitle>
@@ -37,7 +37,7 @@ export function OverviewTab() {
       </ScrollSnapItem>
 
       {/* Features Highlight */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <Card>
         <CardHeader>
           <CardTitle>🚀 Key Features</CardTitle>
@@ -200,7 +200,7 @@ export function OverviewTab() {
       </ScrollSnapItem>
 
       {/* Frameworks & Resources */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <Card>
         <CardHeader>
           <CardTitle>Frameworks & Resources</CardTitle>

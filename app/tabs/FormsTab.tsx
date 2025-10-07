@@ -23,7 +23,7 @@ export function FormsTab() {
   return (
     <div className="space-y-4 mt-0">
       {/* Buttons */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <CodeFlipCard
           sourceCode={ButtonsDemoSource}
           fileName="ButtonsDemo.tsx"
@@ -43,7 +43,7 @@ export function FormsTab() {
       </ScrollSnapItem>
 
       {/* Form Inputs */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <CodeFlipCard
           sourceCode={InputsDemoSource}
           fileName="InputsDemo.tsx"
@@ -63,7 +63,7 @@ export function FormsTab() {
       </ScrollSnapItem>
 
       {/* Select & Radio */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <CodeFlipCard
           sourceCode={SelectRadioDemoSource}
           fileName="SelectRadioDemo.tsx"
@@ -83,7 +83,7 @@ export function FormsTab() {
       </ScrollSnapItem>
 
       {/* Slider & Progress */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <CodeFlipCard
           sourceCode={SliderProgressDemoSource}
           fileName="SliderProgressDemo.tsx"
@@ -103,7 +103,7 @@ export function FormsTab() {
       </ScrollSnapItem>
 
       {/* Avatar & Toggle */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <CodeFlipCard
           sourceCode={AvatarToggleDemoSource}
           fileName="AvatarToggleDemo.tsx"

@@ -14,7 +14,7 @@ export function ForceGraphTab() {
   return (
     <div className="space-y-4 mt-0">
       {/* Documentation Card */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <Card>
           <CardHeader>
             <CardTitle>📊 ForceGraph Component</CardTitle>
@@ -103,7 +103,7 @@ export function ForceGraphTab() {
       </ScrollSnapItem>
 
       {/* Interactive Demo */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <Card>
         <CardHeader>
           <CardTitle>Interactive Demo</CardTitle>

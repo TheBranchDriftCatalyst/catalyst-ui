@@ -9,7 +9,7 @@ import TypographyDemoSource from "../demos/TypographyDemo.tsx?raw";
 export function TypographyTab() {
   return (
     <div className="space-y-4 mt-0">
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <CodeFlipCard
           sourceCode={TypographyDemoSource}
           fileName="TypographyDemo.tsx"

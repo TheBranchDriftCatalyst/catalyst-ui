@@ -22,7 +22,7 @@ import SheetDemoSource from "../demos/SheetDemo.tsx?raw";
 export function ComponentsTab() {
   return (
     <div className="space-y-4 mt-0">
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <Card>
           <CardHeader>
             <CardTitle>Interactive Components</CardTitle>
@@ -34,7 +34,7 @@ export function ComponentsTab() {
       </ScrollSnapItem>
 
       {/* Dialog Component */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <CodeFlipCard
           sourceCode={DialogDemoSource}
           fileName="DialogDemo.tsx"
@@ -56,7 +56,7 @@ export function ComponentsTab() {
       </ScrollSnapItem>
 
       {/* Dropdown Menu Component */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <CodeFlipCard
           sourceCode={DropdownMenuDemoSource}
           fileName="DropdownMenuDemo.tsx"
@@ -78,7 +78,7 @@ export function ComponentsTab() {
       </ScrollSnapItem>
 
       {/* Tooltip Component */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <CodeFlipCard
           sourceCode={TooltipDemoSource}
           fileName="TooltipDemo.tsx"
@@ -100,7 +100,7 @@ export function ComponentsTab() {
       </ScrollSnapItem>
 
       {/* Toast Component */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <CodeFlipCard
           sourceCode={ToastDemoSource}
           fileName="ToastDemo.tsx"
@@ -122,7 +122,7 @@ export function ComponentsTab() {
       </ScrollSnapItem>
 
       {/* Sheet Component */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <CodeFlipCard
           sourceCode={SheetDemoSource}
           fileName="SheetDemo.tsx"

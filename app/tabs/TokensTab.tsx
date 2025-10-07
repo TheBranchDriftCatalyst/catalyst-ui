@@ -7,7 +7,7 @@ export function TokensTab() {
   return (
     <div className="space-y-4 mt-0">
       {/* Neon Colors */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <Card>
           <CardHeader>
             <CardTitle>Neon Color Palette</CardTitle>
@@ -49,7 +49,7 @@ export function TokensTab() {
       </ScrollSnapItem>
 
       {/* Glow Effects */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <Card>
         <CardHeader>
           <CardTitle>Glow Effects</CardTitle>
@@ -83,7 +83,7 @@ export function TokensTab() {
       </ScrollSnapItem>
 
       {/* Neon Shadows */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <Card>
         <CardHeader>
           <CardTitle>Neon Shadow System</CardTitle>
@@ -112,7 +112,7 @@ export function TokensTab() {
       </ScrollSnapItem>
 
       {/* Typography Fonts - Dynamic */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <Card>
         <CardHeader>
           <CardTitle>Theme Typography</CardTitle>
@@ -145,7 +145,7 @@ export function TokensTab() {
       </ScrollSnapItem>
 
       {/* Auto-Generated Token List */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <Card>
         <CardHeader>
           <CardTitle>Complete Design Token Reference</CardTitle>
@@ -161,7 +161,7 @@ export function TokensTab() {
       </ScrollSnapItem>
 
       {/* Usage Examples */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <Card>
         <CardHeader>
           <CardTitle>Usage in Code</CardTitle>

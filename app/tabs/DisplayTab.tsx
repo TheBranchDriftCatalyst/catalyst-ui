@@ -20,7 +20,7 @@ export function DisplayTab() {
   return (
     <div className="space-y-4 mt-0">
       {/* Accordion */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <CodeFlipCard
           sourceCode={AccordionDemoSource}
           fileName="AccordionDemo.tsx"
@@ -40,7 +40,7 @@ export function DisplayTab() {
       </ScrollSnapItem>
 
       {/* Table */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <CodeFlipCard
           sourceCode={TableDemoSource}
           fileName="TableDemo.tsx"
@@ -60,7 +60,7 @@ export function DisplayTab() {
       </ScrollSnapItem>
 
       {/* Code Block */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <CodeFlipCard
           sourceCode={CodeBlockDemoSource}
           fileName="CodeBlockDemo.tsx"
@@ -82,7 +82,7 @@ export function DisplayTab() {
       </ScrollSnapItem>
 
       {/* JSON Tree View */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <CodeFlipCard
           sourceCode={JsonTreeViewDemoSource}
           fileName="JsonTreeViewDemo.tsx"
