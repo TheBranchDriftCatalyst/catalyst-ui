@@ -31,6 +31,10 @@
     "./cards/*": {
       "types": "./dist/lib/cards/*.d.ts",
       "import": "./dist/lib/cards/*.js"
+    },
+    "./effects/*": {
+      "types": "./dist/lib/effects/*.d.ts",
+      "import": "./dist/lib/effects/*.js"
     }
   },
   "files": [

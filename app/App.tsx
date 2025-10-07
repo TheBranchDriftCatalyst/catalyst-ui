@@ -4,45 +4,48 @@ import { CatalystHeader } from "@/catalyst-ui/components/CatalystHeader/Catalyst
 import { HeaderProvider } from "@/catalyst-ui/components/CatalystHeader/HeaderProvider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/catalyst-ui/ui/tabs";
 import { Toaster } from "@/catalyst-ui/ui/toaster";
-import { ScrollSnapContainer } from "@/catalyst-ui/components/effects";
+import { ScrollSnapContainer } from "@/catalyst-ui/effects";
 import { useState, useEffect, lazy, Suspense } from "react";
 import { D4Loader } from "./components/D4Loader";
 import { UserSettingsDropdown } from "./components/UserSettingsDropdown";
 import { PerformanceMonitor } from "./components/PerformanceMonitor";
 
 // Lazy-load tab components using Vite's import.meta.glob for code-splitting
-const tabModules = import.meta.glob('./tabs/*Tab.tsx', { eager: false });
+const tabModules = import.meta.glob("./tabs/*Tab.tsx", { eager: false });
 
 // Create lazy components dynamically
-const tabComponents = Object.keys(tabModules).reduce((acc, path) => {
-  const tabName = path.match(/\.\/tabs\/(.+)Tab\.tsx$/)?.[1];
-  if (tabName) {
-    acc[`${tabName}Tab`] = lazy(() => 
-      tabModules[path]().then((m: any) => ({ default: m[`${tabName}Tab`] }))
-    );
-  }
-  return acc;
-}, {} as Record<string, React.LazyExoticComponent<any>>);
+const tabComponents = Object.keys(tabModules).reduce(
+  (acc, path) => {
+    const tabName = path.match(/\.\/tabs\/(.+)Tab\.tsx$/)?.[1];
+    if (tabName) {
+      acc[`${tabName}Tab`] = lazy(() =>
+        tabModules[path]().then((m: any) => ({ default: m[`${tabName}Tab`] }))
+      );
+    }
+    return acc;
+  },
+  {} as Record<string, React.LazyExoticComponent<any>>
+);
 
 // Destructure for easier access
-const { 
-  OverviewTab, 
-  TokensTab, 
-  TypographyTab, 
-  FormsTab, 
-  ComponentsTab, 
-  DisplayTab, 
-  CardsTab, 
-  AnimationsTab, 
-  ForceGraphTab, 
-  ResumeTab 
+const {
+  OverviewTab,
+  TokensTab,
+  TypographyTab,
+  FormsTab,
+  ComponentsTab,
+  DisplayTab,
+  CardsTab,
+  AnimationsTab,
+  ForceGraphTab,
+  ResumeTab,
 } = tabComponents;
 
 function KitchenSink() {
   // Read initial tab from URL params
   const getInitialTab = () => {
     const params = new URLSearchParams(window.location.search);
-    return params.get('tab') || 'overview';
+    return params.get("tab") || "overview";
   };
 
   const [activeTab, setActiveTab] = useState(getInitialTab());
@@ -50,28 +53,34 @@ function KitchenSink() {
   // Update URL when tab changes
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    params.set('tab', activeTab);
+    params.set("tab", activeTab);
     const newUrl = `${window.location.pathname}?${params.toString()}`;
-    window.history.replaceState({}, '', newUrl);
+    window.history.replaceState({}, "", newUrl);
   }, [activeTab]);
 
   // Handle browser back/forward
   useEffect(() => {
     const handlePopState = () => {
       const params = new URLSearchParams(window.location.search);
-      const tab = params.get('tab') || 'overview';
+      const tab = params.get("tab") || "overview";
       setActiveTab(tab);
     };
 
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
   const navigationItems = [
     // Performance Monitor (dev-only)
     <PerformanceMonitor key="performance" />,
     // TODO: probably need to turn this into a env var and handle it in gh-pages and our build to link them???
-    <a key="storybook" href="http://localhost:6006" target="_blank" rel="noopener noreferrer" className="text-sm hover:text-primary transition-colors">
+    <a
+      key="storybook"
+      href="http://localhost:6006"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-sm hover:text-primary transition-colors"
+    >
       Storybook
     </a>,
   ];
@@ -118,7 +127,11 @@ function KitchenSink() {
             </TabsList>
           }
         />
-        <ScrollSnapContainer type="y" behavior="mandatory" className="w-full h-[calc(100vh-80px)] overflow-y-auto scrollbar-hide p-6 md:p-8">
+        <ScrollSnapContainer
+          type="y"
+          behavior="mandatory"
+          className="w-full h-[calc(100vh-80px)] overflow-y-auto scrollbar-hide p-6 md:p-8"
+        >
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-4 mt-0">
             <Suspense fallback={<D4Loader />}>

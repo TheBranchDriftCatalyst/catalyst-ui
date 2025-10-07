@@ -19,26 +19,31 @@ Transform the boring resume format into an immersive character sheet experience.
 ### Existing Infrastructure We Can Leverage
 
 ✅ **Card System** (`lib/ui/card.tsx`)
+
 - Base container for sections (profile, stats, history)
 - CardHeader, CardContent, CardFooter slots
 - Interactive variant with hover effects
 
 ✅ **Avatar Component** (`lib/ui/avatar.tsx`)
+
 - Profile picture display with fallback
 - Radix UI primitive for reliable rendering
 - Supports custom sizes via className
 
 ✅ **Progress Bars** (`lib/ui/progress.tsx`)
+
 - Perfect base for skill stat bars
 - Smooth animations and variant support
 - Already styled with theme variables
 
-✅ **Animation HOCs** (`lib/components/effects/`)
+✅ **Animation HOCs** (`lib/effects/`)
+
 - AnimatedFade for revealing sections
 - AnimatedSlide for timeline items
 - AnimatedBounce for interactive elements
 
 ✅ **Theme System** (`lib/contexts/Theme/`)
+
 - Multi-theme support with CSS variables
 - Cyberpunk/synthwave themes perfect for gaming aesthetic
 - Dark mode support
@@ -96,7 +101,7 @@ const resumeData: CharacterSheetData = {
     name: "Alex Developer",
     title: "Full Stack Wizard",
     avatar: "/avatar.jpg",
-    bio: "Slayer of bugs, builder of features"
+    bio: "Slayer of bugs, builder of features",
   },
   stats: [
     { label: "React", value: 90, max: 100 },
@@ -108,9 +113,9 @@ const resumeData: CharacterSheetData = {
       date: "2023-2025",
       title: "Senior Engineer Quest",
       company: "Tech Corp",
-      achievements: ["Led team of 5", "Shipped 3 products"]
-    }
-  ]
+      achievements: ["Led team of 5", "Shipped 3 products"],
+    },
+  ],
 };
 
 // → Renders as <CharacterSheetResume data={resumeData} />
@@ -433,7 +438,7 @@ export function CharacterSheetResume({ data, className }: CharacterSheetResumePr
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
 import { CodeFlipCard } from "@/catalyst-ui/components/CodeFlipCard";
 import { CharacterSheetResume, CharacterSheetData } from "@/catalyst-ui/cards/CharacterSheetResume/CharacterSheetResume";
-import { ScrollSnapItem } from "@/catalyst-ui/components/effects";
+import { ScrollSnapItem } from "@/catalyst-ui/effects";
 import { ImportFooter } from "../shared/ImportFooter";
 import CharacterSheetResumeSource from "@/catalyst-ui/cards/CharacterSheetResume/CharacterSheetResume.tsx?raw";
 
@@ -535,11 +540,13 @@ export function ResumeTab() {
 **File**: `app/App.tsx` (modifications)
 
 Add to imports:
+
 ```typescript
 import { ResumeTab } from "./tabs/ResumeTab";
 ```
 
 Add tab trigger (after animations):
+
 ```tsx
 <TabsTrigger value="resume" className="...">
   Resume
@@ -547,6 +554,7 @@ Add tab trigger (after animations):
 ```
 
 Add tab content:
+
 ```tsx
 <TabsContent value="resume" className="space-y-4 mt-0">
   <ResumeTab />
@@ -651,21 +659,25 @@ app/
 ### Example 1: Developer Resume
 
 **Input:**
+
 ```typescript
 const data = {
   profile: { name: "Jane Dev", title: "Frontend Mage" },
   stats: [{ label: "React", value: 95 }],
   skills: ["JavaScript", "CSS"],
-  timeline: [{
-    date: "2024",
-    title: "Senior Dev",
-    company: "Tech Co",
-    achievements: ["Led team of 4"]
-  }]
+  timeline: [
+    {
+      date: "2024",
+      title: "Senior Dev",
+      company: "Tech Co",
+      achievements: ["Led team of 4"],
+    },
+  ],
 };
 ```
 
 **Output:**
+
 - Card with avatar and "Jane Dev" title
 - Stat bar showing React at 95/100
 - Badges for JavaScript and CSS
@@ -674,18 +686,21 @@ const data = {
 ### Example 2: Gaming Industry Resume
 
 **Input:**
+
 ```typescript
 const data = {
   profile: {
     name: "Game Dev Pro",
-    title: "Unity Wizard · Level 99"
+    title: "Unity Wizard · Level 99",
   },
   stats: [
     { label: "Unity", value: 98 },
-    { label: "C#", value: 92 }
+    { label: "C#", value: 92 },
   ],
   skills: ["Unity", "C#", "Blender", "Shaders"],
-  timeline: [/* game projects */]
+  timeline: [
+    /* game projects */
+  ],
 };
 ```
 
@@ -774,11 +789,13 @@ None currently - all components use stable Radix UI primitives and existing patt
 **Description**: Standard resume with sections for experience, education, skills
 
 **Pros:**
+
 - Familiar format
 - Professional appearance
 - ATS-friendly
 
 **Cons:**
+
 - Not memorable
 - Lacks personality
 - Doesn't leverage gaming theme
@@ -790,10 +807,12 @@ None currently - all components use stable Radix UI primitives and existing patt
 **Description**: All resume content in one massive card instead of separate sections
 
 **Pros:**
+
 - Simpler component structure
 - Less DOM elements
 
 **Cons:**
+
 - Poor information hierarchy
 - Hard to scan
 - Less flexible layout
@@ -805,7 +824,7 @@ None currently - all components use stable Radix UI primitives and existing patt
 - [RPG UI Design Patterns](https://www.gamasutra.com/blogs/AnthonyStonehewer/20140227/211823/A_Guide_to_RPG_UI_Design.php)
 - [Character Sheet Design](https://www.reddit.com/r/RPGdesign/comments/6kqzqy/character_sheet_design_tips/)
 - Internal: `lib/ui/card.tsx` - Card primitive reference
-- Internal: `lib/components/effects/` - Animation patterns
+- Internal: `lib/effects/` - Animation patterns
 
 ## Status
 
@@ -829,12 +848,14 @@ None currently - all components use stable Radix UI primitives and existing patt
 The character sheet resume concept transforms traditional CV data into an engaging RPG-style presentation. This approach is perfect for developers, gamers, and creative professionals who want their resume to stand out.
 
 Key design decisions:
+
 1. **Separate Cards**: Each section (profile, stats, skills, timeline) in its own card for better visual hierarchy
 2. **Stat Bars vs Badges**: Technical skills get stat bars with values, general skills get badges
 3. **Timeline Format**: Vertical timeline is more scannable than horizontal and works better on mobile
 4. **Gaming Terminology**: "Quest Log" for work history, "Core Stats" for skills adds personality without being unprofessional
 
 Technical approach:
+
 - Built entirely with existing components (Avatar, Progress, Card)
 - Only 3 new components needed (Badge, StatBar, Timeline)
 - Fully type-safe with TypeScript interfaces

@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
-import { AnimatedBounce } from "@/catalyst-ui/components/effects";
+import { AnimatedBounce } from "@/catalyst-ui/effects";
 import { Button } from "@/catalyst-ui/ui/button";
 
 export function AnimatedBounceDemo() {
@@ -28,8 +28,8 @@ export function AnimatedBounceDemo() {
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground mb-4">
-            AnimatedBounce provides playful spring-like animations.
-            Perfect for buttons, icons, and interactive elements.
+            AnimatedBounce provides playful spring-like animations. Perfect for buttons, icons, and
+            interactive elements.
           </p>
           <AnimatedBounce trigger="hover" intensity={1.08} duration={500}>
             <div className="p-6 bg-primary/10 rounded-lg border border-primary/20 text-center cursor-pointer">

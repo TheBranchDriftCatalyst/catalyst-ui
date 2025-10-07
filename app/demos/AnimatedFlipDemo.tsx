@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
-import { AnimatedFlip } from "@/catalyst-ui/components/effects";
+import { AnimatedFlip } from "@/catalyst-ui/effects";
 import { useState } from "react";
 import { Button } from "@/catalyst-ui/ui/button";
 
@@ -14,8 +14,8 @@ export function AnimatedFlipDemo() {
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground">
-          This is the front face of the card. The AnimatedFlip HOC handles
-          the 3D rotation animation.
+          This is the front face of the card. The AnimatedFlip HOC handles the 3D rotation
+          animation.
         </p>
       </CardContent>
     </Card>
@@ -29,8 +29,7 @@ export function AnimatedFlipDemo() {
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground">
-          This is the back face. Perfect for showing code, details, or
-          alternative views.
+          This is the back face. Perfect for showing code, details, or alternative views.
         </p>
       </CardContent>
     </Card>

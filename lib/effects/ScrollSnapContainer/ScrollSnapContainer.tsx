@@ -43,9 +43,7 @@ export const ScrollSnapContainer = React.forwardRef<HTMLDivElement, ScrollSnapCo
     },
     ref
   ) => {
-    const scrollSnapType = type === "none"
-      ? undefined
-      : `${type} ${behavior}`;
+    const scrollSnapType = type === "none" ? undefined : `${type} ${behavior}`;
 
     return (
       <div

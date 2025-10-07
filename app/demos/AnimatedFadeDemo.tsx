@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
-import { AnimatedFade } from "@/catalyst-ui/components/effects";
+import { AnimatedFade } from "@/catalyst-ui/effects";
 import { useState } from "react";
 import { Button } from "@/catalyst-ui/ui/button";
 
@@ -16,11 +16,7 @@ export function AnimatedFadeDemo() {
           duration: 300ms | opacity transition
         </code>
       </div>
-      <AnimatedFade
-        isVisible={isVisible}
-        onVisibilityChange={setIsVisible}
-        duration={300}
-      >
+      <AnimatedFade isVisible={isVisible} onVisibilityChange={setIsVisible} duration={300}>
         <Card>
           <CardHeader>
             <CardTitle>Fading Content</CardTitle>
@@ -28,8 +24,8 @@ export function AnimatedFadeDemo() {
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              AnimatedFade provides smooth fade in/out animations.
-              Perfect for overlays, modals, and tooltips.
+              AnimatedFade provides smooth fade in/out animations. Perfect for overlays, modals, and
+              tooltips.
             </p>
           </CardContent>
         </Card>

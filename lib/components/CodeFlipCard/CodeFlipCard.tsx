@@ -9,10 +9,9 @@ import { RotateCcw, Code2 } from "lucide-react";
 import { processSourceCode, LineRange, LineRangeTuple } from "./utils";
 import { CardProvider } from "@/catalyst-ui/contexts/Card";
 import { CardWithContext } from "@/catalyst-ui/components/Card";
-import { AnimatedFlip } from "@/catalyst-ui/components/effects";
+import { AnimatedFlip } from "@/catalyst-ui/effects";
 
-export interface CodeFlipCardProps
-  extends Omit<CodeBlockProps, "code" | "language"> {
+export interface CodeFlipCardProps extends Omit<CodeBlockProps, "code" | "language"> {
   /** The rendered component to display on the front */
   children: React.ReactNode;
   /** Raw source code string (use ?raw import) */
@@ -132,7 +131,7 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
             size="icon"
             variant="ghost"
             className="absolute top-2 right-2 h-7 w-7 opacity-0 group-hover/flip:opacity-70 hover:opacity-100 transition-all duration-200 bg-background/60 backdrop-blur-sm z-10"
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation();
               setIsFlipped(true);
             }}

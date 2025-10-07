@@ -1,16 +1,10 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/catalyst-ui/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
 import { CodeFlipCard } from "@/catalyst-ui/components/CodeFlipCard";
 import {
   CharacterSheetResume,
   CharacterSheetData,
 } from "@/catalyst-ui/cards/CharacterSheetResume/CharacterSheetResume";
-import { ScrollSnapItem } from "@/catalyst-ui/components/effects";
+import { ScrollSnapItem } from "@/catalyst-ui/effects";
 import { ImportFooter } from "@/catalyst-ui/components/CodeFlipCard/ImportFooter";
 import CharacterSheetResumeSource from "@/catalyst-ui/cards/CharacterSheetResume/CharacterSheetResume.tsx?raw";
 
@@ -135,8 +129,8 @@ export function ResumeTab() {
           <CardHeader>
             <CardTitle>Character Sheet Resume</CardTitle>
             <CardDescription>
-              Transform your resume into an RPG character sheet • Stats for
-              skills, quest log for work history, and JSON Resume compatible
+              Transform your resume into an RPG character sheet • Stats for skills, quest log for
+              work history, and JSON Resume compatible
             </CardDescription>
           </CardHeader>
         </Card>
@@ -148,8 +142,7 @@ export function ResumeTab() {
           <CardHeader>
             <CardTitle>Full Stack Developer Character</CardTitle>
             <CardDescription>
-              Complete resume with profile, stats, skills, and timeline • Click
-              to view source
+              Complete resume with profile, stats, skills, and timeline • Click to view source
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -172,8 +165,7 @@ export function ResumeTab() {
           <CardHeader>
             <CardTitle>Game Developer Character</CardTitle>
             <CardDescription>
-              RPG-themed resume for game development role • Different stats and
-              achievements
+              RPG-themed resume for game development role • Different stats and achievements
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -196,10 +188,7 @@ export function ResumeTab() {
             <CardTitle>JSON Resume Compatible</CardTitle>
             <CardDescription>
               Convert standard JSON Resume format to character sheet • Use{" "}
-              <code className="text-xs bg-muted px-1 py-0.5 rounded">
-                fromJsonResume()
-              </code>{" "}
-              helper
+              <code className="text-xs bg-muted px-1 py-0.5 rounded">fromJsonResume()</code> helper
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -225,9 +214,8 @@ const jsonResume = {
             </div>
             <p className="text-sm text-muted-foreground">
               The <code className="bg-muted px-1 py-0.5 rounded">fromJsonResume()</code> helper
-              automatically maps JSON Resume fields to character sheet format,
-              including profile info, skills as stats, and work history as quest
-              log.
+              automatically maps JSON Resume fields to character sheet format, including profile
+              info, skills as stats, and work history as quest log.
             </p>
           </CardContent>
         </Card>

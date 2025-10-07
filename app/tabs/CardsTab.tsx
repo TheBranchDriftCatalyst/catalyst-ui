@@ -1,10 +1,17 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/catalyst-ui/ui/card";
 import { Button } from "@/catalyst-ui/ui/button";
 import { CodeFlipCard } from "@/catalyst-ui/components/CodeFlipCard";
 import { CreateAccountCard } from "@/catalyst-ui/cards/CreateAccountCard/CreateAccountCard";
 import MultiChoiceQuestionCard from "@/catalyst-ui/cards/MultiChoiceQuetion/MultiChoiceQuestion";
 import { ImportFooter } from "@/catalyst-ui/components/CodeFlipCard/ImportFooter";
-import { ScrollSnapItem } from "@/catalyst-ui/components/effects";
+import { ScrollSnapItem } from "@/catalyst-ui/effects";
 
 // Import demo components
 import { CardPrimitiveDemo } from "../demos/CardPrimitiveDemo";
@@ -61,7 +68,8 @@ export function CardsTab() {
           <CardHeader>
             <CardTitle>CodeFlipCard Component</CardTitle>
             <CardDescription>
-              Interactive card that flips to show source code • Click to flip, or hover over the examples below
+              Interactive card that flips to show source code • Click to flip, or hover over the
+              examples below
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -80,7 +88,9 @@ export function CardsTab() {
 
             {/* Hover to Flip Examples */}
             <div className="space-y-2">
-              <div className="text-sm font-semibold text-muted-foreground">Hover to Flip (Horizontal & Vertical)</div>
+              <div className="text-sm font-semibold text-muted-foreground">
+                Hover to Flip (Horizontal & Vertical)
+              </div>
               <div className="grid md:grid-cols-2 gap-4">
                 <CodeFlipCard
                   sourceCode={CodeFlipCardExampleDemoSource}
@@ -115,7 +125,8 @@ export function CardsTab() {
           <CardHeader>
             <CardTitle>Complex Card Components</CardTitle>
             <CardDescription>
-              Full-featured card components with forms, validation, and interactive elements • Click to view implementation
+              Full-featured card components with forms, validation, and interactive elements • Click
+              to view implementation
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -132,7 +143,7 @@ export function CardsTab() {
                     { name: "GitHub", onClick: () => alert("GitHub login") },
                     { name: "Google", onClick: () => alert("Google login") },
                   ]}
-                  onLogin={(values) => console.log("Login:", values)}
+                  onLogin={values => console.log("Login:", values)}
                   onCreateAccount={() => alert("Create account")}
                 />
               </CodeFlipCard>
@@ -147,7 +158,7 @@ export function CardsTab() {
                   enableTilt={false}
                   question="What's your favorite synthwave artist?"
                   options={["The Midnight", "Carpenter Brut", "FM-84", "Gunship"]}
-                  onChange={(value) => console.log("Selected:", value)}
+                  onChange={value => console.log("Selected:", value)}
                 />
               </CodeFlipCard>
             </div>

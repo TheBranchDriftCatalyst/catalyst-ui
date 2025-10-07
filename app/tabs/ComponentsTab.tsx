@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
 import { CodeFlipCard } from "@/catalyst-ui/components/CodeFlipCard";
 import { ImportFooter } from "@/catalyst-ui/components/CodeFlipCard/ImportFooter";
-import { ScrollSnapItem } from "@/catalyst-ui/components/effects";
+import { ScrollSnapItem } from "@/catalyst-ui/effects";
 
 // Import demo components and their source code
 import { DialogDemo } from "../demos/DialogDemo";
@@ -27,7 +27,8 @@ export function ComponentsTab() {
           <CardHeader>
             <CardTitle>Interactive Components</CardTitle>
             <CardDescription>
-              Dynamic overlay components with CodeFlipCard wrappers • Click cards to view source code • Try the interactive demos
+              Dynamic overlay components with CodeFlipCard wrappers • Click cards to view source
+              code • Try the interactive demos
             </CardDescription>
           </CardHeader>
         </Card>
@@ -35,16 +36,13 @@ export function ComponentsTab() {
 
       {/* Dialog Component */}
       <ScrollSnapItem align="start">
-        <CodeFlipCard
-          sourceCode={DialogDemoSource}
-          fileName="DialogDemo.tsx"
-          language="tsx"
-        >
+        <CodeFlipCard sourceCode={DialogDemoSource} fileName="DialogDemo.tsx" language="tsx">
           <Card>
             <CardHeader>
               <CardTitle>Dialog</CardTitle>
               <CardDescription>
-                A modal dialog component with overlay and focus management • Click card to view source
+                A modal dialog component with overlay and focus management • Click card to view
+                source
               </CardDescription>
             </CardHeader>
             <CardContent className="flex items-center justify-center p-6">
@@ -66,7 +64,8 @@ export function ComponentsTab() {
             <CardHeader>
               <CardTitle>Dropdown Menu</CardTitle>
               <CardDescription>
-                A menu component with keyboard navigation and portal rendering • Click card to view source
+                A menu component with keyboard navigation and portal rendering • Click card to view
+                source
               </CardDescription>
             </CardHeader>
             <CardContent className="flex items-center justify-center p-6">
@@ -79,16 +78,13 @@ export function ComponentsTab() {
 
       {/* Tooltip Component */}
       <ScrollSnapItem align="start">
-        <CodeFlipCard
-          sourceCode={TooltipDemoSource}
-          fileName="TooltipDemo.tsx"
-          language="tsx"
-        >
+        <CodeFlipCard sourceCode={TooltipDemoSource} fileName="TooltipDemo.tsx" language="tsx">
           <Card>
             <CardHeader>
               <CardTitle>Tooltip</CardTitle>
               <CardDescription>
-                A popup that displays information when hovering over an element • Click card to view source
+                A popup that displays information when hovering over an element • Click card to view
+                source
               </CardDescription>
             </CardHeader>
             <CardContent className="p-6">
@@ -101,11 +97,7 @@ export function ComponentsTab() {
 
       {/* Toast Component */}
       <ScrollSnapItem align="start">
-        <CodeFlipCard
-          sourceCode={ToastDemoSource}
-          fileName="ToastDemo.tsx"
-          language="tsx"
-        >
+        <CodeFlipCard sourceCode={ToastDemoSource} fileName="ToastDemo.tsx" language="tsx">
           <Card>
             <CardHeader>
               <CardTitle>Toast</CardTitle>
@@ -123,11 +115,7 @@ export function ComponentsTab() {
 
       {/* Sheet Component */}
       <ScrollSnapItem align="start">
-        <CodeFlipCard
-          sourceCode={SheetDemoSource}
-          fileName="SheetDemo.tsx"
-          language="tsx"
-        >
+        <CodeFlipCard sourceCode={SheetDemoSource} fileName="SheetDemo.tsx" language="tsx">
           <Card>
             <CardHeader>
               <CardTitle>Sheet</CardTitle>

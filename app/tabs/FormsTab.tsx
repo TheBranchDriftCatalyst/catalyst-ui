@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
 import { CodeFlipCard } from "@/catalyst-ui/components/CodeFlipCard";
 import { ImportFooter } from "@/catalyst-ui/components/CodeFlipCard/ImportFooter";
-import { ScrollSnapItem } from "@/catalyst-ui/components/effects";
+import { ScrollSnapItem } from "@/catalyst-ui/effects";
 
 // Import demo components and their source code
 import { ButtonsDemo } from "../demos/ButtonsDemo";
@@ -24,15 +24,13 @@ export function FormsTab() {
     <div className="space-y-4 mt-0">
       {/* Buttons */}
       <ScrollSnapItem align="start">
-        <CodeFlipCard
-          sourceCode={ButtonsDemoSource}
-          fileName="ButtonsDemo.tsx"
-          language="tsx"
-        >
+        <CodeFlipCard sourceCode={ButtonsDemoSource} fileName="ButtonsDemo.tsx" language="tsx">
           <Card>
             <CardHeader>
               <CardTitle>Buttons</CardTitle>
-              <CardDescription>All button variants and sizes with hover/active animations • Click to view source</CardDescription>
+              <CardDescription>
+                All button variants and sizes with hover/active animations • Click to view source
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <ButtonsDemo />
@@ -44,15 +42,13 @@ export function FormsTab() {
 
       {/* Form Inputs */}
       <ScrollSnapItem align="start">
-        <CodeFlipCard
-          sourceCode={InputsDemoSource}
-          fileName="InputsDemo.tsx"
-          language="tsx"
-        >
+        <CodeFlipCard sourceCode={InputsDemoSource} fileName="InputsDemo.tsx" language="tsx">
           <Card>
             <CardHeader>
               <CardTitle>Form Inputs</CardTitle>
-              <CardDescription>Input fields, labels, and checkboxes with focus animations • Click to view source</CardDescription>
+              <CardDescription>
+                Input fields, labels, and checkboxes with focus animations • Click to view source
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <InputsDemo />
@@ -72,7 +68,9 @@ export function FormsTab() {
           <Card>
             <CardHeader>
               <CardTitle>Select & Radio</CardTitle>
-              <CardDescription>Dropdown selects and radio button groups • Click to view source</CardDescription>
+              <CardDescription>
+                Dropdown selects and radio button groups • Click to view source
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <SelectRadioDemo />
@@ -92,7 +90,10 @@ export function FormsTab() {
           <Card>
             <CardHeader>
               <CardTitle>Slider & Progress</CardTitle>
-              <CardDescription>Interactive slider control and progress indicators with smooth animations • Click to view source</CardDescription>
+              <CardDescription>
+                Interactive slider control and progress indicators with smooth animations • Click to
+                view source
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <SliderProgressDemo />
@@ -112,7 +113,9 @@ export function FormsTab() {
           <Card>
             <CardHeader>
               <CardTitle>Avatars & Toggles</CardTitle>
-              <CardDescription>User avatars with fallbacks and toggle switches • Click to view source</CardDescription>
+              <CardDescription>
+                User avatars with fallbacks and toggle switches • Click to view source
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <AvatarToggleDemo />

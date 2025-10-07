@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
 import { CodeFlipCard } from "@/catalyst-ui/components/CodeFlipCard";
-import { ScrollSnapItem } from "@/catalyst-ui/components/effects";
+import { ScrollSnapItem } from "@/catalyst-ui/effects";
 
 // Import demo component and source code
 import { TypographyDemo } from "../demos/TypographyDemo";
@@ -18,7 +18,9 @@ export function TypographyTab() {
           <Card>
             <CardHeader>
               <CardTitle>Typography</CardTitle>
-              <CardDescription>Various text styles, headings, and semantic elements • Click to view source</CardDescription>
+              <CardDescription>
+                Various text styles, headings, and semantic elements • Click to view source
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <TypographyDemo />

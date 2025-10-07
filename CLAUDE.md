@@ -9,6 +9,7 @@ catalyst-ui is a React component library built with Vite and TypeScript. It uses
 ## Common Commands
 
 ### Development
+
 ```bash
 yarn dev                    # Start all dev services (Storybook + preview via Foreman)
 yarn dev:storybook         # Storybook only (port 6006)
@@ -16,6 +17,7 @@ yarn dev:preview           # Preview production build
 ```
 
 ### Building
+
 ```bash
 yarn build                 # Build library (TypeScript + Vite)
 yarn build:watch           # Build in watch mode
@@ -23,6 +25,7 @@ yarn build:storybook       # Build Storybook for deployment
 ```
 
 ### Testing
+
 ```bash
 yarn dev:test              # Run Storybook test runner with coverage
 ```
@@ -30,11 +33,13 @@ yarn dev:test              # Run Storybook test runner with coverage
 The test runner uses snapshot testing via `test-runner.ts`. Snapshots are stored alongside stories.
 
 ### Linting
+
 ```bash
 yarn lint                  # ESLint check
 ```
 
 ### Component Scaffolding
+
 ```bash
 task new-component         # Interactive component creation (uses fzf for directory selection)
 ```
@@ -59,6 +64,7 @@ The library is organized under `lib/` with the following directories:
 ### Entry Point
 
 `lib/catalyst.ts` is the main entry point that re-exports all public APIs:
+
 - Components (via `components` namespace)
 - Contexts (Theme, Debug, Header providers)
 - Hooks
@@ -70,6 +76,7 @@ The library is organized under `lib/` with the following directories:
 ### Build Configuration
 
 **Vite (vite.config.ts):**
+
 - Library mode with ES modules output
 - Generates TypeScript declarations via `vite-plugin-dts`
 - Builds all `.ts`, `.tsx`, `.css` files under `lib/` (excluding `.stories.tsx`)
@@ -78,6 +85,7 @@ The library is organized under `lib/` with the following directories:
 - Outputs to `dist/` with structure mirroring `lib/`
 
 **TypeScript:**
+
 - Path alias: `@/catalyst-ui/*` maps to `lib/*`
 - Excludes story files from compilation
 - Strict mode enabled
@@ -87,6 +95,7 @@ The library is organized under `lib/` with the following directories:
 **Multi-theme support with CSS custom properties:**
 
 Located in `lib/contexts/Theme/`:
+
 - `ThemeProvider.tsx` - Context provider with localStorage persistence
 - `ThemeContext.tsx` - Theme context definition
 - `ChangeThemeDropdown.tsx` - Theme selector component
@@ -94,6 +103,7 @@ Located in `lib/contexts/Theme/`:
 - `styles/` - Theme CSS files (catalyst, dracula, gold, laracon, nature, netflix, nord)
 
 Themes are applied via className on `<html>`: `theme-{name} {variant}`
+
 - Theme names: dracula, gold, laracon, nature, netflix, nord, catalyst
 - Variants: `dark` or `light`
 
@@ -102,6 +112,7 @@ Themes are applied via className on `<html>`: `theme-{name} {variant}`
 **Dynamic header management:**
 
 Located in `lib/components/CatalystHeader/`:
+
 - `HeaderProvider.tsx` - Context for managing header components, breadcrumbs, and page titles
 - Components can register/deregister themselves in the header dynamically
 - `CatalystHeader.tsx` - Main header component that consumes the context
@@ -110,7 +121,7 @@ Located in `lib/components/CatalystHeader/`:
 
 **Two complementary approaches:**
 
-**1. React Animation HOCs** (`lib/components/effects/`)
+**1. React Animation HOCs** (`lib/effects/`)
 
 Generic Higher-Order Components for interactive animations:
 
@@ -135,6 +146,7 @@ Generic Higher-Order Components for interactive animations:
   - Example: `<AnimatedBounce trigger="hover" intensity={1.1}><Button /></AnimatedBounce>`
 
 **Key Features:**
+
 - Content-agnostic - works with any React components
 - Controlled & uncontrolled modes for flexibility
 - TypeScript first with full type safety
@@ -142,8 +154,9 @@ Generic Higher-Order Components for interactive animations:
 - Consistent API across all HOCs
 
 **Import:**
+
 ```typescript
-import { AnimatedFlip, AnimatedFade, AnimatedSlide, AnimatedBounce } from '@/catalyst-ui/components/effects';
+import { AnimatedFlip, AnimatedFade, AnimatedSlide, AnimatedBounce } from "@/catalyst-ui/effects";
 ```
 
 **2. CSS Keyframe Animations** (`lib/contexts/Theme/styles/catalyst.css`)
@@ -158,20 +171,19 @@ Theme-specific visual effects (Catalyst theme only):
 - **`opacity-pulse`** - Simple opacity fade (1 → 0.8 → 1)
 
 **Usage:** Apply via inline styles or className
+
 ```tsx
-<div style={{ animation: 'glow-pulse 8s ease-in-out infinite' }}>
-  Ultra-subtle box-shadow pulse
-</div>
+<div style={{ animation: "glow-pulse 8s ease-in-out infinite" }}>Ultra-subtle box-shadow pulse</div>
 ```
 
 **When to use each:**
 
-| Use Animation HOCs when... | Use CSS Animations when... |
-|----------------------------|----------------------------|
+| Use Animation HOCs when...             | Use CSS Animations when...          |
+| -------------------------------------- | ----------------------------------- |
 | Building custom interactive components | Adding theme-specific visual polish |
-| Need state-driven animations | Want hover/focus effects |
-| Require controlled behavior | Applying subtle background effects |
-| Working without Radix primitives | Enhancing cyberpunk aesthetic |
+| Need state-driven animations           | Want hover/focus effects            |
+| Require controlled behavior            | Applying subtle background effects  |
+| Working without Radix primitives       | Enhancing cyberpunk aesthetic       |
 
 **Note on Radix UI:** Dialog, Toast, Sheet, Dropdown, etc. use built-in Radix animations - don't replace them. Radix handles state management, accessibility, and focus trapping. Our HOCs are for **custom components**.
 
@@ -182,12 +194,14 @@ Theme-specific visual effects (Catalyst theme only):
 ### Storybook Configuration
 
 **`.storybook/main.ts`:**
+
 - Stories located in `lib/**/*.stories.@(js|jsx|mjs|ts|tsx)`
 - Addons: jest, themes, dark-mode, coverage, mock, docs
 - Coverage addon configured with debug mode
 - Test build disables docs addons for performance
 
 **`.storybook/preview.tsx`:**
+
 - Dark mode support via `storybook-dark-mode`
 - Theme switching via `withThemeByClassName` decorator
 - All theme variants available in Storybook
@@ -196,6 +210,7 @@ Theme-specific visual effects (Catalyst theme only):
 ### Form Handling
 
 Uses React Hook Form + Zod for validation:
+
 - Forms defined with `react-hook-form`
 - Schema validation with `zod`
 - Resolver via `@hookform/resolvers`
@@ -203,12 +218,14 @@ Uses React Hook Form + Zod for validation:
 ### Data Visualization
 
 D3.js integration:
+
 - `ForceGraph` component uses D3 for graph visualization
 - Types from `@types/d3`
 
 ### Path Aliases
 
 Import paths use `@/` prefix:
+
 - `@/catalyst-ui/*` resolves to `lib/*`
 - Configured in `tsconfig.json` paths and `vite-tsconfig-paths` plugin
 

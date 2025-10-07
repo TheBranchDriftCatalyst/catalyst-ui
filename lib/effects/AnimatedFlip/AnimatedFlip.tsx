@@ -119,8 +119,7 @@ export const AnimatedFlip = React.forwardRef<HTMLDivElement, AnimatedFlipProps>(
       position: isFlipped ? "relative" : "absolute",
       top: isFlipped ? undefined : 0,
       left: isFlipped ? undefined : 0,
-      transform:
-        direction === "horizontal" ? "rotateY(180deg)" : "rotateX(180deg)",
+      transform: direction === "horizontal" ? "rotateY(180deg)" : "rotateX(180deg)",
     };
 
     const containerProps = {
@@ -137,14 +136,10 @@ export const AnimatedFlip = React.forwardRef<HTMLDivElement, AnimatedFlipProps>(
       <div {...containerProps}>
         <div style={flipperStyle}>
           {/* Front Face */}
-          <div style={frontFaceStyle}>
-            {front}
-          </div>
+          <div style={frontFaceStyle}>{front}</div>
 
           {/* Back Face */}
-          <div style={backFaceStyle}>
-            {back}
-          </div>
+          <div style={backFaceStyle}>{back}</div>
         </div>
       </div>
     );

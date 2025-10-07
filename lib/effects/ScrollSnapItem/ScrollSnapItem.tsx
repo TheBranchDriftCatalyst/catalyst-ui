@@ -28,17 +28,7 @@ export interface ScrollSnapItemProps extends React.HTMLAttributes<HTMLDivElement
  * ```
  */
 export const ScrollSnapItem = React.forwardRef<HTMLDivElement, ScrollSnapItemProps>(
-  (
-    {
-      align = "start",
-      offset = 0,
-      stop = "normal",
-      children,
-      className,
-      ...props
-    },
-    ref
-  ) => {
+  ({ align = "start", offset = 0, stop = "normal", children, className, ...props }, ref) => {
     return (
       <div
         ref={ref}
@@ -48,7 +38,7 @@ export const ScrollSnapItem = React.forwardRef<HTMLDivElement, ScrollSnapItemPro
           scrollMarginTop: offset > 0 ? `${offset}px` : undefined,
           scrollSnapStop: stop,
           // Ensure snap points are respected even with spacing
-          marginBottom: '1rem',
+          marginBottom: "1rem",
         }}
         {...props}
       >
