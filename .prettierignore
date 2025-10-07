@@ -1,0 +1,29 @@
+# Dependencies
+node_modules
+dist
+dist-ssr
+.yarn
+.pnp.*
+
+# Build output
+*.local
+build
+coverage
+.storybook-static
+
+# Package manager
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Generated files
+.husky/_
+CHANGELOG.md
+*.min.js
+*.min.css
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
