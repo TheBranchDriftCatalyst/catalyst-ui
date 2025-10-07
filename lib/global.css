@@ -44,6 +44,17 @@
   }
 }
 
+@utility scrollbar-hide {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 @theme {
   /* Cybersynthpunk Font Families */
   --font-sans: 'Rajdhani', ui-sans-serif, system-ui, sans-serif;
