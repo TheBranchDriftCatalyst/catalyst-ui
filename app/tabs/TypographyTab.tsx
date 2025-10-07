@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
 import { CodeFlipCard } from "@/catalyst-ui/components/CodeFlipCard";
-import { ScrollSnapItem } from "@/catalyst-ui/components/AnimationHOC";
+import { ScrollSnapItem } from "@/catalyst-ui/components/effects";
 
 // Import demo component and source code
 import { TypographyDemo } from "../demos/TypographyDemo";

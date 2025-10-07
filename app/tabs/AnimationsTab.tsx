@@ -7,7 +7,8 @@ import { AnimatedFlipDemo } from "../demos/AnimatedFlipDemo";
 import { AnimatedFadeDemo } from "../demos/AnimatedFadeDemo";
 import { AnimatedSlideDemo } from "../demos/AnimatedSlideDemo";
 import { AnimatedBounceDemo } from "../demos/AnimatedBounceDemo";
-import { ScrollSnapItem } from "@/catalyst-ui/components/AnimationHOC";
+import { ScrollSnapItem } from "@/catalyst-ui/components/effects";
+import { D4Loader } from "../components/D4Loader";
 
 export function AnimationsTab() {
   return (
@@ -122,7 +123,41 @@ export function AnimationsTab() {
           </CardContent>
           <CardFooter className="border-t pt-4">
             <code className="text-xs text-muted-foreground">
-              import {'{ScrollSnapContainer, ScrollSnapItem}'} from '@/catalyst-ui/components/AnimationHOC';
+              import {'{ScrollSnapContainer, ScrollSnapItem}'} from '@/catalyst-ui/components/effects';
+            </code>
+          </CardFooter>
+        </Card>
+      </ScrollSnapItem>
+
+      {/* D4 Loader Demo */}
+      <ScrollSnapItem align="start">
+        <Card>
+          <CardHeader>
+            <CardTitle>D4 Loader - 4D Hypercube</CardTitle>
+            <CardDescription>
+              Tesseract projection with D3.js • Used as lazy-loading fallback throughout the app
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Typography variant="p" className="text-sm text-muted-foreground">
+              A rotating 4-dimensional hypercube (tesseract) projected into 2D space, with orbiting particles
+              and neon glow effects. Features 16 vertices, 32 edges, and rotations through XY, ZW, XZ, and YW planes.
+            </Typography>
+
+            <div className="border border-primary/20 rounded-lg bg-accent/5 p-4">
+              <D4Loader />
+            </div>
+
+            <div className="p-3 bg-accent/10 border border-primary/20 rounded">
+              <Typography variant="small" className="text-xs">
+                <strong>Technical details:</strong> 60fps animation using D3 intervals, perspective projection from
+                4D→3D→2D, depth-based opacity fading, and SVG filter effects for glows. All synchronized to theme colors.
+              </Typography>
+            </div>
+          </CardContent>
+          <CardFooter className="border-t pt-4">
+            <code className="text-xs text-muted-foreground">
+              import {'{ D4Loader }'} from '@/catalyst-ui/components/D4Loader';
             </code>
           </CardFooter>
         </Card>
@@ -150,7 +185,7 @@ export function AnimationsTab() {
             </CardContent>
             <CardFooter className="border-t pt-4">
               <code className="text-xs text-muted-foreground">
-                import {'{ AnimatedFlip }'} from '@/catalyst-ui/components/AnimationHOC';
+                import {'{ AnimatedFlip }'} from '@/catalyst-ui/components/effects';
               </code>
             </CardFooter>
           </Card>
@@ -169,7 +204,7 @@ export function AnimationsTab() {
             </CardContent>
             <CardFooter className="border-t pt-4">
               <code className="text-xs text-muted-foreground">
-                import {'{ AnimatedFade }'} from '@/catalyst-ui/components/AnimationHOC';
+                import {'{ AnimatedFade }'} from '@/catalyst-ui/components/effects';
               </code>
             </CardFooter>
           </Card>
@@ -188,7 +223,7 @@ export function AnimationsTab() {
             </CardContent>
             <CardFooter className="border-t pt-4">
               <code className="text-xs text-muted-foreground">
-                import {'{ AnimatedSlide }'} from '@/catalyst-ui/components/AnimationHOC';
+                import {'{ AnimatedSlide }'} from '@/catalyst-ui/components/effects';
               </code>
             </CardFooter>
           </Card>
@@ -207,7 +242,7 @@ export function AnimationsTab() {
             </CardContent>
             <CardFooter className="border-t pt-4">
               <code className="text-xs text-muted-foreground">
-                import {'{ AnimatedBounce }'} from '@/catalyst-ui/components/AnimationHOC';
+                import {'{ AnimatedBounce }'} from '@/catalyst-ui/components/effects';
               </code>
             </CardFooter>
           </Card>

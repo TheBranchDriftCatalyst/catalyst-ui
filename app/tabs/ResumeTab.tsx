@@ -10,8 +10,8 @@ import {
   CharacterSheetResume,
   CharacterSheetData,
 } from "@/catalyst-ui/cards/CharacterSheetResume/CharacterSheetResume";
-import { ScrollSnapItem } from "@/catalyst-ui/components/AnimationHOC";
-import { ImportFooter } from "../shared/ImportFooter";
+import { ScrollSnapItem } from "@/catalyst-ui/components/effects";
+import { ImportFooter } from "@/catalyst-ui/components/CodeFlipCard/ImportFooter";
 import CharacterSheetResumeSource from "@/catalyst-ui/cards/CharacterSheetResume/CharacterSheetResume.tsx?raw";
 
 const demoData: CharacterSheetData = {

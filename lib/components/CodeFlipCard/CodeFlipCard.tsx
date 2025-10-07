@@ -9,7 +9,7 @@ import { RotateCcw, Code2 } from "lucide-react";
 import { processSourceCode, LineRange, LineRangeTuple } from "./utils";
 import { CardProvider } from "@/catalyst-ui/contexts/Card";
 import { CardWithContext } from "@/catalyst-ui/components/Card";
-import { AnimatedFlip } from "@/catalyst-ui/components/AnimationHOC";
+import { AnimatedFlip } from "@/catalyst-ui/components/effects";
 
 export interface CodeFlipCardProps
   extends Omit<CodeBlockProps, "code" | "language"> {

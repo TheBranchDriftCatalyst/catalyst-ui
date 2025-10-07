@@ -1,9 +1,9 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
-import { AnimatedSlide } from "@/catalyst-ui/components/AnimationHOC";
+import { AnimatedSlide } from "@/catalyst-ui/components/effects";
 import { useState } from "react";
 import { Button } from "@/catalyst-ui/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/catalyst-ui/ui/select";
-import type { SlideDirection } from "@/catalyst-ui/components/AnimationHOC";
+import type { SlideDirection } from "@/catalyst-ui/components/effects";
 
 export function AnimatedSlideDemo() {
   const [isVisible, setIsVisible] = useState(true);

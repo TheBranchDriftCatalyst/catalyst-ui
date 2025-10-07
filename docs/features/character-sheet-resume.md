@@ -33,7 +33,7 @@ Transform the boring resume format into an immersive character sheet experience.
 - Smooth animations and variant support
 - Already styled with theme variables
 
-✅ **Animation HOCs** (`lib/components/AnimationHOC/`)
+✅ **Animation HOCs** (`lib/components/effects/`)
 - AnimatedFade for revealing sections
 - AnimatedSlide for timeline items
 - AnimatedBounce for interactive elements
@@ -433,7 +433,7 @@ export function CharacterSheetResume({ data, className }: CharacterSheetResumePr
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
 import { CodeFlipCard } from "@/catalyst-ui/components/CodeFlipCard";
 import { CharacterSheetResume, CharacterSheetData } from "@/catalyst-ui/cards/CharacterSheetResume/CharacterSheetResume";
-import { ScrollSnapItem } from "@/catalyst-ui/components/AnimationHOC";
+import { ScrollSnapItem } from "@/catalyst-ui/components/effects";
 import { ImportFooter } from "../shared/ImportFooter";
 import CharacterSheetResumeSource from "@/catalyst-ui/cards/CharacterSheetResume/CharacterSheetResume.tsx?raw";
 
@@ -805,7 +805,7 @@ None currently - all components use stable Radix UI primitives and existing patt
 - [RPG UI Design Patterns](https://www.gamasutra.com/blogs/AnthonyStonehewer/20140227/211823/A_Guide_to_RPG_UI_Design.php)
 - [Character Sheet Design](https://www.reddit.com/r/RPGdesign/comments/6kqzqy/character_sheet_design_tips/)
 - Internal: `lib/ui/card.tsx` - Card primitive reference
-- Internal: `lib/components/AnimationHOC/` - Animation patterns
+- Internal: `lib/components/effects/` - Animation patterns
 
 ## Status
 

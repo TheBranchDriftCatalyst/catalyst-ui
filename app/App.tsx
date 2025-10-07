@@ -7,7 +7,7 @@ import { HeaderProvider } from "@/catalyst-ui/components/CatalystHeader/HeaderPr
 import { Menubar } from "@/catalyst-ui/ui/menubar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/catalyst-ui/ui/tabs";
 import { Toaster } from "@/catalyst-ui/ui/toaster";
-import { ScrollSnapContainer } from "@/catalyst-ui/components/AnimationHOC";
+import { ScrollSnapContainer } from "@/catalyst-ui/components/effects";
 import { useState, useEffect } from "react";
 
 // Import tab components

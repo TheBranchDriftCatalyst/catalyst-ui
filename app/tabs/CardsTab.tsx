@@ -3,8 +3,8 @@ import { Button } from "@/catalyst-ui/ui/button";
 import { CodeFlipCard } from "@/catalyst-ui/components/CodeFlipCard";
 import { CreateAccountCard } from "@/catalyst-ui/cards/CreateAccountCard/CreateAccountCard";
 import MultiChoiceQuestionCard from "@/catalyst-ui/cards/MultiChoiceQuetion/MultiChoiceQuestion";
-import { ImportFooter } from "../shared/ImportFooter";
-import { ScrollSnapItem } from "@/catalyst-ui/components/AnimationHOC";
+import { ImportFooter } from "@/catalyst-ui/components/CodeFlipCard/ImportFooter";
+import { ScrollSnapItem } from "@/catalyst-ui/components/effects";
 
 // Import demo components
 import { CardPrimitiveDemo } from "../demos/CardPrimitiveDemo";

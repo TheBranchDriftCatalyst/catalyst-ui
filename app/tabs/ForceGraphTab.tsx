@@ -6,7 +6,7 @@ import { Typography } from "@/catalyst-ui/ui/typography";
 import { ForceGraph } from "@/catalyst-ui/components/ForceGraph";
 import type { GraphData } from "@/catalyst-ui/components/ForceGraph";
 import { MermaidFlowChartGraph } from "@/catalyst-ui/components/MermaidForceGraph";
-import { ScrollSnapItem } from "@/catalyst-ui/components/AnimationHOC";
+import { ScrollSnapItem } from "@/catalyst-ui/components/effects";
 
 export function ForceGraphTab() {
   const [selectedGraphExample, setSelectedGraphExample] = useState("docker");

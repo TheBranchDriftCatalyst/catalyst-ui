@@ -5,6 +5,9 @@ export {
   stripComments,
   extractFunction,
   processSourceCode,
+  extractImports,
+  getMainImport,
   type LineRange,
   type LineRangeTuple,
 } from "./utils";
+export * from "./ImportFooter";

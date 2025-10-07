@@ -30,7 +30,7 @@ Creating a library of reusable Higher-Order Components (HOCs) for animations. Ex
 ### Tasks
 
 #### 1.1 Create AnimatedFlip Component
-- [x] Create `lib/components/AnimationHOC/AnimatedFlip/AnimatedFlip.tsx`
+- [x] Create `lib/components/effects/AnimatedFlip/AnimatedFlip.tsx`
 - [x] Extract all 3D transform logic from CodeFlipCard
 - [x] Props: `front`, `back`, `trigger`, `direction`, `duration`, `className`
 - [x] Zero content knowledge - pure animation wrapper
@@ -40,7 +40,7 @@ Creating a library of reusable Higher-Order Components (HOCs) for animations. Ex
 - **Impact:** Reusable flip animation for any content ✅
 
 #### 1.2 Create Type Definitions
-- [x] Create `lib/components/AnimationHOC/types.ts`
+- [x] Create `lib/components/effects/types.ts`
 - [x] Define `AnimationTrigger` type (`"click" | "hover"`)
 - [x] Define `FlipDirection` type (`"horizontal" | "vertical"`)
 - [x] Define `SlideDirection` type for future use
@@ -55,9 +55,9 @@ Creating a library of reusable Higher-Order Components (HOCs) for animations. Ex
 - **Impact:** CodeFlipCard simplified by ~55 lines ✅
 
 #### 1.4 Create Barrel Exports
-- [x] Create `lib/components/AnimationHOC/AnimatedFlip/index.ts`
-- [x] Create `lib/components/AnimationHOC/index.ts`
-- [x] Update `lib/components/index.ts` to export AnimationHOC
+- [x] Create `lib/components/effects/AnimatedFlip/index.ts`
+- [x] Create `lib/components/effects/index.ts`
+- [x] Update `lib/components/index.ts` to export effects
 - **Impact:** Clean import paths ✅
 
 #### 1.5 Verify & Test
@@ -70,14 +70,14 @@ Creating a library of reusable Higher-Order Components (HOCs) for animations. Ex
 ### Progress
 
 **Files Created:**
-- [x] `lib/components/AnimationHOC/AnimatedFlip/AnimatedFlip.tsx` (158 lines)
-- [x] `lib/components/AnimationHOC/AnimatedFlip/index.ts`
-- [x] `lib/components/AnimationHOC/types.ts` (15 lines)
-- [x] `lib/components/AnimationHOC/index.ts`
+- [x] `lib/components/effects/AnimatedFlip/AnimatedFlip.tsx` (158 lines)
+- [x] `lib/components/effects/AnimatedFlip/index.ts`
+- [x] `lib/components/effects/types.ts` (15 lines)
+- [x] `lib/components/effects/index.ts`
 
 **Files Modified:**
 - [x] `lib/components/CodeFlipCard/CodeFlipCard.tsx` - Uses AnimatedFlip in controlled mode
-- [x] `lib/components/index.ts` - Exports AnimationHOC
+- [x] `lib/components/index.ts` - Exports effects
 
 **Results:**
 - ✅ Generic AnimatedFlip HOC (works with any content)
@@ -99,7 +99,7 @@ Creating a library of reusable Higher-Order Components (HOCs) for animations. Ex
 ### Tasks
 
 #### 2.1 Create AnimatedFade
-- [x] Create `lib/components/AnimationHOC/AnimatedFade/AnimatedFade.tsx`
+- [x] Create `lib/components/effects/AnimatedFade/AnimatedFade.tsx`
 - [x] Support fade in/out with trigger
 - [x] Props: `children`, `trigger`, `duration`, `className`
 - [x] Added controlled/uncontrolled mode (`isVisible`, `onVisibilityChange`)
@@ -107,7 +107,7 @@ Creating a library of reusable Higher-Order Components (HOCs) for animations. Ex
 - **Impact:** Reusable fade animation ✅
 
 #### 2.2 Create AnimatedSlide
-- [x] Create `lib/components/AnimationHOC/AnimatedSlide/AnimatedSlide.tsx`
+- [x] Create `lib/components/effects/AnimatedSlide/AnimatedSlide.tsx`
 - [x] Support slide from 4 directions (top, right, bottom, left)
 - [x] Props: `children`, `direction`, `trigger`, `duration`, `distance`, `className`
 - [x] Added controlled/uncontrolled mode (`isVisible`, `onVisibilityChange`)
@@ -116,7 +116,7 @@ Creating a library of reusable Higher-Order Components (HOCs) for animations. Ex
 - **Impact:** Reusable slide animation ✅
 
 #### 2.3 Create AnimatedBounce
-- [x] Create `lib/components/AnimationHOC/AnimatedBounce/AnimatedBounce.tsx`
+- [x] Create `lib/components/effects/AnimatedBounce/AnimatedBounce.tsx`
 - [x] Support bounce effect with intensity control
 - [x] Props: `children`, `trigger`, `intensity`, `duration`, `className`
 - [x] Added controlled/uncontrolled mode (`isBouncing`, `onBounceChange`)
@@ -126,7 +126,7 @@ Creating a library of reusable Higher-Order Components (HOCs) for animations. Ex
 - **Impact:** Reusable bounce animation ✅
 
 #### 2.4 Export All Animations
-- [x] Update `lib/components/AnimationHOC/index.ts`
+- [x] Update `lib/components/effects/index.ts`
 - [x] Export all animation HOCs (Flip, Fade, Slide, Bounce)
 - [x] Export shared types
 - **Impact:** Clean import paths ✅
@@ -134,15 +134,15 @@ Creating a library of reusable Higher-Order Components (HOCs) for animations. Ex
 ### Progress
 
 **Files Created:**
-- [x] `lib/components/AnimationHOC/AnimatedFade/AnimatedFade.tsx` (100 lines)
-- [x] `lib/components/AnimationHOC/AnimatedFade/index.ts`
-- [x] `lib/components/AnimationHOC/AnimatedSlide/AnimatedSlide.tsx` (130 lines)
-- [x] `lib/components/AnimationHOC/AnimatedSlide/index.ts`
-- [x] `lib/components/AnimationHOC/AnimatedBounce/AnimatedBounce.tsx` (105 lines)
-- [x] `lib/components/AnimationHOC/AnimatedBounce/index.ts`
+- [x] `lib/components/effects/AnimatedFade/AnimatedFade.tsx` (100 lines)
+- [x] `lib/components/effects/AnimatedFade/index.ts`
+- [x] `lib/components/effects/AnimatedSlide/AnimatedSlide.tsx` (130 lines)
+- [x] `lib/components/effects/AnimatedSlide/index.ts`
+- [x] `lib/components/effects/AnimatedBounce/AnimatedBounce.tsx` (105 lines)
+- [x] `lib/components/effects/AnimatedBounce/index.ts`
 
 **Files Modified:**
-- [x] `lib/components/AnimationHOC/index.ts` - Exports all 4 animations + types
+- [x] `lib/components/effects/index.ts` - Exports all 4 animations + types
 - [x] SlideDirection type already existed in types.ts
 
 **Results:**
@@ -318,7 +318,7 @@ Creating a library of reusable Higher-Order Components (HOCs) for animations. Ex
 ### Tasks
 
 #### 5.1 Update CLAUDE.md ✅ COMPLETE
-- [x] Add comprehensive AnimationHOC section
+- [x] Add comprehensive effects section
 - [x] Document all 4 animation components with examples
 - [x] Add usage examples and code snippets
 - [x] Document props and import patterns
@@ -345,7 +345,7 @@ Creating a library of reusable Higher-Order Components (HOCs) for animations. Ex
 ### Progress
 
 **Files Modified:**
-- [x] `CLAUDE.md` - Complete AnimationHOC documentation added
+- [x] `CLAUDE.md` - Complete effects documentation added
   - Animation System section with 2 approaches
   - All 4 HOCs documented with examples
   - CSS animations catalogued
@@ -368,7 +368,7 @@ Creating a library of reusable Higher-Order Components (HOCs) for animations. Ex
 
 ```typescript
 // Generic pattern for all animation HOCs
-interface AnimationHOCProps {
+interface effectsProps {
   children: ReactNode;
   trigger?: AnimationTrigger;
   duration?: number;
@@ -380,7 +380,7 @@ interface AnimationHOCProps {
 ### Directory Structure
 
 ```
-lib/components/AnimationHOC/
+lib/components/effects/
 ├── AnimatedFlip/
 │   ├── AnimatedFlip.tsx
 │   └── index.ts
@@ -401,10 +401,10 @@ lib/components/AnimationHOC/
 
 ```typescript
 // Users can import specific animations
-import { AnimatedFlip, AnimatedFade } from '@/catalyst-ui/components/AnimationHOC';
+import { AnimatedFlip, AnimatedFade } from '@/catalyst-ui/components/effects';
 
 // Or import types
-import type { AnimationTrigger, FlipDirection } from '@/catalyst-ui/components/AnimationHOC';
+import type { AnimationTrigger, FlipDirection } from '@/catalyst-ui/components/effects';
 ```
 
 ---

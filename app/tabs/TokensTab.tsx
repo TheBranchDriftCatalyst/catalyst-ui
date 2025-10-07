@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
 import { CodeBlock } from "@/catalyst-ui/components/CodeBlock";
 import { DesignTokenDocBlock } from "storybook-design-token";
-import { ScrollSnapItem } from "@/catalyst-ui/components/AnimationHOC";
+import { ScrollSnapItem } from "@/catalyst-ui/components/effects";
 
 export function TokensTab() {
   return (

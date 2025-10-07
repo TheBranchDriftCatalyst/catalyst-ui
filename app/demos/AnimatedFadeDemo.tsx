@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
-import { AnimatedFade } from "@/catalyst-ui/components/AnimationHOC";
+import { AnimatedFade } from "@/catalyst-ui/components/effects";
 import { useState } from "react";
 import { Button } from "@/catalyst-ui/ui/button";
 

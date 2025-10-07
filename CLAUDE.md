@@ -49,7 +49,7 @@ The library is organized under `lib/` with the following directories:
 
 - **`cards/`** - Card-based UI components (CreateAccountCard, MultiChoiceQuestion)
 - **`components/`** - General components:
-  - **`AnimationHOC/`** - Generic animation HOCs (AnimatedFlip, AnimatedFade, AnimatedSlide, AnimatedBounce)
+  - **`effects/`** - Generic animation HOCs (AnimatedFlip, AnimatedFade, AnimatedSlide, AnimatedBounce)
   - CatalystHeader, NavigationHeader, ForceGraph, SimpleTable, SimpleGrid, Breadcrumbs
   - CodeFlipCard (uses AnimatedFlip for 3D flip animation)
 - **`contexts/`** - React contexts (Theme, Debug, Header, Card)
@@ -110,7 +110,7 @@ Located in `lib/components/CatalystHeader/`:
 
 **Two complementary approaches:**
 
-**1. React Animation HOCs** (`lib/components/AnimationHOC/`)
+**1. React Animation HOCs** (`lib/components/effects/`)
 
 Generic Higher-Order Components for interactive animations:
 
@@ -143,7 +143,7 @@ Generic Higher-Order Components for interactive animations:
 
 **Import:**
 ```typescript
-import { AnimatedFlip, AnimatedFade, AnimatedSlide, AnimatedBounce } from '@/catalyst-ui/components/AnimationHOC';
+import { AnimatedFlip, AnimatedFade, AnimatedSlide, AnimatedBounce } from '@/catalyst-ui/components/effects';
 ```
 
 **2. CSS Keyframe Animations** (`lib/contexts/Theme/styles/catalyst.css`)
@@ -177,7 +177,7 @@ Theme-specific visual effects (Catalyst theme only):
 
 **Demo:** See `app/tabs/AnimationsTab.tsx` for live interactive examples
 
-**Architecture Doc:** `docs/architecture/animation-hoc.md` - Complete implementation details
+**Architecture Doc:** `docs/architecture/animation-hoc.md` - Complete implementation details (note: folder renamed to effects)
 
 ### Storybook Configuration
 

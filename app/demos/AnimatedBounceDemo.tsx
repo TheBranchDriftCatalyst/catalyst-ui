@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
-import { AnimatedBounce } from "@/catalyst-ui/components/AnimationHOC";
+import { AnimatedBounce } from "@/catalyst-ui/components/effects";
 import { Button } from "@/catalyst-ui/ui/button";
 
 export function AnimatedBounceDemo() {
