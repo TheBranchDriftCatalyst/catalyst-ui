@@ -20,6 +20,7 @@ import { DisplayTab } from "./tabs/DisplayTab";
 import { CardsTab } from "./tabs/CardsTab";
 import { AnimationsTab } from "./tabs/AnimationsTab";
 import { ForceGraphTab } from "./tabs/ForceGraphTab";
+import { ResumeTab } from "./tabs/ResumeTab";
 
 function KitchenSink() {
   // Read initial tab from URL params
@@ -95,10 +96,13 @@ function KitchenSink() {
               <TabsTrigger value="animations" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
                 Animations
               </TabsTrigger>
+              <TabsTrigger value="resume" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+                Resume
+              </TabsTrigger>
             </TabsList>
           }
         />
-        <ScrollSnapContainer type="y" behavior="proximity" className="w-full p-6 md:p-8">
+        <ScrollSnapContainer type="y" behavior="mandatory" className="w-full h-[calc(100vh-80px)] overflow-y-auto scrollbar-hide p-6 md:p-8">
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-4 mt-0">
             <OverviewTab />
@@ -143,6 +147,11 @@ function KitchenSink() {
           {/* Force Graph Tab */}
           <TabsContent value="forcegraph" className="space-y-4 mt-0">
             <ForceGraphTab />
+          </TabsContent>
+
+          {/* Resume Tab */}
+          <TabsContent value="resume" className="space-y-4 mt-0">
+            <ResumeTab />
           </TabsContent>
         </ScrollSnapContainer>
       </Tabs>

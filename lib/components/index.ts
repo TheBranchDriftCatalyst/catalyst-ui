@@ -6,4 +6,6 @@ export * from './CodeBlock';
 export * from './CodeFlipCard';
 export * from './ForceGraph';
 export * from './MermaidForceGraph';
+export * from './StatBar';
+export * from './Timeline';
 

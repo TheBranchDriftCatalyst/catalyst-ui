@@ -1,0 +1,85 @@
+/* Print styles for 8.5 x 11 inch paper (Letter size) */
+@media print {
+  @page {
+    size: letter portrait;
+    margin: 0.5in;
+  }
+
+  /* Reset body for print */
+  body {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Hide everything except the resume content */
+  body > *:not(.print-content) {
+    display: none !important;
+  }
+
+  /* Ensure resume content is visible */
+  .print-content {
+    display: block !important;
+    position: relative !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 7.5in !important; /* 8.5in - 1in margins */
+    max-width: 7.5in !important;
+  }
+
+  /* Prevent page breaks inside cards */
+  .print-content .card,
+  .print-content [class*="Card"] {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Ensure images are rendered */
+  img {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+    max-width: 100% !important;
+  }
+
+  /* Remove shadows and borders that don't print well */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Keep borders visible */
+  .border,
+  [class*="border"] {
+    border-color: #e5e7eb !important;
+  }
+
+  /* Ensure backgrounds print */
+  .bg-card,
+  .bg-background,
+  .bg-primary,
+  .bg-secondary {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  /* Compact spacing for print */
+  .print-content .space-y-4 > * + * {
+    margin-top: 0.75rem !important;
+  }
+
+  /* Hide export button in print */
+  .export-button {
+    display: none !important;
+  }
+
+  /* Ensure GitHub stats images fit */
+  .github-stats img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+}
+
+/* Class to apply for printable content */
+.print-resume-content {
+  max-width: 8.5in;
+  margin: 0 auto;
+}
