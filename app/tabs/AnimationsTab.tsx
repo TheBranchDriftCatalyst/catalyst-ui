@@ -13,7 +13,7 @@ export function AnimationsTab() {
   return (
     <div className="space-y-6 mt-0">
       {/* Overview Card */}
-      <ScrollSnapItem align="start" offset={80}>
+      <ScrollSnapItem align="start">
         <Card>
           <CardHeader>
             <CardTitle>Animation System</CardTitle>
@@ -22,7 +22,7 @@ export function AnimationsTab() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-3 gap-4">
               <div className="space-y-2">
                 <Typography variant="h4" className="text-sm font-semibold">React Animation HOCs</Typography>
                 <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
@@ -33,6 +33,18 @@ export function AnimationsTab() {
                 </ul>
                 <p className="text-xs text-muted-foreground italic pt-2">
                   ✅ Best for: Custom components, state-driven animations, CodeFlipCard-style interactions
+                </p>
+              </div>
+              <div className="space-y-2">
+                <Typography variant="h4" className="text-sm font-semibold">Scroll Snap HOCs</Typography>
+                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+                  <li>ScrollSnapContainer - Scrollable area</li>
+                  <li>ScrollSnapItem - Snap points</li>
+                  <li>Mandatory/Proximity modes</li>
+                  <li>Smooth card-to-card flow</li>
+                </ul>
+                <p className="text-xs text-muted-foreground italic pt-2">
+                  ✅ Best for: Card galleries, full-page sections, presentation-style UIs
                 </p>
               </div>
               <div className="space-y-2">
@@ -52,6 +64,70 @@ export function AnimationsTab() {
         </Card>
       </ScrollSnapItem>
 
+      {/* Scroll Snap Demo */}
+      <ScrollSnapItem align="start">
+        <Card>
+          <CardHeader>
+            <CardTitle>ScrollSnap HOCs</CardTitle>
+            <CardDescription>
+              CSS Scroll Snap API wrapped in React HOCs • Try scrolling in the demo below
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Typography variant="p" className="text-sm text-muted-foreground">
+              The entire Kitchen Sink app uses ScrollSnapContainer! Each card you see snaps into place as you scroll.
+              Below is a miniature demo showing the same behavior in a smaller container.
+            </Typography>
+
+            {/* Mini Demo */}
+            <div className="border-2 border-primary/20 rounded-lg overflow-hidden">
+              <div
+                className="h-64 overflow-y-auto scrollbar-hide"
+                style={{
+                  scrollSnapType: 'y mandatory',
+                  scrollBehavior: 'smooth',
+                }}
+              >
+                {[
+                  { bg: 'bg-gradient-to-br from-cyan-500/20 to-blue-500/20', label: 'Card 1' },
+                  { bg: 'bg-gradient-to-br from-purple-500/20 to-pink-500/20', label: 'Card 2' },
+                  { bg: 'bg-gradient-to-br from-yellow-500/20 to-orange-500/20', label: 'Card 3' },
+                  { bg: 'bg-gradient-to-br from-green-500/20 to-emerald-500/20', label: 'Card 4' },
+                  { bg: 'bg-gradient-to-br from-red-500/20 to-rose-500/20', label: 'Card 5' },
+                ].map((item, idx) => (
+                  <div
+                    key={idx}
+                    className={`h-64 flex items-center justify-center ${item.bg} border-b border-border/40`}
+                    style={{
+                      scrollSnapAlign: 'start',
+                      scrollSnapStop: 'always',
+                    }}
+                  >
+                    <div className="text-center">
+                      <Typography variant="h3" className="font-bold">{item.label}</Typography>
+                      <Typography variant="small" className="text-muted-foreground">Scroll to snap to next card</Typography>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="p-3 bg-accent/10 border border-primary/20 rounded">
+              <Typography variant="small" className="text-xs">
+                <strong>Usage:</strong> Wrap your scrollable container with <code className="text-primary">ScrollSnapContainer</code>,
+                then wrap each snap point with <code className="text-primary">ScrollSnapItem</code>. The Kitchen Sink uses this
+                pattern with <code className="text-primary">behavior="mandatory"</code> for aggressive snapping.
+              </Typography>
+            </div>
+          </CardContent>
+          <CardFooter className="border-t pt-4">
+            <code className="text-xs text-muted-foreground">
+              import {'{ScrollSnapContainer, ScrollSnapItem}'} from '@/catalyst-ui/components/AnimationHOC';
+            </code>
+          </CardFooter>
+        </Card>
+      </ScrollSnapItem>
+
       {/* Tabbed Content */}
       <Tabs defaultValue="hocs" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
@@ -61,7 +137,7 @@ export function AnimationsTab() {
 
         {/* React HOCs Tab */}
         <TabsContent value="hocs" className="space-y-6 mt-4">
-          <ScrollSnapItem align="start" offset={80}>
+          <ScrollSnapItem align="start">
             <Card>
             <CardHeader>
               <CardTitle>AnimatedFlip</CardTitle>
@@ -80,7 +156,7 @@ export function AnimationsTab() {
           </Card>
           </ScrollSnapItem>
 
-          <ScrollSnapItem align="start" offset={80}>
+          <ScrollSnapItem align="start">
             <Card>
             <CardHeader>
               <CardTitle>AnimatedFade</CardTitle>
@@ -99,7 +175,7 @@ export function AnimationsTab() {
           </Card>
           </ScrollSnapItem>
 
-          <ScrollSnapItem align="start" offset={80}>
+          <ScrollSnapItem align="start">
             <Card>
             <CardHeader>
               <CardTitle>AnimatedSlide</CardTitle>
@@ -118,7 +194,7 @@ export function AnimationsTab() {
           </Card>
           </ScrollSnapItem>
 
-          <ScrollSnapItem align="start" offset={80}>
+          <ScrollSnapItem align="start">
             <Card>
             <CardHeader>
               <CardTitle>AnimatedBounce</CardTitle>
@@ -138,7 +214,7 @@ export function AnimationsTab() {
           </ScrollSnapItem>
 
           {/* Design Principles */}
-          <ScrollSnapItem align="start" offset={80}>
+          <ScrollSnapItem align="start">
             <Card>
             <CardHeader>
               <CardTitle>Design Principles</CardTitle>
@@ -158,7 +234,7 @@ export function AnimationsTab() {
 
         {/* CSS Animations Tab */}
         <TabsContent value="css" className="space-y-4 mt-4">
-          <ScrollSnapItem align="start" offset={80}>
+          <ScrollSnapItem align="start">
             <Card>
             <CardHeader>
               <CardTitle>CSS Keyframe Animations</CardTitle>
