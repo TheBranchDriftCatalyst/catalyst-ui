@@ -1,5 +1,5 @@
-import React from 'react';
-import { clearPersistedFilters } from '../context/GraphContext';
+import React from "react";
+import { clearPersistedFilters } from "../context/GraphContext";
 
 interface FilterPanelActionsProps {
   onReset: () => void;

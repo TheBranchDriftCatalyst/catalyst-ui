@@ -4,7 +4,8 @@
 
 /* Glow pulse - extremely subtle pulsing shadow glow (used by borders.css and glow.css) */
 @keyframes glow-pulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow:
       0 0 5px color-mix(in srgb, var(--primary) 8%, transparent),
       0 0 10px color-mix(in srgb, var(--primary) 4%, transparent),
@@ -23,13 +24,19 @@
 
 /* Opacity pulse - simple fade in/out */
 @keyframes opacity-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.8; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
 }
 
 /* Neon glow - box-shadow pulse using glow tokens */
 @keyframes neon-glow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: var(--glow-primary);
   }
   50% {

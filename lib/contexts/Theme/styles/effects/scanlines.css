@@ -5,7 +5,7 @@
 
 /* Sunset grid pattern - subtle but luxurious */
 html[data-effect-scanlines="true"].light body::before {
-  content: '';
+  content: "";
   position: fixed;
   top: 0;
   left: 0;
@@ -24,7 +24,7 @@ html[data-effect-scanlines="true"].light body::before {
 
 /* Cyberpunk grid background - subtle depth */
 html[data-effect-scanlines="true"].dark body::before {
-  content: '';
+  content: "";
   position: fixed;
   top: 0;
   left: 0;
@@ -41,7 +41,7 @@ html[data-effect-scanlines="true"].dark body::before {
 
 /* Scanline effect - very subtle */
 html[data-effect-scanlines="true"].dark body::after {
-  content: '';
+  content: "";
   position: fixed;
   top: 0;
   left: 0;

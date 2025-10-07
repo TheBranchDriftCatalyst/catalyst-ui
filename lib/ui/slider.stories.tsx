@@ -55,7 +55,9 @@ export const Range: Story = {
     return (
       <div className="grid w-full max-w-sm items-center gap-4">
         <div className="flex justify-between">
-          <Label>Range: {value[0]} - {value[1]}</Label>
+          <Label>
+            Range: {value[0]} - {value[1]}
+          </Label>
         </div>
         <Slider value={value} onValueChange={setValue} max={100} step={1} />
       </div>
@@ -92,13 +94,7 @@ export const PriceRange: Story = {
             ${value[0]} - ${value[1]}
           </span>
         </div>
-        <Slider
-          value={value}
-          onValueChange={setValue}
-          min={min}
-          max={max}
-          step={10}
-        />
+        <Slider value={value} onValueChange={setValue} min={min} max={max} step={10} />
         <div className="flex justify-between text-xs text-muted-foreground">
           <span>${min}</span>
           <span>${max}</span>

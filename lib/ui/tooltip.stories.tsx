@@ -10,7 +10,7 @@ const meta = {
   },
   tags: ["autodocs"],
   decorators: [
-    (Story) => (
+    Story => (
       <TooltipProvider>
         <Story />
       </TooltipProvider>
@@ -123,8 +123,8 @@ export const OnText: Story = {
         <TooltipContent>
           <p>This is a tooltip on inline text!</p>
         </TooltipContent>
-      </Tooltip>
-      {" "}in the middle of it.
+      </Tooltip>{" "}
+      in the middle of it.
     </p>
   ),
 };

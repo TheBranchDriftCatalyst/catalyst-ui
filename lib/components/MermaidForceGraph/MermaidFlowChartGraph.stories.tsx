@@ -1,13 +1,13 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { MermaidFlowChartGraph } from './MermaidFlowChartGraph';
+import type { Meta, StoryObj } from "@storybook/react";
+import { MermaidFlowChartGraph } from "./MermaidFlowChartGraph";
 
 const meta: Meta<typeof MermaidFlowChartGraph> = {
-  title: 'Components/MermaidFlowChartGraph',
+  title: "Components/MermaidFlowChartGraph",
   component: MermaidFlowChartGraph,
   parameters: {
-    layout: 'fullscreen',
+    layout: "fullscreen",
   },
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 };
 
 export default meta;
@@ -15,13 +15,13 @@ type Story = StoryObj<typeof MermaidFlowChartGraph>;
 
 export const SolarPowerSystem: Story = {
   args: {
-    filename: '/mermaid/solar-system.mmd',
+    filename: "/mermaid/solar-system.mmd",
     configuratorOptions: {
-      title: 'SOLAR POWER SYSTEM',
-      colorStrategy: 'subgraph',
+      title: "SOLAR POWER SYSTEM",
+      colorStrategy: "subgraph",
     },
   },
-  render: (args) => (
+  render: args => (
     <div className="h-screen w-full">
       <MermaidFlowChartGraph {...args} />
     </div>
@@ -37,10 +37,10 @@ export const BasicFlowchart: Story = {
       D --> B
       C --> E[End]`,
     configuratorOptions: {
-      title: 'BASIC FLOWCHART',
+      title: "BASIC FLOWCHART",
     },
   },
-  render: (args) => (
+  render: args => (
     <div className="h-screen w-full">
       <MermaidFlowChartGraph {...args} />
     </div>
@@ -65,11 +65,11 @@ export const ProcessFlow: Story = {
         E --> F
       end`,
     configuratorOptions: {
-      title: 'DATA PROCESSING FLOW',
-      colorStrategy: 'subgraph',
+      title: "DATA PROCESSING FLOW",
+      colorStrategy: "subgraph",
     },
   },
-  render: (args) => (
+  render: args => (
     <div className="h-screen w-full">
       <MermaidFlowChartGraph {...args} />
     </div>
@@ -113,11 +113,11 @@ export const NetworkDiagram: Story = {
       Web1 -.-> Log
       Web2 -.-> Log`,
     configuratorOptions: {
-      title: 'NETWORK TOPOLOGY',
-      colorStrategy: 'subgraph',
+      title: "NETWORK TOPOLOGY",
+      colorStrategy: "subgraph",
     },
   },
-  render: (args) => (
+  render: args => (
     <div className="h-screen w-full">
       <MermaidFlowChartGraph {...args} />
     </div>
@@ -140,11 +140,11 @@ export const DecisionTree: Story = {
       Validate --> End
       Success --> End`,
     configuratorOptions: {
-      title: 'AUTHORIZATION FLOW',
-      colorStrategy: 'shape',
+      title: "AUTHORIZATION FLOW",
+      colorStrategy: "shape",
     },
   },
-  render: (args) => (
+  render: args => (
     <div className="h-screen w-full">
       <MermaidFlowChartGraph {...args} />
     </div>
@@ -158,17 +158,17 @@ export const WithCustomColors: Story = {
       B --> C[Validate]
       C --> D[Output]`,
     configuratorOptions: {
-      title: 'CUSTOM STYLED GRAPH',
-      neonPalette: ['#00ff00', '#ff00ff', '#00ffff', '#ffff00'],
+      title: "CUSTOM STYLED GRAPH",
+      neonPalette: ["#00ff00", "#ff00ff", "#00ffff", "#ffff00"],
       nodeTypeOverrides: {
         process: {
-          icon: '⚙️',
-          color: '#00ff00',
+          icon: "⚙️",
+          color: "#00ff00",
         },
       },
     },
   },
-  render: (args) => (
+  render: args => (
     <div className="h-screen w-full">
       <MermaidFlowChartGraph {...args} />
     </div>

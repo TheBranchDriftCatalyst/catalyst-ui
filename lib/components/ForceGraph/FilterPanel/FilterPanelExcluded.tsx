@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface FilterPanelExcludedProps {
   excludedNodeIds: string[];
@@ -19,15 +19,21 @@ export const FilterPanelExcluded: React.FC<FilterPanelExcludedProps> = ({
 
   return (
     <div className="mb-4 pb-3 border-b border-primary/20">
-      <div className="text-xs font-semibold mb-2 text-primary uppercase tracking-wide" style={{ textShadow: '0 0 6px var(--primary)' }}>
+      <div
+        className="text-xs font-semibold mb-2 text-primary uppercase tracking-wide"
+        style={{ textShadow: "0 0 6px var(--primary)" }}
+      >
         Excluded Nodes
       </div>
       <div className="flex flex-col gap-1">
-        {excludedNodeIds.map((id) => {
+        {excludedNodeIds.map(id => {
           const info = getNodeInfo(id);
-          const label = info ? (info.name || info.Name || info.id) : id;
+          const label = info ? info.name || info.Name || info.id : id;
           return (
-            <div key={id} className="flex justify-between items-center bg-background/30 px-2 py-1 rounded text-[10px]">
+            <div
+              key={id}
+              className="flex justify-between items-center bg-background/30 px-2 py-1 rounded text-[10px]"
+            >
               <div className="text-foreground/90 truncate flex-1">{label}</div>
               <button
                 className="px-1 py-0.5 bg-foreground/5 border border-foreground/10 rounded text-[10px] hover:bg-foreground/10 transition-all"

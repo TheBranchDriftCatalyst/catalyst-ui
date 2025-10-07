@@ -105,19 +105,31 @@ export const WithStatus: Story = {
           <AvatarImage src="https://github.com/shadcn.png?s=64" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
-        <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-background" aria-label="Online" role="status" />
+        <span
+          className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-background"
+          aria-label="Online"
+          role="status"
+        />
       </div>
       <div className="relative">
         <Avatar>
           <AvatarFallback>AB</AvatarFallback>
         </Avatar>
-        <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-yellow-500 border-2 border-background" aria-label="Away" role="status" />
+        <span
+          className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-yellow-500 border-2 border-background"
+          aria-label="Away"
+          role="status"
+        />
       </div>
       <div className="relative">
         <Avatar>
           <AvatarFallback>CD</AvatarFallback>
         </Avatar>
-        <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-gray-400 border-2 border-background" aria-label="Offline" role="status" />
+        <span
+          className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-gray-400 border-2 border-background"
+          aria-label="Offline"
+          role="status"
+        />
       </div>
     </div>
   ),

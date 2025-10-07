@@ -1,4 +1,10 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/catalyst-ui/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/catalyst-ui/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/catalyst-ui/ui/radio-group";
 import { Label } from "@/catalyst-ui/ui/label";
 

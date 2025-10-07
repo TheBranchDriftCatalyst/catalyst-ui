@@ -1,12 +1,19 @@
 "use client";
 
 import { Button } from "@/catalyst-ui/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/catalyst-ui/ui/card";
 import { SiGit, SiGoogle } from "@icons-pack/react-simple-icons";
 import { toLower } from "lodash";
 import { FileQuestionIcon } from "lucide-react";
 import React from "react";
-import {Tilt} from "@jdion/tilt-react"
+import { Tilt } from "@jdion/tilt-react";
 
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -52,7 +59,12 @@ interface CreateAccountCardProps {
 }
 
 // @ts-ignore
-export const CreateAccountCard = ({ oidcProviders, onLogin, onCreateAccount, enableTilt = true }: CreateAccountCardProps) => {
+export const CreateAccountCard = ({
+  oidcProviders,
+  onLogin,
+  onCreateAccount,
+  enableTilt = true,
+}: CreateAccountCardProps) => {
   const form = useForm<z.infer<typeof InputFormSchema>>({
     resolver: zodResolver(InputFormSchema),
     defaultValues: {
@@ -71,7 +83,7 @@ export const CreateAccountCard = ({ oidcProviders, onLogin, onCreateAccount, ena
         <form onSubmit={form.handleSubmit(onLogin)}>
           <CardContent>
             <div className="flex justify-evenly">
-              {oidcProviders.map((provider) => (
+              {oidcProviders.map(provider => (
                 <OIDCButton key={provider.name} provider={provider} />
               ))}
             </div>
@@ -92,7 +104,11 @@ export const CreateAccountCard = ({ oidcProviders, onLogin, onCreateAccount, ena
                   <FormItem>
                     <FormLabel>Username</FormLabel>
                     <FormControl>
-                      <Input placeholder="someone@somewhere.com" autoComplete="username" {...field} />
+                      <Input
+                        placeholder="someone@somewhere.com"
+                        autoComplete="username"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -143,7 +159,9 @@ export const CreateAccountCard = ({ oidcProviders, onLogin, onCreateAccount, ena
     <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} perspective={1500}>
       {cardContent}
     </Tilt>
-  ) : cardContent;
+  ) : (
+    cardContent
+  );
 };
 
 const OIDCButton: React.FC<{ provider: OIDCProviderShape }> = ({ provider }) => {

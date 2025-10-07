@@ -17,7 +17,7 @@ html[data-effect-debug="true"] body {
 }
 
 html[data-effect-debug="true"]::before {
-  content: '🔴 DEBUG MODE ACTIVE';
+  content: "🔴 DEBUG MODE ACTIVE";
   position: fixed;
   top: 50%;
   left: 50%;

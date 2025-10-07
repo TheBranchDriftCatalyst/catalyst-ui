@@ -1,8 +1,8 @@
-import React from 'react';
-import { createPortal } from 'react-dom';
-import { useGraphFilters } from './hooks/useGraphFilters';
-import { useGraphState } from './hooks/useGraphState';
-import { useGraphConfig } from './context/GraphContext';
+import React from "react";
+import { createPortal } from "react-dom";
+import { useGraphFilters } from "./hooks/useGraphFilters";
+import { useGraphState } from "./hooks/useGraphState";
+import { useGraphConfig } from "./context/GraphContext";
 import {
   FilterPanelSearch,
   FilterPanelNodeTypes,
@@ -14,17 +14,21 @@ import {
   FilterPanelStats,
   FilterPanelActions,
   FilterPanelLayout,
-} from './FilterPanel';
-import { GRAPH_CONNECTION_FILTER_OPTIONS } from './types/filterTypes';
-import { LayoutOptionsPanel } from './FilterPanel/LayoutOptionsPanel';
+} from "./FilterPanel";
+import { GRAPH_CONNECTION_FILTER_OPTIONS } from "./types/filterTypes";
+import { LayoutOptionsPanel } from "./FilterPanel/LayoutOptionsPanel";
 
 interface GraphContentPanelProps {
-  activeTab: 'filters' | 'layout' | null;
+  activeTab: "filters" | "layout" | null;
   onClose: () => void;
   storageKey?: string;
 }
 
-const GraphContentPanel: React.FC<GraphContentPanelProps> = ({ activeTab, onClose, storageKey }) => {
+const GraphContentPanel: React.FC<GraphContentPanelProps> = ({
+  activeTab,
+  onClose,
+  storageKey,
+}) => {
   const config = useGraphConfig();
   const {
     filters,
@@ -42,7 +46,15 @@ const GraphContentPanel: React.FC<GraphContentPanelProps> = ({ activeTab, onClos
     clearExcluded,
   } = useGraphFilters();
 
-  const { getNodeInfo, rawData, filteredData, layout, orthogonalEdges, setLayout, toggleOrthogonalEdges } = useGraphState();
+  const {
+    getNodeInfo,
+    rawData,
+    filteredData,
+    layout,
+    orthogonalEdges,
+    setLayout,
+    toggleOrthogonalEdges,
+  } = useGraphState();
 
   // Build filter options from config
   const NODE_TYPE_OPTIONS = React.useMemo(
@@ -75,8 +87,8 @@ const GraphContentPanel: React.FC<GraphContentPanelProps> = ({ activeTab, onClos
     <div
       className="fixed top-16 right-0 w-96 bottom-0 bg-background/98 backdrop-blur-[20px] z-50 overflow-y-auto border-l-2 border-primary shadow-[-8px_0_30px_rgba(var(--primary-rgb),0.2)]"
       style={{
-        animation: 'slideInRight 0.3s ease-out',
-        transform: 'translateZ(0)',
+        animation: "slideInRight 0.3s ease-out",
+        transform: "translateZ(0)",
       }}
     >
       <style>
@@ -104,17 +116,26 @@ const GraphContentPanel: React.FC<GraphContentPanelProps> = ({ activeTab, onClos
       </button>
 
       <div className="p-4 pt-12">
-        {activeTab === 'filters' && (
+        {activeTab === "filters" && (
           <div className="space-y-6">
             <div className="space-y-3">
-              <h3 className="text-xs font-bold text-primary tracking-wide uppercase mb-2" style={{ textShadow: '0 0 12px var(--primary)' }}>
+              <h3
+                className="text-xs font-bold text-primary tracking-wide uppercase mb-2"
+                style={{ textShadow: "0 0 12px var(--primary)" }}
+              >
                 Search & Quick Filters
               </h3>
-              <FilterPanelSearch searchQuery={filters.searchQuery} onSearchChange={setSearchQuery} />
+              <FilterPanelSearch
+                searchQuery={filters.searchQuery}
+                onSearchChange={setSearchQuery}
+              />
             </div>
 
             <div className="space-y-3">
-              <h3 className="text-xs font-bold text-primary tracking-wide uppercase mb-2" style={{ textShadow: '0 0 12px var(--primary)' }}>
+              <h3
+                className="text-xs font-bold text-primary tracking-wide uppercase mb-2"
+                style={{ textShadow: "0 0 12px var(--primary)" }}
+              >
                 Node & Edge Types
               </h3>
               <FilterPanelNodeTypes
@@ -131,7 +152,10 @@ const GraphContentPanel: React.FC<GraphContentPanelProps> = ({ activeTab, onClos
             </div>
 
             <div className="space-y-3">
-              <h3 className="text-xs font-bold text-primary tracking-wide uppercase mb-2" style={{ textShadow: '0 0 12px var(--primary)' }}>
+              <h3
+                className="text-xs font-bold text-primary tracking-wide uppercase mb-2"
+                style={{ textShadow: "0 0 12px var(--primary)" }}
+              >
                 Advanced Filters
               </h3>
               {STATUS_FILTER_OPTIONS.length > 0 && (
@@ -162,7 +186,10 @@ const GraphContentPanel: React.FC<GraphContentPanelProps> = ({ activeTab, onClos
             </div>
 
             <div className="space-y-3">
-              <h3 className="text-xs font-bold text-primary tracking-wide uppercase mb-2" style={{ textShadow: '0 0 12px var(--primary)' }}>
+              <h3
+                className="text-xs font-bold text-primary tracking-wide uppercase mb-2"
+                style={{ textShadow: "0 0 12px var(--primary)" }}
+              >
                 Excluded Nodes
               </h3>
               <FilterPanelExcluded
@@ -174,14 +201,20 @@ const GraphContentPanel: React.FC<GraphContentPanelProps> = ({ activeTab, onClos
             </div>
 
             <div className="space-y-3">
-              <h3 className="text-xs font-bold text-primary tracking-wide uppercase mb-2" style={{ textShadow: '0 0 12px var(--primary)' }}>
+              <h3
+                className="text-xs font-bold text-primary tracking-wide uppercase mb-2"
+                style={{ textShadow: "0 0 12px var(--primary)" }}
+              >
                 Statistics & Summary
               </h3>
               <FilterPanelStats rawData={rawData} filteredData={filteredData} />
             </div>
 
             <div className="space-y-3">
-              <h3 className="text-xs font-bold text-primary tracking-wide uppercase mb-2" style={{ textShadow: '0 0 12px var(--primary)' }}>
+              <h3
+                className="text-xs font-bold text-primary tracking-wide uppercase mb-2"
+                style={{ textShadow: "0 0 12px var(--primary)" }}
+              >
                 Actions
               </h3>
               <FilterPanelActions onReset={resetFilters} />
@@ -189,10 +222,13 @@ const GraphContentPanel: React.FC<GraphContentPanelProps> = ({ activeTab, onClos
           </div>
         )}
 
-        {activeTab === 'layout' && (
+        {activeTab === "layout" && (
           <div className="space-y-6">
             <div className="space-y-3">
-              <h3 className="text-xs font-bold text-primary tracking-wide uppercase mb-2" style={{ textShadow: '0 0 12px var(--primary)' }}>
+              <h3
+                className="text-xs font-bold text-primary tracking-wide uppercase mb-2"
+                style={{ textShadow: "0 0 12px var(--primary)" }}
+              >
                 Layout Mode
               </h3>
               <FilterPanelLayout

@@ -9,8 +9,8 @@ export function CodeFlipCardExampleDemo() {
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground">
-          CodeFlipCard wraps any component and shows its source code when flipped.
-          Perfect for documentation and component showcases.
+          CodeFlipCard wraps any component and shows its source code when flipped. Perfect for
+          documentation and component showcases.
         </p>
       </CardContent>
     </Card>

@@ -3,12 +3,12 @@
  * Converts Mermaid flowchart syntax to interactive ForceGraph
  */
 
-import React, { useEffect, useState } from 'react';
-import { ForceGraph } from '../ForceGraph';
-import type { ForceGraphProps } from '../ForceGraph/types';
-import { MermaidFlowChartGraphConfigurator, ConfiguratorOptions } from '../../utils/mermaid';
-import type { GraphConfig } from '../ForceGraph/config/types';
-import type { GraphData } from '../ForceGraph/types';
+import React, { useEffect, useState } from "react";
+import { ForceGraph } from "../ForceGraph";
+import type { ForceGraphProps } from "../ForceGraph/types";
+import { MermaidFlowChartGraphConfigurator, ConfiguratorOptions } from "../../utils/mermaid";
+import type { GraphConfig } from "../ForceGraph/config/types";
+import type { GraphData } from "../ForceGraph/types";
 
 export interface MermaidFlowChartGraphProps {
   /** Path to .mmd file in public folder (e.g., "/mermaid/solar-system.mmd") */
@@ -21,7 +21,7 @@ export interface MermaidFlowChartGraphProps {
   configuratorOptions?: ConfiguratorOptions;
 
   /** Pass-through props to ForceGraph */
-  forceGraphProps?: Partial<Omit<ForceGraphProps, 'data' | 'config'>>;
+  forceGraphProps?: Partial<Omit<ForceGraphProps, "data" | "config">>;
 }
 
 interface MermaidGraphState {
@@ -93,11 +93,11 @@ export const MermaidFlowChartGraph: React.FC<MermaidFlowChartGraphProps> = ({
         const text = await response.text();
         setMermaidText(text);
       } catch (err) {
-        const errorMsg = err instanceof Error ? err.message : 'Unknown error';
+        const errorMsg = err instanceof Error ? err.message : "Unknown error";
         setState(prev => ({
           ...prev,
           loading: false,
-          error: errorMsg
+          error: errorMsg,
         }));
       }
     };
@@ -113,10 +113,7 @@ export const MermaidFlowChartGraph: React.FC<MermaidFlowChartGraphProps> = ({
     }
 
     try {
-      const configurator = new MermaidFlowChartGraphConfigurator(
-        mermaidText,
-        configuratorOptions
-      );
+      const configurator = new MermaidFlowChartGraphConfigurator(mermaidText, configuratorOptions);
 
       const config = configurator.generateConfig();
       const data = configurator.generateData();
@@ -128,7 +125,7 @@ export const MermaidFlowChartGraph: React.FC<MermaidFlowChartGraphProps> = ({
         error: null,
       });
     } catch (err) {
-      const errorMsg = err instanceof Error ? err.message : 'Failed to parse Mermaid diagram';
+      const errorMsg = err instanceof Error ? err.message : "Failed to parse Mermaid diagram";
       setState({
         config: null,
         data: null,
@@ -171,13 +168,7 @@ export const MermaidFlowChartGraph: React.FC<MermaidFlowChartGraphProps> = ({
   }
 
   // Render ForceGraph
-  return (
-    <ForceGraph
-      data={state.data}
-      config={state.config}
-      {...forceGraphProps}
-    />
-  );
+  return <ForceGraph data={state.data} config={state.config} {...forceGraphProps} />;
 };
 
 export default MermaidFlowChartGraph;

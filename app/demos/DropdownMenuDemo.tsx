@@ -26,9 +26,7 @@ export function DropdownMenuDemo() {
         <DropdownMenuItem onClick={() => toast({ title: "Billing clicked" })}>
           Billing
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => toast({ title: "Team clicked" })}>
-          Team
-        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => toast({ title: "Team clicked" })}>Team</DropdownMenuItem>
         <DropdownMenuItem onClick={() => toast({ title: "Subscription clicked" })}>
           Subscription
         </DropdownMenuItem>

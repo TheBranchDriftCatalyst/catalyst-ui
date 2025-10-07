@@ -29,9 +29,9 @@
   --ring: hsl(222, 20%, 70%);
 
   /* @token Typography - Clean Nordic aesthetic */
-  --font-heading: 'Inter', 'Helvetica Neue', sans-serif; /* @token */
-  --font-body: 'Inter', 'Arial', sans-serif; /* @token */
-  --font-mono: 'JetBrains Mono', 'Monaco', monospace; /* @token */
+  --font-heading: "Inter", "Helvetica Neue", sans-serif; /* @token */
+  --font-body: "Inter", "Arial", sans-serif; /* @token */
+  --font-mono: "JetBrains Mono", "Monaco", monospace; /* @token */
 
   /* @token Neon Colors - Nordic aurora palette */
   --neon-cyan: hsl(193, 70%, 58%); /* @token - frost cyan */
@@ -52,15 +52,20 @@
   --neon-gold-rgb: 229, 165, 92; /* @token */
 
   /* @token Glow Effects - Nordic aurora glow */
-  --glow-primary: 0 0 20px rgba(112, 166, 235, 0.3), 0 0 40px rgba(112, 166, 235, 0.15); /* @token */
-  --glow-secondary: 0 0 20px rgba(108, 194, 224, 0.35), 0 0 40px rgba(108, 194, 224, 0.18); /* @token */
+  --glow-primary:
+    0 0 20px rgba(112, 166, 235, 0.3), 0 0 40px rgba(112, 166, 235, 0.15); /* @token */
+  --glow-secondary:
+    0 0 20px rgba(108, 194, 224, 0.35), 0 0 40px rgba(108, 194, 224, 0.18); /* @token */
   --glow-accent: 0 0 15px rgba(172, 131, 205, 0.25); /* @token */
   --glow-hover: 0 0 25px rgba(112, 166, 235, 0.4), 0 0 50px rgba(112, 166, 235, 0.2); /* @token */
 
   /* @token Neon Shadows - Arctic frost */
-  --shadow-neon-sm: 0 2px 8px rgba(112, 166, 235, 0.12), 0 4px 16px rgba(108, 194, 224, 0.08); /* @token */
-  --shadow-neon-md: 0 4px 16px rgba(112, 166, 235, 0.16), 0 8px 32px rgba(108, 194, 224, 0.1); /* @token */
-  --shadow-neon-lg: 0 8px 24px rgba(112, 166, 235, 0.2), 0 16px 48px rgba(108, 194, 224, 0.12); /* @token */
+  --shadow-neon-sm:
+    0 2px 8px rgba(112, 166, 235, 0.12), 0 4px 16px rgba(108, 194, 224, 0.08); /* @token */
+  --shadow-neon-md:
+    0 4px 16px rgba(112, 166, 235, 0.16), 0 8px 32px rgba(108, 194, 224, 0.1); /* @token */
+  --shadow-neon-lg:
+    0 8px 24px rgba(112, 166, 235, 0.2), 0 16px 48px rgba(108, 194, 224, 0.12); /* @token */
 }
 
 .theme-nord.dark {
@@ -94,9 +99,9 @@
   --ring: hsl(222, 20%, 40%);
 
   /* @token Typography - Minimalist Nordic fonts */
-  --font-heading: 'Inter', 'Helvetica Neue', sans-serif; /* @token */
-  --font-body: 'Inter', 'Arial', sans-serif; /* @token */
-  --font-mono: 'JetBrains Mono', 'Monaco', monospace; /* @token */
+  --font-heading: "Inter", "Helvetica Neue", sans-serif; /* @token */
+  --font-body: "Inter", "Arial", sans-serif; /* @token */
+  --font-mono: "JetBrains Mono", "Monaco", monospace; /* @token */
 
   /* @token Neon Colors - Nordic aurora palette */
   --neon-cyan: hsl(193, 80%, 52%); /* @token - frost cyan */
@@ -123,7 +128,10 @@
   --glow-hover: 0 0 25px rgba(99, 156, 230, 0.45), 0 0 50px rgba(99, 156, 230, 0.22); /* @token */
 
   /* @token Neon Shadows - Arctic frost */
-  --shadow-neon-sm: 0 2px 8px rgba(99, 156, 230, 0.15), 0 4px 16px rgba(85, 186, 217, 0.1); /* @token */
-  --shadow-neon-md: 0 4px 16px rgba(99, 156, 230, 0.2), 0 8px 32px rgba(85, 186, 217, 0.12); /* @token */
-  --shadow-neon-lg: 0 8px 24px rgba(99, 156, 230, 0.25), 0 16px 48px rgba(85, 186, 217, 0.15); /* @token */
+  --shadow-neon-sm:
+    0 2px 8px rgba(99, 156, 230, 0.15), 0 4px 16px rgba(85, 186, 217, 0.1); /* @token */
+  --shadow-neon-md:
+    0 4px 16px rgba(99, 156, 230, 0.2), 0 8px 32px rgba(85, 186, 217, 0.12); /* @token */
+  --shadow-neon-lg:
+    0 8px 24px rgba(99, 156, 230, 0.25), 0 16px 48px rgba(85, 186, 217, 0.15); /* @token */
 }

@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useCallback,
-} from "react";
+import React, { createContext, useContext, useState, ReactNode, useCallback } from "react";
 
 type HeaderComponent = ReactNode;
 interface Breadcrumb {
@@ -42,27 +36,18 @@ export const useHeader = (): HeaderContextType => {
   return context;
 };
 
-export const HeaderProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
-  const [headerComponents, setHeaderComponents] = useState<HeaderComponent[]>(
-    [],
-  );
+export const HeaderProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [headerComponents, setHeaderComponents] = useState<HeaderComponent[]>([]);
   const [breadcrumbs, setBreadcrumbs] = useState<Breadcrumb[]>([]);
   const [pageTitle, setPageTitle] = useState<string>("");
 
   const registerHeaderComponent = useCallback((component: HeaderComponent) => {
-    setHeaderComponents((prevComponents) => [...prevComponents, component]);
+    setHeaderComponents(prevComponents => [...prevComponents, component]);
   }, []);
 
-  const deregisterHeaderComponent = useCallback(
-    (component: HeaderComponent) => {
-      setHeaderComponents((prevComponents) =>
-        prevComponents.filter((c) => c !== component),
-      );
-    },
-    [],
-  );
+  const deregisterHeaderComponent = useCallback((component: HeaderComponent) => {
+    setHeaderComponents(prevComponents => prevComponents.filter(c => c !== component));
+  }, []);
 
   return (
     <HeaderContext.Provider

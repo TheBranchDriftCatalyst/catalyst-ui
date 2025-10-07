@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
-import * as d3 from 'd3';
-import { NodeData } from './types';
-import { NodeRenderer } from './config/types';
-import { useGraphConfig } from './context/GraphContext';
-import { getNodeDimensions } from './utils/nodeDimensions';
+import React, { useEffect, useRef } from "react";
+import * as d3 from "d3";
+import { NodeData } from "./types";
+import { NodeRenderer } from "./config/types";
+import { useGraphConfig } from "./context/GraphContext";
+import { getNodeDimensions } from "./utils/nodeDimensions";
 
 interface ReactD3NodeProps {
   data: NodeData;
@@ -54,9 +54,9 @@ const ReactD3Node: React.FC<ReactD3NodeProps> = ({
 
     const drag = d3
       .drag<SVGGElement, any>()
-      .on('start', onDragStart)
-      .on('drag', onDrag)
-      .on('end', onDragEnd);
+      .on("start", onDragStart)
+      .on("drag", onDrag)
+      .on("end", onDragEnd);
 
     d3.select(groupRef.current).call(drag as any);
   }, [onDragStart, onDrag, onDragEnd]);
@@ -74,28 +74,28 @@ const ReactD3Node: React.FC<ReactD3NodeProps> = ({
         ref={groupRef}
         transform={`translate(${x}, ${y})`}
         style={{
-          cursor: 'pointer',
+          cursor: "pointer",
           opacity: isDimmed ? 0.35 : 1,
-          filter: isSelected || isHovered ? 'url(#node-glow)' : undefined,
+          filter: isSelected || isHovered ? "url(#node-glow)" : undefined,
         }}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        onClick={(e) => {
+        onClick={e => {
           try {
             e.stopPropagation();
-          } catch (err) { }
+          } catch (err) {}
           if (onClick) onClick();
         }}
         onDoubleClick={onDoubleClick}
-        onMouseDown={(e) => {
+        onMouseDown={e => {
           try {
             e.stopPropagation();
-          } catch (err) { }
+          } catch (err) {}
         }}
-        onTouchStart={(e) => {
+        onTouchStart={e => {
           try {
             e.stopPropagation();
-          } catch (err) { }
+          } catch (err) {}
         }}
       >
         <CustomRenderer
@@ -111,61 +111,56 @@ const ReactD3Node: React.FC<ReactD3NodeProps> = ({
   }
 
   // Default rendering (Docker-specific)
-  const name = data.name || data.Name || data.id || '';
-  const status = (data.attributes && data.attributes.status) || '';
+  const name = data.name || data.Name || data.id || "";
+  const status = (data.attributes && data.attributes.status) || "";
   const maxLength = Math.floor((width - imgSize - 40) / 7);
-  const displayName =
-    name.length > maxLength ? name.substring(0, maxLength) + '...' : name;
+  const displayName = name.length > maxLength ? name.substring(0, maxLength) + "..." : name;
 
   // Status styling
   const statusColor =
-    (status === 'running' || status == 'in-use')
-      ? '#00FF66'
-      : status === 'stopped'
-        ? '#FF3B30'
-        : '#FFA500';
+    status === "running" || status == "in-use"
+      ? "#00FF66"
+      : status === "stopped"
+        ? "#FF3B30"
+        : "#FFA500";
   const statusText =
-    status === 'running'
-      ? '#7CFC00'
-      : status === 'stopped'
-        ? '#FF6B6B'
-        : '#FFA500';
+    status === "running" ? "#7CFC00" : status === "stopped" ? "#FF6B6B" : "#FFA500";
 
   const visualWidth = width;
   const visualHeight = height;
 
   // Get node config from context
   const nodeTypeConfig = config.nodeTypes[data.kind];
-  const nodeColor = nodeTypeConfig?.color || 'var(--border)';
-  const nodeIcon = nodeTypeConfig?.icon || '⚪';
+  const nodeColor = nodeTypeConfig?.color || "var(--border)";
+  const nodeIcon = nodeTypeConfig?.icon || "⚪";
 
   return (
     <g
       ref={groupRef}
       transform={`translate(${x}, ${y})`}
       style={{
-        cursor: 'pointer',
+        cursor: "pointer",
         opacity: isDimmed ? 0.35 : 1,
-        filter: isSelected || isHovered ? 'url(#node-glow)' : undefined,
+        filter: isSelected || isHovered ? "url(#node-glow)" : undefined,
       }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      onClick={(e) => {
+      onClick={e => {
         try {
           e.stopPropagation();
-        } catch (err) { }
+        } catch (err) {}
         if (onClick) onClick();
       }}
       onDoubleClick={onDoubleClick}
-      onMouseDown={(e) => {
+      onMouseDown={e => {
         try {
           e.stopPropagation();
-          } catch (err) { }
+        } catch (err) {}
       }}
-      onTouchStart={(e) => {
+      onTouchStart={e => {
         try {
           e.stopPropagation();
-        } catch (err) { }
+        } catch (err) {}
       }}
     >
       {/* Card background */}
@@ -248,7 +243,7 @@ const ReactD3Node: React.FC<ReactD3NodeProps> = ({
   );
 };
 
-ReactD3Node.displayName = 'ReactD3Node';
+ReactD3Node.displayName = "ReactD3Node";
 
 export default ReactD3Node;
 export type { ReactD3NodeProps };

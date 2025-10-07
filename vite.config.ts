@@ -10,32 +10,34 @@ import tsconfigPaths from "vite-tsconfig-paths";
 // Plugin to preserve "use client" directives in build output
 function preserveUseClient() {
   return {
-    name: 'preserve-use-client',
-    enforce: 'post' as const,
+    name: "preserve-use-client",
+    enforce: "post" as const,
     generateBundle(_options: any, bundle: any) {
       for (const chunk of Object.values(bundle) as any[]) {
-        if (chunk.type === 'chunk' && chunk.code) {
+        if (chunk.type === "chunk" && chunk.code) {
           // Add "use client" to any chunk that imports from React
           // This is necessary for Next.js App Router compatibility
           const needsUseClient =
             chunk.code.includes('from "react"') ||
-            chunk.code.includes('from \'react\'') ||
-            chunk.code.includes('import * as') && chunk.code.includes('react') ||
-            chunk.code.includes('useState') ||
-            chunk.code.includes('useEffect') ||
-            chunk.code.includes('useContext') ||
-            chunk.code.includes('useRef');
+            chunk.code.includes("from 'react'") ||
+            (chunk.code.includes("import * as") && chunk.code.includes("react")) ||
+            chunk.code.includes("useState") ||
+            chunk.code.includes("useEffect") ||
+            chunk.code.includes("useContext") ||
+            chunk.code.includes("useRef");
 
           if (needsUseClient) {
             // Prepend "use client" if not already present
-            if (!chunk.code.trimStart().startsWith('"use client"') &&
-                !chunk.code.trimStart().startsWith("'use client'")) {
+            if (
+              !chunk.code.trimStart().startsWith('"use client"') &&
+              !chunk.code.trimStart().startsWith("'use client'")
+            ) {
               chunk.code = '"use client";\n' + chunk.code;
             }
           }
         }
       }
-    }
+    },
   };
 }
 
@@ -59,12 +61,12 @@ export default defineConfig({
     cssCodeSplit: true,
     sourcemap: true,
     manifest: "vite-manifest.json",
-    minify: 'terser',
+    minify: "terser",
     terserOptions: {
       compress: {
         drop_console: false,
         drop_debugger: true,
-        pure_funcs: ['console.log'],
+        pure_funcs: ["console.log"],
       },
       format: {
         comments: false,
@@ -85,57 +87,61 @@ export default defineConfig({
         "dagre",
         "shiki",
         "shiki/bundle/web",
-        /^shiki\//,  // Matches shiki/langs/*, shiki/themes/*, etc.
+        /^shiki\//, // Matches shiki/langs/*, shiki/themes/*, etc.
         "d3",
-        /^d3-/,      // Matches all d3 submodules (d3-force, d3-selection, etc.)
+        /^d3-/, // Matches all d3 submodules (d3-force, d3-selection, etc.)
       ],
       onwarn(warning, defaultHandler) {
         // See this issue, its a non issue just... unfortunate. TL:DR: directives fuck up source maps, vite
         // compares the old and new with the sourcemap and sees a discrepancy and warns us
         // https://github.com/vitejs/vite/issues/15012
-        if (warning.code === 'SOURCEMAP_ERROR') {
-          return
+        if (warning.code === "SOURCEMAP_ERROR") {
+          return;
         }
-        defaultHandler(warning)
+        defaultHandler(warning);
       },
       input: Object.fromEntries(
         // https://rollupjs.org/configuration-options/#input
         glob
           .sync("lib/**/*.{ts,tsx,css}")
-          .filter((path) => !path.endsWith(".stories.tsx"))
-          .map((file) => [
+          .filter(path => !path.endsWith(".stories.tsx"))
+          .map(file => [
             // 1. The name of the entry point
             // lib/nested/foo.js becomes nested/foo
             relative("lib", file.slice(0, file.length - extname(file).length)),
             // 2. The absolute path to the entry file
             // lib/nested/foo.ts becomes /project/lib/nested/foo.ts
             fileURLToPath(new URL(file, import.meta.url)),
-          ]),
+          ])
       ),
       output: {
-        assetFileNames: (assetInfo) => {
+        assetFileNames: assetInfo => {
           // if (assetInfo.name.endsWith('.css')) {
           //   return 'styles/catalyst.css';
           // }
-          return 'assets/[name]-[hash][extname]';
+          return "assets/[name]-[hash][extname]";
         },
         entryFileNames: "[name]-[hash].js",
         chunkFileNames: "chunks/[name]-[hash].js",
         // Share common vendor chunks across components
         manualChunks(id) {
           // Only apply to non-externalized dependencies
-          if (id.includes('node_modules')) {
+          if (id.includes("node_modules")) {
             // Group Radix UI components together
-            if (id.includes('@radix-ui')) {
-              return 'vendor-radix';
+            if (id.includes("@radix-ui")) {
+              return "vendor-radix";
             }
             // Group React ecosystem
-            if (id.includes('react-hook-form') || id.includes('@hookform')) {
-              return 'vendor-forms';
+            if (id.includes("react-hook-form") || id.includes("@hookform")) {
+              return "vendor-forms";
             }
             // Group utility libraries
-            if (id.includes('clsx') || id.includes('tailwind-merge') || id.includes('class-variance-authority')) {
-              return 'vendor-utils';
+            if (
+              id.includes("clsx") ||
+              id.includes("tailwind-merge") ||
+              id.includes("class-variance-authority")
+            ) {
+              return "vendor-utils";
             }
           }
         },

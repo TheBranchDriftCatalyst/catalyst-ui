@@ -1,9 +1,9 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from "react";
 
 export interface WebVitalMetric {
-  name: 'LCP' | 'INP' | 'CLS' | 'FCP' | 'TTFB';
+  name: "LCP" | "INP" | "CLS" | "FCP" | "TTFB";
   value: number;
-  rating: 'good' | 'needs-improvement' | 'poor';
+  rating: "good" | "needs-improvement" | "poor";
   delta: number;
   id: string;
 }
@@ -17,7 +17,7 @@ export interface UseWebVitalsOptions {
 export interface UseWebVitalsReturn {
   metrics: Map<string, WebVitalMetric>;
   latestMetric: WebVitalMetric | null;
-  aggregateRating: 'good' | 'needs-improvement' | 'poor';
+  aggregateRating: "good" | "needs-improvement" | "poor";
   clear: () => void;
 }
 
@@ -45,49 +45,55 @@ export function useWebVitals(options: UseWebVitalsOptions = {}): UseWebVitalsRet
 
   const [metrics, setMetrics] = useState<Map<string, WebVitalMetric>>(new Map());
   const [latestMetric, setLatestMetric] = useState<WebVitalMetric | null>(null);
-  const [aggregateRating, setAggregateRating] = useState<'good' | 'needs-improvement' | 'poor'>('good');
+  const [aggregateRating, setAggregateRating] = useState<"good" | "needs-improvement" | "poor">(
+    "good"
+  );
 
-  const handleMetric = useCallback((metric: WebVitalMetric) => {
-    // Update metrics Map
-    setMetrics((prev) => {
-      const newMetrics = new Map(prev);
-      newMetrics.set(metric.name, metric);
-      return newMetrics;
-    });
+  const handleMetric = useCallback(
+    (metric: WebVitalMetric) => {
+      // Update metrics Map
+      setMetrics(prev => {
+        const newMetrics = new Map(prev);
+        newMetrics.set(metric.name, metric);
+        return newMetrics;
+      });
 
-    setLatestMetric(metric);
+      setLatestMetric(metric);
 
-    // Console logging
-    if (enableConsoleLog) {
-      const emoji = metric.rating === 'good' ? '✅' : metric.rating === 'needs-improvement' ? '⚠️' : '❌';
+      // Console logging
+      if (enableConsoleLog) {
+        const emoji =
+          metric.rating === "good" ? "✅" : metric.rating === "needs-improvement" ? "⚠️" : "❌";
 
-      if (enableDetailedLog) {
-        console.log(`${emoji} Web Vital: ${metric.name}`);
-        console.log(`Value: ${metric.value}`);
-        console.log(`Rating: ${metric.rating}`);
-        console.log(`Delta: ${metric.delta}`);
-        console.log(`ID: ${metric.id}`);
-      } else {
-        console.log(`${emoji} ${metric.name}: ${metric.value.toFixed(2)} (${metric.rating})`);
+        if (enableDetailedLog) {
+          console.log(`${emoji} Web Vital: ${metric.name}`);
+          console.log(`Value: ${metric.value}`);
+          console.log(`Rating: ${metric.rating}`);
+          console.log(`Delta: ${metric.delta}`);
+          console.log(`ID: ${metric.id}`);
+        } else {
+          console.log(`${emoji} ${metric.name}: ${metric.value.toFixed(2)} (${metric.rating})`);
+        }
       }
-    }
 
-    // Custom callback
-    if (onMetric) {
-      onMetric(metric);
-    }
-  }, [enableConsoleLog, enableDetailedLog, onMetric]);
+      // Custom callback
+      if (onMetric) {
+        onMetric(metric);
+      }
+    },
+    [enableConsoleLog, enableDetailedLog, onMetric]
+  );
 
   useEffect(() => {
     // Dynamically import web-vitals (development only)
     if (!import.meta.env.DEV) return;
 
-    import('web-vitals').then(({ onLCP, onINP, onCLS, onFCP, onTTFB }) => {
-      onLCP((metric) => handleMetric(metric as unknown as WebVitalMetric));
-      onINP((metric) => handleMetric(metric as unknown as WebVitalMetric));
-      onCLS((metric) => handleMetric(metric as unknown as WebVitalMetric));
-      onFCP((metric) => handleMetric(metric as unknown as WebVitalMetric));
-      onTTFB((metric) => handleMetric(metric as unknown as WebVitalMetric));
+    import("web-vitals").then(({ onLCP, onINP, onCLS, onFCP, onTTFB }) => {
+      onLCP(metric => handleMetric(metric as unknown as WebVitalMetric));
+      onINP(metric => handleMetric(metric as unknown as WebVitalMetric));
+      onCLS(metric => handleMetric(metric as unknown as WebVitalMetric));
+      onFCP(metric => handleMetric(metric as unknown as WebVitalMetric));
+      onTTFB(metric => handleMetric(metric as unknown as WebVitalMetric));
     });
   }, [handleMetric]);
 
@@ -95,19 +101,19 @@ export function useWebVitals(options: UseWebVitalsOptions = {}): UseWebVitalsRet
   useEffect(() => {
     const ratings = Array.from(metrics.values()).map(m => m.rating);
 
-    if (ratings.includes('poor')) {
-      setAggregateRating('poor');
-    } else if (ratings.includes('needs-improvement')) {
-      setAggregateRating('needs-improvement');
+    if (ratings.includes("poor")) {
+      setAggregateRating("poor");
+    } else if (ratings.includes("needs-improvement")) {
+      setAggregateRating("needs-improvement");
     } else {
-      setAggregateRating('good');
+      setAggregateRating("good");
     }
   }, [metrics]);
 
   const clear = useCallback(() => {
     setMetrics(new Map());
     setLatestMetric(null);
-    setAggregateRating('good');
+    setAggregateRating("good");
   }, []);
 
   return {

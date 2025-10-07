@@ -29,9 +29,9 @@
   --ring: hsl(225, 27%, 51%);
 
   /* @token Typography - Gothic vampire aesthetic */
-  --font-heading: 'Cinzel', 'Playfair Display', serif; /* @token */
-  --font-body: 'Crimson Text', 'Georgia', serif; /* @token */
-  --font-mono: 'Fira Code', 'Consolas', monospace; /* @token */
+  --font-heading: "Cinzel", "Playfair Display", serif; /* @token */
+  --font-body: "Crimson Text", "Georgia", serif; /* @token */
+  --font-mono: "Fira Code", "Consolas", monospace; /* @token */
 
   /* @token Neon Colors - Dracula vampire palette */
   --neon-cyan: hsl(195, 70%, 60%); /* @token */
@@ -52,15 +52,20 @@
   --neon-gold-rgb: 255, 184, 108; /* @token */
 
   /* @token Glow Effects - Dracula vampire glow */
-  --glow-primary: 0 0 20px rgba(189, 147, 249, 0.35), 0 0 40px rgba(189, 147, 249, 0.15); /* @token */
-  --glow-secondary: 0 0 20px rgba(255, 121, 198, 0.4), 0 0 40px rgba(255, 121, 198, 0.2); /* @token */
+  --glow-primary:
+    0 0 20px rgba(189, 147, 249, 0.35), 0 0 40px rgba(189, 147, 249, 0.15); /* @token */
+  --glow-secondary:
+    0 0 20px rgba(255, 121, 198, 0.4), 0 0 40px rgba(255, 121, 198, 0.2); /* @token */
   --glow-accent: 0 0 15px rgba(255, 121, 198, 0.3); /* @token */
   --glow-hover: 0 0 25px rgba(189, 147, 249, 0.5), 0 0 50px rgba(189, 147, 249, 0.25); /* @token */
 
   /* @token Neon Shadows - Vampire mystique */
-  --shadow-neon-sm: 0 2px 8px rgba(189, 147, 249, 0.15), 0 4px 16px rgba(255, 121, 198, 0.1); /* @token */
-  --shadow-neon-md: 0 4px 16px rgba(189, 147, 249, 0.2), 0 8px 32px rgba(255, 121, 198, 0.12); /* @token */
-  --shadow-neon-lg: 0 8px 24px rgba(189, 147, 249, 0.25), 0 16px 48px rgba(255, 121, 198, 0.15); /* @token */
+  --shadow-neon-sm:
+    0 2px 8px rgba(189, 147, 249, 0.15), 0 4px 16px rgba(255, 121, 198, 0.1); /* @token */
+  --shadow-neon-md:
+    0 4px 16px rgba(189, 147, 249, 0.2), 0 8px 32px rgba(255, 121, 198, 0.12); /* @token */
+  --shadow-neon-lg:
+    0 8px 24px rgba(189, 147, 249, 0.25), 0 16px 48px rgba(255, 121, 198, 0.15); /* @token */
 }
 
 .theme-dracula.dark {
@@ -94,9 +99,9 @@
   --ring: hsl(225, 27%, 51%);
 
   /* @token Typography - Gothic vampire aesthetic */
-  --font-heading: 'Cinzel', 'Playfair Display', serif; /* @token */
-  --font-body: 'Crimson Text', 'Georgia', serif; /* @token */
-  --font-mono: 'Fira Code', 'Consolas', monospace; /* @token */
+  --font-heading: "Cinzel", "Playfair Display", serif; /* @token */
+  --font-body: "Crimson Text", "Georgia", serif; /* @token */
+  --font-mono: "Fira Code", "Consolas", monospace; /* @token */
 
   /* @token Neon Colors - Dracula vampire palette */
   --neon-cyan: hsl(195, 85%, 55%); /* @token - darker cyan */
@@ -118,19 +123,25 @@
 
   /* @token Glow Effects - Dracula vampire glow */
   --glow-primary: 0 0 20px rgba(189, 147, 249, 0.4), 0 0 40px rgba(189, 147, 249, 0.2); /* @token */
-  --glow-secondary: 0 0 20px rgba(255, 121, 198, 0.45), 0 0 40px rgba(255, 121, 198, 0.25); /* @token */
+  --glow-secondary:
+    0 0 20px rgba(255, 121, 198, 0.45), 0 0 40px rgba(255, 121, 198, 0.25); /* @token */
   --glow-accent: 0 0 15px rgba(255, 121, 198, 0.35); /* @token */
   --glow-hover: 0 0 25px rgba(189, 147, 249, 0.55), 0 0 50px rgba(189, 147, 249, 0.3); /* @token */
 
   /* @token Neon Shadows - Vampire mystique */
-  --shadow-neon-sm: 0 2px 8px rgba(189, 147, 249, 0.2), 0 4px 16px rgba(255, 121, 198, 0.12); /* @token */
-  --shadow-neon-md: 0 4px 16px rgba(189, 147, 249, 0.25), 0 8px 32px rgba(255, 121, 198, 0.15); /* @token */
-  --shadow-neon-lg: 0 8px 24px rgba(189, 147, 249, 0.3), 0 16px 48px rgba(255, 121, 198, 0.2); /* @token */
+  --shadow-neon-sm:
+    0 2px 8px rgba(189, 147, 249, 0.2), 0 4px 16px rgba(255, 121, 198, 0.12); /* @token */
+  --shadow-neon-md:
+    0 4px 16px rgba(189, 147, 249, 0.25), 0 8px 32px rgba(255, 121, 198, 0.15); /* @token */
+  --shadow-neon-lg:
+    0 8px 24px rgba(189, 147, 249, 0.3), 0 16px 48px rgba(255, 121, 198, 0.2); /* @token */
 }
 
 /* Dark mode - vampire link effects */
 .theme-dracula.dark a {
-  transition: color 0.2s ease, text-shadow 0.2s ease;
+  transition:
+    color 0.2s ease,
+    text-shadow 0.2s ease;
 }
 
 .theme-dracula.dark a:hover {

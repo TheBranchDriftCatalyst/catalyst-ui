@@ -55,16 +55,22 @@ export function SheetDemo() {
         <SheetContent side="left">
           <SheetHeader>
             <SheetTitle>Navigation</SheetTitle>
-            <SheetDescription>
-              A slide-out panel from the left side
-            </SheetDescription>
+            <SheetDescription>A slide-out panel from the left side</SheetDescription>
           </SheetHeader>
           <div className="py-4">
             <div className="space-y-2">
-              <Button variant="ghost" className="w-full justify-start">Dashboard</Button>
-              <Button variant="ghost" className="w-full justify-start">Settings</Button>
-              <Button variant="ghost" className="w-full justify-start">Profile</Button>
-              <Button variant="ghost" className="w-full justify-start">Help</Button>
+              <Button variant="ghost" className="w-full justify-start">
+                Dashboard
+              </Button>
+              <Button variant="ghost" className="w-full justify-start">
+                Settings
+              </Button>
+              <Button variant="ghost" className="w-full justify-start">
+                Profile
+              </Button>
+              <Button variant="ghost" className="w-full justify-start">
+                Help
+              </Button>
             </div>
           </div>
         </SheetContent>

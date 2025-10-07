@@ -29,6 +29,7 @@ CSS custom properties are annotated with special comments:
 Tokens are organized by category for easy navigation:
 
 **Light Mode:**
+
 - `Colors/Background` - Page and content backgrounds
 - `Colors/Primary` - Primary brand colors
 - `Colors/Secondary` - Secondary accent colors
@@ -38,6 +39,7 @@ Tokens are organized by category for easy navigation:
 - `Spacing/Radius` - Border radius values
 
 **Dark Mode:**
+
 - `Dark/Colors/*` - All dark mode color variants
 - `Dark/Effects/*` - Dark mode specific effects
 - `Dark/Effects/Scanline` - Retro scanline effects
@@ -69,6 +71,7 @@ Different presenters visualize tokens appropriately:
 ### Step 2: Auto-Documentation
 
 The token will automatically appear in:
+
 - Storybook Design Tokens panel
 - `Design System/Design Tokens` story
 - Filtered by category in specific stories
@@ -76,9 +79,7 @@ The token will automatically appear in:
 ### Step 3: Use the Token
 
 ```tsx
-<div style={{ color: 'var(--my-new-token)' }}>
-  Styled with design token
-</div>
+<div style={{ color: "var(--my-new-token)" }}>Styled with design token</div>
 ```
 
 ## Storybook Configuration
@@ -88,8 +89,8 @@ The addon is configured in `.storybook/main.ts`:
 ```typescript
 addons: [
   // ... other addons
-  "storybook-design-token"
-]
+  "storybook-design-token",
+];
 ```
 
 Stories specify which CSS files to parse:
@@ -119,6 +120,7 @@ parameters: {
 ### Design Token Panel
 
 Every story has a "Design Tokens" tab showing:
+
 - All tokens used in the current story
 - Color swatches, shadows, and values
 - Copy token names for use in code
@@ -141,6 +143,7 @@ Every story has a "Design Tokens" tab showing:
 ### 2. Meaningful Categories
 
 Organize by:
+
 - **Purpose**: Colors, Effects, Spacing, Typography
 - **Component**: Button, Card, Form
 - **State**: Hover, Active, Disabled
@@ -148,6 +151,7 @@ Organize by:
 ### 3. Documentation Comments
 
 Always include:
+
 ```css
 /**
  * @tokens Category Name
@@ -159,6 +163,7 @@ Always include:
 ### 4. Color Formats
 
 Use consistent formats per theme:
+
 - Light mode: `hsl()` for easy color adjustments
 - Dark mode: `hex` for precise cyberpunk colors
 - Effects: `rgba()` for transparency
@@ -168,11 +173,13 @@ Use consistent formats per theme:
 ### View Types
 
 **Card View** - Visual grid of tokens
+
 ```typescript
 <DesignTokenDocBlock viewType="card" />
 ```
 
 **Table View** - Detailed list with values
+
 ```typescript
 <DesignTokenDocBlock viewType="table" />
 ```
@@ -180,6 +187,7 @@ Use consistent formats per theme:
 ### Category Filtering
 
 Show specific token groups:
+
 ```typescript
 <DesignTokenDocBlock categoryFilter="Colors/Neon" />
 ```
@@ -187,6 +195,7 @@ Show specific token groups:
 ### Color Space Display
 
 Change how colors are displayed:
+
 ```typescript
 <DesignTokenDocBlock colorSpace="hsl" /> // or "hex", "rgb"
 ```
@@ -225,6 +234,7 @@ Design Token Stories
 ### Adding New Effect Types
 
 1. Create presenter type in annotations:
+
 ```css
 /**
  * @tokens New Effect
@@ -233,11 +243,13 @@ Design Token Stories
 ```
 
 2. Define tokens with category:
+
 ```css
 --effect-name: value; /* @token { "name": "Effect", "category": "Effects/New" } */
 ```
 
 3. Create dedicated story for visibility:
+
 ```typescript
 export const NewEffects: Story = {
   render: () => <DesignTokenDocBlock categoryFilter="Effects/New" />
@@ -272,6 +284,7 @@ import { catalystCSS } from '@/catalyst-ui';
 ### Export to Other Formats
 
 Tokens can be exported via Style Dictionary or custom scripts:
+
 - JSON for design tools
 - SCSS/LESS for other build systems
 - Platform-specific formats (iOS, Android)

@@ -1,5 +1,5 @@
-import React from 'react';
-import { GraphData } from '../types';
+import React from "react";
+import { GraphData } from "../types";
 
 interface FilterPanelStatsProps {
   rawData: GraphData | null;
@@ -28,13 +28,13 @@ export const FilterPanelStats: React.FC<FilterPanelStatsProps> = ({ rawData, fil
       <div className="text-foreground/80">
         {filteredCount > 0 && (
           <>
-            • <strong>{filteredCount}</strong> node{filteredCount !== 1 ? 's' : ''} hidden
+            • <strong>{filteredCount}</strong> node{filteredCount !== 1 ? "s" : ""} hidden
           </>
         )}
         {filteredCount > 0 && filteredEdges > 0 && <br />}
         {filteredEdges > 0 && (
           <>
-            • <strong>{filteredEdges}</strong> edge{filteredEdges !== 1 ? 's' : ''} hidden
+            • <strong>{filteredEdges}</strong> edge{filteredEdges !== 1 ? "s" : ""} hidden
           </>
         )}
       </div>

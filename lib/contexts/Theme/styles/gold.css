@@ -29,9 +29,9 @@
   --ring: hsl(28, 46%, 56%);
 
   /* @token Typography - Elegant luxury aesthetic */
-  --font-heading: 'Cormorant Garamond', 'Baskerville', serif; /* @token */
-  --font-body: 'Lora', 'Georgia', serif; /* @token */
-  --font-mono: 'IBM Plex Mono', 'Courier', monospace; /* @token */
+  --font-heading: "Cormorant Garamond", "Baskerville", serif; /* @token */
+  --font-body: "Lora", "Georgia", serif; /* @token */
+  --font-mono: "IBM Plex Mono", "Courier", monospace; /* @token */
 
   /* @token Neon Colors - Luxury metallic palette */
   --neon-cyan: hsl(180, 60%, 55%); /* @token - warm teal */
@@ -58,9 +58,12 @@
   --glow-hover: 0 0 25px rgba(218, 165, 32, 0.45), 0 0 50px rgba(218, 165, 32, 0.22); /* @token */
 
   /* @token Neon Shadows - Gilded elegance */
-  --shadow-neon-sm: 0 2px 8px rgba(218, 165, 32, 0.15), 0 4px 16px rgba(255, 194, 51, 0.1); /* @token */
-  --shadow-neon-md: 0 4px 16px rgba(218, 165, 32, 0.2), 0 8px 32px rgba(255, 194, 51, 0.12); /* @token */
-  --shadow-neon-lg: 0 8px 24px rgba(218, 165, 32, 0.25), 0 16px 48px rgba(255, 194, 51, 0.15); /* @token */
+  --shadow-neon-sm:
+    0 2px 8px rgba(218, 165, 32, 0.15), 0 4px 16px rgba(255, 194, 51, 0.1); /* @token */
+  --shadow-neon-md:
+    0 4px 16px rgba(218, 165, 32, 0.2), 0 8px 32px rgba(255, 194, 51, 0.12); /* @token */
+  --shadow-neon-lg:
+    0 8px 24px rgba(218, 165, 32, 0.25), 0 16px 48px rgba(255, 194, 51, 0.15); /* @token */
 }
 
 /* Light mode - luxury background & card gradient */
@@ -104,9 +107,9 @@
   --ring: hsl(28, 46%, 56%);
 
   /* @token Typography - Elegant luxury aesthetic */
-  --font-heading: 'Cormorant Garamond', 'Baskerville', serif; /* @token */
-  --font-body: 'Lora', 'Georgia', serif; /* @token */
-  --font-mono: 'IBM Plex Mono', 'Courier', monospace; /* @token */
+  --font-heading: "Cormorant Garamond", "Baskerville", serif; /* @token */
+  --font-body: "Lora", "Georgia", serif; /* @token */
+  --font-mono: "IBM Plex Mono", "Courier", monospace; /* @token */
 
   /* @token Neon Colors - Luxury metallic palette */
   --neon-cyan: hsl(180, 65%, 50%); /* @token - warm teal */
@@ -128,12 +131,16 @@
 
   /* @token Glow Effects - Luxurious shimmer */
   --glow-primary: 0 0 20px rgba(218, 165, 32, 0.4), 0 0 40px rgba(218, 165, 32, 0.2); /* @token */
-  --glow-secondary: 0 0 20px rgba(255, 187, 38, 0.45), 0 0 40px rgba(255, 187, 38, 0.22); /* @token */
+  --glow-secondary:
+    0 0 20px rgba(255, 187, 38, 0.45), 0 0 40px rgba(255, 187, 38, 0.22); /* @token */
   --glow-accent: 0 0 15px rgba(246, 199, 54, 0.4); /* @token */
   --glow-hover: 0 0 25px rgba(218, 165, 32, 0.5), 0 0 50px rgba(218, 165, 32, 0.25); /* @token */
 
   /* @token Neon Shadows - Gilded elegance */
-  --shadow-neon-sm: 0 2px 8px rgba(218, 165, 32, 0.2), 0 4px 16px rgba(255, 187, 38, 0.12); /* @token */
-  --shadow-neon-md: 0 4px 16px rgba(218, 165, 32, 0.25), 0 8px 32px rgba(255, 187, 38, 0.15); /* @token */
-  --shadow-neon-lg: 0 8px 24px rgba(218, 165, 32, 0.3), 0 16px 48px rgba(255, 187, 38, 0.18); /* @token */
+  --shadow-neon-sm:
+    0 2px 8px rgba(218, 165, 32, 0.2), 0 4px 16px rgba(255, 187, 38, 0.12); /* @token */
+  --shadow-neon-md:
+    0 4px 16px rgba(218, 165, 32, 0.25), 0 8px 32px rgba(255, 187, 38, 0.15); /* @token */
+  --shadow-neon-lg:
+    0 8px 24px rgba(218, 165, 32, 0.3), 0 16px 48px rgba(255, 187, 38, 0.18); /* @token */
 }

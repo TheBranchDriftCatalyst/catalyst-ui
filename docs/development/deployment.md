@@ -5,6 +5,7 @@ This repository is configured to automatically deploy both the demo app and Stor
 ## Quick Start
 
 - [x] **Push to GitHub**
+
   ```bash
   git push origin main
   ```
@@ -80,16 +81,19 @@ npx serve dist/storybook
 ## Troubleshooting
 
 ### Deployment fails
+
 - Check the Actions tab for error logs
 - Ensure all dependencies are in `package.json` (not devDependencies for build deps)
 - Verify builds work locally first
 
 ### 404 errors on deployed site
+
 - Check that Pages is set to use "GitHub Actions" source
 - Verify the workflow completed successfully
 - Check browser console for asset loading errors
 
 ### Changes not reflecting
+
 - Workflow only runs on push to `main` branch
 - Check the Actions tab to see if workflow ran
 - Hard refresh browser (Cmd+Shift+R / Ctrl+Shift+R)

@@ -1,6 +1,6 @@
-import { useCallback, useRef } from 'react';
-import { NodeData } from '../types';
-import { LayoutKind } from '../utils/layouts';
+import { useCallback, useRef } from "react";
+import { NodeData } from "../types";
+import { LayoutKind } from "../utils/layouts";
 
 /**
  * Node position for persistence
@@ -27,7 +27,7 @@ export type SavedPositions = Record<string, NodePosition>;
  * @param layout - Current layout type (force, dagre, elk, etc.)
  * @returns Methods to load, save, apply, and clear node positions
  */
-export function useNodePositions(storageKey?: string, layout: LayoutKind = 'force') {
+export function useNodePositions(storageKey?: string, layout: LayoutKind = "force") {
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   /**
@@ -53,7 +53,7 @@ export function useNodePositions(storageKey?: string, layout: LayoutKind = 'forc
       const parsed = JSON.parse(stored);
       return parsed || {};
     } catch (e) {
-      console.warn('Failed to load node positions from localStorage:', e);
+      console.warn("Failed to load node positions from localStorage:", e);
       return {};
     }
   }, [getStorageKey]);
@@ -65,44 +65,47 @@ export function useNodePositions(storageKey?: string, layout: LayoutKind = 'forc
    * @param nodes - Array of nodes to save positions for
    * @param immediate - Skip debounce and save immediately
    */
-  const savePositions = useCallback((nodes: NodeData[], immediate = false) => {
-    const key = getStorageKey();
-    if (!key) return; // No storage key, skip persistence
+  const savePositions = useCallback(
+    (nodes: NodeData[], immediate = false) => {
+      const key = getStorageKey();
+      if (!key) return; // No storage key, skip persistence
 
-    const doSave = () => {
-      try {
-        const positions: SavedPositions = {};
+      const doSave = () => {
+        try {
+          const positions: SavedPositions = {};
 
-        // Save positions for nodes that have coordinates
-        nodes.forEach((node) => {
-          if (node.x !== undefined && node.y !== undefined) {
-            positions[node.id] = {
-              x: node.x,
-              y: node.y,
-              fx: node.fx ?? null,
-              fy: node.fy ?? null,
-            };
-          }
-        });
+          // Save positions for nodes that have coordinates
+          nodes.forEach(node => {
+            if (node.x !== undefined && node.y !== undefined) {
+              positions[node.id] = {
+                x: node.x,
+                y: node.y,
+                fx: node.fx ?? null,
+                fy: node.fy ?? null,
+              };
+            }
+          });
 
-        localStorage.setItem(key, JSON.stringify(positions));
-      } catch (e) {
-        console.warn('Failed to save node positions to localStorage:', e);
+          localStorage.setItem(key, JSON.stringify(positions));
+        } catch (e) {
+          console.warn("Failed to save node positions to localStorage:", e);
+        }
+      };
+
+      // Clear any pending save
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
       }
-    };
 
-    // Clear any pending save
-    if (saveTimeoutRef.current) {
-      clearTimeout(saveTimeoutRef.current);
-    }
-
-    if (immediate) {
-      doSave();
-    } else {
-      // Debounce saves to avoid thrashing localStorage
-      saveTimeoutRef.current = setTimeout(doSave, 500);
-    }
-  }, [getStorageKey]);
+      if (immediate) {
+        doSave();
+      } else {
+        // Debounce saves to avoid thrashing localStorage
+        saveTimeoutRef.current = setTimeout(doSave, 500);
+      }
+    },
+    [getStorageKey]
+  );
 
   /**
    * Apply saved positions to a node array
@@ -110,21 +113,24 @@ export function useNodePositions(storageKey?: string, layout: LayoutKind = 'forc
    *
    * @param nodes - Array of nodes to apply positions to
    */
-  const applyPositions = useCallback((nodes: NodeData[]) => {
-    const savedPositions = loadPositions();
-    if (Object.keys(savedPositions).length === 0) return;
+  const applyPositions = useCallback(
+    (nodes: NodeData[]) => {
+      const savedPositions = loadPositions();
+      if (Object.keys(savedPositions).length === 0) return;
 
-    // Apply saved positions to matching nodes
-    nodes.forEach((node) => {
-      const saved = savedPositions[node.id];
-      if (saved) {
-        node.x = saved.x;
-        node.y = saved.y;
-        node.fx = saved.fx;
-        node.fy = saved.fy;
-      }
-    });
-  }, [loadPositions]);
+      // Apply saved positions to matching nodes
+      nodes.forEach(node => {
+        const saved = savedPositions[node.id];
+        if (saved) {
+          node.x = saved.x;
+          node.y = saved.y;
+          node.fx = saved.fx;
+          node.fy = saved.fy;
+        }
+      });
+    },
+    [loadPositions]
+  );
 
   /**
    * Clear all saved positions for current layout
@@ -137,7 +143,7 @@ export function useNodePositions(storageKey?: string, layout: LayoutKind = 'forc
     try {
       localStorage.removeItem(key);
     } catch (e) {
-      console.warn('Failed to clear node positions from localStorage:', e);
+      console.warn("Failed to clear node positions from localStorage:", e);
     }
   }, [getStorageKey]);
 
@@ -149,13 +155,13 @@ export function useNodePositions(storageKey?: string, layout: LayoutKind = 'forc
     if (!storageKey) return;
 
     try {
-      const layouts: LayoutKind[] = ['force', 'structured', 'community', 'dagre', 'elk'];
-      layouts.forEach((layoutType) => {
+      const layouts: LayoutKind[] = ["force", "structured", "community", "dagre", "elk"];
+      layouts.forEach(layoutType => {
         const key = `${storageKey}.positions.${layoutType}`;
         localStorage.removeItem(key);
       });
     } catch (e) {
-      console.warn('Failed to clear all node positions from localStorage:', e);
+      console.warn("Failed to clear all node positions from localStorage:", e);
     }
   }, [storageKey]);
 

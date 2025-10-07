@@ -8,9 +8,7 @@ export type LineRangeTuple = [number, number];
 /**
  * Normalizes line range input to a consistent format
  */
-export function normalizeLineRange(
-  range: LineRangeTuple | LineRange
-): LineRange {
+export function normalizeLineRange(range: LineRangeTuple | LineRange): LineRange {
   if (Array.isArray(range)) {
     return { start: range[0], end: range[1] };
   }
@@ -45,7 +43,7 @@ export function extractLines(
 export function stripImports(code: string): string {
   return code
     .split("\n")
-    .filter((line) => {
+    .filter(line => {
       const trimmed = line.trim();
       return !(
         trimmed.startsWith("import ") ||
@@ -75,7 +73,7 @@ export function stripComments(code: string): string {
   // Remove single-line comments (but preserve URLs with //)
   result = result
     .split("\n")
-    .map((line) => {
+    .map(line => {
       // Check if line contains // but not in a string
       const commentIndex = line.indexOf("//");
       if (commentIndex === -1) return line;
@@ -87,11 +85,7 @@ export function stripComments(code: string): string {
       const backticks = (beforeComment.match(/`/g) || []).length;
 
       // If quotes are balanced, it's a real comment
-      if (
-        singleQuotes % 2 === 0 &&
-        doubleQuotes % 2 === 0 &&
-        backticks % 2 === 0
-      ) {
+      if (singleQuotes % 2 === 0 && doubleQuotes % 2 === 0 && backticks % 2 === 0) {
         return line.substring(0, commentIndex).trimEnd();
       }
 
@@ -128,7 +122,7 @@ export function extractFunction(code: string, functionName: string): string {
     const line = lines[i];
 
     // Check if this line starts the function
-    if (!inFunction && patterns.some((pattern) => pattern.test(line))) {
+    if (!inFunction && patterns.some(pattern => pattern.test(line))) {
       startIndex = i;
       inFunction = true;
 
@@ -254,24 +248,24 @@ export function processSourceCode(
  * @returns Array of formatted import strings
  */
 export function extractImports(sourceCode: string, filter?: string): string[] {
-  const lines = sourceCode.split('\n');
+  const lines = sourceCode.split("\n");
   const imports: string[] = [];
 
   for (const line of lines) {
     const trimmed = line.trim();
 
     // Skip empty lines and comments
-    if (!trimmed || trimmed.startsWith('//') || trimmed.startsWith('/*')) {
+    if (!trimmed || trimmed.startsWith("//") || trimmed.startsWith("/*")) {
       continue;
     }
 
     // Stop at first non-import line (imports are always at the top)
-    if (!trimmed.startsWith('import ') && imports.length > 0) {
+    if (!trimmed.startsWith("import ") && imports.length > 0) {
       break;
     }
 
     // Match import statements
-    if (trimmed.startsWith('import ')) {
+    if (trimmed.startsWith("import ")) {
       // Apply filter if provided
       if (filter && !trimmed.includes(filter)) {
         continue;

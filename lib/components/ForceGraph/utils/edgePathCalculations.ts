@@ -1,4 +1,4 @@
-import { getNodeDimensions } from './nodeDimensions';
+import { getNodeDimensions } from "./nodeDimensions";
 
 /**
  * Edge path calculation utilities
@@ -33,7 +33,7 @@ export const calculateEdgeEndpoints = (
       top: { x: centerX, y: centerY - halfHeight },
       bottom: { x: centerX, y: centerY + halfHeight },
       left: { x: centerX - halfWidth, y: centerY },
-      right: { x: centerX + halfWidth, y: centerY }
+      right: { x: centerX + halfWidth, y: centerY },
     };
   };
 
@@ -42,10 +42,10 @@ export const calculateEdgeEndpoints = (
     let minDistance = Math.sqrt((handles.top.x - targetX) ** 2 + (handles.top.y - targetY) ** 2);
 
     const handleEntries = [
-      { side: 'top', handle: handles.top },
-      { side: 'bottom', handle: handles.bottom },
-      { side: 'left', handle: handles.left },
-      { side: 'right', handle: handles.right }
+      { side: "top", handle: handles.top },
+      { side: "bottom", handle: handles.bottom },
+      { side: "left", handle: handles.left },
+      { side: "right", handle: handles.right },
     ];
 
     for (const { handle } of handleEntries) {
@@ -69,7 +69,7 @@ export const calculateEdgeEndpoints = (
     x1: sourceHandle.x,
     y1: sourceHandle.y,
     x2: targetHandle.x,
-    y2: targetHandle.y
+    y2: targetHandle.y,
   };
 };
 
@@ -136,53 +136,67 @@ export const calculateOrthogonalPath = (
 
   // Option 1: Horizontal-first
   const hMidX = x1 + dx * 0.7 + baseOffset * 0.3;
-  if (!lineIntersectsNodes(x1, y1, hMidX, y1) &&
+  if (
+    !lineIntersectsNodes(x1, y1, hMidX, y1) &&
     !lineIntersectsNodes(hMidX, y1, hMidX, y2) &&
-    !lineIntersectsNodes(hMidX, y2, x2, y2)) {
+    !lineIntersectsNodes(hMidX, y2, x2, y2)
+  ) {
     routes.push({
       path: `M ${x1} ${y1} L ${hMidX} ${y1} L ${hMidX} ${y2} L ${x2} ${y2}`,
-      priority: Math.abs(dx) > Math.abs(dy) ? 1 : 2
+      priority: Math.abs(dx) > Math.abs(dy) ? 1 : 2,
     });
   }
 
   // Option 2: Vertical-first
   const vMidY = y1 + dy * 0.7 + baseOffset * 0.3;
-  if (!lineIntersectsNodes(x1, y1, x1, vMidY) &&
+  if (
+    !lineIntersectsNodes(x1, y1, x1, vMidY) &&
     !lineIntersectsNodes(x1, vMidY, x2, vMidY) &&
-    !lineIntersectsNodes(x2, vMidY, x2, y2)) {
+    !lineIntersectsNodes(x2, vMidY, x2, y2)
+  ) {
     routes.push({
       path: `M ${x1} ${y1} L ${x1} ${vMidY} L ${x2} ${vMidY} L ${x2} ${y2}`,
-      priority: Math.abs(dy) > Math.abs(dx) ? 1 : 2
+      priority: Math.abs(dy) > Math.abs(dx) ? 1 : 2,
     });
   }
 
   // Option 3: Compact horizontal detour
   const hMidX2 = x1 + dx * 0.5;
-  const offsetY = dy > 0 ? Math.max(40, Math.abs(dy) * 0.2) + baseOffset : -Math.max(40, Math.abs(dy) * 0.2) + baseOffset;
+  const offsetY =
+    dy > 0
+      ? Math.max(40, Math.abs(dy) * 0.2) + baseOffset
+      : -Math.max(40, Math.abs(dy) * 0.2) + baseOffset;
   const routeY = y1 + offsetY;
 
-  if (!lineIntersectsNodes(x1, y1, hMidX2, y1) &&
+  if (
+    !lineIntersectsNodes(x1, y1, hMidX2, y1) &&
     !lineIntersectsNodes(hMidX2, y1, hMidX2, routeY) &&
     !lineIntersectsNodes(hMidX2, routeY, x2, routeY) &&
-    !lineIntersectsNodes(x2, routeY, x2, y2)) {
+    !lineIntersectsNodes(x2, routeY, x2, y2)
+  ) {
     routes.push({
       path: `M ${x1} ${y1} L ${hMidX2} ${y1} L ${hMidX2} ${routeY} L ${x2} ${routeY} L ${x2} ${y2}`,
-      priority: 3
+      priority: 3,
     });
   }
 
   // Option 4: Compact vertical detour
   const vMidY2 = y1 + dy * 0.5;
-  const offsetX = dx > 0 ? Math.max(40, Math.abs(dx) * 0.2) + baseOffset : -Math.max(40, Math.abs(dx) * 0.2) + baseOffset;
+  const offsetX =
+    dx > 0
+      ? Math.max(40, Math.abs(dx) * 0.2) + baseOffset
+      : -Math.max(40, Math.abs(dx) * 0.2) + baseOffset;
   const routeX = x1 + offsetX;
 
-  if (!lineIntersectsNodes(x1, y1, x1, vMidY2) &&
+  if (
+    !lineIntersectsNodes(x1, y1, x1, vMidY2) &&
     !lineIntersectsNodes(x1, vMidY2, routeX, vMidY2) &&
     !lineIntersectsNodes(routeX, vMidY2, routeX, y2) &&
-    !lineIntersectsNodes(routeX, y2, x2, y2)) {
+    !lineIntersectsNodes(routeX, y2, x2, y2)
+  ) {
     routes.push({
       path: `M ${x1} ${y1} L ${x1} ${vMidY2} L ${routeX} ${vMidY2} L ${routeX} ${y2} L ${x2} ${y2}`,
-      priority: 3
+      priority: 3,
     });
   }
 
@@ -192,12 +206,12 @@ export const calculateOrthogonalPath = (
 
   routes.push({
     path: `M ${x1} ${y1} L ${x1} ${y1 + tightOffsetY} L ${x2} ${y1 + tightOffsetY} L ${x2} ${y2}`,
-    priority: 4
+    priority: 4,
   });
 
   routes.push({
     path: `M ${x1} ${y1} L ${x1 + tightOffsetX} ${y1} L ${x1 + tightOffsetX} ${y2} L ${x2} ${y2}`,
-    priority: 4
+    priority: 4,
   });
 
   routes.sort((a, b) => a.priority - b.priority);
@@ -218,7 +232,7 @@ export const getOrthogonalPathMidpoint = (pathString: string) => {
     if (coords.length >= 2) {
       points.push({
         x: parseFloat(coords[0]),
-        y: parseFloat(coords[1])
+        y: parseFloat(coords[1]),
       });
     }
   }
@@ -246,7 +260,7 @@ export const getOrthogonalPathMidpoint = (pathString: string) => {
       const ratio = (targetLength - currentLength) / segment.length;
       return {
         x: segment.start.x + (segment.end.x - segment.start.x) * ratio,
-        y: segment.start.y + (segment.end.y - segment.start.y) * ratio
+        y: segment.start.y + (segment.end.y - segment.start.y) * ratio,
       };
     }
     currentLength += segment.length;

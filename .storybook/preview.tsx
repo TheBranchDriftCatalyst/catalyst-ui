@@ -6,7 +6,7 @@ import reduce from "lodash/reduce";
 import "../lib/global.css";
 // Frontload all theme CSS for Storybook (normally dynamically loaded by ThemeProvider)
 // Using Vite's glob import to automatically load all theme CSS files
-import.meta.glob('../lib/contexts/Theme/styles/*.css', { eager: true });
+import.meta.glob("../lib/contexts/Theme/styles/*.css", { eager: true });
 import { useEffect } from "react";
 import { useGlobals } from "storybook/internal/preview-api";
 
@@ -14,8 +14,8 @@ const channel = addons.getChannel();
 
 // Helper to determine if a color is dark
 const isColorDark = (hexColor: string): boolean => {
-  if (!hexColor || hexColor === 'transparent') return false;
-  const hex = hexColor.replace('#', '');
+  if (!hexColor || hexColor === "transparent") return false;
+  const hex = hexColor.replace("#", "");
   const r = parseInt(hex.substr(0, 2), 16);
   const g = parseInt(hex.substr(2, 2), 16);
   const b = parseInt(hex.substr(4, 2), 16);
@@ -33,39 +33,39 @@ const withBackgroundSync = (Story, context) => {
 
     const backgrounds = context.parameters?.backgrounds?.values || [];
     const selectedBg = backgrounds.find(bg => bg.name === backgroundName);
-    const backgroundColor = selectedBg?.value || backgroundName || '#0a0a0a';
+    const backgroundColor = selectedBg?.value || backgroundName || "#0a0a0a";
 
     const isDark = isColorDark(backgroundColor);
 
     // Update html class to include light/dark (but preserve theme-* classes)
     const html = document.documentElement;
-    const currentThemeClass = Array.from(html.classList).find(c => c.startsWith('theme-'));
-    html.classList.remove('light', 'dark');
-    html.classList.add(isDark ? 'dark' : 'light');
+    const currentThemeClass = Array.from(html.classList).find(c => c.startsWith("theme-"));
+    html.classList.remove("light", "dark");
+    html.classList.add(isDark ? "dark" : "light");
     // Ensure theme class is still present
     if (currentThemeClass && !html.classList.contains(currentThemeClass)) {
       html.classList.add(currentThemeClass);
     }
 
     // Remove existing style tag if present
-    let styleTag = document.getElementById('storybook-bg-override');
+    let styleTag = document.getElementById("storybook-bg-override");
     if (styleTag) {
       styleTag.remove();
     }
 
-    styleTag = document.createElement('style');
-    styleTag.id = 'storybook-bg-override';
+    styleTag = document.createElement("style");
+    styleTag.id = "storybook-bg-override";
 
     // Get the appropriate Storybook theme (using themes.dark/light which have the correct structure)
     const theme = isDark ? sbThemes.dark : sbThemes.light;
 
-      // HACK THE PLANET: Inject Storybook's EXACT theme properties extracted from node_modules
-      // CRITICAL: Avoid bleeding into component previews by excluding .sb-story and #story--* elements
-      // This fixes hte dumb issue of not being able to toggle docs theme after runtime... comeon bros|bras
-      //  AI Generated this hack, so if some future update breaks it, just have AI do it again, wasnt hard
-      // once i told it to go nuclear and just do the tedious work of replicating the entire structure
-      // TODO: lets maybe extract this big blob to a seperate helper util
-      styleTag.textContent = `
+    // HACK THE PLANET: Inject Storybook's EXACT theme properties extracted from node_modules
+    // CRITICAL: Avoid bleeding into component previews by excluding .sb-story and #story--* elements
+    // This fixes hte dumb issue of not being able to toggle docs theme after runtime... comeon bros|bras
+    //  AI Generated this hack, so if some future update breaks it, just have AI do it again, wasnt hard
+    // once i told it to go nuclear and just do the tedious work of replicating the entire structure
+    // TODO: lets maybe extract this big blob to a seperate helper util
+    styleTag.textContent = `
         /* Override background - ONLY Storybook docs UI, NOT component previews */
         .sbdocs.sbdocs-wrapper,
         .sbdocs-content,
@@ -327,7 +327,7 @@ const withBackgroundSync = (Story, context) => {
         }
       `;
 
-      document.head.appendChild(styleTag);
+    document.head.appendChild(styleTag);
   }, [backgroundName]);
 
   return Story();
@@ -342,17 +342,17 @@ const preview = {
       },
     },
     backgrounds: {
-      default: 'dark',
+      default: "dark",
       values: [
-        { name: 'dark', value: '#0a0a0a' },
-        { name: 'light', value: '#f5f5f5' },
+        { name: "dark", value: "#0a0a0a" },
+        { name: "light", value: "#f5f5f5" },
       ],
     },
     docs: {
       codePanel: true,
       // Apply backgrounds to docs pages
       canvas: {
-        sourceState: 'shown',
+        sourceState: "shown",
       },
       // No static theme - we inject it dynamically via decorator
     },
@@ -366,7 +366,7 @@ const preview = {
           a[`${tName}`] = `theme-${tName}`;
           return a;
         },
-        {},
+        {}
       ),
       defaultTheme: "catalyst",
       parentSelector: "html",

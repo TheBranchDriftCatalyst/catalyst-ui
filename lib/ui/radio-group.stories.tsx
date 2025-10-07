@@ -41,9 +41,7 @@ export const WithDescriptions: Story = {
         <RadioGroupItem value="default" id="r1" />
         <div className="grid gap-1.5">
           <Label htmlFor="r1">Default</Label>
-          <p className="text-sm text-muted-foreground">
-            The default spacing and sizing.
-          </p>
+          <p className="text-sm text-muted-foreground">The default spacing and sizing.</p>
         </div>
       </div>
       <div className="flex items-center space-x-2">
@@ -59,9 +57,7 @@ export const WithDescriptions: Story = {
         <RadioGroupItem value="compact" id="r3" />
         <div className="grid gap-1.5">
           <Label htmlFor="r3">Compact</Label>
-          <p className="text-sm text-muted-foreground">
-            Tighter spacing to fit more content.
-          </p>
+          <p className="text-sm text-muted-foreground">Tighter spacing to fit more content.</p>
         </div>
       </div>
     </RadioGroup>
@@ -128,28 +124,28 @@ export const PaymentMethod: Story = {
         <div className="flex items-center space-x-2 rounded-md border p-4">
           <RadioGroupItem value="card" id="card" />
           <div className="grid gap-1.5">
-            <Label htmlFor="card" className="font-medium">Credit Card</Label>
-            <p className="text-sm text-muted-foreground">
-              Pay with your credit or debit card
-            </p>
+            <Label htmlFor="card" className="font-medium">
+              Credit Card
+            </Label>
+            <p className="text-sm text-muted-foreground">Pay with your credit or debit card</p>
           </div>
         </div>
         <div className="flex items-center space-x-2 rounded-md border p-4">
           <RadioGroupItem value="paypal" id="paypal" />
           <div className="grid gap-1.5">
-            <Label htmlFor="paypal" className="font-medium">PayPal</Label>
-            <p className="text-sm text-muted-foreground">
-              Pay using your PayPal account
-            </p>
+            <Label htmlFor="paypal" className="font-medium">
+              PayPal
+            </Label>
+            <p className="text-sm text-muted-foreground">Pay using your PayPal account</p>
           </div>
         </div>
         <div className="flex items-center space-x-2 rounded-md border p-4">
           <RadioGroupItem value="apple" id="apple" />
           <div className="grid gap-1.5">
-            <Label htmlFor="apple" className="font-medium">Apple Pay</Label>
-            <p className="text-sm text-muted-foreground">
-              Fast and secure with Apple Pay
-            </p>
+            <Label htmlFor="apple" className="font-medium">
+              Apple Pay
+            </Label>
+            <p className="text-sm text-muted-foreground">Fast and secure with Apple Pay</p>
           </div>
         </div>
       </RadioGroup>

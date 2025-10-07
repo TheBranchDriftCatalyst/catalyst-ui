@@ -50,9 +50,7 @@ export function StatBar({
             {value}/{max}
           </span>
         )}
-        {useLabels && (
-          <span className="text-xs text-primary font-medium">{skillLabel}</span>
-        )}
+        {useLabels && <span className="text-xs text-primary font-medium">{skillLabel}</span>}
       </div>
       <Slider
         value={[percentage]}

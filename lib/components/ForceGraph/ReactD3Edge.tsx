@@ -1,10 +1,10 @@
-import React, { useMemo } from 'react';
-import { EdgeData, EdgeKind } from './types';
+import React, { useMemo } from "react";
+import { EdgeData, EdgeKind } from "./types";
 import {
   calculateEdgeEndpoints,
   calculateOrthogonalPath,
   getOrthogonalPathMidpoint,
-} from './utils/edgePathCalculations';
+} from "./utils/edgePathCalculations";
 
 interface ReactD3EdgeProps {
   data: EdgeData;
@@ -21,14 +21,14 @@ interface ReactD3EdgeProps {
 // Edge color map using CSS variables
 const getEdgeColor = (kind: EdgeKind): string => {
   switch (kind) {
-    case 'derived_from':
-      return 'var(--neon-red)';
-    case 'connected_to':
-      return 'var(--primary)';
-    case 'mounted_into':
-      return 'var(--neon-yellow)';
+    case "derived_from":
+      return "var(--neon-red)";
+    case "connected_to":
+      return "var(--primary)";
+    case "mounted_into":
+      return "var(--neon-yellow)";
     default:
-      return 'var(--border)';
+      return "var(--border)";
   }
 };
 
@@ -45,12 +45,12 @@ const ReactD3Edge: React.FC<ReactD3EdgeProps> = ({
 }) => {
   // Calculate label text
   let labelText = null;
-  if (data.kind === 'connected_to' && data.attributes?.ip) {
+  if (data.kind === "connected_to" && data.attributes?.ip) {
     const { ip } = data.attributes;
-    labelText = ip.length > 12 ? ip.substring(0, 12) + '...' : ip;
-  } else if (data.kind === 'mounted_into' && data.attributes?.target) {
+    labelText = ip.length > 12 ? ip.substring(0, 12) + "..." : ip;
+  } else if (data.kind === "mounted_into" && data.attributes?.target) {
     const { target } = data.attributes;
-    labelText = target.length > 12 ? target.substring(0, 12) + '...' : target;
+    labelText = target.length > 12 ? target.substring(0, 12) + "..." : target;
   }
 
   const showLabel = labelText !== null;
@@ -83,7 +83,15 @@ const ReactD3Edge: React.FC<ReactD3EdgeProps> = ({
       edgeIndex,
       totalEdgesBetweenNodes
     );
-  }, [orthogonal, edgePoints, data.source, data.target, allNodes, edgeIndex, totalEdgesBetweenNodes]);
+  }, [
+    orthogonal,
+    edgePoints,
+    data.source,
+    data.target,
+    allNodes,
+    edgeIndex,
+    totalEdgesBetweenNodes,
+  ]);
 
   // Memoize midpoint calculation
   const { midX, midY } = useMemo(() => {
@@ -105,12 +113,12 @@ const ReactD3Edge: React.FC<ReactD3EdgeProps> = ({
       {/* Edge line */}
       {orthogonal ? (
         <path
-          d={edgePath || ''}
+          d={edgePath || ""}
           stroke={edgeColor}
           strokeWidth={2}
           strokeOpacity={isDimmed ? 0.18 : 0.8}
           fill="none"
-          style={{ cursor: onClick ? 'pointer' : 'default' }}
+          style={{ cursor: onClick ? "pointer" : "default" }}
           onClick={onClick}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
@@ -124,7 +132,7 @@ const ReactD3Edge: React.FC<ReactD3EdgeProps> = ({
           stroke={edgeColor}
           strokeWidth={2}
           strokeOpacity={isDimmed ? 0.18 : 0.8}
-          style={{ cursor: onClick ? 'pointer' : 'default' }}
+          style={{ cursor: onClick ? "pointer" : "default" }}
           onClick={onClick}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}

@@ -1,5 +1,5 @@
-import React from 'react';
-import { GraphFilters } from '../types/filterTypes';
+import React from "react";
+import { GraphFilters } from "../types/filterTypes";
 
 interface FilterPanelSummaryProps {
   filters: GraphFilters;

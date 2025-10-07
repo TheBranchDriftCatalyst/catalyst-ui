@@ -1,4 +1,4 @@
-import { GraphData, NodeData, EdgeData } from '../types';
+import { GraphData, NodeData, EdgeData } from "../types";
 
 // Extended types with helper methods
 export type NodeWithHelpers = NodeData & {
@@ -24,7 +24,7 @@ function getByPath(obj: any, path: string) {
   if (!path) {
     return undefined;
   }
-  const parts = path.split('.');
+  const parts = path.split(".");
   let cur: any = obj;
   for (const p of parts) {
     if (cur == null) {
@@ -52,7 +52,7 @@ export function enrichGraph(data: GraphData): EnrichedGraph {
   }
 
   // Build edges with source/target references
-  const edges: EdgeWithHelpers[] = (data.edges || []).map((e) => {
+  const edges: EdgeWithHelpers[] = (data.edges || []).map(e => {
     const srcNode = nodeMap[e.src];
     const dstNode = nodeMap[e.dst];
     const edge: EdgeWithHelpers = {
@@ -81,11 +81,17 @@ export function enrichGraph(data: GraphData): EnrichedGraph {
   // neighbors: union of outgoing targets and incoming sources
   for (const node of Object.values(nodeMap)) {
     node.neighbors = () => {
-      const outs = node.outgoing().map((e) => e.target).filter(Boolean);
-      const ins = node.incoming().map((e) => e.source).filter(Boolean);
+      const outs = node
+        .outgoing()
+        .map(e => e.target)
+        .filter(Boolean);
+      const ins = node
+        .incoming()
+        .map(e => e.source)
+        .filter(Boolean);
       // unique by id
       const map: Record<string, NodeWithHelpers> = {};
-      [...outs, ...ins].forEach((n) => {
+      [...outs, ...ins].forEach(n => {
         if (n && n.id) {
           map[n.id] = n;
         }

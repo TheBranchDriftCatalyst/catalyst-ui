@@ -5,7 +5,7 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  base: process.env.VITE_BASE_PATH || '/',
+  base: process.env.VITE_BASE_PATH || "/",
   root: "./app",
   publicDir: "../public",
   plugins: [
@@ -26,8 +26,8 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           // Keep shiki in its own chunk to avoid WASM loading issues
-          if (id.includes('node_modules/shiki')) {
-            return 'shiki';
+          if (id.includes("node_modules/shiki")) {
+            return "shiki";
           }
         },
       },

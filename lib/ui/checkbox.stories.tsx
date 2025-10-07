@@ -69,11 +69,9 @@ export const Interactive: Story = {
           <Checkbox
             id="interactive"
             checked={checked}
-            onCheckedChange={(value) => setChecked(value === true)}
+            onCheckedChange={value => setChecked(value === true)}
           />
-          <Label htmlFor="interactive">
-            Click to toggle
-          </Label>
+          <Label htmlFor="interactive">Click to toggle</Label>
         </div>
         <p className="text-sm text-muted-foreground">
           Current state: {checked ? "Checked ✓" : "Unchecked"}
@@ -100,7 +98,9 @@ export const MultipleOptions: Story = {
       </div>
       <div className="flex items-center space-x-2">
         <Checkbox id="option4" disabled />
-        <Label htmlFor="option4" className="text-muted-foreground">Option 4 (Disabled)</Label>
+        <Label htmlFor="option4" className="text-muted-foreground">
+          Option 4 (Disabled)
+        </Label>
       </div>
     </div>
   ),

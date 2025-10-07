@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from "react";
 
 export interface Position {
   x: number;
@@ -52,7 +52,7 @@ export function useDraggable(options: UseDraggableOptions = {}) {
         y: e.clientY - position.y,
       };
 
-      handle.style.cursor = 'grabbing';
+      handle.style.cursor = "grabbing";
     };
 
     const onMouseMove = (e: MouseEvent) => {
@@ -72,7 +72,7 @@ export function useDraggable(options: UseDraggableOptions = {}) {
 
       isDraggingRef.current = false;
       if (handle) {
-        handle.style.cursor = 'grab';
+        handle.style.cursor = "grab";
       }
 
       // Save to localStorage if storageKey is provided
@@ -85,14 +85,14 @@ export function useDraggable(options: UseDraggableOptions = {}) {
       }
     };
 
-    handle.addEventListener('mousedown', onMouseDown);
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', onMouseUp);
+    handle.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
 
     return () => {
-      handle.removeEventListener('mousedown', onMouseDown);
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseup', onMouseUp);
+      handle.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
     };
   }, [position, storageKey]);
 
@@ -101,7 +101,7 @@ export function useDraggable(options: UseDraggableOptions = {}) {
     handleRef,
     position,
     style: {
-      position: 'fixed' as const,
+      position: "fixed" as const,
       left: `${position.x}px`,
       top: `${position.y}px`,
     },

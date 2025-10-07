@@ -21,7 +21,7 @@ const CodeBlockHeaderInCard: React.FC<{
   onThemeChange?: (theme: string) => void;
   onLineNumbersChange?: (show: boolean) => void;
   onEditModeChange?: (editMode: boolean) => void;
-}> = (props) => {
+}> = props => {
   const { registerHeaderComponent } = React.useContext(CardContext);
 
   React.useEffect(() => {
@@ -64,8 +64,8 @@ async function getHighlighter() {
       themes: [],
       langs: [],
     });
-  })().catch((error) => {
-    console.warn('Shiki WASM loading failed, falling back to basic highlighting:', error);
+  })().catch(error => {
+    console.warn("Shiki WASM loading failed, falling back to basic highlighting:", error);
     // Reset so it can retry
     highlighterPromise = null;
     highlighterInstance = null;
@@ -112,7 +112,7 @@ const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
       className,
       ...props
     },
-    ref,
+    ref
   ) => {
     const [html, setHtml] = React.useState<string>("");
     const [isLoading, setIsLoading] = React.useState(true);
@@ -200,17 +200,16 @@ const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
         {...props}
       >
         {/* If using CardContext, register header to context; otherwise render inline */}
-        {(fileName || showCopyButton || interactive || editable) && (
-          shouldUseCardContext ? (
+        {(fileName || showCopyButton || interactive || editable) &&
+          (shouldUseCardContext ? (
             <CodeBlockHeaderInCard {...headerProps} />
           ) : (
             <CodeBlockHeader {...headerProps} />
-          )
-        )}
+          ))}
         {isEditMode && editable && onCodeChange ? (
           <textarea
             value={code}
-            onChange={(e) => onCodeChange(e.target.value)}
+            onChange={e => onCodeChange(e.target.value)}
             className={cn(
               "w-full p-4 bg-card text-foreground font-mono text-sm resize-none outline-none border-none",
               "focus:ring-2 focus:ring-primary focus:ring-inset"
@@ -219,15 +218,10 @@ const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
             spellCheck={false}
           />
         ) : isLoading ? (
-          <div className="p-4 bg-card text-muted-foreground animate-pulse">
-            Loading...
-          </div>
+          <div className="p-4 bg-card text-muted-foreground animate-pulse">Loading...</div>
         ) : (
           <div
-            className={cn(
-              "shiki-wrapper overflow-x-auto",
-              showLineNumbers && "shiki-line-numbers",
-            )}
+            className={cn("shiki-wrapper overflow-x-auto", showLineNumbers && "shiki-line-numbers")}
             dangerouslySetInnerHTML={{ __html: html }}
           />
         )}
@@ -254,7 +248,7 @@ const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
         `}</style>
       </div>
     );
-  },
+  }
 );
 
 CodeBlock.displayName = "CodeBlock";

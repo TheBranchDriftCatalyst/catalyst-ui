@@ -8,12 +8,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/catalyst-ui/ui/dropdown-menu";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/catalyst-ui/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/catalyst-ui/ui/tooltip";
 import { Button } from "@/catalyst-ui/ui/button";
 import { Activity, InfoIcon } from "lucide-react";
 
@@ -39,14 +34,14 @@ export function PerformanceMonitor() {
 
   // Status light color based on aggregate rating
   const statusColor =
-    aggregateRating === 'good'
-      ? 'bg-green-500'
-      : aggregateRating === 'needs-improvement'
-      ? 'bg-yellow-500'
-      : 'bg-red-500';
+    aggregateRating === "good"
+      ? "bg-green-500"
+      : aggregateRating === "needs-improvement"
+        ? "bg-yellow-500"
+        : "bg-red-500";
 
   const toggleReactScan = async () => {
-    const { scan } = await import('react-scan');
+    const { scan } = await import("react-scan");
     const newState = !reactScanEnabled;
     scan({ enabled: newState });
     setReactScanEnabled(newState);
@@ -87,7 +82,7 @@ export function PerformanceMonitor() {
         <TooltipProvider>
           <div className="px-2 py-2 space-y-1">
             <p className="text-xs font-semibold text-muted-foreground mb-2">Core Web Vitals</p>
-            {['LCP', 'INP', 'CLS', 'FCP', 'TTFB'].map((name) => {
+            {["LCP", "INP", "CLS", "FCP", "TTFB"].map(name => {
               const metric = metrics.get(name);
               if (!metric) {
                 return (
@@ -109,11 +104,11 @@ export function PerformanceMonitor() {
               }
 
               const emoji =
-                metric.rating === 'good'
-                  ? '✅'
-                  : metric.rating === 'needs-improvement'
-                  ? '⚠️'
-                  : '❌';
+                metric.rating === "good"
+                  ? "✅"
+                  : metric.rating === "needs-improvement"
+                    ? "⚠️"
+                    : "❌";
 
               return (
                 <div key={name} className="flex justify-between items-center text-xs">
@@ -131,7 +126,7 @@ export function PerformanceMonitor() {
                     </Tooltip>
                   </div>
                   <span className="font-mono">
-                    {name === 'CLS' ? metric.value.toFixed(3) : `${metric.value.toFixed(0)}ms`}
+                    {name === "CLS" ? metric.value.toFixed(3) : `${metric.value.toFixed(0)}ms`}
                   </span>
                 </div>
               );
@@ -142,14 +137,16 @@ export function PerformanceMonitor() {
         <DropdownMenuSeparator />
 
         {/* react-scan Toggle */}
-        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+        <DropdownMenuItem onSelect={e => e.preventDefault()}>
           <button
             onClick={toggleReactScan}
             className="w-full text-left text-sm flex items-center justify-between"
           >
             <span>React Scan</span>
-            <span className={`text-xs ${reactScanEnabled ? 'text-green-500' : 'text-muted-foreground'}`}>
-              {reactScanEnabled ? '🟢 ON' : '⚪ OFF'}
+            <span
+              className={`text-xs ${reactScanEnabled ? "text-green-500" : "text-muted-foreground"}`}
+            >
+              {reactScanEnabled ? "🟢 ON" : "⚪ OFF"}
             </span>
           </button>
         </DropdownMenuItem>

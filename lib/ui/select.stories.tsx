@@ -1,5 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "./select";
 import { Label } from "./label";
 import { useState } from "react";
 
@@ -99,9 +107,7 @@ export const Interactive: Story = {
             <SelectItem value="option4">Option 4</SelectItem>
           </SelectContent>
         </Select>
-        <p className="text-sm text-muted-foreground">
-          Selected: {value || "(none)"}
-        </p>
+        <p className="text-sm text-muted-foreground">Selected: {value || "(none)"}</p>
       </div>
     );
   },
@@ -125,7 +131,9 @@ export const Disabled: Story = {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="option1">Option 1</SelectItem>
-          <SelectItem value="option2" disabled>Option 2 (Disabled)</SelectItem>
+          <SelectItem value="option2" disabled>
+            Option 2 (Disabled)
+          </SelectItem>
           <SelectItem value="option3">Option 3</SelectItem>
         </SelectContent>
       </Select>

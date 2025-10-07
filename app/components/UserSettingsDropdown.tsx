@@ -50,13 +50,14 @@ export function UserSettingsDropdown() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {allThemes.map((themeName) => (
-                  themeName && (
-                    <SelectItem key={themeName} value={themeName} className="capitalize">
-                      {themeName}
-                    </SelectItem>
-                  )
-                ))}
+                {allThemes.map(
+                  themeName =>
+                    themeName && (
+                      <SelectItem key={themeName} value={themeName} className="capitalize">
+                        {themeName}
+                      </SelectItem>
+                    )
+                )}
               </SelectContent>
             </Select>
           </div>
@@ -66,8 +67,8 @@ export function UserSettingsDropdown() {
             <Label className="text-xs font-semibold">Mode</Label>
             <div className="flex gap-2">
               <Button
-                variant={variant === 'light' ? 'default' : 'outline'}
-                onClick={() => setVariant('light')}
+                variant={variant === "light" ? "default" : "outline"}
+                onClick={() => setVariant("light")}
                 className="flex-1"
                 size="sm"
               >
@@ -75,8 +76,8 @@ export function UserSettingsDropdown() {
                 Light
               </Button>
               <Button
-                variant={variant === 'dark' ? 'default' : 'outline'}
-                onClick={() => setVariant('dark')}
+                variant={variant === "dark" ? "default" : "outline"}
+                onClick={() => setVariant("dark")}
                 className="flex-1"
                 size="sm"
               >
@@ -94,7 +95,7 @@ export function UserSettingsDropdown() {
                 <Checkbox
                   id="effect-glow"
                   checked={effects.glow}
-                  onCheckedChange={(checked) => updateEffect('glow', checked as boolean)}
+                  onCheckedChange={checked => updateEffect("glow", checked as boolean)}
                 />
                 <label
                   htmlFor="effect-glow"
@@ -107,7 +108,7 @@ export function UserSettingsDropdown() {
                 <Checkbox
                   id="effect-scanlines"
                   checked={effects.scanlines}
-                  onCheckedChange={(checked) => updateEffect('scanlines', checked as boolean)}
+                  onCheckedChange={checked => updateEffect("scanlines", checked as boolean)}
                 />
                 <label
                   htmlFor="effect-scanlines"
@@ -120,7 +121,7 @@ export function UserSettingsDropdown() {
                 <Checkbox
                   id="effect-borders"
                   checked={effects.borderAnimations}
-                  onCheckedChange={(checked) => updateEffect('borderAnimations', checked as boolean)}
+                  onCheckedChange={checked => updateEffect("borderAnimations", checked as boolean)}
                 />
                 <label
                   htmlFor="effect-borders"
@@ -133,7 +134,7 @@ export function UserSettingsDropdown() {
                 <Checkbox
                   id="effect-gradients"
                   checked={effects.gradientShift}
-                  onCheckedChange={(checked) => updateEffect('gradientShift', checked as boolean)}
+                  onCheckedChange={checked => updateEffect("gradientShift", checked as boolean)}
                 />
                 <label
                   htmlFor="effect-gradients"
@@ -146,7 +147,7 @@ export function UserSettingsDropdown() {
                 <Checkbox
                   id="effect-debug"
                   checked={effects.debug}
-                  onCheckedChange={(checked) => updateEffect('debug', checked as boolean)}
+                  onCheckedChange={checked => updateEffect("debug", checked as boolean)}
                 />
                 <label
                   htmlFor="effect-debug"

@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 import { ThemeProvider } from ".";
 import { Button } from "../../ui/button";
 
 const meta = {
-  title: 'Contexts/ThemeProvider',
+  title: "Contexts/ThemeProvider",
   component: ThemeProvider,
   tags: ["autodocs"],
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
 } satisfies Meta<typeof ThemeProvider>;
 

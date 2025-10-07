@@ -17,10 +17,7 @@ export interface ExportButtonProps {
   fileName?: string;
 }
 
-export function ExportButton({
-  contentRef,
-  fileName = "resume",
-}: ExportButtonProps) {
+export function ExportButton({ contentRef, fileName = "resume" }: ExportButtonProps) {
   const [isExporting, setIsExporting] = useState(false);
 
   // Wait for all images to load before exporting
@@ -29,8 +26,8 @@ export function ExportButton({
 
     await Promise.all(
       images.map(
-        (img) =>
-          new Promise<void>((resolve) => {
+        img =>
+          new Promise<void>(resolve => {
             if (img.complete) {
               resolve();
             } else {
@@ -42,7 +39,7 @@ export function ExportButton({
     );
 
     // Additional wait to ensure rendering is complete
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await new Promise(resolve => setTimeout(resolve, 500));
   };
 
   // PDF Export via print-to-PDF
@@ -79,7 +76,7 @@ export function ExportButton({
         backgroundColor: "#ffffff",
         width: 816, // 8.5 inches * 96 DPI
         height: 1056, // 11 inches * 96 DPI
-        onclone: (clonedDoc) => {
+        onclone: clonedDoc => {
           // Replace modern color functions (oklab, oklch) with fallback colors
           // html2canvas doesn't support these modern CSS color functions
 
@@ -103,7 +100,7 @@ export function ExportButton({
       });
 
       // Convert to PNG and download
-      canvas.toBlob((blob) => {
+      canvas.toBlob(blob => {
         if (blob) {
           const url = URL.createObjectURL(blob);
           const link = document.createElement("a");
@@ -125,12 +122,7 @@ export function ExportButton({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          disabled={isExporting}
-          className="gap-2"
-        >
+        <Button variant="outline" size="sm" disabled={isExporting} className="gap-2">
           <Download className="h-4 w-4" />
           {isExporting ? "Exporting..." : "Export"}
         </Button>

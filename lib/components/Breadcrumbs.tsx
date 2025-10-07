@@ -4,7 +4,7 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
-  BreadcrumbSeparator
+  BreadcrumbSeparator,
 } from "@/catalyst-ui/ui/breadcrumb";
 import {
   DropdownMenu,
@@ -15,14 +15,14 @@ import {
 import { Fragment } from "react/jsx-runtime";
 
 interface CrumbShape {
-  href: string,
-  name: string
+  href: string;
+  name: string;
   // Compact the next n items
-  compact?: number
+  compact?: number;
 }
 
 export interface BreadcrumbsProps {
-  crumbs: CrumbShape[],
+  crumbs: CrumbShape[];
 }
 
 export function BreadCrumbs({ crumbs }: BreadcrumbsProps) {
@@ -77,12 +77,9 @@ export function BreadCrumbs({ crumbs }: BreadcrumbsProps) {
 
   return (
     <Breadcrumb className="mt-[-8px]">
-      <BreadcrumbList className="text-xs">
-        {renderCrumbs()}
-      </BreadcrumbList>
+      <BreadcrumbList className="text-xs">{renderCrumbs()}</BreadcrumbList>
     </Breadcrumb>
-  )
+  );
 }
 
 export default BreadCrumbs;
-

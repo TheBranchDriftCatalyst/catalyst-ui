@@ -19,16 +19,12 @@ export const CatalystThemeTokens: Story = {
       <div className="mb-12">
         <h2 className="text-2xl font-bold mb-4">Cybersynthpunk Color System</h2>
         <p className="text-muted-foreground mb-8">
-          Our design tokens power the entire Catalyst theme system, from base colors to complex neon glow effects.
-          All tokens are automatically documented from our CSS files.
+          Our design tokens power the entire Catalyst theme system, from base colors to complex neon
+          glow effects. All tokens are automatically documented from our CSS files.
         </p>
       </div>
 
-      <DesignTokenDocBlock
-        colorSpace="hex"
-        viewType="table"
-        maxHeight={800}
-      />
+      <DesignTokenDocBlock colorSpace="hex" viewType="table" maxHeight={800} />
     </div>
   ),
   parameters: {
@@ -78,11 +74,7 @@ export const GlowEffects: Story = {
         </p>
       </div>
 
-      <DesignTokenDocBlock
-        viewType="table"
-        categoryFilter="Effects/Glow"
-        maxHeight={600}
-      />
+      <DesignTokenDocBlock viewType="table" categoryFilter="Effects/Glow" maxHeight={600} />
     </div>
   ),
   parameters: {
@@ -104,11 +96,7 @@ export const ShadowSystem: Story = {
         </p>
       </div>
 
-      <DesignTokenDocBlock
-        viewType="table"
-        categoryFilter="Effects/Shadows"
-        maxHeight={600}
-      />
+      <DesignTokenDocBlock viewType="table" categoryFilter="Effects/Shadows" maxHeight={600} />
     </div>
   ),
   parameters: {

@@ -1,5 +1,5 @@
-import React from 'react';
-import { AttributeFilter } from '../config/types';
+import React from "react";
+import { AttributeFilter } from "../config/types";
 
 interface FilterPanelAttributeFiltersProps {
   attributeFilters: AttributeFilter[];
@@ -18,28 +18,31 @@ export const FilterPanelAttributeFilters: React.FC<FilterPanelAttributeFiltersPr
 
   return (
     <div className="mb-4 pb-3 border-b border-primary/20">
-      <div className="text-xs font-semibold mb-2 text-primary uppercase tracking-wide" style={{ textShadow: '0 0 6px var(--primary)' }}>
+      <div
+        className="text-xs font-semibold mb-2 text-primary uppercase tracking-wide"
+        style={{ textShadow: "0 0 6px var(--primary)" }}
+      >
         Advanced
       </div>
       <div className="flex flex-col gap-1">
-        {attributeFilters.map((filter) => {
+        {attributeFilters.map(filter => {
           const currentValue = currentValues[filter.name] ?? filter.defaultValue ?? false;
           const isEnabled = Boolean(currentValue);
 
           // For boolean filters, render as ghost button toggle
-          if (filter.type === 'boolean') {
+          if (filter.type === "boolean") {
             return (
               <button
                 key={filter.name}
                 onClick={() => onSetValue(filter.name, !currentValue)}
                 className={`w-full flex items-center gap-1.5 px-1.5 py-0.5 rounded transition-all text-[11px] ${
-                  isEnabled ? 'opacity-100' : 'opacity-40 hover:opacity-70'
+                  isEnabled ? "opacity-100" : "opacity-40 hover:opacity-70"
                 }`}
               >
-                <span className="text-sm">{isEnabled ? '✓' : '○'}</span>
+                <span className="text-sm">{isEnabled ? "✓" : "○"}</span>
                 <span
-                  className={`flex-1 text-left font-medium ${isEnabled ? 'border-b border-primary' : ''}`}
-                  style={{ color: isEnabled ? 'var(--primary)' : 'var(--foreground)' }}
+                  className={`flex-1 text-left font-medium ${isEnabled ? "border-b border-primary" : ""}`}
+                  style={{ color: isEnabled ? "var(--primary)" : "var(--foreground)" }}
                 >
                   {filter.label}
                 </span>

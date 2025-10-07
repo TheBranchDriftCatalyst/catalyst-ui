@@ -21,11 +21,13 @@ What makes this implementation unique or better than alternatives?
 ### Existing Infrastructure We Can Leverage
 
 ✅ **Component/System Name** (`path/to/file`)
+
 - What it does
 - Why it's useful for this feature
 - How we'll use it
 
 ✅ **Another Component** (`path/to/file`)
+
 - Description
 - Integration point
 
@@ -40,10 +42,12 @@ What makes this implementation unique or better than alternatives?
 If this is solving a specific problem, describe it here.
 
 ### Current Behavior
+
 - ✅ **What Works**: Description
 - ❌ **What Doesn't**: Description
 
 ### Error/Issue
+
 ```
 Error messages or problem manifestation
 ```
@@ -56,14 +60,14 @@ Error messages or problem manifestation
 graph TD
   A[Input] --> B[Processing]
   B --> C[Output]
-  
+
   subgraph "System Components"
     B --> D[Component A]
     B --> E[Component B]
     D --> F[Result]
     E --> F
   end
-  
+
   F --> C
 ```
 
@@ -96,7 +100,7 @@ interface Example {
 }
 
 export function exampleFunction(): Example {
-  return { property: 'value' };
+  return { property: "value" };
 }
 ```
 
@@ -194,11 +198,13 @@ project-root/
 ### Example 1: [Scenario]
 
 **Input:**
+
 ```
 Input data or code
 ```
 
 **Output:**
+
 ```
 Expected output
 ```
@@ -206,11 +212,13 @@ Expected output
 ### Example 2: [Another Scenario]
 
 **Input:**
+
 ```
 Different input
 ```
 
 **Output:**
+
 ```
 Different output
 ```
@@ -304,10 +312,12 @@ Different output
 **Description**: What this approach would do differently
 
 **Pros:**
+
 - Advantage 1
 - Advantage 2
 
 **Cons:**
+
 - Disadvantage 1
 - Disadvantage 2
 

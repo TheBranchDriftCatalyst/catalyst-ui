@@ -44,7 +44,8 @@ export const WithCompactSection: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Uses the `compact` property to collapse multiple breadcrumb items into a dropdown menu (ellipsis icon). Click the … to reveal hidden items.",
+        story:
+          "Uses the `compact` property to collapse multiple breadcrumb items into a dropdown menu (ellipsis icon). Click the … to reveal hidden items.",
       },
     },
   },
@@ -77,7 +78,8 @@ export const MultipleCompactSections: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Demonstrates multiple compact sections in a single breadcrumb trail for very deep navigation hierarchies.",
+        story:
+          "Demonstrates multiple compact sections in a single breadcrumb trail for very deep navigation hierarchies.",
       },
     },
   },

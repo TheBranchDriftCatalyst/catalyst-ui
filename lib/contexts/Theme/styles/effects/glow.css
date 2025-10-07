@@ -5,7 +5,8 @@
 
 /* Text glow animation for links - ultra subtle text-shadow pulse */
 @keyframes text-glow {
-  0%, 100% {
+  0%,
+  100% {
     text-shadow:
       0 0 8px color-mix(in srgb, var(--primary) 30%, transparent),
       0 2px 0 color-mix(in srgb, var(--primary) 8%, transparent);
@@ -36,7 +37,9 @@ html[data-effect-glow="true"].light a {
 }
 
 html[data-effect-glow="true"].light a:hover {
-  text-shadow: 0 0 20px rgba(192, 38, 211, 0.5), 0 0 40px rgba(192, 38, 211, 0.25);
+  text-shadow:
+    0 0 20px rgba(192, 38, 211, 0.5),
+    0 0 40px rgba(192, 38, 211, 0.25);
 }
 
 /* Primary buttons - vibrant glow */
@@ -76,7 +79,9 @@ html[data-effect-glow="true"].dark a {
 }
 
 html[data-effect-glow="true"].dark a:hover {
-  text-shadow: 0 0 15px rgba(0, 252, 214, 0.6), 0 0 30px rgba(0, 252, 214, 0.3);
+  text-shadow:
+    0 0 15px rgba(0, 252, 214, 0.6),
+    0 0 30px rgba(0, 252, 214, 0.3);
   animation: text-glow 4s ease-in-out infinite;
 }
 
@@ -132,7 +137,9 @@ html[data-effect-glow="true"].dark [role="progressbar"] {
 html[data-effect-glow="true"].dark *:focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 3px;
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 15%, transparent), var(--glow-accent);
+  box-shadow:
+    0 0 0 4px color-mix(in srgb, var(--primary) 15%, transparent),
+    var(--glow-accent);
 }
 
 /* Heading hover states with enhanced glow */

@@ -42,10 +42,7 @@ html[data-effect-gradient-shift="true"].dark h6 {
 
 /* Gradient background using theme colors */
 html[data-effect-gradient-shift="true"].light body {
-  background: linear-gradient(135deg,
-    var(--background) 0%,
-    var(--muted) 50%,
-    var(--accent) 100%);
+  background: linear-gradient(135deg, var(--background) 0%, var(--muted) 50%, var(--accent) 100%);
   background-attachment: fixed;
 }
 

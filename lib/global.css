@@ -1,9 +1,9 @@
 /* Tailwind CSS v4 - No config file needed! Using @theme directive below */
 
 /* Cybersynthpunk Fonts - must precede other imports */
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap");
 
-@import 'tailwindcss';
+@import "tailwindcss";
 @plugin 'tailwindcss-animate';
 
 /* Tailwind v4 content scanning */
@@ -21,17 +21,28 @@
 }
 
 /* Universal heading font styles - uses each theme's font tokens */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
 }
 
 /* Body text uses theme body font */
-body, p, span, div {
+body,
+p,
+span,
+div {
   font-family: var(--font-body);
 }
 
 /* Code and monospace elements */
-code, pre, kbd, samp {
+code,
+pre,
+kbd,
+samp {
   font-family: var(--font-mono);
 }
 
@@ -62,12 +73,16 @@ code, pre, kbd, samp {
 /* === UNIVERSAL COMPONENT SHADOWS - Dark Mode === */
 
 .dark [class*="card"] {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), var(--glow-accent);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    var(--glow-accent);
   transition: all 0.3s ease;
 }
 
 .dark [class*="card"]:hover {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), var(--glow-primary);
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.4),
+    var(--glow-primary);
   transform: translateY(-2px);
 }
 
@@ -132,9 +147,9 @@ code, pre, kbd, samp {
 
 @theme {
   /* Cybersynthpunk Font Families */
-  --font-sans: 'Rajdhani', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Orbitron', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'Space Mono', ui-monospace, monospace;
+  --font-sans: "Rajdhani", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Orbitron", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
 
   --text-*: initial;
   --text-4xs: 0.375rem;
@@ -326,7 +341,8 @@ code, pre, kbd, samp {
   }
 
   @keyframes pulse-glow {
-    0%, 100% {
+    0%,
+    100% {
       opacity: 1;
       filter: brightness(1);
     }
@@ -337,7 +353,8 @@ code, pre, kbd, samp {
   }
 
   @keyframes bounce-subtle {
-    0%, 100% {
+    0%,
+    100% {
       transform: translateY(0);
     }
     50% {
@@ -346,13 +363,21 @@ code, pre, kbd, samp {
   }
 
   @keyframes shake {
-    0%, 100% {
+    0%,
+    100% {
       transform: translateX(0);
     }
-    10%, 30%, 50%, 70%, 90% {
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
       transform: translateX(-4px);
     }
-    20%, 40%, 60%, 80% {
+    20%,
+    40%,
+    60%,
+    80% {
       transform: translateX(4px);
     }
   }
@@ -503,19 +528,29 @@ code, pre, kbd, samp {
     font-family: var(--font-sans);
     font-weight: 500;
     letter-spacing: 0.015em;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-display);
     font-weight: 700;
     letter-spacing: 0.05em;
     text-transform: uppercase;
   }
 
-  code, pre, kbd, samp {
+  code,
+  pre,
+  kbd,
+  samp {
     font-family: var(--font-mono);
     letter-spacing: -0.01em;
   }

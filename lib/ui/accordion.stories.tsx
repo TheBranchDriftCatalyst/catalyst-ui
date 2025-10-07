@@ -19,19 +19,22 @@ export const Single: Story = {
       <AccordionItem value="item-1">
         <AccordionTrigger>Is it accessible?</AccordionTrigger>
         <AccordionContent>
-          Yes. It adheres to the WAI-ARIA design pattern and uses proper ARIA attributes for screen readers.
+          Yes. It adheres to the WAI-ARIA design pattern and uses proper ARIA attributes for screen
+          readers.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-2">
         <AccordionTrigger>Is it styled?</AccordionTrigger>
         <AccordionContent>
-          Yes. It comes with default styles that matches the aesthetic of other components in the library.
+          Yes. It comes with default styles that matches the aesthetic of other components in the
+          library.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-3">
         <AccordionTrigger>Is it animated?</AccordionTrigger>
         <AccordionContent>
-          Yes. It's animated by default with smooth expand/collapse transitions, but you can disable animations if needed.
+          Yes. It's animated by default with smooth expand/collapse transitions, but you can disable
+          animations if needed.
         </AccordionContent>
       </AccordionItem>
     </Accordion>
@@ -44,7 +47,8 @@ export const Multiple: Story = {
       <AccordionItem value="item-1">
         <AccordionTrigger>Can I select multiple items?</AccordionTrigger>
         <AccordionContent>
-          Yes! This accordion uses type="multiple", allowing multiple panels to be open simultaneously.
+          Yes! This accordion uses type="multiple", allowing multiple panels to be open
+          simultaneously.
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-2">
@@ -56,7 +60,8 @@ export const Multiple: Story = {
       <AccordionItem value="item-3">
         <AccordionTrigger>How is this different from single?</AccordionTrigger>
         <AccordionContent>
-          The single type only allows one panel open at a time, automatically closing others when a new one is opened.
+          The single type only allows one panel open at a time, automatically closing others when a
+          new one is opened.
         </AccordionContent>
       </AccordionItem>
     </Accordion>
@@ -68,9 +73,7 @@ export const WithDefaultOpen: Story = {
     <Accordion type="single" defaultValue="item-2" collapsible className="w-[450px]">
       <AccordionItem value="item-1">
         <AccordionTrigger>First Item</AccordionTrigger>
-        <AccordionContent>
-          This item starts closed.
-        </AccordionContent>
+        <AccordionContent>This item starts closed.</AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-2">
         <AccordionTrigger>Second Item (Default Open)</AccordionTrigger>
@@ -80,9 +83,7 @@ export const WithDefaultOpen: Story = {
       </AccordionItem>
       <AccordionItem value="item-3">
         <AccordionTrigger>Third Item</AccordionTrigger>
-        <AccordionContent>
-          This item also starts closed.
-        </AccordionContent>
+        <AccordionContent>This item also starts closed.</AccordionContent>
       </AccordionItem>
     </Accordion>
   ),
@@ -94,25 +95,37 @@ export const FAQ: Story = {
       <AccordionItem value="item-1">
         <AccordionTrigger>What payment methods do you accept?</AccordionTrigger>
         <AccordionContent>
-          <p>We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank transfers for enterprise customers.</p>
+          <p>
+            We accept all major credit cards (Visa, MasterCard, American Express), PayPal, and bank
+            transfers for enterprise customers.
+          </p>
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-2">
         <AccordionTrigger>Can I cancel my subscription anytime?</AccordionTrigger>
         <AccordionContent>
-          <p>Yes, you can cancel your subscription at any time from your account settings. Your access will continue until the end of your current billing period.</p>
+          <p>
+            Yes, you can cancel your subscription at any time from your account settings. Your
+            access will continue until the end of your current billing period.
+          </p>
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-3">
         <AccordionTrigger>Do you offer refunds?</AccordionTrigger>
         <AccordionContent>
-          <p>We offer a 30-day money-back guarantee for all new subscriptions. If you're not satisfied, contact our support team for a full refund.</p>
+          <p>
+            We offer a 30-day money-back guarantee for all new subscriptions. If you're not
+            satisfied, contact our support team for a full refund.
+          </p>
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="item-4">
         <AccordionTrigger>Is there a free trial available?</AccordionTrigger>
         <AccordionContent>
-          <p>Yes! We offer a 14-day free trial with full access to all features. No credit card required to start.</p>
+          <p>
+            Yes! We offer a 14-day free trial with full access to all features. No credit card
+            required to start.
+          </p>
         </AccordionContent>
       </AccordionItem>
     </Accordion>

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import useLocalStorageState from "@/catalyst-ui/hooks/useLocalStorageState";
 import { useCallback, useEffect, useMemo } from "react";
 import { ThemeContext, ThemeEffects, ThemeVariant } from "./ThemeContext";
@@ -46,17 +46,11 @@ const defaultEffects: ThemeEffects = {
 };
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setTheme] = useLocalStorageState<string>(
-    "theme:name",
-    "catalyst",
-  );
-  const [variant, setVariant] = useLocalStorageState<ThemeVariant>(
-    "theme:variant",
-    "dark",
-  );
+  const [theme, setTheme] = useLocalStorageState<string>("theme:name", "catalyst");
+  const [variant, setVariant] = useLocalStorageState<ThemeVariant>("theme:variant", "dark");
   const [storedEffects, setStoredEffects] = useLocalStorageState<ThemeEffects>(
     "theme:effects",
-    defaultEffects,
+    defaultEffects
   );
 
   // Merge stored effects with defaults to handle new properties
@@ -66,9 +60,12 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   // Update single effect
-  const updateEffect = useCallback((key: keyof ThemeEffects, value: boolean) => {
-    setStoredEffects(prev => ({ ...prev, [key]: value }));
-  }, [setStoredEffects]);
+  const updateEffect = useCallback(
+    (key: keyof ThemeEffects, value: boolean) => {
+      setStoredEffects(prev => ({ ...prev, [key]: value }));
+    },
+    [setStoredEffects]
+  );
 
   // Load core theme CSS
   useEffect(() => {
@@ -90,7 +87,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Dev-only logging
     if (import.meta.env.DEV) {
-      console.log('[ThemeProvider] Applied:', {
+      console.log("[ThemeProvider] Applied:", {
         theme,
         variant,
         effects,
@@ -100,7 +97,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
           borderAnimations: document.documentElement.dataset.effectBorderAnimations,
           gradientShift: document.documentElement.dataset.effectGradientShift,
           debug: document.documentElement.dataset.effectDebug,
-        }
+        },
       });
     }
   }, [theme, variant, effects]);
@@ -126,12 +123,10 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
         null,
       ],
     }),
-    [theme, variant, effects, updateEffect],
+    [theme, variant, effects, updateEffect]
   );
 
-  return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };
 
 export default ThemeProvider;

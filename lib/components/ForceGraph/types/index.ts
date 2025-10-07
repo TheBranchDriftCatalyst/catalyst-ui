@@ -11,7 +11,7 @@ export type NodeID = string;
  *
  * @deprecated Import domain-specific types from your graph config instead
  */
-export type NodeKind = 'container' | 'network' | 'image' | 'volume';
+export type NodeKind = "container" | "network" | "image" | "volume";
 
 /**
  * Edge kinds - Domain-specific type
@@ -22,7 +22,7 @@ export type NodeKind = 'container' | 'network' | 'image' | 'volume';
  *
  * @deprecated Import domain-specific types from your graph config instead
  */
-export type EdgeKind = 'derived_from' | 'connected_to' | 'mounted_into';
+export type EdgeKind = "derived_from" | "connected_to" | "mounted_into";
 
 /** Node data structure */
 export interface NodeData {
@@ -99,17 +99,17 @@ export interface ForceGraphProps {
 
 /** Type guards */
 export function isContainerNode(node: NodeData): boolean {
-  return node.kind === 'container';
+  return node.kind === "container";
 }
 
 export function isNetworkNode(node: NodeData): boolean {
-  return node.kind === 'network';
+  return node.kind === "network";
 }
 
 export function isImageNode(node: NodeData): boolean {
-  return node.kind === 'image';
+  return node.kind === "image";
 }
 
 export function isVolumeNode(node: NodeData): boolean {
-  return node.kind === 'volume';
+  return node.kind === "volume";
 }

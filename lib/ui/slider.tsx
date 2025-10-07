@@ -8,8 +8,7 @@ import { cn } from "@/catalyst-ui/utils";
 type ThumbShape = "circle" | "rectangle" | "rounded-rectangle";
 type LabelPosition = "inside" | "outside";
 
-interface SliderProps
-  extends React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> {
+interface SliderProps extends React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> {
   /** Show value label on thumb */
   showValue?: boolean;
   /** Format function for value display */
@@ -37,10 +36,7 @@ const thumbShapeClasses: Record<ThumbShape, { default: string; withLabel: string
   },
 };
 
-const Slider = React.forwardRef<
-  React.ElementRef<typeof SliderPrimitive.Root>,
-  SliderProps
->(
+const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.Root>, SliderProps>(
   (
     {
       className,
@@ -51,7 +47,7 @@ const Slider = React.forwardRef<
       labelPosition = "outside",
       ...props
     },
-    ref,
+    ref
   ) => {
     const value = props.value ?? props.defaultValue ?? [0];
     const displayValue = Array.isArray(value) ? value[0] : value;
@@ -76,10 +72,7 @@ const Slider = React.forwardRef<
     return (
       <SliderPrimitive.Root
         ref={ref}
-        className={cn(
-          "relative flex w-full touch-none select-none items-center group",
-          className,
-        )}
+        className={cn("relative flex w-full touch-none select-none items-center group", className)}
         {...props}
       >
         <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-secondary">
@@ -92,7 +85,7 @@ const Slider = React.forwardRef<
             "disabled:pointer-events-none disabled:opacity-50",
             "hover:scale-110 active:scale-95",
             thumbClasses,
-            showValue && "relative",
+            showValue && "relative"
           )}
         >
           {/* Inside Label */}
@@ -101,7 +94,7 @@ const Slider = React.forwardRef<
               className={cn(
                 "text-xs font-bold font-display tracking-tight uppercase",
                 "text-primary pointer-events-none select-none",
-                "leading-none px-1",
+                "leading-none px-1"
               )}
             >
               {formattedValue}
@@ -118,7 +111,7 @@ const Slider = React.forwardRef<
                 "whitespace-nowrap pointer-events-none",
                 "opacity-0 transition-opacity duration-200",
                 "group-hover:opacity-100",
-                "border border-primary/20",
+                "border border-primary/20"
               )}
             >
               {formattedValue}
@@ -127,7 +120,7 @@ const Slider = React.forwardRef<
         </SliderPrimitive.Thumb>
       </SliderPrimitive.Root>
     );
-  },
+  }
 );
 Slider.displayName = SliderPrimitive.Root.displayName;
 

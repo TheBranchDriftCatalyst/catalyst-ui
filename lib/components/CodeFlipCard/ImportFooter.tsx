@@ -23,7 +23,12 @@ interface ImportFooterProps {
  * 1. Manual: Pass `imports` and `from` props
  * 2. Automatic: Pass `sourceCode` to auto-extract imports
  */
-export function ImportFooter({ imports, from, sourceCode, filter = "@/catalyst-ui" }: ImportFooterProps) {
+export function ImportFooter({
+  imports,
+  from,
+  sourceCode,
+  filter = "@/catalyst-ui",
+}: ImportFooterProps) {
   const [copied, setCopied] = useState(false);
 
   let displayText: string;
@@ -54,9 +59,7 @@ export function ImportFooter({ imports, from, sourceCode, filter = "@/catalyst-u
       className="border-t pt-4 flex items-center justify-between gap-2 cursor-pointer hover:bg-accent/5 transition-colors duration-200 group/import"
       onClick={handleCopy}
     >
-      <code className="text-xs text-muted-foreground flex-1 select-none">
-        {displayText}
-      </code>
+      <code className="text-xs text-muted-foreground flex-1 select-none">{displayText}</code>
       <div className="h-6 w-6 flex items-center justify-center opacity-0 group-hover/import:opacity-70 transition-all duration-200 pointer-events-none">
         {copied ? (
           <Check className="h-3 w-3 text-primary/80 drop-shadow-[0_0_6px_rgba(var(--primary-rgb),0.6)]" />

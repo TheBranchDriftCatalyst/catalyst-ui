@@ -36,7 +36,7 @@ export function DialogDemo() {
             <Input
               id="name"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={e => setName(e.target.value)}
               className="col-span-3"
             />
           </div>
@@ -47,7 +47,7 @@ export function DialogDemo() {
             <Input
               id="username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={e => setUsername(e.target.value)}
               className="col-span-3"
             />
           </div>

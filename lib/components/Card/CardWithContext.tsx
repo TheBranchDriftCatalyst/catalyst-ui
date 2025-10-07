@@ -21,10 +21,7 @@ export interface CardWithContextProps extends CardProps {
  * Card component that integrates with CardContext to render
  * dynamically registered header and footer components.
  */
-export const CardWithContext = React.forwardRef<
-  HTMLDivElement,
-  CardWithContextProps
->(
+export const CardWithContext = React.forwardRef<HTMLDivElement, CardWithContextProps>(
   (
     {
       children,
@@ -41,35 +38,23 @@ export const CardWithContext = React.forwardRef<
     const { headerComponents, footerComponents } = useCard();
 
     // If header prop provided, use that; otherwise check context
-    const hasHeader = header !== undefined ? true : (showHeader && headerComponents.length > 0);
+    const hasHeader = header !== undefined ? true : showHeader && headerComponents.length > 0;
     const hasFooter = showFooter && footerComponents.length > 0;
 
     return (
       <Card ref={ref} className={className} {...props}>
         {hasHeader && (
-          <div
-            className={cn(
-              "flex items-center gap-4 px-4 py-2 border-b",
-              headerClassName
-            )}
-          >
-            {header !== undefined ? (
-              header
-            ) : (
-              headerComponents.map((component, index) => (
-                <React.Fragment key={index}>{component}</React.Fragment>
-              ))
-            )}
+          <div className={cn("flex items-center gap-4 px-4 py-2 border-b", headerClassName)}>
+            {header !== undefined
+              ? header
+              : headerComponents.map((component, index) => (
+                  <React.Fragment key={index}>{component}</React.Fragment>
+                ))}
           </div>
         )}
         {children}
         {hasFooter && (
-          <div
-            className={cn(
-              "flex items-center gap-4 px-4 py-2 border-t",
-              footerClassName
-            )}
-          >
+          <div className={cn("flex items-center gap-4 px-4 py-2 border-t", footerClassName)}>
             {footerComponents.map((component, index) => (
               <React.Fragment key={index}>{component}</React.Fragment>
             ))}

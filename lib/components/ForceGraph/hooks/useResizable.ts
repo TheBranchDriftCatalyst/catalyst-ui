@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from "react";
 
 export interface Size {
   width: number;
@@ -60,7 +60,7 @@ export function useResizable(options: UseResizableOptions = {}) {
         height: size.height,
       };
 
-      handle.style.cursor = 'nwse-resize';
+      handle.style.cursor = "nwse-resize";
     };
 
     const onMouseMove = (e: MouseEvent) => {
@@ -88,7 +88,7 @@ export function useResizable(options: UseResizableOptions = {}) {
 
       isResizingRef.current = false;
       if (handle) {
-        handle.style.cursor = 'nwse-resize';
+        handle.style.cursor = "nwse-resize";
       }
 
       // Save to localStorage if storageKey is provided
@@ -101,14 +101,14 @@ export function useResizable(options: UseResizableOptions = {}) {
       }
     };
 
-    handle.addEventListener('mousedown', onMouseDown);
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', onMouseUp);
+    handle.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", onMouseUp);
 
     return () => {
-      handle.removeEventListener('mousedown', onMouseDown);
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseup', onMouseUp);
+      handle.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
     };
   }, [size, minWidth, minHeight, maxWidth, maxHeight, storageKey]);
 

@@ -29,12 +29,7 @@ export const Default: Story = {
         company="StartUp Inc"
         description="Full stack development on customer platform"
       />
-      <TimelineItem
-        date="2020 - 2022"
-        title="Junior Developer"
-        company="Dev Agency"
-        isLast
-      />
+      <TimelineItem date="2020 - 2022" title="Junior Developer" company="Dev Agency" isLast />
     </Timeline>
   ),
 };

@@ -24,9 +24,12 @@ export function TypographyDemo() {
         with comfortable line height and spacing.
       </Typography>
 
-      <Typography variant="blockquote" className="text-muted-foreground border-l-4 border-primary pl-4 italic">
-        This is a blockquote element for emphasizing quotes or callouts. Perfect for testimonials
-        or important statements.
+      <Typography
+        variant="blockquote"
+        className="text-muted-foreground border-l-4 border-primary pl-4 italic"
+      >
+        This is a blockquote element for emphasizing quotes or callouts. Perfect for testimonials or
+        important statements.
       </Typography>
 
       <Typography variant="code" className="text-primary bg-primary/10 px-2 py-1 rounded">
@@ -34,8 +37,8 @@ export function TypographyDemo() {
       </Typography>
 
       <Typography variant="lead" className="text-secondary font-medium tracking-tight">
-        This is lead text for emphasis. Use it for introduction paragraphs or to draw attention
-        to important information at the start of a section.
+        This is lead text for emphasis. Use it for introduction paragraphs or to draw attention to
+        important information at the start of a section.
       </Typography>
 
       <Typography variant="muted" className="text-xs">

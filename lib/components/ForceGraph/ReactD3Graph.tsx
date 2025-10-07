@@ -1,19 +1,19 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
-import * as d3 from 'd3';
-import ReactD3Node from './ReactD3Node';
-import ReactD3Edge from './ReactD3Edge';
-import { EdgeKind, ReactD3GraphProps, NodeData, EdgeData } from './types';
-import { enrichGraph, NodeWithHelpers, EdgeWithHelpers } from './utils/GraphNavigator';
-import { useGraphState } from './hooks/useGraphState';
+import React, { useEffect, useRef, useState, useMemo } from "react";
+import * as d3 from "d3";
+import ReactD3Node from "./ReactD3Node";
+import ReactD3Edge from "./ReactD3Edge";
+import { EdgeKind, ReactD3GraphProps, NodeData, EdgeData } from "./types";
+import { enrichGraph, NodeWithHelpers, EdgeWithHelpers } from "./utils/GraphNavigator";
+import { useGraphState } from "./hooks/useGraphState";
 import {
   applyForceLayout,
   applyStructuredLayout,
   applyCommunityLayout,
   applyDagreLayout,
   applyELKLayout,
-} from './utils/layouts';
-import { safeStopPropagation } from './utils/eventHelpers';
-import { useNodePositions } from './hooks/useNodePositions';
+} from "./utils/layouts";
+import { safeStopPropagation } from "./utils/eventHelpers";
+import { useNodePositions } from "./hooks/useNodePositions";
 
 const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
   data,
@@ -48,15 +48,13 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
   // Memoize filtered nodes based on visibility
   const filteredNodes = useMemo(() => {
     const allNodes = Object.values(enrichedGraph.nodes) as NodeWithHelpers[];
-    return allNodes.filter((n) => visibleNodes[n.kind]);
+    return allNodes.filter(n => visibleNodes[n.kind]);
   }, [enrichedGraph, visibleNodes]);
 
   // Memoize filtered edges based on visibility
   const filteredEdges = useMemo(() => {
     const rawLinks = enrichedGraph.edges as EdgeWithHelpers[];
-    return rawLinks.filter(
-      (l) => visibleEdges[l.kind as EdgeKind] && l.source && l.target
-    );
+    return rawLinks.filter(l => visibleEdges[l.kind as EdgeKind] && l.source && l.target);
   }, [enrichedGraph, visibleEdges]);
 
   useEffect(() => {
@@ -74,7 +72,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
       let simulation: d3.Simulation<any, undefined> | null = null;
 
       switch (layout) {
-        case 'structured':
+        case "structured":
           // Column-based grouping by kind (static layout)
           try {
             applyStructuredLayout(
@@ -84,11 +82,11 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
               layoutOptions
             );
           } catch (e) {
-            console.error('Structured layout failed:', e);
+            console.error("Structured layout failed:", e);
           }
           break;
 
-        case 'community':
+        case "community":
           // Community detection + hierarchical force (dynamic layout)
           try {
             simulation = applyCommunityLayout(
@@ -98,11 +96,11 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
               layoutOptions
             );
           } catch (e) {
-            console.error('Community layout failed:', e);
+            console.error("Community layout failed:", e);
           }
           break;
 
-        case 'dagre':
+        case "dagre":
           // Dagre layered graph (Mermaid-style, static layout)
           try {
             applyDagreLayout(
@@ -112,11 +110,11 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
               layoutOptions
             );
           } catch (e) {
-            console.error('Dagre layout failed:', e);
+            console.error("Dagre layout failed:", e);
           }
           break;
 
-        case 'elk':
+        case "elk":
           // ELK (Eclipse Layout Kernel) - Advanced hierarchical (async, static layout)
           try {
             await applyELKLayout(
@@ -126,11 +124,11 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
               layoutOptions
             );
           } catch (e) {
-            console.error('ELK layout failed:', e);
+            console.error("ELK layout failed:", e);
           }
           break;
 
-        case 'force':
+        case "force":
         default:
           // D3 force simulation (dynamic layout)
           try {
@@ -141,7 +139,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
               layoutOptions
             );
           } catch (e) {
-            console.error('Force layout failed:', e);
+            console.error("Force layout failed:", e);
           }
           break;
       }
@@ -161,18 +159,18 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
       // For force-based layouts, set up simulation tick handler
       const sim = simulation;
 
-      sim.on('tick', () => {
+      sim.on("tick", () => {
         setNodes([...filteredNodes]);
         setEdges([...filteredEdges]);
       });
 
       // Capture charge force for dynamic rebalancing
       try {
-        const f = (sim.force as any) ? (sim.force as any)('charge') : null;
+        const f = (sim.force as any) ? (sim.force as any)("charge") : null;
         if (f) {
           chargeForceRef.current = f;
         }
-      } catch (e) { }
+      } catch (e) {}
 
       // Rebalance on node count increase
       const prevCount = prevNodeCountRef.current || 0;
@@ -180,18 +178,18 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
       if (newCount > prevCount && simulationRef.current) {
         try {
           const boost = Math.min(3, Math.max(1.2, newCount / Math.max(1, prevCount || 1)));
-          if (chargeForceRef.current && typeof chargeForceRef.current.strength === 'function') {
+          if (chargeForceRef.current && typeof chargeForceRef.current.strength === "function") {
             const current = -80;
             chargeForceRef.current.strength(-Math.abs(current * boost));
           }
           sim.alpha(0.6);
           sim.restart();
           setTimeout(() => {
-            if (chargeForceRef.current && typeof chargeForceRef.current.strength === 'function') {
+            if (chargeForceRef.current && typeof chargeForceRef.current.strength === "function") {
               chargeForceRef.current.strength(-80);
             }
           }, 1200);
-        } catch (e) { }
+        } catch (e) {}
       }
       prevNodeCountRef.current = newCount;
 
@@ -216,7 +214,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
   const handleDragStart = (node: NodeData) => (event: any) => {
     safeStopPropagation(event);
 
-    if (layout === 'structured' || layout === 'dagre' || layout === 'elk') {
+    if (layout === "structured" || layout === "dagre" || layout === "elk") {
       node.fx = node.x;
       node.fy = node.y;
       return;
@@ -244,11 +242,11 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
   const handleDragEnd = (node: NodeData) => (event: any) => {
     safeStopPropagation(event);
 
-    if (layout === 'structured' || layout === 'dagre' || layout === 'elk') {
+    if (layout === "structured" || layout === "dagre" || layout === "elk") {
       node.fx = node.x;
       node.fy = node.y;
       // Trigger React update for static layouts
-      setNodes((currentNodes) => [...currentNodes]);
+      setNodes(currentNodes => [...currentNodes]);
       // Save positions after drag in static layouts
       savePositions(nodes);
       return;
@@ -280,18 +278,18 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
     const zoom = d3
       .zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.25, 8])
-      .on('zoom', (event) => {
-        zoomLayer.attr('transform', event.transform.toString());
+      .on("zoom", event => {
+        zoomLayer.attr("transform", event.transform.toString());
         try {
           setZoomScale(event.transform.k);
-        } catch (e) { }
+        } catch (e) {}
       });
 
     svg.call(zoom as any);
     zoom.transform(svg.transition().duration(0) as any, d3.zoomIdentity);
 
     return () => {
-      svg.on('.zoom', null);
+      svg.on(".zoom", null);
     };
   }, [dimensions.width, dimensions.height]);
 
@@ -320,17 +318,18 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
       {/* Gradients */}
       <defs>
         {/* Node gradients */}
-        {['container', 'network', 'image', 'volume'].map((kind) => (
-          <linearGradient
-            key={kind}
-            id={`gradient-${kind}`}
-            x1="0%"
-            y1="0%"
-            x2="100%"
-            y2="100%"
-          >
-            <stop offset="0%" stopColor={`var(--${kind === 'container' ? 'primary' : kind === 'network' ? 'neon-yellow' : kind === 'image' ? 'neon-red' : 'neon-purple'})`} stopOpacity="0.1" />
-            <stop offset="100%" stopColor={`var(--${kind === 'container' ? 'primary' : kind === 'network' ? 'neon-yellow' : kind === 'image' ? 'neon-red' : 'neon-purple'})`} stopOpacity="0.05" />
+        {["container", "network", "image", "volume"].map(kind => (
+          <linearGradient key={kind} id={`gradient-${kind}`} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop
+              offset="0%"
+              stopColor={`var(--${kind === "container" ? "primary" : kind === "network" ? "neon-yellow" : kind === "image" ? "neon-red" : "neon-purple"})`}
+              stopOpacity="0.1"
+            />
+            <stop
+              offset="100%"
+              stopColor={`var(--${kind === "container" ? "primary" : kind === "network" ? "neon-yellow" : kind === "image" ? "neon-red" : "neon-purple"})`}
+              stopOpacity="0.05"
+            />
           </linearGradient>
         ))}
       </defs>
@@ -338,7 +337,13 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
       {/* Glow filter */}
       <defs>
         <filter id="node-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="var(--primary)" floodOpacity="0.6" />
+          <feDropShadow
+            dx="0"
+            dy="0"
+            stdDeviation="6"
+            floodColor="var(--primary)"
+            floodOpacity="0.6"
+          />
         </filter>
       </defs>
 
@@ -355,12 +360,13 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
         {/* Edges */}
         <g className="edges">
           {edges.map((edge, index) => {
-            const edgesBetweenNodes = edges.filter(e =>
-              (e.source.id === edge.source.id && e.target.id === edge.target.id) ||
-              (e.source.id === edge.target.id && e.target.id === edge.source.id)
+            const edgesBetweenNodes = edges.filter(
+              e =>
+                (e.source.id === edge.source.id && e.target.id === edge.target.id) ||
+                (e.source.id === edge.target.id && e.target.id === edge.source.id)
             );
-            const edgeIndex = edgesBetweenNodes.findIndex(e =>
-              e.src === edge.src && e.dst === edge.dst
+            const edgeIndex = edgesBetweenNodes.findIndex(
+              e => e.src === edge.src && e.dst === edge.dst
             );
 
             return (
@@ -371,15 +377,13 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
                 allNodes={nodes}
                 edgeIndex={edgeIndex}
                 totalEdgesBetweenNodes={edgesBetweenNodes.length}
-                isDimmed={
-                  Boolean(
-                    hoveredNode &&
+                isDimmed={Boolean(
+                  hoveredNode &&
                     hoveredNode !== edge.source.id &&
                     hoveredNode !== edge.target.id &&
                     selectedNode !== edge.source.id &&
                     selectedNode !== edge.target.id
-                  )
-                }
+                )}
               />
             );
           })}
@@ -387,7 +391,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
 
         {/* Nodes */}
         <g className="nodes">
-          {nodes.map((node) => {
+          {nodes.map(node => {
             // Get custom renderer from config for this node type
             const nodeConfig = config?.nodeTypes?.[node.kind];
             const customRenderer = nodeConfig?.renderer || config?.defaultNodeRenderer;
@@ -399,7 +403,9 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
                 data={node}
                 isSelected={selectedNode === node.id}
                 isHovered={hoveredNode === node.id}
-                isDimmed={Boolean(hoveredNode && hoveredNode !== node.id && selectedNode !== node.id)}
+                isDimmed={Boolean(
+                  hoveredNode && hoveredNode !== node.id && selectedNode !== node.id
+                )}
                 customRenderer={customRenderer}
                 getNodeDimensionsFn={getNodeDimensionsFn}
                 onMouseEnter={handleNodeMouseEnter(node.id)}
@@ -409,7 +415,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
                   try {
                     node.fx = null;
                     node.fy = null;
-                  } catch (e) { }
+                  } catch (e) {}
                 }}
                 onDragStart={handleDragStart(node)}
                 onDrag={handleDrag(node)}

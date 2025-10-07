@@ -1,16 +1,8 @@
 import { useRef } from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/catalyst-ui/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/catalyst-ui/ui/avatar";
 import { StatBar } from "@/catalyst-ui/components/StatBar/StatBar";
-import {
-  Timeline,
-  TimelineItem,
-} from "@/catalyst-ui/components/Timeline/Timeline";
+import { Timeline, TimelineItem } from "@/catalyst-ui/components/Timeline/Timeline";
 import { cn } from "@/catalyst-ui/utils";
 import { ExportButton } from "./ExportButton";
 import "./print.css";
@@ -142,7 +134,7 @@ export function CharacterSheetResume({
 
   const initials = profile.name
     .split(" ")
-    .map((n) => n[0])
+    .map(n => n[0])
     .join("")
     .toUpperCase();
 
@@ -160,160 +152,158 @@ export function CharacterSheetResume({
         ref={contentRef}
         className={cn("space-y-4 print-content print-resume-content", className)}
       >
-      {/* Profile Card - Multi-column layout */}
-      <Card>
-        <CardContent className="pt-6">
-          <div className="grid md:grid-cols-[auto_1fr] gap-6 items-start">
-            {/* Large Avatar */}
-            <Avatar className="h-32 w-32 md:h-40 md:w-40 ring-4 ring-primary/20 shadow-lg">
-              <AvatarImage src={profile.avatar} alt={profile.name} />
-              <AvatarFallback className="text-3xl md:text-4xl font-bold">
-                {initials}
-              </AvatarFallback>
-            </Avatar>
+        {/* Profile Card - Multi-column layout */}
+        <Card>
+          <CardContent className="pt-6">
+            <div className="grid md:grid-cols-[auto_1fr] gap-6 items-start">
+              {/* Large Avatar */}
+              <Avatar className="h-32 w-32 md:h-40 md:w-40 ring-4 ring-primary/20 shadow-lg">
+                <AvatarImage src={profile.avatar} alt={profile.name} />
+                <AvatarFallback className="text-3xl md:text-4xl font-bold">
+                  {initials}
+                </AvatarFallback>
+              </Avatar>
 
-            {/* Profile Info */}
-            <div className="space-y-3">
-              <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-                  {profile.name}
-                </h2>
-                <p className="text-base md:text-lg text-primary font-semibold mt-1">
-                  {profile.title}
-                </p>
-              </div>
-
-              {profile.bio && (
-                <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                  {profile.bio}
-                </p>
-              )}
-
-              {showContact && (
-                <div className="flex flex-wrap gap-4 pt-2 text-sm text-muted-foreground">
-                  {profile.email && <span>📧 {profile.email}</span>}
-                  {profile.location && <span>📍 {profile.location}</span>}
-                  {profile.website && (
-                    <a
-                      href={profile.website}
-                      className="hover:text-primary transition-colors"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      🔗 {profile.website}
-                    </a>
-                  )}
+              {/* Profile Info */}
+              <div className="space-y-3">
+                <div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-foreground">{profile.name}</h2>
+                  <p className="text-base md:text-lg text-primary font-semibold mt-1">
+                    {profile.title}
+                  </p>
                 </div>
-              )}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
 
-      {/* GitHub Stats Card */}
-      {profile.githubUsername && (
-        <Card>
-          <CardHeader>
-            <CardTitle>GitHub Statistics</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-4 md:grid-cols-2">
-              {/* GitHub Stats */}
-              <img
-                src={`https://github-readme-stats.vercel.app/api?username=${profile.githubUsername}&show_icons=true&theme=transparent&hide_border=true&title_color=8b5cf6&icon_color=8b5cf6&text_color=6b7280&bg_color=00000000`}
-                alt="GitHub Stats"
-                className="w-full"
-                loading="lazy"
-              />
-              {/* GitHub Streak */}
-              <img
-                src={`https://github-readme-streak-stats.herokuapp.com/?user=${profile.githubUsername}&theme=transparent&hide_border=true&ring=8b5cf6&fire=8b5cf6&currStreakLabel=8b5cf6&background=00000000`}
-                alt="GitHub Streak"
-                className="w-full"
-                loading="lazy"
-              />
-            </div>
-            {/* Top Languages */}
-            <div className="mt-4">
-              <img
-                src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${profile.githubUsername}&layout=compact&theme=transparent&hide_border=true&title_color=8b5cf6&text_color=6b7280&bg_color=00000000`}
-                alt="Top Languages"
-                className="w-full max-w-md"
-                loading="lazy"
-              />
+                {profile.bio && (
+                  <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                    {profile.bio}
+                  </p>
+                )}
+
+                {showContact && (
+                  <div className="flex flex-wrap gap-4 pt-2 text-sm text-muted-foreground">
+                    {profile.email && <span>📧 {profile.email}</span>}
+                    {profile.location && <span>📍 {profile.location}</span>}
+                    {profile.website && (
+                      <a
+                        href={profile.website}
+                        className="hover:text-primary transition-colors"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        🔗 {profile.website}
+                      </a>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </CardContent>
         </Card>
-      )}
 
-      {/* Stats Card - Compact with labels */}
-      {stats.length > 0 && (
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg">{sectionTitles.stats}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-              {stats.map((stat, i) => (
-                <StatBar
-                  key={i}
-                  label={stat.label}
-                  value={stat.value}
-                  max={stat.max}
-                  useLabels={true}
-                  className="text-xs"
-                />
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Skills Card - shields.io badges with tech-specific colors */}
-      {skills.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>{sectionTitles.skills}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              {skills.map((skill, i) => (
+        {/* GitHub Stats Card */}
+        {profile.githubUsername && (
+          <Card>
+            <CardHeader>
+              <CardTitle>GitHub Statistics</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-4 md:grid-cols-2">
+                {/* GitHub Stats */}
                 <img
-                  key={i}
-                  src={generateShieldBadge(skill, getSkillColor(skill))}
-                  alt={skill}
-                  className="h-5 transition-transform hover:scale-105"
+                  src={`https://github-readme-stats.vercel.app/api?username=${profile.githubUsername}&show_icons=true&theme=transparent&hide_border=true&title_color=8b5cf6&icon_color=8b5cf6&text_color=6b7280&bg_color=00000000`}
+                  alt="GitHub Stats"
+                  className="w-full"
                   loading="lazy"
                 />
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Timeline Card */}
-      {timeline.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>{sectionTitles.timeline}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Timeline>
-              {timeline.map((item, i) => (
-                <TimelineItem
-                  key={i}
-                  date={item.date}
-                  title={item.title}
-                  company={item.company}
-                  description={item.description}
-                  achievements={item.achievements}
-                  isLast={i === timeline.length - 1}
+                {/* GitHub Streak */}
+                <img
+                  src={`https://github-readme-streak-stats.herokuapp.com/?user=${profile.githubUsername}&theme=transparent&hide_border=true&ring=8b5cf6&fire=8b5cf6&currStreakLabel=8b5cf6&background=00000000`}
+                  alt="GitHub Streak"
+                  className="w-full"
+                  loading="lazy"
                 />
-              ))}
-            </Timeline>
-          </CardContent>
-        </Card>
-      )}
+              </div>
+              {/* Top Languages */}
+              <div className="mt-4">
+                <img
+                  src={`https://github-readme-stats.vercel.app/api/top-langs/?username=${profile.githubUsername}&layout=compact&theme=transparent&hide_border=true&title_color=8b5cf6&text_color=6b7280&bg_color=00000000`}
+                  alt="Top Languages"
+                  className="w-full max-w-md"
+                  loading="lazy"
+                />
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Stats Card - Compact with labels */}
+        {stats.length > 0 && (
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">{sectionTitles.stats}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+                {stats.map((stat, i) => (
+                  <StatBar
+                    key={i}
+                    label={stat.label}
+                    value={stat.value}
+                    max={stat.max}
+                    useLabels={true}
+                    className="text-xs"
+                  />
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Skills Card - shields.io badges with tech-specific colors */}
+        {skills.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>{sectionTitles.skills}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                {skills.map((skill, i) => (
+                  <img
+                    key={i}
+                    src={generateShieldBadge(skill, getSkillColor(skill))}
+                    alt={skill}
+                    className="h-5 transition-transform hover:scale-105"
+                    loading="lazy"
+                  />
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Timeline Card */}
+        {timeline.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>{sectionTitles.timeline}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Timeline>
+                {timeline.map((item, i) => (
+                  <TimelineItem
+                    key={i}
+                    date={item.date}
+                    title={item.title}
+                    company={item.company}
+                    description={item.description}
+                    achievements={item.achievements}
+                    isLast={i === timeline.length - 1}
+                  />
+                ))}
+              </Timeline>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </>
   );
@@ -338,11 +328,7 @@ export function fromJsonResume(jsonResume: any): CharacterSheetData {
     stats: jsonSkills
       ? jsonSkills.slice(0, 6).map((skill: any) => ({
           label: skill.name,
-          value: skill.level
-            ? typeof skill.level === "number"
-              ? skill.level
-              : 75
-            : 75,
+          value: skill.level ? (typeof skill.level === "number" ? skill.level : 75) : 75,
           max: 100,
         }))
       : [],

@@ -1,9 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import {
-  CharacterSheetResume,
-  CharacterSheetData,
-  fromJsonResume,
-} from "./CharacterSheetResume";
+import { CharacterSheetResume, CharacterSheetData, fromJsonResume } from "./CharacterSheetResume";
 
 const meta = {
   title: "Cards/CharacterSheetResume",
@@ -136,16 +132,7 @@ export const GameDevResume: Story = {
         { label: "3D Math Intelligence", value: 88 },
         { label: "Shader Magic", value: 75 },
       ],
-      skills: [
-        "Unity",
-        "C#",
-        "Blender",
-        "Shaders",
-        "Physics",
-        "Networking",
-        "VR",
-        "AR",
-      ],
+      skills: ["Unity", "C#", "Blender", "Shaders", "Physics", "Networking", "VR", "AR"],
       timeline: [
         {
           date: "2022 - Present",
@@ -237,10 +224,7 @@ const jsonResumeData = {
       startDate: "2022",
       endDate: "Present",
       summary: "Building scalable web applications",
-      highlights: [
-        "Led team of 4 developers",
-        "Improved performance by 50%",
-      ],
+      highlights: ["Led team of 4 developers", "Improved performance by 50%"],
     },
   ],
   skills: [

@@ -60,10 +60,7 @@ interface ResponsiveTypographyProps
   variant?: VariantProps<typeof typographyVariants>["variant"];
 }
 
-type TypographySize = Exclude<
-  VariantProps<typeof typographyVariants>["size"],
-  undefined | null
->;
+type TypographySize = Exclude<VariantProps<typeof typographyVariants>["size"], undefined | null>;
 
 // type Entries<T> = {
 //   [K in keyof T]: [K, T[K]];
@@ -92,10 +89,7 @@ const defaultBreakpoints: Partial<Record<TypographySize, number>> = {
 //   ? [K, T[K]]
 //   : never)[];
 
-const ResponsiveTypography = React.forwardRef<
-  HTMLDivElement,
-  ResponsiveTypographyProps
->(
+const ResponsiveTypography = React.forwardRef<HTMLDivElement, ResponsiveTypographyProps>(
   (
     {
       tag,
@@ -107,34 +101,33 @@ const ResponsiveTypography = React.forwardRef<
       breakpoints = defaultBreakpoints,
       ...props
     },
-    ref,
+    ref
   ) => {
     // const { width } = useWidgetWidth();
     // If variant is provided and matches a heading, use it as size and tag
-    const resolvedSize = variant && ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(variant)
-      ? variant as TypographySize
-      : size;
+    const resolvedSize =
+      variant && ["h1", "h2", "h3", "h4", "h5", "h6"].includes(variant)
+        ? (variant as TypographySize)
+        : size;
 
     // Map variant to valid HTML element type
     const variantTagMap: Record<string, keyof JSX.IntrinsicElements> = {
-      h1: 'h1',
-      h2: 'h2',
-      h3: 'h3',
-      h4: 'h4',
-      h5: 'h5',
-      h6: 'h6',
-      p: 'p',
-      blockquote: 'blockquote',
-      code: 'code',
-      lead: 'p',
-      large: 'p',
-      small: 'small',
-      muted: 'p',
+      h1: "h1",
+      h2: "h2",
+      h3: "h3",
+      h4: "h4",
+      h5: "h5",
+      h6: "h6",
+      p: "p",
+      blockquote: "blockquote",
+      code: "code",
+      lead: "p",
+      large: "p",
+      small: "small",
+      muted: "p",
     };
 
-    const resolvedTag = variant && variantTagMap[variant]
-      ? variantTagMap[variant]
-      : tag;
+    const resolvedTag = variant && variantTagMap[variant] ? variantTagMap[variant] : tag;
 
     const Comp: React.ElementType = asChild ? Slot : resolvedTag || "p";
 
@@ -151,22 +144,18 @@ const ResponsiveTypography = React.forwardRef<
     //   }
     // }
 
-    const classNames = cn(
-      typographyVariants({ size: adjustedSize, variant, className }),
-    );
+    const classNames = cn(typographyVariants({ size: adjustedSize, variant, className }));
 
     return (
       <Comp className={classNames} ref={ref} {...props}>
         {children}
       </Comp>
     );
-  },
+  }
 );
 
 ResponsiveTypography.displayName = "ResponsiveTypography";
 
-export {
-    ResponsiveTypography, ResponsiveTypography as Typography, typographyVariants
-};
+export { ResponsiveTypography, ResponsiveTypography as Typography, typographyVariants };
 
 export default ResponsiveTypography;

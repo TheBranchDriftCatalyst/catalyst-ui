@@ -1,9 +1,4 @@
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/catalyst-ui/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/catalyst-ui/ui/tooltip";
 import { Button } from "@/catalyst-ui/ui/button";
 
 export function TooltipDemo() {

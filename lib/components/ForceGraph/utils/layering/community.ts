@@ -3,115 +3,115 @@
  * Detects node communities and layouts them hierarchically
  */
 
-import * as d3 from 'd3';
-import { NodeData, EdgeData } from '../../types';
-import { LayoutDimensions } from '../layouts';
-import { detectCommunities, getCommunityGroups } from '../community';
+import * as d3 from "d3";
+import { NodeData, EdgeData } from "../../types";
+import { LayoutDimensions } from "../layouts";
+import { detectCommunities, getCommunityGroups } from "../community";
 
-export type CommunityLayoutStrategy = 'grid' | 'horizontal' | 'vertical' | 'circular';
-export type CommunitySortStrategy = 'size' | 'nodeCount' | 'none';
-export type CommunityInternalLayout = 'force' | 'structured';
+export type CommunityLayoutStrategy = "grid" | "horizontal" | "vertical" | "circular";
+export type CommunitySortStrategy = "size" | "nodeCount" | "none";
+export type CommunityInternalLayout = "force" | "structured";
 
 export interface CommunityLayoutOptions {
-  communityStrength?: number;     // Attraction within communities (0-1) - force only
-  communityPadding?: number;      // Space between community bounding boxes
-  localIterations?: number;       // Force iterations for local layouts - force only
-  layoutStrategy?: CommunityLayoutStrategy;  // How to arrange communities
-  gridColumns?: number;           // Override auto-calculated columns (grid only)
+  communityStrength?: number; // Attraction within communities (0-1) - force only
+  communityPadding?: number; // Space between community bounding boxes
+  localIterations?: number; // Force iterations for local layouts - force only
+  layoutStrategy?: CommunityLayoutStrategy; // How to arrange communities
+  gridColumns?: number; // Override auto-calculated columns (grid only)
   sortBy?: CommunitySortStrategy; // How to sort communities before positioning
   internalLayout?: CommunityInternalLayout; // Layout algorithm within communities
-  internalNodeSpacing?: number;   // Node spacing within communities - structured only
+  internalNodeSpacing?: number; // Node spacing within communities - structured only
 }
 
 export const CommunityLayoutConfig = {
-  name: 'Community (Smart)',
-  description: 'Groups related nodes using community detection with calculated positioning',
+  name: "Community (Smart)",
+  description: "Groups related nodes using community detection with calculated positioning",
   fields: [
     {
-      key: 'layoutStrategy',
-      label: 'Layout Strategy',
-      type: 'select' as const,
+      key: "layoutStrategy",
+      label: "Layout Strategy",
+      type: "select" as const,
       options: [
-        { value: 'grid', label: 'Grid (Auto)' },
-        { value: 'horizontal', label: 'Horizontal Row' },
-        { value: 'vertical', label: 'Vertical Column' },
-        { value: 'circular', label: 'Circular' },
+        { value: "grid", label: "Grid (Auto)" },
+        { value: "horizontal", label: "Horizontal Row" },
+        { value: "vertical", label: "Vertical Column" },
+        { value: "circular", label: "Circular" },
       ],
-      defaultValue: 'grid',
-      description: 'How to arrange communities in the viewport',
+      defaultValue: "grid",
+      description: "How to arrange communities in the viewport",
     },
     {
-      key: 'internalLayout',
-      label: 'Internal Layout',
-      type: 'select' as const,
+      key: "internalLayout",
+      label: "Internal Layout",
+      type: "select" as const,
       options: [
-        { value: 'structured', label: 'Structured (Columns by Type)' },
-        { value: 'force', label: 'Force Simulation' },
+        { value: "structured", label: "Structured (Columns by Type)" },
+        { value: "force", label: "Force Simulation" },
       ],
-      defaultValue: 'structured',
-      description: 'How to organize nodes within each community',
+      defaultValue: "structured",
+      description: "How to organize nodes within each community",
     },
     {
-      key: 'sortBy',
-      label: 'Sort Communities By',
-      type: 'select' as const,
+      key: "sortBy",
+      label: "Sort Communities By",
+      type: "select" as const,
       options: [
-        { value: 'size', label: 'Size (Largest First)' },
-        { value: 'nodeCount', label: 'Node Count' },
-        { value: 'none', label: 'None' },
+        { value: "size", label: "Size (Largest First)" },
+        { value: "nodeCount", label: "Node Count" },
+        { value: "none", label: "None" },
       ],
-      defaultValue: 'size',
-      description: 'Sort order for community placement',
+      defaultValue: "size",
+      description: "Sort order for community placement",
     },
     {
-      key: 'communityPadding',
-      label: 'Community Spacing',
-      type: 'number' as const,
+      key: "communityPadding",
+      label: "Community Spacing",
+      type: "number" as const,
       min: 50,
       max: 300,
       step: 10,
       defaultValue: 120,
-      description: 'Space between communities',
+      description: "Space between communities",
     },
     {
-      key: 'gridColumns',
-      label: 'Grid Columns',
-      type: 'number' as const,
+      key: "gridColumns",
+      label: "Grid Columns",
+      type: "number" as const,
       min: 1,
       max: 10,
       step: 1,
       defaultValue: 0,
-      description: 'Override auto-calculated columns (0 = auto)',
+      description: "Override auto-calculated columns (0 = auto)",
     },
     {
-      key: 'internalNodeSpacing',
-      label: 'Internal Node Spacing',
-      type: 'number' as const,
+      key: "internalNodeSpacing",
+      label: "Internal Node Spacing",
+      type: "number" as const,
       min: 50,
       max: 200,
       step: 10,
       defaultValue: 100,
-      description: 'Vertical spacing between nodes (structured layout)',
+      description: "Vertical spacing between nodes (structured layout)",
     },
     {
-      key: 'communityStrength',
-      label: 'Force Cohesion',
-      type: 'number' as const,
+      key: "communityStrength",
+      label: "Force Cohesion",
+      type: "number" as const,
       min: 0.1,
       max: 1,
       step: 0.1,
       defaultValue: 0.8,
-      description: 'Attraction strength (force layout only)',
+      description: "Attraction strength (force layout only)",
     },
     {
-      key: 'localIterations',
-      label: 'Force Iterations',
-      type: 'number' as const,
+      key: "localIterations",
+      label: "Force Iterations",
+      type: "number" as const,
       min: 50,
       max: 200,
       step: 10,
       defaultValue: 120,
-      description: 'Simulation quality (force layout only)',
+      description: "Simulation quality (force layout only)",
     },
   ],
 };
@@ -137,10 +137,10 @@ export function applyCommunityLayout(
     communityStrength = 0.8,
     communityPadding = 120,
     localIterations = 120,
-    layoutStrategy = 'grid',
+    layoutStrategy = "grid",
     gridColumns = 0,
-    sortBy = 'size',
-    internalLayout = 'structured',
+    sortBy = "size",
+    internalLayout = "structured",
     internalNodeSpacing = 100,
   } = options;
 
@@ -150,17 +150,16 @@ export function applyCommunityLayout(
   const nodeToCommunity = detectCommunities(nodes, edges);
   const communityGroups = getCommunityGroups(nodes, nodeToCommunity);
 
-
   // Step 2: Layout each community locally
   const communityLayouts: CommunityLayout[] = [];
 
   communityGroups.forEach(community => {
     const communityNodes = nodes.filter(n => community.nodes.includes(n.id));
-    const communityEdges = edges.filter(e =>
-      community.nodes.includes(e.src) && community.nodes.includes(e.dst)
+    const communityEdges = edges.filter(
+      e => community.nodes.includes(e.src) && community.nodes.includes(e.dst)
     );
 
-    if (internalLayout === 'structured') {
+    if (internalLayout === "structured") {
       // Structured layout: organize nodes by kind into columns
       const kinds = Array.from(new Set(communityNodes.map(n => n.kind)));
       const colCount = kinds.length || 1;
@@ -199,17 +198,19 @@ export function applyCommunityLayout(
       });
 
       // Local force simulation for this community
-      const localSim = d3.forceSimulation(communityNodes)
+      const localSim = d3
+        .forceSimulation(communityNodes)
         .force(
-          'link',
-          d3.forceLink(communityEdges)
+          "link",
+          d3
+            .forceLink(communityEdges)
             .id((d: any) => d.id)
             .distance(100)
             .strength(communityStrength)
         )
-        .force('charge', d3.forceManyBody().strength(-150))
-        .force('collision', d3.forceCollide().radius(60))
-        .force('center', d3.forceCenter(0, 0).strength(0.05))
+        .force("charge", d3.forceManyBody().strength(-150))
+        .force("collision", d3.forceCollide().radius(60))
+        .force("center", d3.forceCenter(0, 0).strength(0.05))
         .alphaDecay(0.02)
         .alpha(1);
 
@@ -248,23 +249,22 @@ export function applyCommunityLayout(
   });
 
   // Step 3: Sort communities (optional)
-  if (sortBy !== 'none') {
+  if (sortBy !== "none") {
     communityLayouts.sort((a, b) => {
-      if (sortBy === 'size') {
+      if (sortBy === "size") {
         const areaA = a.bounds.width * a.bounds.height;
         const areaB = b.bounds.width * b.bounds.height;
         return areaB - areaA; // Largest first
-      } else if (sortBy === 'nodeCount') {
+      } else if (sortBy === "nodeCount") {
         return b.nodes.length - a.nodes.length; // Most nodes first
       }
       return 0;
     });
   }
 
-
   // Step 4: Calculate community positions based on layout strategy
   switch (layoutStrategy) {
-    case 'grid': {
+    case "grid": {
       // Calculate optimal grid dimensions
       const numCommunities = communityLayouts.length;
       const cols = gridColumns > 0 ? gridColumns : Math.ceil(Math.sqrt(numCommunities));
@@ -282,7 +282,6 @@ export function applyCommunityLayout(
       const startX = (width - gridWidth) / 2;
       const startY = (height - gridHeight) / 2;
 
-
       // Position each community in grid cells
       communityLayouts.forEach((layout, index) => {
         const col = index % cols;
@@ -295,7 +294,7 @@ export function applyCommunityLayout(
       break;
     }
 
-    case 'horizontal': {
+    case "horizontal": {
       // Single row, distribute horizontally with even spacing
       const totalWidth = communityLayouts.reduce((sum, c) => sum + c.bounds.width, 0);
       const totalPadding = (communityLayouts.length + 1) * communityPadding;
@@ -315,7 +314,7 @@ export function applyCommunityLayout(
       break;
     }
 
-    case 'vertical': {
+    case "vertical": {
       // Single column, distribute vertically with even spacing
       const totalHeight = communityLayouts.reduce((sum, c) => sum + c.bounds.height, 0);
       const totalPadding = (communityLayouts.length + 1) * communityPadding;
@@ -335,7 +334,7 @@ export function applyCommunityLayout(
       break;
     }
 
-    case 'circular': {
+    case "circular": {
       // Arrange communities in a circle around viewport center
       const centerX = width / 2;
       const centerY = height / 2;
@@ -366,9 +365,7 @@ export function applyCommunityLayout(
   });
 
   // Return a dummy simulation (nodes are already positioned)
-  const dummySim = d3.forceSimulation(nodes)
-    .alphaDecay(1)
-    .alpha(0);
+  const dummySim = d3.forceSimulation(nodes).alphaDecay(1).alpha(0);
 
   return dummySim;
 }

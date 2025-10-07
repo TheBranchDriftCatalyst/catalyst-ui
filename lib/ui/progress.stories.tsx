@@ -47,7 +47,7 @@ export const Animated: Story = {
 
     useEffect(() => {
       const timer = setInterval(() => {
-        setProgress((prev) => {
+        setProgress(prev => {
           if (prev >= 100) return 0;
           return prev + 1;
         });
@@ -80,23 +80,13 @@ export const Interactive: Story = {
         </div>
         <Progress value={progress} />
         <div className="flex gap-2">
-          <Button
-            size="sm"
-            onClick={() => setProgress(Math.max(0, progress - 10))}
-          >
+          <Button size="sm" onClick={() => setProgress(Math.max(0, progress - 10))}>
             -10
           </Button>
-          <Button
-            size="sm"
-            onClick={() => setProgress(Math.min(100, progress + 10))}
-          >
+          <Button size="sm" onClick={() => setProgress(Math.min(100, progress + 10))}>
             +10
           </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => setProgress(0)}
-          >
+          <Button size="sm" variant="outline" onClick={() => setProgress(0)}>
             Reset
           </Button>
         </div>

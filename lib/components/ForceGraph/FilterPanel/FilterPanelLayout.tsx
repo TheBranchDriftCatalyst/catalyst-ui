@@ -1,5 +1,5 @@
-import React from 'react';
-import { LayoutKind } from '../utils/layouts';
+import React from "react";
+import { LayoutKind } from "../utils/layouts";
 
 interface FilterPanelLayoutProps {
   layout: LayoutKind;
@@ -9,11 +9,11 @@ interface FilterPanelLayoutProps {
 }
 
 const LAYOUT_OPTIONS = [
-  { value: 'force' as LayoutKind, label: 'Force-Directed' },
-  { value: 'structured' as LayoutKind, label: 'Structured (Columns)' },
-  { value: 'community' as LayoutKind, label: 'Community (Smart)' },
-  { value: 'dagre' as LayoutKind, label: 'Dagre (Mermaid)' },
-  { value: 'elk' as LayoutKind, label: 'ELK (Advanced)' },
+  { value: "force" as LayoutKind, label: "Force-Directed" },
+  { value: "structured" as LayoutKind, label: "Structured (Columns)" },
+  { value: "community" as LayoutKind, label: "Community (Smart)" },
+  { value: "dagre" as LayoutKind, label: "Dagre (Mermaid)" },
+  { value: "elk" as LayoutKind, label: "ELK (Advanced)" },
 ];
 
 const FilterPanelLayout: React.FC<FilterPanelLayoutProps> = ({
@@ -24,18 +24,16 @@ const FilterPanelLayout: React.FC<FilterPanelLayoutProps> = ({
 }) => {
   return (
     <div className="mb-3 pb-3 border-b border-primary/30">
-      <h4 className="text-xs font-semibold text-primary/80 mb-2 tracking-wide uppercase">
-        Layout
-      </h4>
+      <h4 className="text-xs font-semibold text-primary/80 mb-2 tracking-wide uppercase">Layout</h4>
 
       {/* Layout Selector */}
       <div className="mb-2">
         <select
           value={layout}
-          onChange={(e) => onSetLayout(e.target.value as LayoutKind)}
+          onChange={e => onSetLayout(e.target.value as LayoutKind)}
           className="w-full px-2 py-1.5 text-xs bg-background/50 border border-primary/30 rounded text-foreground cursor-pointer transition-all duration-200 hover:border-primary/50 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
         >
-          {LAYOUT_OPTIONS.map((option) => (
+          {LAYOUT_OPTIONS.map(option => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>

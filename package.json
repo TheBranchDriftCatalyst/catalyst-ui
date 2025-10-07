@@ -61,6 +61,7 @@
     "preview:app": "vite preview --config vite.app.config.ts",
     "build:storybook": "storybook build -o dist/storybook",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css,md,json}\"",
     "release:first": "standard-version --first-release",
     "release:patch": "standard-version --release-as patch",
     "release:minor": "standard-version --release-as minor",

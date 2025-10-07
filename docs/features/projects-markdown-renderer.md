@@ -7,6 +7,7 @@ Create a modular, DRY system that scans the workspace for `catalyst_repo.yaml` f
 ### Vision
 
 A single-source-of-truth system where:
+
 - Repository metadata lives in `catalyst_repo.yaml`
 - Documentation lives in GitHub READMEs
 - Markdown components are automatically mapped to themed React components
@@ -26,33 +27,39 @@ A single-source-of-truth system where:
 ### Existing Infrastructure We Can Leverage
 
 ✅ **CodeBlock Component** (`lib/components/CodeBlock/`)
+
 - Shiki syntax highlighting
 - Interactive features (editable, theme switching)
 - CardContext integration for headers
 - Perfect for rendering markdown code blocks
 
 ✅ **Table Components** (`lib/ui/table.tsx`)
+
 - TanStack Table integration
 - Radix UI primitives
 - Theme-aware styling
 - Ready for markdown tables
 
 ✅ **Card System** (`lib/ui/card.tsx`)
+
 - Card, CardHeader, CardContent, CardFooter
 - Interactive variants
 - Can wrap entire repos or sections
 
 ✅ **Mermaid Parser Precedent** (`lib/utils/mermaid/`)
+
 - Existing parser infrastructure
 - AST manipulation patterns
 - Clean separation of parsing and rendering
 
 ✅ **Typography Components** (`lib/ui/typography.tsx`)
+
 - Headings, paragraphs, lists
 - Consistent styling
 - Perfect for markdown text nodes
 
 ✅ **catalyst_repo.yaml Files**
+
 - Standardized metadata across workspace
 - Tech stack, status, groups
 - Already being used by @TheBranchDriftCatalyst
@@ -123,7 +130,7 @@ A single-source-of-truth system where:
 
 ### Data Flow
 
-```typescript
+````typescript
 // 1. Scan workspace
 const repos = scanWorkspace();
 // → [{ name, description, repo_url, tech_stack, ... }]
@@ -143,7 +150,7 @@ const featuresSection = extractSection(ast, "Features");
 // 5. Map to components
 const component = renderMarkdown(ast, MARKDOWN_COMPONENT_MAP);
 // → <><Typography>...</Typography><CodeBlock>...</CodeBlock></>
-```
+````
 
 ## Implementation Plan
 
@@ -158,6 +165,7 @@ yarn add js-yaml
 ```
 
 **Package Roles:**
+
 - `unified` - Core AST processing framework
 - `remark-parse` - Markdown → AST
 - `remark-gfm` - GitHub Flavored Markdown (tables, task lists, strikethrough)
@@ -170,7 +178,18 @@ yarn add js-yaml
 **File**: `lib/utils/markdown/types.ts`
 
 ```typescript
-import type { Root, Content, Code, Table, Heading, Paragraph, List, Blockquote, Link, Image } from 'mdast';
+import type {
+  Root,
+  Content,
+  Code,
+  Table,
+  Heading,
+  Paragraph,
+  List,
+  Blockquote,
+  Link,
+  Image,
+} from "mdast";
 
 export type { Root, Content, Code, Table, Heading, Paragraph, List, Blockquote, Link, Image };
 
@@ -189,7 +208,7 @@ export interface ExtractedCodeBlock {
 export interface ExtractedTable {
   headers: string[];
   rows: string[][];
-  align: ('left' | 'right' | 'center' | null)[];
+  align: ("left" | "right" | "center" | null)[];
 }
 
 export interface CatalystRepoMetadata {
@@ -197,7 +216,7 @@ export interface CatalystRepoMetadata {
   description: string;
   repo_url: string;
   private?: boolean;
-  status: 'active' | 'archived' | 'wip' | 'experimental';
+  status: "active" | "archived" | "wip" | "experimental";
   tech_stack: {
     languages: string[];
     frameworks?: string[];
@@ -221,8 +240,8 @@ export interface CatalystRepoMetadata {
 **File**: `lib/utils/catalyst-repo/scanner.ts`
 
 ```typescript
-import * as yaml from 'js-yaml';
-import type { CatalystRepoMetadata } from '../markdown/types';
+import * as yaml from "js-yaml";
+import type { CatalystRepoMetadata } from "../markdown/types";
 
 /**
  * Scan workspace for catalyst_repo.yaml files
@@ -231,7 +250,7 @@ import type { CatalystRepoMetadata } from '../markdown/types';
 export function scanWorkspaceRepos(): CatalystRepoMetadata[] {
   // In reality, this would be generated at build time
   // For now, we'll import from a generated JSON file
-  const repos = require('../../../data/workspace-repos.json');
+  const repos = require("../../../data/workspace-repos.json");
   return repos;
 }
 
@@ -243,7 +262,7 @@ export function parseCatalystRepoYaml(yamlContent: string): CatalystRepoMetadata
 
   // Validation
   if (!data.name || !data.description) {
-    throw new Error('Invalid catalyst_repo.yaml: missing required fields');
+    throw new Error("Invalid catalyst_repo.yaml: missing required fields");
   }
 
   return data;
@@ -265,8 +284,16 @@ export function filterRepos(
   return repos.filter(repo => {
     if (filters.status && !filters.status.includes(repo.status)) return false;
     if (filters.private !== undefined && repo.private !== filters.private) return false;
-    if (filters.languages && !filters.languages.some(lang => repo.tech_stack.languages.includes(lang))) return false;
-    if (filters.frameworks && !filters.frameworks.some(fw => repo.tech_stack.frameworks?.includes(fw))) return false;
+    if (
+      filters.languages &&
+      !filters.languages.some(lang => repo.tech_stack.languages.includes(lang))
+    )
+      return false;
+    if (
+      filters.frameworks &&
+      !filters.frameworks.some(fw => repo.tech_stack.frameworks?.includes(fw))
+    )
+      return false;
     if (filters.groups && !filters.groups.some(g => repo.groups?.includes(g))) return false;
     return true;
   });
@@ -276,21 +303,21 @@ export function filterRepos(
 **Build Script**: `scripts/scan-workspace-repos.js`
 
 ```javascript
-const fs = require('fs');
-const path = require('path');
-const glob = require('glob');
-const yaml = require('js-yaml');
+const fs = require("fs");
+const path = require("path");
+const glob = require("glob");
+const yaml = require("js-yaml");
 
 // Scan workspace for catalyst_repo.yaml files
-const workspaceRoot = path.join(__dirname, '../..');
-const yamlFiles = glob.sync('**/catalyst_repo.yaml', {
+const workspaceRoot = path.join(__dirname, "../..");
+const yamlFiles = glob.sync("**/catalyst_repo.yaml", {
   cwd: workspaceRoot,
-  ignore: ['**/node_modules/**', '**/dist/**']
+  ignore: ["**/node_modules/**", "**/dist/**"],
 });
 
 const repos = yamlFiles.map(file => {
   const fullPath = path.join(workspaceRoot, file);
-  const content = fs.readFileSync(fullPath, 'utf-8');
+  const content = fs.readFileSync(fullPath, "utf-8");
   const data = yaml.load(content);
 
   return {
@@ -300,7 +327,7 @@ const repos = yamlFiles.map(file => {
 });
 
 // Write to data directory
-const outputPath = path.join(__dirname, '../lib/data/workspace-repos.json');
+const outputPath = path.join(__dirname, "../lib/data/workspace-repos.json");
 fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 fs.writeFileSync(outputPath, JSON.stringify(repos, null, 2));
 
@@ -323,18 +350,16 @@ console.log(`✓ Scanned ${repos.length} repositories`);
 **File**: `lib/utils/markdown/parser.ts`
 
 ```typescript
-import { unified } from 'unified';
-import remarkParse from 'remark-parse';
-import remarkGfm from 'remark-gfm';
-import type { Root } from 'mdast';
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkGfm from "remark-gfm";
+import type { Root } from "mdast";
 
 /**
  * Parse markdown string into AST
  */
 export function parseMarkdown(markdown: string): Root {
-  const processor = unified()
-    .use(remarkParse)
-    .use(remarkGfm);
+  const processor = unified().use(remarkParse).use(remarkGfm);
 
   const ast = processor.parse(markdown);
   return ast as Root;
@@ -346,8 +371,8 @@ export function parseMarkdown(markdown: string): Root {
 **File**: `lib/utils/markdown/extractor.ts`
 
 ```typescript
-import type { Root, Content, Code, Table, Heading } from 'mdast';
-import type { MarkdownSection, ExtractedCodeBlock, ExtractedTable } from './types';
+import type { Root, Content, Code, Table, Heading } from "mdast";
+import type { MarkdownSection, ExtractedCodeBlock, ExtractedTable } from "./types";
 
 /**
  * Extract a section by heading text
@@ -358,14 +383,14 @@ export function extractSection(ast: Root, headingText: string): MarkdownSection 
   for (let i = 0; i < children.length; i++) {
     const node = children[i];
 
-    if (node.type === 'heading' && getHeadingText(node) === headingText) {
+    if (node.type === "heading" && getHeadingText(node) === headingText) {
       const heading = node as Heading;
       const content: Content[] = [];
 
       // Collect nodes until next heading of same or higher level
       for (let j = i + 1; j < children.length; j++) {
         const nextNode = children[j];
-        if (nextNode.type === 'heading' && (nextNode as Heading).depth <= heading.depth) {
+        if (nextNode.type === "heading" && (nextNode as Heading).depth <= heading.depth) {
           break;
         }
         content.push(nextNode);
@@ -389,7 +414,7 @@ export function extractCodeBlocks(ast: Root): ExtractedCodeBlock[] {
   const codeBlocks: ExtractedCodeBlock[] = [];
 
   function visit(node: Content) {
-    if (node.type === 'code') {
+    if (node.type === "code") {
       const code = node as Code;
       codeBlocks.push({
         language: code.lang || null,
@@ -399,7 +424,7 @@ export function extractCodeBlocks(ast: Root): ExtractedCodeBlock[] {
     }
 
     // Recursively visit children
-    if ('children' in node) {
+    if ("children" in node) {
       (node as any).children.forEach(visit);
     }
   }
@@ -415,14 +440,14 @@ export function extractTables(ast: Root): ExtractedTable[] {
   const tables: ExtractedTable[] = [];
 
   function visit(node: Content) {
-    if (node.type === 'table') {
+    if (node.type === "table") {
       const table = node as Table;
       const headers: string[] = [];
       const rows: string[][] = [];
 
       table.children.forEach((row, rowIdx) => {
         const cells = row.children.map(cell =>
-          cell.children.map(c => ('value' in c ? c.value : '')).join('')
+          cell.children.map(c => ("value" in c ? c.value : "")).join("")
         );
 
         if (rowIdx === 0) {
@@ -439,7 +464,7 @@ export function extractTables(ast: Root): ExtractedTable[] {
       });
     }
 
-    if ('children' in node) {
+    if ("children" in node) {
       (node as any).children.forEach(visit);
     }
   }
@@ -451,7 +476,7 @@ export function extractTables(ast: Root): ExtractedTable[] {
 /**
  * Find nodes by type
  */
-export function findNodesByType<T extends Content['type']>(
+export function findNodesByType<T extends Content["type"]>(
   ast: Root,
   type: T
 ): Extract<Content, { type: T }>[] {
@@ -462,7 +487,7 @@ export function findNodesByType<T extends Content['type']>(
       nodes.push(node);
     }
 
-    if ('children' in node) {
+    if ("children" in node) {
       (node as any).children.forEach(visit);
     }
   }
@@ -475,9 +500,7 @@ export function findNodesByType<T extends Content['type']>(
  * Helper: Get heading text
  */
 function getHeadingText(heading: Heading): string {
-  return heading.children
-    .map(child => ('value' in child ? child.value : ''))
-    .join('');
+  return heading.children.map(child => ("value" in child ? child.value : "")).join("");
 }
 ```
 
@@ -486,10 +509,10 @@ function getHeadingText(heading: Heading): string {
 **File**: `lib/utils/markdown/index.ts`
 
 ```typescript
-export * from './parser';
-export * from './extractor';
-export * from './types';
-export { renderMarkdown, MARKDOWN_COMPONENT_MAP } from './mapper';
+export * from "./parser";
+export * from "./extractor";
+export * from "./types";
+export { renderMarkdown, MARKDOWN_COMPONENT_MAP } from "./mapper";
 ```
 
 ### Phase 3: Component Mapper (THE CORE 🔥)
@@ -774,7 +797,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
 **File**: `lib/hooks/useGitHubReadme.ts`
 
 ```typescript
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export interface UseGitHubReadmeOptions {
   /** GitHub repo URL (e.g., "https://github.com/user/repo") */
@@ -801,7 +824,7 @@ export interface UseGitHubReadmeResult {
  * Fetch README from GitHub repository
  */
 export function useGitHubReadme(options: UseGitHubReadmeOptions): UseGitHubReadmeResult {
-  const { repoUrl, rawUrl, branch = 'main', filename = 'README.md' } = options;
+  const { repoUrl, rawUrl, branch = "main", filename = "README.md" } = options;
 
   const [content, setContent] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -832,7 +855,7 @@ export function useGitHubReadme(options: UseGitHubReadmeOptions): UseGitHubReadm
         }
 
         if (!url) {
-          throw new Error('Invalid GitHub URL');
+          throw new Error("Invalid GitHub URL");
         }
 
         const response = await fetch(url);
@@ -844,7 +867,7 @@ export function useGitHubReadme(options: UseGitHubReadmeOptions): UseGitHubReadm
         const text = await response.text();
         setContent(text);
       } catch (err) {
-        setError(err instanceof Error ? err : new Error('Unknown error'));
+        setError(err instanceof Error ? err : new Error("Unknown error"));
         setContent(null);
       } finally {
         setLoading(false);

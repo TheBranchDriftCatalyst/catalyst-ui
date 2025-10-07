@@ -30,11 +30,9 @@ export const setToLocalStorage = <T>(key: string, value: T): void => {
  */
 export const useLocalStorageState = <T>(
   key: string,
-  defaultValue: T,
+  defaultValue: T
 ): [T, Dispatch<SetStateAction<T>>] => {
-  const [state, setState] = useState<T>(() =>
-    getFromLocalStorage(key, defaultValue),
-  );
+  const [state, setState] = useState<T>(() => getFromLocalStorage(key, defaultValue));
 
   useEffect(() => {
     // ensures that the state is updated when the corresponding local storage item changes in another tab or window.

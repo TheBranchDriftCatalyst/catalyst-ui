@@ -1,4 +1,4 @@
-import { NodeData } from '../types';
+import { NodeData } from "../types";
 
 /**
  * Calculate dynamic dimensions for a node based on its content
@@ -6,8 +6,8 @@ import { NodeData } from '../types';
  * @returns Object containing width and height in pixels
  */
 export const getNodeDimensions = (node: NodeData): { width: number; height: number } => {
-  const name = node.name || node.Name || node.id || '';
-  const status = (node.attributes && node.attributes.status) || '';
+  const name = node.name || node.Name || node.id || "";
+  const status = (node.attributes && node.attributes.status) || "";
 
   const minWidth = 160;
   const minHeight = 60;

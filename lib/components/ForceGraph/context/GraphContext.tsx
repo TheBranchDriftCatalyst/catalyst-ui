@@ -1,14 +1,14 @@
-import React, { createContext, useContext, useReducer, ReactNode, useEffect } from 'react';
-import { NodeKind, EdgeKind, GraphData } from '../types';
-import { GraphFilters } from '../types/filterTypes';
-import { GraphConfig } from '../config/types';
-import { DockerGraphConfig } from '../config/DockerGraphConfig';
-import { LayoutKind } from '../utils/layouts';
+import React, { createContext, useContext, useReducer, ReactNode, useEffect } from "react";
+import { NodeKind, EdgeKind, GraphData } from "../types";
+import { GraphFilters } from "../types/filterTypes";
+import { GraphConfig } from "../config/types";
+import { DockerGraphConfig } from "../config/DockerGraphConfig";
+import { LayoutKind } from "../utils/layouts";
 
-export type { GraphConnectionFilter, GraphFilters } from '../types/filterTypes';
+export type { GraphConnectionFilter, GraphFilters } from "../types/filterTypes";
 
 // Default local storage key for persisted filters
-export const DEFAULT_FILTERS_STORAGE_KEY = 'catalyst-ui.forcegraph.filters.v1';
+export const DEFAULT_FILTERS_STORAGE_KEY = "catalyst-ui.forcegraph.filters.v1";
 
 // Helper to clear persisted filters from localStorage
 export function clearPersistedFilters(storageKey: string = DEFAULT_FILTERS_STORAGE_KEY) {
@@ -34,18 +34,18 @@ export interface GraphState {
 
 // Action types
 type GraphAction =
-  | { type: 'SET_RAW_DATA'; payload: GraphData }
-  | { type: 'SET_FILTERED_DATA'; payload: GraphData }
-  | { type: 'UPDATE_FILTERS'; payload: Partial<GraphFilters> }
-  | { type: 'SET_HOVERED_NODE'; payload: string | null }
-  | { type: 'SET_SELECTED_NODE'; payload: string | null }
-  | { type: 'SET_DIMENSIONS'; payload: { width: number; height: number } }
-  | { type: 'TOGGLE_NODE_VISIBILITY'; payload: NodeKind }
-  | { type: 'TOGGLE_EDGE_VISIBILITY'; payload: EdgeKind }
-  | { type: 'RESET_FILTERS' }
-  | { type: 'SET_LAYOUT'; payload: LayoutKind }
-  | { type: 'SET_LAYOUT_OPTIONS'; payload: Record<string, any> }
-  | { type: 'TOGGLE_ORTHOGONAL_EDGES' };
+  | { type: "SET_RAW_DATA"; payload: GraphData }
+  | { type: "SET_FILTERED_DATA"; payload: GraphData }
+  | { type: "UPDATE_FILTERS"; payload: Partial<GraphFilters> }
+  | { type: "SET_HOVERED_NODE"; payload: string | null }
+  | { type: "SET_SELECTED_NODE"; payload: string | null }
+  | { type: "SET_DIMENSIONS"; payload: { width: number; height: number } }
+  | { type: "TOGGLE_NODE_VISIBILITY"; payload: NodeKind }
+  | { type: "TOGGLE_EDGE_VISIBILITY"; payload: EdgeKind }
+  | { type: "RESET_FILTERS" }
+  | { type: "SET_LAYOUT"; payload: LayoutKind }
+  | { type: "SET_LAYOUT_OPTIONS"; payload: Record<string, any> }
+  | { type: "TOGGLE_ORTHOGONAL_EDGES" };
 
 // Default state
 const defaultFilters: GraphFilters = {
@@ -60,9 +60,9 @@ const defaultFilters: GraphFilters = {
     connected_to: true,
     mounted_into: true,
   },
-  statusFilter: 'all',
-  connectionFilter: 'all',
-  searchQuery: '',
+  statusFilter: "all",
+  connectionFilter: "all",
+  searchQuery: "",
   showOrphanedOnly: false,
   showRunningOnly: false,
   showInUseOnly: false,
@@ -77,7 +77,7 @@ const getInitialState = (config: GraphConfig<any, any>): GraphState => ({
   hoveredNode: null,
   selectedNode: null,
   dimensions: { width: window.innerWidth, height: window.innerHeight },
-  layout: 'force',
+  layout: "force",
   layoutOptions: {},
   orthogonalEdges: false,
 });
@@ -85,64 +85,64 @@ const getInitialState = (config: GraphConfig<any, any>): GraphState => ({
 // Reducer
 function graphReducer(state: GraphState, action: GraphAction): GraphState {
   switch (action.type) {
-    case 'SET_RAW_DATA':
+    case "SET_RAW_DATA":
       return { ...state, rawData: action.payload };
 
-    case 'SET_FILTERED_DATA':
+    case "SET_FILTERED_DATA":
       return { ...state, filteredData: action.payload };
 
-    case 'UPDATE_FILTERS':
+    case "UPDATE_FILTERS":
       return {
         ...state,
-        filters: { ...state.filters, ...action.payload }
+        filters: { ...state.filters, ...action.payload },
       };
 
-    case 'SET_HOVERED_NODE':
+    case "SET_HOVERED_NODE":
       return { ...state, hoveredNode: action.payload };
 
-    case 'SET_SELECTED_NODE':
+    case "SET_SELECTED_NODE":
       return { ...state, selectedNode: action.payload };
 
-    case 'SET_DIMENSIONS':
+    case "SET_DIMENSIONS":
       return { ...state, dimensions: action.payload };
 
-    case 'TOGGLE_NODE_VISIBILITY':
+    case "TOGGLE_NODE_VISIBILITY":
       return {
         ...state,
         filters: {
           ...state.filters,
           visibleNodes: {
             ...state.filters.visibleNodes,
-            [action.payload]: !state.filters.visibleNodes[action.payload]
-          }
-        }
+            [action.payload]: !state.filters.visibleNodes[action.payload],
+          },
+        },
       };
 
-    case 'TOGGLE_EDGE_VISIBILITY':
+    case "TOGGLE_EDGE_VISIBILITY":
       return {
         ...state,
         filters: {
           ...state.filters,
           visibleEdges: {
             ...state.filters.visibleEdges,
-            [action.payload]: !state.filters.visibleEdges[action.payload]
-          }
-        }
+            [action.payload]: !state.filters.visibleEdges[action.payload],
+          },
+        },
       };
 
-    case 'RESET_FILTERS':
+    case "RESET_FILTERS":
       return {
         ...state,
-        filters: defaultFilters
+        filters: defaultFilters,
       };
 
-    case 'SET_LAYOUT':
+    case "SET_LAYOUT":
       return { ...state, layout: action.payload };
 
-    case 'SET_LAYOUT_OPTIONS':
+    case "SET_LAYOUT_OPTIONS":
       return { ...state, layoutOptions: action.payload };
 
-    case 'TOGGLE_ORTHOGONAL_EDGES':
+    case "TOGGLE_ORTHOGONAL_EDGES":
       return { ...state, orthogonalEdges: !state.orthogonalEdges };
 
     default:
@@ -162,7 +162,7 @@ export const GraphProvider: React.FC<{
   config?: GraphConfig<any, any>;
   storageKey?: string;
 }> = ({ children, config = DockerGraphConfig, storageKey = DEFAULT_FILTERS_STORAGE_KEY }) => {
-  const [state, dispatch] = useReducer(graphReducer, getInitialState(config), (init) => {
+  const [state, dispatch] = useReducer(graphReducer, getInitialState(config), init => {
     try {
       const raw = localStorage.getItem(storageKey);
       if (raw) {
@@ -184,18 +184,14 @@ export const GraphProvider: React.FC<{
     }
   }, [state.filters, storageKey]);
 
-  return (
-    <GraphContext.Provider value={{ state, dispatch }}>
-      {children}
-    </GraphContext.Provider>
-  );
+  return <GraphContext.Provider value={{ state, dispatch }}>{children}</GraphContext.Provider>;
 };
 
 // Hook to use the context
 export const useGraphContext = () => {
   const context = useContext(GraphContext);
   if (!context) {
-    throw new Error('useGraphContext must be used within a GraphProvider');
+    throw new Error("useGraphContext must be used within a GraphProvider");
   }
   return context;
 };

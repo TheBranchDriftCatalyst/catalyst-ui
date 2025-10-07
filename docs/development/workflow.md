@@ -53,6 +53,7 @@ yarn release:major
 ```
 
 This will:
+
 - ✅ Bump version in package.json
 - ✅ Generate/update CHANGELOG.md from conventional commits
 - ✅ Create git tag
@@ -75,6 +76,7 @@ We use [Conventional Commits](https://www.conventionalcommits.org/):
 ```
 
 **Types:**
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -87,6 +89,7 @@ We use [Conventional Commits](https://www.conventionalcommits.org/):
 - `ci`: CI/CD changes
 
 **Examples:**
+
 ```bash
 git commit -m "feat(ui): add tooltip component"
 git commit -m "fix(theme): resolve dark mode background issue"

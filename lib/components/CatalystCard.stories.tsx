@@ -51,7 +51,9 @@ export const WithFooter: Story = {
     content: (
       <div className="space-y-2">
         <p className="text-sm">This card has buttons in the footer for actions.</p>
-        <p className="text-sm text-muted-foreground">The footer uses flexbox justify-between layout.</p>
+        <p className="text-sm text-muted-foreground">
+          The footer uses flexbox justify-between layout.
+        </p>
       </div>
     ),
     footer: (
@@ -69,8 +71,8 @@ export const ContentOnly: Story = {
       <div className="space-y-4">
         <h3 className="font-semibold">No Header or Footer</h3>
         <p className="text-sm text-muted-foreground">
-          Sometimes you just need content without a header or footer.
-          This card demonstrates that simple use case.
+          Sometimes you just need content without a header or footer. This card demonstrates that
+          simple use case.
         </p>
       </div>
     ),
@@ -98,9 +100,7 @@ export const RichContent: Story = {
         </ul>
       </div>
     ),
-    footer: (
-      <Button className="w-full">View All Tasks</Button>
-    ),
+    footer: <Button className="w-full">View All Tasks</Button>,
   },
 };
 

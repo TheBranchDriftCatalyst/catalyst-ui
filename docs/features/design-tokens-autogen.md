@@ -5,10 +5,12 @@
 The `DesignTokenDocBlock` component from `storybook-design-token` package fails in production builds due to missing `/design-tokens.json` file.
 
 ### Current Behavior
+
 - ✅ **Storybook**: Works perfectly - parses CSS files at runtime using `parameters.designToken.files`
 - ❌ **Production**: Fails with JSON parse error - expects static `/design-tokens.json` endpoint
 
 ### Error
+
 ```
 Uncaught (in promise) SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
 ```
@@ -18,6 +20,7 @@ The component tries to fetch `/design-tokens.json` which returns `index.html` (4
 ## Current State
 
 ### CSS Annotations Already Exist
+
 Our theme CSS files already have comprehensive `@token` annotations:
 
 ```css
@@ -30,6 +33,7 @@ Our theme CSS files already have comprehensive `@token` annotations:
 ```
 
 **All themes have these annotations:**
+
 - `catalyst.css`
 - `dracula.css`
 - `gold.css`
@@ -39,19 +43,23 @@ Our theme CSS files already have comprehensive `@token` annotations:
 - `nord.css`
 
 ### Package Behavior
+
 `storybook-design-token` has two modes:
+
 1. **Development (Storybook)**: Parses CSS files from `files` parameter
 2. **Production**: Expects pre-generated static JSON at `/design-tokens.json`
 
 ## Proposed Solution
 
 Create an automated build script that:
+
 1. Parses all theme CSS files
 2. Extracts `@token` annotations from comments
 3. Generates `public/design-tokens.json` in the format expected by the package
 4. Runs automatically before app builds
 
 ### Benefits
+
 - ✅ Single source of truth (CSS files remain authoritative)
 - ✅ Auto-updates when CSS changes
 - ✅ Works in both Storybook and production
@@ -62,15 +70,16 @@ Create an automated build script that:
 ## Implementation Plan
 
 ### Step 1: Create Token Extraction Script
+
 **File**: `scripts/generate-design-tokens.js`
 
 ```javascript
-const fs = require('fs');
-const path = require('path');
-const glob = require('glob');
+const fs = require("fs");
+const path = require("path");
+const glob = require("glob");
 
 // Find all theme CSS files
-const cssFiles = glob.sync('lib/contexts/Theme/styles/*.css');
+const cssFiles = glob.sync("lib/contexts/Theme/styles/*.css");
 
 // Regex to extract: --variable-name: value; /* @token { json } */
 const tokenRegex = /--([a-z-]+):\s*([^;]+);\s*\/\*\s*@token\s*({[^}]+})\s*\*\//gi;
@@ -78,7 +87,7 @@ const tokenRegex = /--([a-z-]+):\s*([^;]+);\s*\/\*\s*@token\s*({[^}]+})\s*\*\//g
 const tokens = {};
 
 cssFiles.forEach(file => {
-  const content = fs.readFileSync(file, 'utf-8');
+  const content = fs.readFileSync(file, "utf-8");
   let match;
 
   while ((match = tokenRegex.exec(content)) !== null) {
@@ -89,19 +98,20 @@ cssFiles.forEach(file => {
       name: meta.name,
       value: value.trim(),
       category: meta.category,
-      type: meta.type || 'color'
+      type: meta.type || "color",
     };
   }
 });
 
 // Write to public directory
-const outputPath = path.join(__dirname, '../public/design-tokens.json');
+const outputPath = path.join(__dirname, "../public/design-tokens.json");
 fs.writeFileSync(outputPath, JSON.stringify({ tokens }, null, 2));
 
 console.log(`✓ Generated ${Object.keys(tokens).length} design tokens`);
 ```
 
 ### Step 2: Add Build Scripts
+
 **File**: `package.json`
 
 ```json
@@ -115,6 +125,7 @@ console.log(`✓ Generated ${Object.keys(tokens).length} design tokens`);
 ```
 
 ### Step 3: Restore DesignTokenDocBlock
+
 **File**: `app/App.tsx`
 
 ```tsx
@@ -127,16 +138,15 @@ import { DesignTokenDocBlock } from "storybook-design-token";
     <CardDescription>Auto-generated from CSS annotations</CardDescription>
   </CardHeader>
   <CardContent>
-    <DesignTokenDocBlock
-      viewType="table"
-      maxHeight={600}
-    />
+    <DesignTokenDocBlock viewType="table" maxHeight={600} />
   </CardContent>
-</Card>
+</Card>;
 ```
 
 ### Step 4: Update .gitignore (Optional)
+
 If tokens should be generated fresh each build:
+
 ```
 public/design-tokens.json
 ```
@@ -173,19 +183,19 @@ Or commit it if you want version control over the generated output.
 ## Future Enhancements
 
 ### 1. TypeScript Type Generation
+
 Generate type-safe token references:
+
 ```typescript
 // types/design-tokens.d.ts
-export type DesignToken =
-  | 'background'
-  | 'foreground'
-  | 'primary'
-  | 'neon-cyan'
-  // ... auto-generated from tokens
+export type DesignToken = "background" | "foreground" | "primary" | "neon-cyan";
+// ... auto-generated from tokens
 ```
 
 ### 2. Multi-Theme Support
+
 Generate tokens per theme:
+
 ```json
 {
   "catalyst": { "tokens": { ... } },
@@ -195,12 +205,15 @@ Generate tokens per theme:
 ```
 
 ### 3. Token Validation
+
 Add script to validate:
+
 - All tokens have required metadata
 - No duplicate token names
 - Values match expected format (HSL, hex, etc.)
 
 ### 4. Watch Mode for Development
+
 ```json
 {
   "scripts": {
@@ -212,9 +225,11 @@ Add script to validate:
 ## Dependencies
 
 **Required:**
+
 - `glob` - For finding CSS files (already installed as devDep)
 
 **Optional:**
+
 - `nodemon` - For watch mode
 - `chokidar` - Alternative file watcher
 
@@ -235,10 +250,12 @@ Add script to validate:
 If automation is too complex initially, manually create and maintain `public/design-tokens.json`.
 
 **Pros:**
+
 - Immediate fix
 - No build tooling changes
 
 **Cons:**
+
 - Dual maintenance (CSS + JSON)
 - Easy to get out of sync
 - Manual work for each token change

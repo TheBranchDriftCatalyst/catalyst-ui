@@ -29,9 +29,9 @@
   --ring: hsl(0, 100%, 44%);
 
   /* @token Typography - Bold cinematic aesthetic */
-  --font-heading: 'Bebas Neue', 'Impact', sans-serif; /* @token */
-  --font-body: 'Netflix Sans', 'Helvetica Neue', sans-serif; /* @token */
-  --font-mono: 'Source Code Pro', 'Courier New', monospace; /* @token */
+  --font-heading: "Bebas Neue", "Impact", sans-serif; /* @token */
+  --font-body: "Netflix Sans", "Helvetica Neue", sans-serif; /* @token */
+  --font-mono: "Source Code Pro", "Courier New", monospace; /* @token */
 
   /* @token Neon Colors - Cinematic palette */
   --neon-cyan: hsl(180, 85%, 50%); /* @token - dramatic cyan */
@@ -53,14 +53,17 @@
 
   /* @token Glow Effects - Cinematic drama */
   --glow-primary: 0 0 20px rgba(224, 9, 9, 0.4), 0 0 40px rgba(224, 9, 9, 0.2); /* @token */
-  --glow-secondary: 0 0 20px rgba(255, 107, 153, 0.4), 0 0 40px rgba(255, 107, 153, 0.2); /* @token */
+  --glow-secondary:
+    0 0 20px rgba(255, 107, 153, 0.4), 0 0 40px rgba(255, 107, 153, 0.2); /* @token */
   --glow-accent: 0 0 15px rgba(255, 204, 51, 0.35); /* @token */
   --glow-hover: 0 0 25px rgba(224, 9, 9, 0.55), 0 0 50px rgba(224, 9, 9, 0.3); /* @token */
 
   /* @token Neon Shadows - Hollywood spotlight */
   --shadow-neon-sm: 0 2px 8px rgba(224, 9, 9, 0.2), 0 4px 16px rgba(255, 204, 51, 0.1); /* @token */
-  --shadow-neon-md: 0 4px 16px rgba(224, 9, 9, 0.25), 0 8px 32px rgba(255, 204, 51, 0.12); /* @token */
-  --shadow-neon-lg: 0 8px 24px rgba(224, 9, 9, 0.3), 0 16px 48px rgba(255, 204, 51, 0.15); /* @token */
+  --shadow-neon-md:
+    0 4px 16px rgba(224, 9, 9, 0.25), 0 8px 32px rgba(255, 204, 51, 0.12); /* @token */
+  --shadow-neon-lg:
+    0 8px 24px rgba(224, 9, 9, 0.3), 0 16px 48px rgba(255, 204, 51, 0.15); /* @token */
 }
 
 .theme-netflix.dark {
@@ -94,9 +97,9 @@
   --ring: hsl(0, 100%, 44%);
 
   /* @token Typography - Bold cinematic aesthetic */
-  --font-heading: 'Bebas Neue', 'Impact', sans-serif; /* @token */
-  --font-body: 'Netflix Sans', 'Helvetica Neue', sans-serif; /* @token */
-  --font-mono: 'Source Code Pro', 'Courier New', monospace; /* @token */
+  --font-heading: "Bebas Neue", "Impact", sans-serif; /* @token */
+  --font-body: "Netflix Sans", "Helvetica Neue", sans-serif; /* @token */
+  --font-mono: "Source Code Pro", "Courier New", monospace; /* @token */
 
   /* @token Neon Colors - Cinematic palette */
   --neon-cyan: hsl(180, 90%, 48%); /* @token - dramatic cyan */
@@ -118,14 +121,18 @@
 
   /* @token Glow Effects - Cinematic drama */
   --glow-primary: 0 0 20px rgba(224, 9, 9, 0.5), 0 0 40px rgba(224, 9, 9, 0.25); /* @token */
-  --glow-secondary: 0 0 20px rgba(255, 92, 143, 0.45), 0 0 40px rgba(255, 92, 143, 0.22); /* @token */
+  --glow-secondary:
+    0 0 20px rgba(255, 92, 143, 0.45), 0 0 40px rgba(255, 92, 143, 0.22); /* @token */
   --glow-accent: 0 0 15px rgba(255, 199, 46, 0.4); /* @token */
   --glow-hover: 0 0 25px rgba(224, 9, 9, 0.6), 0 0 50px rgba(224, 9, 9, 0.35); /* @token */
 
   /* @token Neon Shadows - Hollywood spotlight */
-  --shadow-neon-sm: 0 2px 8px rgba(224, 9, 9, 0.25), 0 4px 16px rgba(255, 199, 46, 0.12); /* @token */
-  --shadow-neon-md: 0 4px 16px rgba(224, 9, 9, 0.3), 0 8px 32px rgba(255, 199, 46, 0.15); /* @token */
-  --shadow-neon-lg: 0 8px 24px rgba(224, 9, 9, 0.4), 0 16px 48px rgba(255, 199, 46, 0.2); /* @token */
+  --shadow-neon-sm:
+    0 2px 8px rgba(224, 9, 9, 0.25), 0 4px 16px rgba(255, 199, 46, 0.12); /* @token */
+  --shadow-neon-md:
+    0 4px 16px rgba(224, 9, 9, 0.3), 0 8px 32px rgba(255, 199, 46, 0.15); /* @token */
+  --shadow-neon-lg:
+    0 8px 24px rgba(224, 9, 9, 0.4), 0 16px 48px rgba(255, 199, 46, 0.2); /* @token */
 }
 
 /* Dark mode - cinematic link effects */

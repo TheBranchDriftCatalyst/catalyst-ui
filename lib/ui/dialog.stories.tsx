@@ -1,5 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "./dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "./dialog";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Button } from "./button";
 import { Input } from "./input";
@@ -66,7 +73,7 @@ export const WithForm: Story = {
               <Input
                 id="name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={e => setName(e.target.value)}
                 className="col-span-3"
                 placeholder="John Doe"
               />
@@ -79,7 +86,7 @@ export const WithForm: Story = {
                 id="email"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 className="col-span-3"
                 placeholder="john@example.com"
               />
@@ -104,8 +111,8 @@ export const Confirmation: Story = {
         <DialogHeader>
           <DialogTitle>Are you absolutely sure?</DialogTitle>
           <DialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            This action cannot be undone. This will permanently delete your account and remove your
+            data from our servers.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
@@ -126,16 +133,14 @@ export const InformationalDialog: Story = {
       <DialogContent className="max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Terms of Service</DialogTitle>
-          <DialogDescription>
-            Please read our terms of service carefully.
-          </DialogDescription>
+          <DialogDescription>Please read our terms of service carefully.</DialogDescription>
         </DialogHeader>
         <div className="space-y-4 text-sm">
           <section>
             <h4 className="font-semibold mb-2">1. Acceptance of Terms</h4>
             <p className="text-muted-foreground">
-              By accessing and using this service, you accept and agree to be bound by the terms
-              and provision of this agreement.
+              By accessing and using this service, you accept and agree to be bound by the terms and
+              provision of this agreement.
             </p>
           </section>
           <section>
@@ -179,8 +184,8 @@ export const WithScrollableContent: Story = {
             <div key={i} className="p-4 border rounded-md">
               <h4 className="font-semibold mb-2">Item {i + 1}</h4>
               <p className="text-sm text-muted-foreground">
-                This is a placeholder item to demonstrate scrollable content in a dialog.
-                The content scrolls while the header and footer remain fixed.
+                This is a placeholder item to demonstrate scrollable content in a dialog. The
+                content scrolls while the header and footer remain fixed.
               </p>
             </div>
           ))}

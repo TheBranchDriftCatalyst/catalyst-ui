@@ -28,9 +28,7 @@ export const Default: Story = {
         <Card>
           <CardHeader>
             <CardTitle>Account</CardTitle>
-            <CardDescription>
-              Make changes to your account here.
-            </CardDescription>
+            <CardDescription>Make changes to your account here.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="space-y-1">
@@ -48,9 +46,7 @@ export const Default: Story = {
         <Card>
           <CardHeader>
             <CardTitle>Password</CardTitle>
-            <CardDescription>
-              Change your password here.
-            </CardDescription>
+            <CardDescription>Change your password here.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="space-y-1">
@@ -80,33 +76,25 @@ export const MultipleTabs: Story = {
       <TabsContent value="overview" className="space-y-4">
         <div className="text-sm">
           <h3 className="font-semibold mb-2">Overview</h3>
-          <p className="text-muted-foreground">
-            View your dashboard overview and key metrics.
-          </p>
+          <p className="text-muted-foreground">View your dashboard overview and key metrics.</p>
         </div>
       </TabsContent>
       <TabsContent value="analytics" className="space-y-4">
         <div className="text-sm">
           <h3 className="font-semibold mb-2">Analytics</h3>
-          <p className="text-muted-foreground">
-            Deep dive into your analytics data.
-          </p>
+          <p className="text-muted-foreground">Deep dive into your analytics data.</p>
         </div>
       </TabsContent>
       <TabsContent value="reports" className="space-y-4">
         <div className="text-sm">
           <h3 className="font-semibold mb-2">Reports</h3>
-          <p className="text-muted-foreground">
-            Generate and view reports.
-          </p>
+          <p className="text-muted-foreground">Generate and view reports.</p>
         </div>
       </TabsContent>
       <TabsContent value="settings" className="space-y-4">
         <div className="text-sm">
           <h3 className="font-semibold mb-2">Settings</h3>
-          <p className="text-muted-foreground">
-            Configure your application settings.
-          </p>
+          <p className="text-muted-foreground">Configure your application settings.</p>
         </div>
       </TabsContent>
     </Tabs>
@@ -117,10 +105,18 @@ export const Vertical: Story = {
   render: () => (
     <Tabs defaultValue="personal" className="flex gap-4" orientation="vertical">
       <TabsList className="flex-col h-auto">
-        <TabsTrigger value="personal" className="w-full">Personal Info</TabsTrigger>
-        <TabsTrigger value="billing" className="w-full">Billing</TabsTrigger>
-        <TabsTrigger value="notifications" className="w-full">Notifications</TabsTrigger>
-        <TabsTrigger value="security" className="w-full">Security</TabsTrigger>
+        <TabsTrigger value="personal" className="w-full">
+          Personal Info
+        </TabsTrigger>
+        <TabsTrigger value="billing" className="w-full">
+          Billing
+        </TabsTrigger>
+        <TabsTrigger value="notifications" className="w-full">
+          Notifications
+        </TabsTrigger>
+        <TabsTrigger value="security" className="w-full">
+          Security
+        </TabsTrigger>
       </TabsList>
       <div className="flex-1">
         <TabsContent value="personal">

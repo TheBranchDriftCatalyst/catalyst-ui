@@ -1,6 +1,6 @@
-import { useState, useCallback } from 'react';
-import { useDraggable, Position } from './useDraggable';
-import { useResizable, Size } from './useResizable';
+import { useState, useCallback } from "react";
+import { useDraggable, Position } from "./useDraggable";
+import { useResizable, Size } from "./useResizable";
 
 export interface UseFloatingPanelOptions {
   // Draggable options
@@ -82,7 +82,7 @@ export function useFloatingPanel(options: UseFloatingPanelOptions = {}) {
 
   // Toggle collapse with localStorage persistence
   const toggleCollapse = useCallback(() => {
-    setIsCollapsedState((prev) => {
+    setIsCollapsedState(prev => {
       const newValue = !prev;
       if (collapseStorageKey) {
         try {
@@ -95,16 +95,19 @@ export function useFloatingPanel(options: UseFloatingPanelOptions = {}) {
     });
   }, [collapseStorageKey]);
 
-  const setIsCollapsed = useCallback((value: boolean) => {
-    setIsCollapsedState(value);
-    if (collapseStorageKey) {
-      try {
-        localStorage.setItem(collapseStorageKey, JSON.stringify(value));
-      } catch (e) {
-        // Ignore errors
+  const setIsCollapsed = useCallback(
+    (value: boolean) => {
+      setIsCollapsedState(value);
+      if (collapseStorageKey) {
+        try {
+          localStorage.setItem(collapseStorageKey, JSON.stringify(value));
+        } catch (e) {
+          // Ignore errors
+        }
       }
-    }
-  }, [collapseStorageKey]);
+    },
+    [collapseStorageKey]
+  );
 
   // Combined style (conditionally apply resize style when not collapsed)
   const combinedStyle = {
@@ -113,14 +116,17 @@ export function useFloatingPanel(options: UseFloatingPanelOptions = {}) {
   };
 
   // Merged ref for panels that need both drag and resize on the same element
-  const mergedRef = useCallback((el: HTMLDivElement | null) => {
-    if (draggable.elementRef) {
-      (draggable.elementRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
-    }
-    if (resizable.elementRef) {
-      (resizable.elementRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
-    }
-  }, [draggable.elementRef, resizable.elementRef]);
+  const mergedRef = useCallback(
+    (el: HTMLDivElement | null) => {
+      if (draggable.elementRef) {
+        (draggable.elementRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+      }
+      if (resizable.elementRef) {
+        (resizable.elementRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+      }
+    },
+    [draggable.elementRef, resizable.elementRef]
+  );
 
   return {
     // Main panel ref (combines drag + resize)

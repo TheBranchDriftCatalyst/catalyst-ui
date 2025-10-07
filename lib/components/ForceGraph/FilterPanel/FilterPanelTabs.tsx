@@ -1,9 +1,9 @@
-import React from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/catalyst-ui/ui/tabs';
-import { useGraphFilters } from '../hooks/useGraphFilters';
-import { useGraphState } from '../hooks/useGraphState';
-import { useGraphConfig } from '../context/GraphContext';
-import { FilterPanelProps } from '../types/filterTypes';
+import React from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/catalyst-ui/ui/tabs";
+import { useGraphFilters } from "../hooks/useGraphFilters";
+import { useGraphState } from "../hooks/useGraphState";
+import { useGraphConfig } from "../context/GraphContext";
+import { FilterPanelProps } from "../types/filterTypes";
 import {
   FilterPanelSearch,
   FilterPanelQuickFilters,
@@ -17,11 +17,11 @@ import {
   FilterPanelStats,
   FilterPanelActions,
   FilterPanelLayout,
-} from '.';
-import { GRAPH_CONNECTION_FILTER_OPTIONS } from '../types/filterTypes';
-import { LayoutOptionsPanel } from './LayoutOptionsPanel';
+} from ".";
+import { GRAPH_CONNECTION_FILTER_OPTIONS } from "../types/filterTypes";
+import { LayoutOptionsPanel } from "./LayoutOptionsPanel";
 
-const FilterPanelTabs: React.FC<Omit<FilterPanelProps, 'isVisible' | 'onToggle'>> = () => {
+const FilterPanelTabs: React.FC<Omit<FilterPanelProps, "isVisible" | "onToggle">> = () => {
   const config = useGraphConfig();
   const {
     filters,
@@ -40,7 +40,15 @@ const FilterPanelTabs: React.FC<Omit<FilterPanelProps, 'isVisible' | 'onToggle'>
     updateFilters,
   } = useGraphFilters();
 
-  const { getNodeInfo, rawData, filteredData, layout, orthogonalEdges, setLayout, toggleOrthogonalEdges } = useGraphState();
+  const {
+    getNodeInfo,
+    rawData,
+    filteredData,
+    layout,
+    orthogonalEdges,
+    setLayout,
+    toggleOrthogonalEdges,
+  } = useGraphState();
 
   // Build filter options from config
   const NODE_TYPE_OPTIONS = React.useMemo(
@@ -68,8 +76,12 @@ const FilterPanelTabs: React.FC<Omit<FilterPanelProps, 'isVisible' | 'onToggle'>
   return (
     <Tabs defaultValue="filters" className="w-full">
       <TabsList className="w-full grid grid-cols-2 mb-3 bg-background/50 border border-primary/30">
-        <TabsTrigger value="filters" className="text-xs">Filters</TabsTrigger>
-        <TabsTrigger value="layout" className="text-xs">Layout</TabsTrigger>
+        <TabsTrigger value="filters" className="text-xs">
+          Filters
+        </TabsTrigger>
+        <TabsTrigger value="layout" className="text-xs">
+          Layout
+        </TabsTrigger>
       </TabsList>
 
       <TabsContent value="filters" className="mt-0">

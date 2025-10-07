@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 const useDynamicImport = (iconName: string) => {
   const [IconComponent, setIconComponent] = useState<React.ComponentType | null>(null);
@@ -7,12 +7,14 @@ const useDynamicImport = (iconName: string) => {
   useEffect(() => {
     const importIcon = async () => {
       try {
-        const module = await import(`node_modules/@icons-pack/react-simple-icons/icons/${iconName}`);
+        const module = await import(
+          `node_modules/@icons-pack/react-simple-icons/icons/${iconName}`
+        );
         setIconComponent(() => module.default);
       } catch (err) {
         console.error(`Failed to load icon: ${iconName}`, err);
         // @ts-ignore
-        setError(err); 
+        setError(err);
       }
     };
 

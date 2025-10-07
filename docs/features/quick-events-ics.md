@@ -14,6 +14,7 @@ A React component for managing tasks/todos with reminders, built on ICS VTODO st
 ## Problem Statement
 
 Need a lightweight, efficient todo list UI with reminder support that:
+
 - Uses **ICS VTODO** standard (RFC 5545) for tasks/todos
 - Works with any ICS-compliant backend (ActiveCalendar, ical.js, etc.)
 - Provides quick task creation with minimal friction
@@ -45,11 +46,13 @@ Rather than tightly coupling to a specific backend, we use **ICS VTODO (tasks)**
 ```
 
 **Architecture Strategy:**
+
 - 🎯 **Phase 1 (Now)**: VTODO-based todo list UI
 - 📅 **Phase 2 (Later)**: VEVENT-based calendar view
 - 🔄 **Shared Core**: Same component, different visual modes
 
 **Benefits:**
+
 - ✅ Backend-agnostic architecture
 - ✅ Standard ICS import/export
 - ✅ Todo list AND calendar with one component
@@ -61,45 +64,46 @@ Rather than tightly coupling to a specific backend, we use **ICS VTODO (tasks)**
 
 Our `Task` DTO maps directly to ICS VTODO:
 
-| DTO Field | ICS Component | Format |
-|-----------|---------------|--------|
-| `id` | `UID` | UUID string |
-| `title` | `SUMMARY` | 1-1024 chars |
-| `description` | `DESCRIPTION` | max 8192 chars |
-| `due_date` | `DUE` | ISO 8601 datetime |
-| `priority` | `PRIORITY` | 0-9 (0=undefined, 1=high, 9=low) |
-| `status` | `STATUS` | `NEEDS-ACTION`, `IN-PROCESS`, `COMPLETED`, `CANCELLED` |
-| `completed_at` | `COMPLETED` | ISO 8601 datetime |
-| `percent_complete` | `PERCENT-COMPLETE` | 0-100 |
-| `reminders[]` | `VALARM` | One per reminder |
-| `recurrence` | `RRULE` | RFC 5545 recurrence |
-| `created` | `CREATED` | ISO 8601 datetime |
-| `updated` | `LAST-MODIFIED` | ISO 8601 datetime |
+| DTO Field          | ICS Component      | Format                                                 |
+| ------------------ | ------------------ | ------------------------------------------------------ |
+| `id`               | `UID`              | UUID string                                            |
+| `title`            | `SUMMARY`          | 1-1024 chars                                           |
+| `description`      | `DESCRIPTION`      | max 8192 chars                                         |
+| `due_date`         | `DUE`              | ISO 8601 datetime                                      |
+| `priority`         | `PRIORITY`         | 0-9 (0=undefined, 1=high, 9=low)                       |
+| `status`           | `STATUS`           | `NEEDS-ACTION`, `IN-PROCESS`, `COMPLETED`, `CANCELLED` |
+| `completed_at`     | `COMPLETED`        | ISO 8601 datetime                                      |
+| `percent_complete` | `PERCENT-COMPLETE` | 0-100                                                  |
+| `reminders[]`      | `VALARM`           | One per reminder                                       |
+| `recurrence`       | `RRULE`            | RFC 5545 recurrence                                    |
+| `created`          | `CREATED`          | ISO 8601 datetime                                      |
+| `updated`          | `LAST-MODIFIED`    | ISO 8601 datetime                                      |
 
 ### VEVENT (Calendar Event) - FUTURE PHASE
 
 (Calendar view will use same component architecture, different DTO):
 
-| DTO Field | ICS Component | Format |
-|-----------|---------------|--------|
-| `id` | `UID` | UUID string |
-| `title` | `SUMMARY` | 1-1024 chars |
-| `start_time` | `DTSTART` | ISO 8601 datetime |
-| `end_time` | `DTEND` | ISO 8601 datetime |
-| `location` | `LOCATION` | max 1024 chars |
-| `attendees[]` | `ATTENDEE` | One per attendee |
-| `reminders[]` | `VALARM` | One per reminder |
+| DTO Field     | ICS Component | Format            |
+| ------------- | ------------- | ----------------- |
+| `id`          | `UID`         | UUID string       |
+| `title`       | `SUMMARY`     | 1-1024 chars      |
+| `start_time`  | `DTSTART`     | ISO 8601 datetime |
+| `end_time`    | `DTEND`       | ISO 8601 datetime |
+| `location`    | `LOCATION`    | max 1024 chars    |
+| `attendees[]` | `ATTENDEE`    | One per attendee  |
+| `reminders[]` | `VALARM`      | One per reminder  |
 
 ### VALARM (Reminder)
 
 Our `Reminder` DTO maps to ICS VALARM:
 
-| DTO Field | ICS Component | Values |
-|-----------|---------------|--------|
-| `method` | `ACTION` | `DISPLAY` (popup) or `EMAIL` |
-| `minutes` | `TRIGGER` | `-PT{minutes}M` (e.g., `-PT15M`) |
+| DTO Field | ICS Component | Values                           |
+| --------- | ------------- | -------------------------------- |
+| `method`  | `ACTION`      | `DISPLAY` (popup) or `EMAIL`     |
+| `minutes` | `TRIGGER`     | `-PT{minutes}M` (e.g., `-PT15M`) |
 
 **Example ICS Output:**
+
 ```ics
 BEGIN:VALARM
 ACTION:DISPLAY
@@ -111,13 +115,13 @@ END:VALARM
 
 Our `Attendee` DTO maps to ICS ATTENDEE:
 
-| DTO Field | ICS Parameter | Values |
-|-----------|---------------|--------|
-| `email` | `MAILTO:` | Email address |
-| `display_name` | `CN=` | Display name |
-| `response_status` | `PARTSTAT=` | `NEEDS-ACTION`, `ACCEPTED`, `DECLINED`, `TENTATIVE` |
-| `organizer` | `ROLE=` | `CHAIR` (true) or `REQ-PARTICIPANT` (false) |
-| `optional` | `ROLE=` | `OPT-PARTICIPANT` (true) |
+| DTO Field         | ICS Parameter | Values                                              |
+| ----------------- | ------------- | --------------------------------------------------- |
+| `email`           | `MAILTO:`     | Email address                                       |
+| `display_name`    | `CN=`         | Display name                                        |
+| `response_status` | `PARTSTAT=`   | `NEEDS-ACTION`, `ACCEPTED`, `DECLINED`, `TENTATIVE` |
+| `organizer`       | `ROLE=`       | `CHAIR` (true) or `REQ-PARTICIPANT` (false)         |
+| `optional`        | `ROLE=`       | `OPT-PARTICIPANT` (true)                            |
 
 ## TypeScript DTOs
 
@@ -132,7 +136,7 @@ Our `Attendee` DTO maps to ICS ATTENDEE:
  */
 export interface Reminder {
   method: "email" | "popup"; // ACTION: EMAIL or DISPLAY
-  minutes: number;            // TRIGGER: -PT{minutes}M (≥0)
+  minutes: number; // TRIGGER: -PT{minutes}M (≥0)
 }
 
 /**
@@ -141,11 +145,11 @@ export interface Reminder {
  */
 export interface Recurrence {
   freq: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY"; // FREQ=
-  interval: number;           // INTERVAL=
-  count?: number;             // COUNT=
-  until?: Date;               // UNTIL=
-  by_day?: string[];          // BYDAY= (e.g., ["MO", "WE", "FR"])
-  by_month_day?: number[];    // BYMONTHDAY=
+  interval: number; // INTERVAL=
+  count?: number; // COUNT=
+  until?: Date; // UNTIL=
+  by_day?: string[]; // BYDAY= (e.g., ["MO", "WE", "FR"])
+  by_month_day?: number[]; // BYMONTHDAY=
 }
 
 /**
@@ -154,27 +158,24 @@ export interface Recurrence {
  */
 export interface Task {
   // Core VTODO properties
-  id?: string;                // UID
-  title: string;              // SUMMARY (1-1024 chars, required)
-  description?: string;       // DESCRIPTION (max 8192 chars)
-  due_date?: Date;            // DUE (optional due date/time)
-  priority: number;           // PRIORITY (0=undefined, 1=highest, 9=lowest)
-  status:                     // STATUS
-    | "NEEDS-ACTION"
-    | "IN-PROCESS"
-    | "COMPLETED"
-    | "CANCELLED";
-  completed_at?: Date;        // COMPLETED (datetime when completed)
-  percent_complete: number;   // PERCENT-COMPLETE (0-100)
+  id?: string; // UID
+  title: string; // SUMMARY (1-1024 chars, required)
+  description?: string; // DESCRIPTION (max 8192 chars)
+  due_date?: Date; // DUE (optional due date/time)
+  priority: number; // PRIORITY (0=undefined, 1=highest, 9=lowest)
+  status: // STATUS
+  "NEEDS-ACTION" | "IN-PROCESS" | "COMPLETED" | "CANCELLED";
+  completed_at?: Date; // COMPLETED (datetime when completed)
+  percent_complete: number; // PERCENT-COMPLETE (0-100)
 
   // Related components
-  reminders: Reminder[];      // VALARM (multiple reminders)
-  recurrence?: Recurrence;    // RRULE (recurring tasks)
+  reminders: Reminder[]; // VALARM (multiple reminders)
+  recurrence?: Recurrence; // RRULE (recurring tasks)
 
   // Metadata
-  calendar_id?: string;       // X-CALENDAR-ID (custom property)
-  created?: Date;             // CREATED
-  updated?: Date;             // LAST-MODIFIED
+  calendar_id?: string; // X-CALENDAR-ID (custom property)
+  created?: Date; // CREATED
+  updated?: Date; // LAST-MODIFIED
 
   // Extension point for backend-specific data
   ics_data?: Record<string, any>; // Store raw ICS properties
@@ -185,17 +186,17 @@ export interface Task {
  * @see RFC 5545 Section 3.6.1
  */
 export interface CalendarEvent {
-  id?: string;                // UID
-  title: string;              // SUMMARY
-  description?: string;       // DESCRIPTION
-  location?: string;          // LOCATION
-  start_time: Date;           // DTSTART
-  end_time: Date;             // DTEND
-  all_day: boolean;           // DTSTART;VALUE=DATE
-  reminders: Reminder[];      // VALARM
-  recurrence?: Recurrence;    // RRULE
-  created?: Date;             // CREATED
-  updated?: Date;             // LAST-MODIFIED
+  id?: string; // UID
+  title: string; // SUMMARY
+  description?: string; // DESCRIPTION
+  location?: string; // LOCATION
+  start_time: Date; // DTSTART
+  end_time: Date; // DTEND
+  all_day: boolean; // DTSTART;VALUE=DATE
+  reminders: Reminder[]; // VALARM
+  recurrence?: Recurrence; // RRULE
+  created?: Date; // CREATED
+  updated?: Date; // LAST-MODIFIED
 }
 ```
 
@@ -207,9 +208,9 @@ export interface CalendarEvent {
  */
 export interface QuickTaskInput {
   title: string;
-  due_date?: Date;            // Optional due date
-  priority?: number;          // Quick priority: 1 (high), 5 (medium), 9 (low)
-  reminder_minutes?: number;  // Quick reminder preset
+  due_date?: Date; // Optional due date
+  priority?: number; // Quick priority: 1 (high), 5 (medium), 9 (low)
+  reminder_minutes?: number; // Quick reminder preset
   reminder_method?: "email" | "popup";
 }
 
@@ -257,14 +258,16 @@ export const TaskSchema = z.object({
   completed_at: z.date().optional(),
   percent_complete: z.number().min(0).max(100).default(0),
   reminders: z.array(ReminderSchema).default([]),
-  recurrence: z.object({
-    freq: z.enum(["DAILY", "WEEKLY", "MONTHLY", "YEARLY"]),
-    interval: z.number().min(1).default(1),
-    count: z.number().min(1).optional(),
-    until: z.date().optional(),
-    by_day: z.array(z.string()).optional(),
-    by_month_day: z.array(z.number()).optional(),
-  }).optional(),
+  recurrence: z
+    .object({
+      freq: z.enum(["DAILY", "WEEKLY", "MONTHLY", "YEARLY"]),
+      interval: z.number().min(1).default(1),
+      count: z.number().min(1).optional(),
+      until: z.date().optional(),
+      by_day: z.array(z.string()).optional(),
+      by_month_day: z.array(z.number()).optional(),
+    })
+    .optional(),
   calendar_id: z.string().optional(),
   created: z.date().optional(),
   updated: z.date().optional(),
@@ -348,6 +351,7 @@ TaskListItem
 ### Task List Item Layout
 
 **Active Task:**
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ [ ] Finish project documentation                [Edit] [×]  │
@@ -357,6 +361,7 @@ TaskListItem
 ```
 
 **Completed Task:**
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │ [✓] Review pull requests                        [Edit] [×]  │
@@ -418,12 +423,14 @@ Expanded:
 ### Phase 1: Core DTOs and Utilities
 
 **Files:**
+
 - `lib/components/QuickEventsCard/types.ts`
 - `lib/components/QuickEventsCard/utils/ics-converter.ts`
 - `lib/components/QuickEventsCard/utils/date-grouping.ts`
 - `lib/components/QuickEventsCard/utils/reminder-formatter.ts`
 
 **Tasks:**
+
 1. Define TypeScript interfaces matching ICS spec
 2. Create Zod validation schemas
 3. Build DTO ↔ ICS conversion utilities
@@ -433,12 +440,14 @@ Expanded:
 ### Phase 2: UI Components
 
 **Files:**
+
 - `lib/components/QuickEventsCard/QuickEventsCard.tsx`
 - `lib/components/QuickEventsCard/EventListItem.tsx`
 - `lib/components/QuickEventsCard/QuickAddEvent.tsx`
 - `lib/components/QuickEventsCard/ReminderBadge.tsx`
 
 **Tasks:**
+
 1. Build QuickEventsCard container with Card component
 2. Create EventListItem with time, title, location, reminders
 3. Build QuickAddEvent form with react-hook-form + zod
@@ -449,10 +458,12 @@ Expanded:
 ### Phase 3: Mock Data and Demo
 
 **Files:**
+
 - `app/demos/QuickEventsDemo.tsx`
 - `lib/components/QuickEventsCard/mock-data.ts`
 
 **Tasks:**
+
 1. Create realistic mock data in ICS-compliant format
 2. Build interactive demo with CRUD operations
 3. Demonstrate various states (loading, error, empty)
@@ -462,9 +473,11 @@ Expanded:
 ### Phase 4: Storybook Stories
 
 **Files:**
+
 - `lib/components/QuickEventsCard/QuickEventsCard.stories.tsx`
 
 **Stories:**
+
 - Default: Upcoming events with reminders
 - Empty: No events state
 - Loading: Loading skeleton
@@ -476,10 +489,12 @@ Expanded:
 ### Phase 5: ICS Integration (VTODO)
 
 **Files:**
+
 - `lib/components/QuickTasksList/utils/ics-parser.ts`
 - `lib/components/QuickTasksList/utils/ics-generator.ts`
 
 **Tasks:**
+
 1. Add ICS VTODO parsing (consider `ical.js` library)
 2. Add ICS VTODO generation from Task DTOs
 3. Support import/export functionality (.ics files)
@@ -491,6 +506,7 @@ Expanded:
 **Scope:** Separate visual mode using same component architecture
 
 **Files:**
+
 - `lib/components/CalendarView/types.ts` (VEVENT DTOs)
 - `lib/components/CalendarView/CalendarView.tsx` (calendar UI)
 - `lib/components/CalendarView/EventCard.tsx` (event display)
@@ -498,6 +514,7 @@ Expanded:
 - `lib/components/CalendarView/CalendarView.stories.tsx`
 
 **Tasks:**
+
 1. Define VEVENT-based DTOs (CalendarEvent with start_time, end_time, location, attendees)
 2. Build calendar grid/list view component
 3. Implement ICS VEVENT parsing and generation
@@ -507,6 +524,7 @@ Expanded:
 7. Create Storybook stories for calendar view
 
 **UI Differences from Todo List:**
+
 - Grid/week/month calendar views vs. simple list
 - Time slots and duration display vs. checkbox completion
 - Location and attendee fields vs. priority
@@ -514,6 +532,7 @@ Expanded:
 - Conflict detection visualization
 
 **Shared Architecture:**
+
 - Same Reminder DTO and components
 - Same Recurrence DTO and logic
 - Shared ICS utilities (VALARM, RRULE)
@@ -524,6 +543,7 @@ Expanded:
 **Scope:** Fetch and sync data from Google Calendar and Google Tasks APIs
 
 **Files:**
+
 - `lib/services/google-calendar/auth.ts` (OAuth 2.0 authentication)
 - `lib/services/google-calendar/calendar-api.ts` (VEVENT fetching)
 - `lib/services/google-calendar/tasks-api.ts` (VTODO fetching via Google Tasks)
@@ -544,20 +564,21 @@ Expanded:
    - Note: Google Tasks has limited support compared to full VTODO spec
 
 **Authentication Flow:**
+
 ```typescript
 // OAuth 2.0 with Google Identity Services
 // Uses @react-oauth/google library
 
-import { useGoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from "@react-oauth/google";
 
 const login = useGoogleLogin({
   scope: [
-    'https://www.googleapis.com/auth/calendar.readonly',
-    'https://www.googleapis.com/auth/tasks.readonly',
-  ].join(' '),
-  onSuccess: (tokenResponse) => {
+    "https://www.googleapis.com/auth/calendar.readonly",
+    "https://www.googleapis.com/auth/tasks.readonly",
+  ].join(" "),
+  onSuccess: tokenResponse => {
     // Store access token
-    localStorage.setItem('google_access_token', tokenResponse.access_token);
+    localStorage.setItem("google_access_token", tokenResponse.access_token);
   },
 });
 ```
@@ -580,6 +601,7 @@ const login = useGoogleLogin({
    - Optimistic updates for perceived performance
 
 **Google Calendar Event → CalendarEvent DTO:**
+
 ```typescript
 // lib/services/google-calendar/transformers.ts
 
@@ -595,12 +617,12 @@ interface GoogleCalendarEvent {
     displayName?: string;
     optional?: boolean;
     organizer?: boolean;
-    responseStatus: 'needsAction' | 'accepted' | 'declined' | 'tentative';
+    responseStatus: "needsAction" | "accepted" | "declined" | "tentative";
   }>;
   reminders?: {
     useDefault: boolean;
     overrides?: Array<{
-      method: 'email' | 'popup';
+      method: "email" | "popup";
       minutes: number;
     }>;
   };
@@ -609,9 +631,7 @@ interface GoogleCalendarEvent {
   updated: string;
 }
 
-function googleEventToCalendarEvent(
-  googleEvent: GoogleCalendarEvent
-): CalendarEvent {
+function googleEventToCalendarEvent(googleEvent: GoogleCalendarEvent): CalendarEvent {
   const isAllDay = !!googleEvent.start.date;
 
   return {
@@ -633,18 +653,19 @@ function googleEventToCalendarEvent(
     recurrence: parseGoogleRRule(googleEvent.recurrence),
     created: new Date(googleEvent.created),
     updated: new Date(googleEvent.updated),
-    calendar_id: 'primary',
+    calendar_id: "primary",
   };
 }
 ```
 
 **Google Task → Task DTO:**
+
 ```typescript
 interface GoogleTask {
   id: string;
   title: string;
   notes?: string;
-  status: 'needsAction' | 'completed';
+  status: "needsAction" | "completed";
   due?: string; // RFC 3339 timestamp
   completed?: string;
   updated: string;
@@ -657,14 +678,14 @@ function googleTaskToTask(googleTask: GoogleTask): Task {
     description: googleTask.notes,
     due_date: googleTask.due ? new Date(googleTask.due) : undefined,
     priority: 0, // Google Tasks doesn't support priority
-    status: googleTask.status === 'completed' ? 'COMPLETED' : 'NEEDS-ACTION',
+    status: googleTask.status === "completed" ? "COMPLETED" : "NEEDS-ACTION",
     completed_at: googleTask.completed ? new Date(googleTask.completed) : undefined,
-    percent_complete: googleTask.status === 'completed' ? 100 : 0,
+    percent_complete: googleTask.status === "completed" ? 100 : 0,
     reminders: [], // Google Tasks doesn't support reminders natively
     recurrence: undefined, // Google Tasks doesn't support recurrence
     created: undefined, // Not provided by API
     updated: new Date(googleTask.updated),
-    calendar_id: 'primary',
+    calendar_id: "primary",
   };
 }
 ```
@@ -709,11 +730,13 @@ function googleTaskToTask(googleTask: GoogleTask): Task {
    - WebSocket proxy via backend service
 
 **API Rate Limits:**
+
 - Google Calendar API: 1,000,000 queries/day
 - Google Tasks API: 50,000 queries/day
 - Implement request queuing and throttling
 
 **Security Considerations:**
+
 - Store tokens securely (httpOnly cookies for refresh tokens)
 - Never expose client secret in frontend code
 - Use PKCE (Proof Key for Code Exchange) flow
@@ -721,15 +744,17 @@ function googleTaskToTask(googleTask: GoogleTask): Task {
 - Token rotation on refresh
 
 **Dependencies:**
+
 ```json
 {
   "@react-oauth/google": "^0.12.1",
-  "idb": "^8.0.0",  // IndexedDB wrapper
-  "date-fns-tz": "^3.1.3"  // Timezone handling
+  "idb": "^8.0.0", // IndexedDB wrapper
+  "date-fns-tz": "^3.1.3" // Timezone handling
 }
 ```
 
 **Example Usage:**
+
 ```typescript
 // In component
 import { useGoogleCalendar } from '@/lib/services/google-calendar/hooks';
@@ -791,6 +816,7 @@ Frontend → Backend API → Google Calendar API
 ```
 
 **Benefits:**
+
 - More secure token storage
 - Server-side caching
 - Rate limit management
@@ -883,6 +909,7 @@ export function parseICSEvent(icsText: string): CalendarEvent {
 ## Testing Strategy
 
 ### Unit Tests
+
 - [ ] DTO validation with Zod schemas
 - [ ] ICS conversion utilities (DTO → ICS → DTO round-trip)
 - [ ] Date grouping logic
@@ -890,6 +917,7 @@ export function parseICSEvent(icsText: string): CalendarEvent {
 - [ ] Component rendering with various props
 
 ### Integration Tests
+
 - [ ] Complete CRUD flow (add → edit → delete)
 - [ ] Form submission and validation
 - [ ] Multi-reminder management
@@ -897,12 +925,14 @@ export function parseICSEvent(icsText: string): CalendarEvent {
 - [ ] Error handling
 
 ### ICS Compatibility Tests
+
 - [ ] Parse real ICS files from Google Calendar
 - [ ] Parse ICS from Apple Calendar
 - [ ] Round-trip conversion preserves data
 - [ ] Handle edge cases (all-day, recurring, etc.)
 
 ### Visual Regression Tests (Storybook)
+
 - [ ] All component states captured
 - [ ] Interaction testing
 - [ ] Accessibility audit (a11y addon)
@@ -910,6 +940,7 @@ export function parseICSEvent(icsText: string): CalendarEvent {
 ## Dependencies
 
 ### Existing (No New Install Required)
+
 - `react-hook-form` - Form state management ✅
 - `zod` - Schema validation ✅
 - `@hookform/resolvers` - Form validation ✅
@@ -918,12 +949,14 @@ export function parseICSEvent(icsText: string): CalendarEvent {
 - `date-fns` - Date formatting (if needed)
 
 ### Optional (ICS Parsing)
+
 - `ical.js` - Robust ICS parser (Mozilla project)
 - Or custom ICS parser (simpler, fewer deps)
 
 ## Future Enhancements
 
 ### Phase 2 Features
+
 - [ ] **Search & Filter**: Full-text search, filter by location/reminder
 - [ ] **Recurring Events UI**: Visual editor for recurrence rules
 - [ ] **Conflict Detection**: Warning for overlapping events
@@ -931,6 +964,7 @@ export function parseICSEvent(icsText: string): CalendarEvent {
 - [ ] **Drag & Drop**: Reschedule by dragging events
 
 ### Phase 3 Features
+
 - [ ] **Bulk Operations**: Multi-select and batch actions
 - [ ] **Event Templates**: Save common event patterns
 - [ ] **Smart Suggestions**: ML-based time/reminder suggestions
@@ -938,6 +972,7 @@ export function parseICSEvent(icsText: string): CalendarEvent {
 - [ ] **Attachments**: File attachments on events (ICS ATTACH property)
 
 ### Backend Integration Options
+
 - [ ] **ActiveCalendar (Python)**: Via REST API
 - [ ] **Google Calendar API**: Direct integration
 - [ ] **CalDAV**: Standard calendar protocol
@@ -984,6 +1019,7 @@ export function parseICSEvent(icsText: string): CalendarEvent {
 ### A.1 - VTODO (Task) - Complete Example
 
 **ICS Format (RFC 5545):**
+
 ```ics
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -1024,6 +1060,7 @@ END:VCALENDAR
 ```
 
 **TypeScript DTO:**
+
 ```typescript
 const task: Task = {
   id: "task-550e8400-e29b-41d4-a716-446655440000",
@@ -1035,7 +1072,7 @@ const task: Task = {
   completed_at: undefined,
   percent_complete: 50,
   reminders: [
-    { method: "popup", minutes: 60 },  // 1 hour before
+    { method: "popup", minutes: 60 }, // 1 hour before
     { method: "email", minutes: 1440 }, // 1 day before
   ],
   recurrence: {
@@ -1070,6 +1107,7 @@ const task: Task = {
 ### A.2 - VEVENT (Calendar Event) - Complete Example
 
 **ICS Format (RFC 5545):**
+
 ```ics
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -1116,6 +1154,7 @@ END:VCALENDAR
 ```
 
 **TypeScript DTO:**
+
 ```typescript
 const event: CalendarEvent = {
   id: "event-660e9500-f39c-52e5-b827-557766551111",
@@ -1185,6 +1224,7 @@ const event: CalendarEvent = {
 ### A.3 - VALARM (Reminder) - All Variations
 
 **DISPLAY Action (Popup):**
+
 ```ics
 BEGIN:VALARM
 ACTION:DISPLAY
@@ -1194,6 +1234,7 @@ END:VALARM
 ```
 
 **EMAIL Action:**
+
 ```ics
 BEGIN:VALARM
 ACTION:EMAIL
@@ -1205,6 +1246,7 @@ END:VALARM
 ```
 
 **AUDIO Action (Not Supported Yet):**
+
 ```ics
 BEGIN:VALARM
 ACTION:AUDIO
@@ -1214,20 +1256,21 @@ END:VALARM
 ```
 
 **TypeScript DTO:**
+
 ```typescript
 interface Reminder {
-  method: "email" | "popup";  // Maps to ACTION
-  minutes: number;             // Converts to TRIGGER
+  method: "email" | "popup"; // Maps to ACTION
+  minutes: number; // Converts to TRIGGER
 }
 
 // Examples:
 const reminders: Reminder[] = [
-  { method: "popup", minutes: 0 },     // TRIGGER:PT0M (at time of event)
-  { method: "popup", minutes: 5 },     // TRIGGER:-PT5M
-  { method: "popup", minutes: 15 },    // TRIGGER:-PT15M
-  { method: "popup", minutes: 30 },    // TRIGGER:-PT30M
-  { method: "email", minutes: 60 },    // TRIGGER:-PT1H
-  { method: "email", minutes: 1440 },  // TRIGGER:-P1D (1 day = 1440 min)
+  { method: "popup", minutes: 0 }, // TRIGGER:PT0M (at time of event)
+  { method: "popup", minutes: 5 }, // TRIGGER:-PT5M
+  { method: "popup", minutes: 15 }, // TRIGGER:-PT15M
+  { method: "popup", minutes: 30 }, // TRIGGER:-PT30M
+  { method: "email", minutes: 60 }, // TRIGGER:-PT1H
+  { method: "email", minutes: 1440 }, // TRIGGER:-P1D (1 day = 1440 min)
   { method: "email", minutes: 10080 }, // TRIGGER:-P7D (1 week = 10080 min)
 ];
 ```
@@ -1249,62 +1292,75 @@ const reminders: Reminder[] = [
 ### A.4 - RRULE (Recurrence Rule) - All Patterns
 
 **Daily:**
+
 ```ics
 RRULE:FREQ=DAILY;INTERVAL=1
 ```
+
 ```typescript
 { freq: "DAILY", interval: 1 }
 ```
 
 **Weekly (specific days):**
+
 ```ics
 RRULE:FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,WE,FR
 ```
+
 ```typescript
 { freq: "WEEKLY", interval: 1, by_day: ["MO", "WE", "FR"] }
 ```
 
 **Monthly (by date):**
+
 ```ics
 RRULE:FREQ=MONTHLY;INTERVAL=1;BYMONTHDAY=1,15
 ```
+
 ```typescript
 { freq: "MONTHLY", interval: 1, by_month_day: [1, 15] }
 ```
 
 **Yearly:**
+
 ```ics
 RRULE:FREQ=YEARLY;INTERVAL=1
 ```
+
 ```typescript
 { freq: "YEARLY", interval: 1 }
 ```
 
 **With count (limited occurrences):**
+
 ```ics
 RRULE:FREQ=WEEKLY;INTERVAL=2;COUNT=10
 ```
+
 ```typescript
 { freq: "WEEKLY", interval: 2, count: 10 }
 ```
 
 **With end date:**
+
 ```ics
 RRULE:FREQ=DAILY;UNTIL=20251231T235959Z
 ```
+
 ```typescript
 { freq: "DAILY", until: new Date("2025-12-31T23:59:59Z") }
 ```
 
 **TypeScript DTO:**
+
 ```typescript
 interface Recurrence {
   freq: "DAILY" | "WEEKLY" | "MONTHLY" | "YEARLY";
-  interval: number;           // Every N periods
-  count?: number;             // Stop after N occurrences
-  until?: Date;               // Stop at this date
-  by_day?: string[];          // ["MO", "TU", "WE", "TH", "FR", "SA", "SU"]
-  by_month_day?: number[];    // [1-31]
+  interval: number; // Every N periods
+  count?: number; // Stop after N occurrences
+  until?: Date; // Stop at this date
+  by_day?: string[]; // ["MO", "TU", "WE", "TH", "FR", "SA", "SU"]
+  by_month_day?: number[]; // [1-31]
 }
 ```
 
@@ -1313,37 +1369,42 @@ interface Recurrence {
 ### A.5 - ATTENDEE (Event Participants)
 
 **Required Participant (Accepted):**
+
 ```ics
 ATTENDEE;CN=John Doe;ROLE=REQ-PARTICIPANT;PARTSTAT=ACCEPTED;RSVP=TRUE:mailto:john@example.com
 ```
 
 **Optional Participant (Tentative):**
+
 ```ics
 ATTENDEE;CN=Jane Smith;ROLE=OPT-PARTICIPANT;PARTSTAT=TENTATIVE;RSVP=TRUE:mailto:jane@example.com
 ```
 
 **Organizer/Chair:**
+
 ```ics
 ATTENDEE;CN=Meeting Organizer;ROLE=CHAIR;PARTSTAT=ACCEPTED:mailto:organizer@example.com
 ```
 
 **Declined:**
+
 ```ics
 ATTENDEE;CN=Bob Wilson;ROLE=REQ-PARTICIPANT;PARTSTAT=DECLINED;RSVP=TRUE:mailto:bob@example.com
 ```
 
 **TypeScript DTO:**
+
 ```typescript
 interface Attendee {
-  email: string;                    // MAILTO:
-  display_name?: string;            // CN=
-  optional: boolean;                // ROLE=OPT-PARTICIPANT vs REQ-PARTICIPANT
-  organizer: boolean;               // ROLE=CHAIR
-  response_status:                  // PARTSTAT=
-    | "needsAction"                 // NEEDS-ACTION
-    | "accepted"                    // ACCEPTED
-    | "declined"                    // DECLINED
-    | "tentative";                  // TENTATIVE
+  email: string; // MAILTO:
+  display_name?: string; // CN=
+  optional: boolean; // ROLE=OPT-PARTICIPANT vs REQ-PARTICIPANT
+  organizer: boolean; // ROLE=CHAIR
+  response_status: // PARTSTAT=
+  | "needsAction" // NEEDS-ACTION
+    | "accepted" // ACCEPTED
+    | "declined" // DECLINED
+    | "tentative"; // TENTATIVE
 }
 
 // Examples:
@@ -1385,6 +1446,7 @@ const attendees: Attendee[] = [
 ### A.6 - All-Day Events
 
 **All-Day Event (DATE format):**
+
 ```ics
 BEGIN:VEVENT
 UID:allday-event-123
@@ -1396,6 +1458,7 @@ END:VEVENT
 ```
 
 **TypeScript DTO:**
+
 ```typescript
 const allDayEvent: CalendarEvent = {
   id: "allday-event-123",
@@ -1403,7 +1466,7 @@ const allDayEvent: CalendarEvent = {
   description: "Public holiday",
   start_time: new Date("2025-12-25T00:00:00"),
   end_time: new Date("2025-12-26T00:00:00"),
-  all_day: true,  // KEY: Triggers DATE format in ICS
+  all_day: true, // KEY: Triggers DATE format in ICS
   location: undefined,
   attendees: [],
   reminders: [],
@@ -1412,6 +1475,7 @@ const allDayEvent: CalendarEvent = {
 ```
 
 **Key Difference:**
+
 - `all_day: false` → `DTSTART:20251225T090000Z` (with time)
 - `all_day: true` → `DTSTART;VALUE=DATE:20251225` (date only)
 
@@ -1429,8 +1493,8 @@ const allDayEvent: CalendarEvent = {
  * @see RFC 5545 Section 3.6.6
  */
 export interface Reminder {
-  method: "email" | "popup";  // ACTION: EMAIL or DISPLAY
-  minutes: number;             // TRIGGER: -PT{minutes}M
+  method: "email" | "popup"; // ACTION: EMAIL or DISPLAY
+  minutes: number; // TRIGGER: -PT{minutes}M
 }
 
 /**
@@ -1442,8 +1506,8 @@ export interface Recurrence {
   interval: number;
   count?: number;
   until?: Date;
-  by_day?: string[];        // ["MO", "TU", "WE", "TH", "FR", "SA", "SU"]
-  by_month_day?: number[];  // [1-31]
+  by_day?: string[]; // ["MO", "TU", "WE", "TH", "FR", "SA", "SU"]
+  by_month_day?: number[]; // [1-31]
 }
 
 // ============================================================================
@@ -1456,31 +1520,28 @@ export interface Recurrence {
  */
 export interface Task {
   // Identification
-  id?: string;                    // UID
+  id?: string; // UID
 
   // Core properties
-  title: string;                  // SUMMARY (required, 1-1024 chars)
-  description?: string;           // DESCRIPTION (max 8192 chars)
-  due_date?: Date;                // DUE
+  title: string; // SUMMARY (required, 1-1024 chars)
+  description?: string; // DESCRIPTION (max 8192 chars)
+  due_date?: Date; // DUE
 
   // Status tracking
-  priority: number;               // PRIORITY (0-9: 0=undefined, 1=highest, 9=lowest)
-  status:                         // STATUS
-    | "NEEDS-ACTION"
-    | "IN-PROCESS"
-    | "COMPLETED"
-    | "CANCELLED";
-  completed_at?: Date;            // COMPLETED (datetime when status=COMPLETED)
-  percent_complete: number;       // PERCENT-COMPLETE (0-100)
+  priority: number; // PRIORITY (0-9: 0=undefined, 1=highest, 9=lowest)
+  status: // STATUS
+  "NEEDS-ACTION" | "IN-PROCESS" | "COMPLETED" | "CANCELLED";
+  completed_at?: Date; // COMPLETED (datetime when status=COMPLETED)
+  percent_complete: number; // PERCENT-COMPLETE (0-100)
 
   // Related components
-  reminders: Reminder[];          // VALARM (multiple)
-  recurrence?: Recurrence;        // RRULE
+  reminders: Reminder[]; // VALARM (multiple)
+  recurrence?: Recurrence; // RRULE
 
   // Metadata
-  calendar_id?: string;           // X-CALENDAR-ID (custom property)
-  created?: Date;                 // CREATED
-  updated?: Date;                 // LAST-MODIFIED
+  calendar_id?: string; // X-CALENDAR-ID (custom property)
+  created?: Date; // CREATED
+  updated?: Date; // LAST-MODIFIED
   ics_data?: Record<string, any>; // Raw ICS properties
 }
 
@@ -1493,15 +1554,12 @@ export interface Task {
  * @see RFC 5545 Section 3.8.4.1
  */
 export interface Attendee {
-  email: string;                  // MAILTO:
-  display_name?: string;          // CN=
-  optional: boolean;              // ROLE=OPT-PARTICIPANT vs REQ-PARTICIPANT
-  organizer: boolean;             // ROLE=CHAIR
-  response_status:                // PARTSTAT=
-    | "needsAction"
-    | "accepted"
-    | "declined"
-    | "tentative";
+  email: string; // MAILTO:
+  display_name?: string; // CN=
+  optional: boolean; // ROLE=OPT-PARTICIPANT vs REQ-PARTICIPANT
+  organizer: boolean; // ROLE=CHAIR
+  response_status: // PARTSTAT=
+  "needsAction" | "accepted" | "declined" | "tentative";
 }
 
 /**
@@ -1510,27 +1568,27 @@ export interface Attendee {
  */
 export interface CalendarEvent {
   // Identification
-  id?: string;                    // UID
+  id?: string; // UID
 
   // Core properties
-  title: string;                  // SUMMARY (required, 1-1024 chars)
-  description?: string;           // DESCRIPTION (max 8192 chars)
-  location?: string;              // LOCATION (max 1024 chars)
+  title: string; // SUMMARY (required, 1-1024 chars)
+  description?: string; // DESCRIPTION (max 8192 chars)
+  location?: string; // LOCATION (max 1024 chars)
 
   // Time properties
-  start_time: Date;               // DTSTART or DTSTART;VALUE=DATE
-  end_time: Date;                 // DTEND or DTEND;VALUE=DATE
-  all_day: boolean;               // Determines DATE vs DATETIME format
+  start_time: Date; // DTSTART or DTSTART;VALUE=DATE
+  end_time: Date; // DTEND or DTEND;VALUE=DATE
+  all_day: boolean; // Determines DATE vs DATETIME format
 
   // Related components
-  attendees: Attendee[];          // ATTENDEE (multiple)
-  reminders: Reminder[];          // VALARM (multiple)
-  recurrence?: Recurrence;        // RRULE
+  attendees: Attendee[]; // ATTENDEE (multiple)
+  reminders: Reminder[]; // VALARM (multiple)
+  recurrence?: Recurrence; // RRULE
 
   // Metadata
-  calendar_id?: string;           // X-CALENDAR-ID (custom property)
-  created?: Date;                 // CREATED
-  updated?: Date;                 // LAST-MODIFIED
+  calendar_id?: string; // X-CALENDAR-ID (custom property)
+  created?: Date; // CREATED
+  updated?: Date; // LAST-MODIFIED
   ics_data?: Record<string, any>; // Raw ICS properties
 }
 
@@ -1544,7 +1602,7 @@ export interface CalendarEvent {
 export interface QuickTaskInput {
   title: string;
   due_date?: Date;
-  priority?: number;              // 1=high, 5=medium, 9=low
+  priority?: number; // 1=high, 5=medium, 9=low
   reminder_minutes?: number;
   reminder_method?: "email" | "popup";
 }
@@ -1555,7 +1613,7 @@ export interface QuickTaskInput {
 export interface QuickEventInput {
   title: string;
   start_time: Date;
-  duration_minutes: number;       // Converts to end_time
+  duration_minutes: number; // Converts to end_time
   location?: string;
   reminder_minutes?: number;
   reminder_method?: "email" | "popup";
@@ -1568,16 +1626,17 @@ export interface QuickEventInput {
 
 ICS PRIORITY property uses integers 0-9:
 
-| Priority Value | Meaning | UI Label | Badge Color |
-|----------------|---------|----------|-------------|
-| `0` | Undefined/No priority | None | - |
-| `1` | Highest priority | High | 🔴 Red |
-| `2-4` | High priority | High | 🔴 Red |
-| `5` | Medium priority | Medium | 🟡 Yellow |
-| `6-8` | Low priority | Low | 🔵 Blue |
-| `9` | Lowest priority | Low | 🔵 Blue |
+| Priority Value | Meaning               | UI Label | Badge Color |
+| -------------- | --------------------- | -------- | ----------- |
+| `0`            | Undefined/No priority | None     | -           |
+| `1`            | Highest priority      | High     | 🔴 Red      |
+| `2-4`          | High priority         | High     | 🔴 Red      |
+| `5`            | Medium priority       | Medium   | 🟡 Yellow   |
+| `6-8`          | Low priority          | Low      | 🔵 Blue     |
+| `9`            | Lowest priority       | Low      | 🔵 Blue     |
 
 **Simplified UI Mapping:**
+
 ```typescript
 const PRIORITY_MAP = {
   HIGH: 1,
@@ -1604,21 +1663,21 @@ function getPriorityLabel(priority: number): string {
 ```typescript
 // DATETIME (with time)
 const date = new Date("2025-10-10T09:00:00Z");
-const icsDateTime = "20251010T090000Z";  // UTC format
+const icsDateTime = "20251010T090000Z"; // UTC format
 
 // DATE (all-day, no time)
 const dateOnly = new Date("2025-12-25");
-const icsDate = "20251225";  // VALUE=DATE
+const icsDate = "20251225"; // VALUE=DATE
 
 // Conversion functions
 function toICSDateTime(date: Date): string {
-  return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+  return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
 }
 
 function toICSDate(date: Date): string {
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
   return `${year}${month}${day}`;
 }
 
@@ -1647,43 +1706,44 @@ export const ReminderSchema = z.object({
   minutes: z.number().min(0).max(20160), // Max 2 weeks
 });
 
-export const RecurrenceSchema = z.object({
-  freq: z.enum(["DAILY", "WEEKLY", "MONTHLY", "YEARLY"]),
-  interval: z.number().min(1).max(999),
-  count: z.number().min(1).optional(),
-  until: z.date().optional(),
-  by_day: z.array(z.enum(["MO", "TU", "WE", "TH", "FR", "SA", "SU"])).optional(),
-  by_month_day: z.array(z.number().min(1).max(31)).optional(),
-}).refine(
-  (data) => !(data.count && data.until),
-  { message: "Cannot specify both count and until" }
-);
+export const RecurrenceSchema = z
+  .object({
+    freq: z.enum(["DAILY", "WEEKLY", "MONTHLY", "YEARLY"]),
+    interval: z.number().min(1).max(999),
+    count: z.number().min(1).optional(),
+    until: z.date().optional(),
+    by_day: z.array(z.enum(["MO", "TU", "WE", "TH", "FR", "SA", "SU"])).optional(),
+    by_month_day: z.array(z.number().min(1).max(31)).optional(),
+  })
+  .refine(data => !(data.count && data.until), { message: "Cannot specify both count and until" });
 
 // Task (VTODO) schema
-export const TaskSchema = z.object({
-  id: z.string().uuid().optional(),
-  title: z.string().min(1).max(1024),
-  description: z.string().max(8192).optional(),
-  due_date: z.date().optional(),
-  priority: z.number().min(0).max(9).default(0),
-  status: z.enum(["NEEDS-ACTION", "IN-PROCESS", "COMPLETED", "CANCELLED"]),
-  completed_at: z.date().optional(),
-  percent_complete: z.number().min(0).max(100).default(0),
-  reminders: z.array(ReminderSchema).default([]),
-  recurrence: RecurrenceSchema.optional(),
-  calendar_id: z.string().optional(),
-  created: z.date().optional(),
-  updated: z.date().optional(),
-  ics_data: z.record(z.any()).optional(),
-}).refine(
-  (data) => {
-    if (data.status === "COMPLETED") {
-      return data.completed_at !== undefined && data.percent_complete === 100;
-    }
-    return true;
-  },
-  { message: "Completed tasks must have completed_at and percent_complete=100" }
-);
+export const TaskSchema = z
+  .object({
+    id: z.string().uuid().optional(),
+    title: z.string().min(1).max(1024),
+    description: z.string().max(8192).optional(),
+    due_date: z.date().optional(),
+    priority: z.number().min(0).max(9).default(0),
+    status: z.enum(["NEEDS-ACTION", "IN-PROCESS", "COMPLETED", "CANCELLED"]),
+    completed_at: z.date().optional(),
+    percent_complete: z.number().min(0).max(100).default(0),
+    reminders: z.array(ReminderSchema).default([]),
+    recurrence: RecurrenceSchema.optional(),
+    calendar_id: z.string().optional(),
+    created: z.date().optional(),
+    updated: z.date().optional(),
+    ics_data: z.record(z.any()).optional(),
+  })
+  .refine(
+    data => {
+      if (data.status === "COMPLETED") {
+        return data.completed_at !== undefined && data.percent_complete === 100;
+      }
+      return true;
+    },
+    { message: "Completed tasks must have completed_at and percent_complete=100" }
+  );
 
 // Attendee schema
 export const AttendeeSchema = z.object({
@@ -1695,25 +1755,26 @@ export const AttendeeSchema = z.object({
 });
 
 // Calendar Event (VEVENT) schema
-export const CalendarEventSchema = z.object({
-  id: z.string().uuid().optional(),
-  title: z.string().min(1).max(1024),
-  description: z.string().max(8192).optional(),
-  location: z.string().max(1024).optional(),
-  start_time: z.date(),
-  end_time: z.date(),
-  all_day: z.boolean().default(false),
-  attendees: z.array(AttendeeSchema).default([]),
-  reminders: z.array(ReminderSchema).default([]),
-  recurrence: RecurrenceSchema.optional(),
-  calendar_id: z.string().optional(),
-  created: z.date().optional(),
-  updated: z.date().optional(),
-  ics_data: z.record(z.any()).optional(),
-}).refine(
-  (data) => data.end_time > data.start_time,
-  { message: "end_time must be after start_time" }
-);
+export const CalendarEventSchema = z
+  .object({
+    id: z.string().uuid().optional(),
+    title: z.string().min(1).max(1024),
+    description: z.string().max(8192).optional(),
+    location: z.string().max(1024).optional(),
+    start_time: z.date(),
+    end_time: z.date(),
+    all_day: z.boolean().default(false),
+    attendees: z.array(AttendeeSchema).default([]),
+    reminders: z.array(ReminderSchema).default([]),
+    recurrence: RecurrenceSchema.optional(),
+    calendar_id: z.string().optional(),
+    created: z.date().optional(),
+    updated: z.date().optional(),
+    ics_data: z.record(z.any()).optional(),
+  })
+  .refine(data => data.end_time > data.start_time, {
+    message: "end_time must be after start_time",
+  });
 
 // Quick input schemas
 export const QuickTaskInputSchema = z.object({

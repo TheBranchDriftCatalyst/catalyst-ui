@@ -12,6 +12,7 @@
 A cyberpunk-themed, Clippy-inspired 3D robot assistant built with React Three Fiber that monitors user interactions and provides contextual assistance through chat. The assistant appears on screen with personality-driven animations and can be summoned/dismissed by users.
 
 **Key Inspirations:**
+
 - Microsoft Clippy (interaction patterns, helpful/annoying personality)
 - Cyberpunk aesthetics (synthwave robot design)
 - Modern chat assistants (context-aware, conversational)
@@ -21,6 +22,7 @@ A cyberpunk-themed, Clippy-inspired 3D robot assistant built with React Three Fi
 ## Current State
 
 ### What Exists
+
 - ✅ Cybersynthwave design system with 7 themes
 - ✅ Toast notification system for non-blocking feedback
 - ✅ Dialog/Sheet components for modal interactions
@@ -28,6 +30,7 @@ A cyberpunk-themed, Clippy-inspired 3D robot assistant built with React Three Fi
 - ✅ Advanced animation system (tailwindcss-animate)
 
 ### What's Missing
+
 - ❌ No 3D rendering capabilities (React Three Fiber)
 - ❌ No user interaction tracking system
 - ❌ No contextual assistant/chat functionality
@@ -101,6 +104,7 @@ lib/
 ### 1. Robot3D Component (React Three Fiber)
 
 **Dependencies:**
+
 ```json
 {
   "@react-three/fiber": "^8.15.0",
@@ -111,6 +115,7 @@ lib/
 ```
 
 **RobotModel Design:**
+
 - Geometric/low-poly cyberpunk aesthetic
 - Glowing cyan/magenta accents matching theme
 - Animated eye displays (LCD screen face)
@@ -118,26 +123,27 @@ lib/
 - Responsive to mouse position
 
 **Example Structure:**
+
 ```tsx
 // lib/components/ClippyAssistant/Robot3D/RobotModel.tsx
-import { useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { useSpring, animated } from '@react-spring/three';
+import { useRef } from "react";
+import { useFrame } from "@react-three/fiber";
+import { useSpring, animated } from "@react-spring/three";
 
 export function RobotModel({ behavior, ...props }) {
   const meshRef = useRef();
 
   // Idle floating animation
-  useFrame((state) => {
-    if (behavior === 'idle') {
+  useFrame(state => {
+    if (behavior === "idle") {
       meshRef.current.position.y = Math.sin(state.clock.elapsedTime) * 0.2;
       meshRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
     }
   });
 
   const { scale } = useSpring({
-    scale: behavior === 'excited' ? 1.2 : 1,
-    config: { tension: 300, friction: 10 }
+    scale: behavior === "excited" ? 1.2 : 1,
+    config: { tension: 300, friction: 10 },
   });
 
   return (
@@ -145,11 +151,7 @@ export function RobotModel({ behavior, ...props }) {
       {/* Robot head - cube with glowing screen */}
       <mesh ref={meshRef} position={[0, 1, 0]}>
         <boxGeometry args={[0.8, 0.8, 0.8]} />
-        <meshStandardMaterial
-          color="#1a1a2e"
-          emissive="#00ffff"
-          emissiveIntensity={0.3}
-        />
+        <meshStandardMaterial color="#1a1a2e" emissive="#00ffff" emissiveIntensity={0.3} />
       </mesh>
 
       {/* Eye display - animated LCD screen */}
@@ -161,21 +163,13 @@ export function RobotModel({ behavior, ...props }) {
       {/* Body - rounded cylinder */}
       <mesh position={[0, 0, 0]}>
         <cylinderGeometry args={[0.5, 0.6, 1.2, 8]} />
-        <meshStandardMaterial
-          color="#16213e"
-          metalness={0.8}
-          roughness={0.2}
-        />
+        <meshStandardMaterial color="#16213e" metalness={0.8} roughness={0.2} />
       </mesh>
 
       {/* Antenna - glowing sphere on spring */}
       <mesh position={[0, 1.8, 0]}>
         <sphereGeometry args={[0.1, 16, 16]} />
-        <meshStandardMaterial
-          color="#ff00ff"
-          emissive="#ff00ff"
-          emissiveIntensity={1}
-        />
+        <meshStandardMaterial color="#ff00ff" emissive="#ff00ff" emissiveIntensity={1} />
       </mesh>
     </animated.group>
   );
@@ -183,6 +177,7 @@ export function RobotModel({ behavior, ...props }) {
 ```
 
 **Animation States:**
+
 - `idle` - Gentle floating, slow rotation
 - `thinking` - Faster spin, pulsing antenna
 - `excited` - Bouncing, rapid scale changes
@@ -192,13 +187,14 @@ export function RobotModel({ behavior, ...props }) {
 ### 2. Context Tracking System
 
 **useInteractionTracker Hook:**
+
 ```tsx
 // lib/components/ClippyAssistant/hooks/useInteractionTracker.ts
-import { useEffect, useRef } from 'react';
-import { useClippyState } from './useClippyState';
+import { useEffect, useRef } from "react";
+import { useClippyState } from "./useClippyState";
 
 interface InteractionEvent {
-  type: 'click' | 'hover' | 'scroll' | 'input' | 'navigation' | 'error';
+  type: "click" | "hover" | "scroll" | "input" | "navigation" | "error";
   target: string;
   timestamp: number;
   metadata?: Record<string, any>;
@@ -215,14 +211,14 @@ export function useInteractionTracker(enabled: boolean = true) {
     const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const interaction: InteractionEvent = {
-        type: 'click',
+        type: "click",
         target: getElementIdentifier(target),
         timestamp: Date.now(),
         metadata: {
           tagName: target.tagName,
           className: target.className,
           textContent: target.textContent?.substring(0, 50),
-        }
+        },
       };
 
       interactionBuffer.current.push(interaction);
@@ -233,14 +229,14 @@ export function useInteractionTracker(enabled: boolean = true) {
     const handleInput = (e: Event) => {
       const target = e.target as HTMLInputElement;
       const interaction: InteractionEvent = {
-        type: 'input',
+        type: "input",
         target: getElementIdentifier(target),
         timestamp: Date.now(),
         metadata: {
           inputType: target.type,
           value: sanitizeValue(target.value),
           placeholder: target.placeholder,
-        }
+        },
       };
 
       interactionBuffer.current.push(interaction);
@@ -250,13 +246,13 @@ export function useInteractionTracker(enabled: boolean = true) {
     // Scroll tracking (debounced)
     const handleScroll = debounce(() => {
       const interaction: InteractionEvent = {
-        type: 'scroll',
-        target: 'window',
+        type: "scroll",
+        target: "window",
         timestamp: Date.now(),
         metadata: {
           scrollY: window.scrollY,
           scrollPercentage: (window.scrollY / document.body.scrollHeight) * 100,
-        }
+        },
       };
 
       addInteraction(interaction);
@@ -265,14 +261,14 @@ export function useInteractionTracker(enabled: boolean = true) {
     // Error tracking
     const handleError = (e: ErrorEvent) => {
       const interaction: InteractionEvent = {
-        type: 'error',
-        target: 'window',
+        type: "error",
+        target: "window",
         timestamp: Date.now(),
         metadata: {
           message: e.message,
           filename: e.filename,
           lineno: e.lineno,
-        }
+        },
       };
 
       interactionBuffer.current.push(interaction);
@@ -280,16 +276,16 @@ export function useInteractionTracker(enabled: boolean = true) {
     };
 
     // Attach listeners
-    document.addEventListener('click', handleClick);
-    document.addEventListener('input', handleInput);
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('error', handleError);
+    document.addEventListener("click", handleClick);
+    document.addEventListener("input", handleInput);
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("error", handleError);
 
     return () => {
-      document.removeEventListener('click', handleClick);
-      document.removeEventListener('input', handleInput);
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('error', handleError);
+      document.removeEventListener("click", handleClick);
+      document.removeEventListener("input", handleInput);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("error", handleError);
     };
   }, [enabled, addInteraction]);
 
@@ -297,23 +293,20 @@ export function useInteractionTracker(enabled: boolean = true) {
 }
 
 function getElementIdentifier(element: HTMLElement): string {
-  return element.id ||
-         element.getAttribute('data-testid') ||
-         element.getAttribute('aria-label') ||
-         `${element.tagName.toLowerCase()}.${element.className}`;
+  return (
+    element.id ||
+    element.getAttribute("data-testid") ||
+    element.getAttribute("aria-label") ||
+    `${element.tagName.toLowerCase()}.${element.className}`
+  );
 }
 
 function sanitizeValue(value: string): string {
   // Remove sensitive data (passwords, emails, etc.)
-  const sensitivePatterns = [
-    /password/i,
-    /email/i,
-    /credit.?card/i,
-    /ssn/i,
-  ];
+  const sensitivePatterns = [/password/i, /email/i, /credit.?card/i, /ssn/i];
 
   if (sensitivePatterns.some(pattern => pattern.test(value))) {
-    return '[REDACTED]';
+    return "[REDACTED]";
   }
 
   return value.substring(0, 100); // Limit length
@@ -332,10 +325,11 @@ function debounce<T extends (...args: any[]) => any>(
 ```
 
 **useContextBuilder Hook:**
+
 ```tsx
 // lib/components/ClippyAssistant/hooks/useContextBuilder.ts
-import { useMemo } from 'react';
-import { useClippyState } from './useClippyState';
+import { useMemo } from "react";
+import { useClippyState } from "./useClippyState";
 
 interface UserContext {
   recentInteractions: InteractionEvent[];
@@ -370,13 +364,13 @@ export function useContextBuilder(): UserContext {
       },
       userState: {
         theme: getThemeFromDOM(),
-        hasScrolled: interactions.some(i => i.type === 'scroll'),
+        hasScrolled: interactions.some(i => i.type === "scroll"),
         hasInteracted: interactions.length > 0,
         timeOnPage: Math.floor((now - startTime) / 1000), // seconds
       },
       activeComponents: detectActiveComponents(),
       recentErrors: interactions
-        .filter(i => i.type === 'error')
+        .filter(i => i.type === "error")
         .map(i => i.metadata?.message)
         .filter(Boolean)
         .slice(-5),
@@ -386,18 +380,18 @@ export function useContextBuilder(): UserContext {
 
 function getThemeFromDOM(): string {
   const html = document.documentElement;
-  const themeClass = Array.from(html.classList).find(c => c.startsWith('theme-'));
-  return themeClass?.replace('theme-', '') || 'catalyst';
+  const themeClass = Array.from(html.classList).find(c => c.startsWith("theme-"));
+  return themeClass?.replace("theme-", "") || "catalyst";
 }
 
 function detectActiveComponents(): string[] {
   // Detect what components are currently on screen
   const components: string[] = [];
 
-  if (document.querySelector('[role="dialog"]')) components.push('dialog');
-  if (document.querySelector('[role="slider"]')) components.push('slider');
-  if (document.querySelector('.toast')) components.push('toast');
-  if (document.querySelector('[role="navigation"]')) components.push('navigation');
+  if (document.querySelector('[role="dialog"]')) components.push("dialog");
+  if (document.querySelector('[role="slider"]')) components.push("slider");
+  if (document.querySelector(".toast")) components.push("toast");
+  if (document.querySelector('[role="navigation"]')) components.push("navigation");
 
   return components;
 }
@@ -406,6 +400,7 @@ function detectActiveComponents(): string[] {
 ### 3. State Management (Zustand)
 
 **Dependencies:**
+
 ```json
 {
   "zustand": "^4.4.0"
@@ -413,20 +408,21 @@ function detectActiveComponents(): string[] {
 ```
 
 **Clippy Store:**
+
 ```tsx
 // lib/components/ClippyAssistant/hooks/useClippyState.ts
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface Message {
   id: string;
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   content: string;
   timestamp: number;
 }
 
 interface InteractionEvent {
-  type: 'click' | 'hover' | 'scroll' | 'input' | 'navigation' | 'error';
+  type: "click" | "hover" | "scroll" | "input" | "navigation" | "error";
   target: string;
   timestamp: number;
   metadata?: Record<string, any>;
@@ -439,7 +435,7 @@ interface ClippyState {
   isChatOpen: boolean;
 
   // Behavior
-  behavior: 'idle' | 'thinking' | 'excited' | 'confused' | 'helping';
+  behavior: "idle" | "thinking" | "excited" | "confused" | "helping";
   position: { x: number; y: number };
 
   // Context
@@ -454,10 +450,10 @@ interface ClippyState {
   show: () => void;
   hide: () => void;
   toggleChat: () => void;
-  setBehavior: (behavior: ClippyState['behavior']) => void;
+  setBehavior: (behavior: ClippyState["behavior"]) => void;
   setPosition: (position: { x: number; y: number }) => void;
   addInteraction: (interaction: InteractionEvent) => void;
-  addMessage: (message: Omit<Message, 'id' | 'timestamp'>) => void;
+  addMessage: (message: Omit<Message, "id" | "timestamp">) => void;
   setTyping: (isTyping: boolean) => void;
   clearContext: () => void;
 }
@@ -469,7 +465,7 @@ export const useClippyState = create<ClippyState>()(
       isVisible: false,
       isMinimized: false,
       isChatOpen: false,
-      behavior: 'idle',
+      behavior: "idle",
       position: { x: window.innerWidth - 200, y: window.innerHeight - 200 },
       interactions: [],
       startTime: Date.now(),
@@ -479,16 +475,17 @@ export const useClippyState = create<ClippyState>()(
       // Actions
       show: () => set({ isVisible: true }),
       hide: () => set({ isVisible: false, isChatOpen: false }),
-      toggleChat: () => set((state) => ({
-        isChatOpen: !state.isChatOpen,
-        isMinimized: false
-      })),
+      toggleChat: () =>
+        set(state => ({
+          isChatOpen: !state.isChatOpen,
+          isMinimized: false,
+        })),
 
-      setBehavior: (behavior) => set({ behavior }),
+      setBehavior: behavior => set({ behavior }),
 
-      setPosition: (position) => set({ position }),
+      setPosition: position => set({ position }),
 
-      addInteraction: (interaction) => {
+      addInteraction: interaction => {
         const { interactions } = get();
         const MAX_INTERACTIONS = 100;
         const newInteractions = [...interactions, interaction];
@@ -501,28 +498,29 @@ export const useClippyState = create<ClippyState>()(
         set({ interactions: newInteractions });
       },
 
-      addMessage: (message) => {
+      addMessage: message => {
         const newMessage: Message = {
           ...message,
           id: crypto.randomUUID(),
           timestamp: Date.now(),
         };
 
-        set((state) => ({
+        set(state => ({
           messages: [...state.messages, newMessage],
         }));
       },
 
-      setTyping: (isTyping) => set({ isTyping }),
+      setTyping: isTyping => set({ isTyping }),
 
-      clearContext: () => set({
-        interactions: [],
-        startTime: Date.now(),
-      }),
+      clearContext: () =>
+        set({
+          interactions: [],
+          startTime: Date.now(),
+        }),
     }),
     {
-      name: 'clippy-assistant-storage',
-      partialize: (state) => ({
+      name: "clippy-assistant-storage",
+      partialize: state => ({
         // Only persist these fields
         isVisible: state.isVisible,
         position: state.position,
@@ -536,9 +534,10 @@ export const useClippyState = create<ClippyState>()(
 ### 4. Trigger Detection System
 
 **When to show Clippy:**
+
 ```tsx
 // lib/components/ClippyAssistant/utils/triggerDetection.ts
-import { InteractionEvent } from '../hooks/useClippyState';
+import { InteractionEvent } from "../hooks/useClippyState";
 
 export interface TriggerRule {
   id: string;
@@ -558,18 +557,18 @@ export interface TriggerContext {
 
 export const DEFAULT_TRIGGERS: TriggerRule[] = [
   {
-    id: 'error-detected',
-    name: 'Error Detected',
-    condition: (ctx) => ctx.recentErrors.length > 0,
+    id: "error-detected",
+    name: "Error Detected",
+    condition: ctx => ctx.recentErrors.length > 0,
     message: "Looks like something went wrong! Need help debugging?",
     priority: 10,
   },
   {
-    id: 'stuck-on-form',
-    name: 'Stuck on Form',
-    condition: (ctx) => {
-      const formInputs = ctx.interactions.filter(i =>
-        i.type === 'input' && i.target.includes('form')
+    id: "stuck-on-form",
+    name: "Stuck on Form",
+    condition: ctx => {
+      const formInputs = ctx.interactions.filter(
+        i => i.type === "input" && i.target.includes("form")
       );
       return formInputs.length > 5 && ctx.timeOnPage > 60;
     },
@@ -577,11 +576,11 @@ export const DEFAULT_TRIGGERS: TriggerRule[] = [
     priority: 8,
   },
   {
-    id: 'slider-struggles',
-    name: 'Slider Confusion',
-    condition: (ctx) => {
-      const sliderClicks = ctx.interactions.filter(i =>
-        i.type === 'click' && i.target.includes('slider')
+    id: "slider-struggles",
+    name: "Slider Confusion",
+    condition: ctx => {
+      const sliderClicks = ctx.interactions.filter(
+        i => i.type === "click" && i.target.includes("slider")
       );
       return sliderClicks.length > 10;
     },
@@ -589,9 +588,9 @@ export const DEFAULT_TRIGGERS: TriggerRule[] = [
     priority: 7,
   },
   {
-    id: 'idle-too-long',
-    name: 'User Idle',
-    condition: (ctx) => {
+    id: "idle-too-long",
+    name: "User Idle",
+    condition: ctx => {
       const lastInteraction = ctx.interactions[ctx.interactions.length - 1];
       const timeSinceLastInteraction = Date.now() - (lastInteraction?.timestamp || 0);
       return timeSinceLastInteraction > 30000; // 30 seconds
@@ -600,18 +599,18 @@ export const DEFAULT_TRIGGERS: TriggerRule[] = [
     priority: 3,
   },
   {
-    id: 'first-visit',
-    name: 'First Time Visitor',
-    condition: (ctx) => ctx.timeOnPage < 5 && ctx.interactions.length < 3,
+    id: "first-visit",
+    name: "First Time Visitor",
+    condition: ctx => ctx.timeOnPage < 5 && ctx.interactions.length < 3,
     message: "Hi there! I'm Clippy, your cyberpunk assistant. Need a tour?",
     priority: 9,
   },
   {
-    id: 'theme-explorer',
-    name: 'Theme Exploration',
-    condition: (ctx) => {
-      const themeChanges = ctx.interactions.filter(i =>
-        i.target.includes('theme') || i.target.includes('ChangeThemeDropdown')
+    id: "theme-explorer",
+    name: "Theme Exploration",
+    condition: ctx => {
+      const themeChanges = ctx.interactions.filter(
+        i => i.target.includes("theme") || i.target.includes("ChangeThemeDropdown")
       );
       return themeChanges.length > 3;
     },
@@ -639,33 +638,27 @@ export function evaluateTriggers(
 ### 5. Chat Interface
 
 **ChatBox Component:**
+
 ```tsx
 // lib/components/ClippyAssistant/ChatBox/ChatBox.tsx
-import { useState } from 'react';
-import { useClippyState } from '../hooks/useClippyState';
-import { MessageList } from './MessageList';
-import { MessageInput } from './MessageInput';
-import { TypingIndicator } from './TypingIndicator';
-import { Card, CardHeader, CardTitle, CardContent } from '@/catalyst-ui/ui/card';
-import { Button } from '@/catalyst-ui/ui/button';
-import { X, Minus } from 'lucide-react';
-import { cn } from '@/catalyst-ui/utils';
+import { useState } from "react";
+import { useClippyState } from "../hooks/useClippyState";
+import { MessageList } from "./MessageList";
+import { MessageInput } from "./MessageInput";
+import { TypingIndicator } from "./TypingIndicator";
+import { Card, CardHeader, CardTitle, CardContent } from "@/catalyst-ui/ui/card";
+import { Button } from "@/catalyst-ui/ui/button";
+import { X, Minus } from "lucide-react";
+import { cn } from "@/catalyst-ui/utils";
 
 export function ChatBox() {
-  const {
-    isChatOpen,
-    toggleChat,
-    messages,
-    isTyping,
-    addMessage,
-    setTyping
-  } = useClippyState();
+  const { isChatOpen, toggleChat, messages, isTyping, addMessage, setTyping } = useClippyState();
 
   const [isMinimized, setIsMinimized] = useState(false);
 
   const handleSendMessage = async (content: string) => {
     // Add user message
-    addMessage({ role: 'user', content });
+    addMessage({ role: "user", content });
 
     // Show typing indicator
     setTyping(true);
@@ -674,8 +667,8 @@ export function ChatBox() {
     // For now, simulate response
     setTimeout(() => {
       addMessage({
-        role: 'assistant',
-        content: `I heard you say: "${content}". (LLM integration coming soon!)`
+        role: "assistant",
+        content: `I heard you say: "${content}". (LLM integration coming soon!)`,
       });
       setTyping(false);
     }, 2000);
@@ -705,12 +698,7 @@ export function ChatBox() {
             >
               <Minus className="h-4 w-4" />
             </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleChat}
-              className="h-6 w-6 p-0"
-            >
+            <Button variant="ghost" size="sm" onClick={toggleChat} className="h-6 w-6 p-0">
               <X className="h-4 w-4" />
             </Button>
           </div>
@@ -733,16 +721,16 @@ export function ChatBox() {
 
 ```tsx
 // lib/components/ClippyAssistant/ClippyAssistant.tsx
-import { useEffect } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import { useClippyState } from './hooks/useClippyState';
-import { useInteractionTracker } from './hooks/useInteractionTracker';
-import { useContextBuilder } from './hooks/useContextBuilder';
-import { RobotModel } from './Robot3D/RobotModel';
-import { ChatBox } from './ChatBox/ChatBox';
-import { evaluateTriggers } from './utils/triggerDetection';
-import { cn } from '@/catalyst-ui/utils';
+import { useEffect } from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+import { useClippyState } from "./hooks/useClippyState";
+import { useInteractionTracker } from "./hooks/useInteractionTracker";
+import { useContextBuilder } from "./hooks/useContextBuilder";
+import { RobotModel } from "./Robot3D/RobotModel";
+import { ChatBox } from "./ChatBox/ChatBox";
+import { evaluateTriggers } from "./utils/triggerDetection";
+import { cn } from "@/catalyst-ui/utils";
 
 export interface ClippyAssistantProps {
   /** Enable interaction tracking */
@@ -758,15 +746,8 @@ export function ClippyAssistant({
   autoShow = true,
   defaultPosition = { x: window.innerWidth - 200, y: window.innerHeight - 200 },
 }: ClippyAssistantProps) {
-  const {
-    isVisible,
-    behavior,
-    position,
-    show,
-    toggleChat,
-    setBehavior,
-    addMessage
-  } = useClippyState();
+  const { isVisible, behavior, position, show, toggleChat, setBehavior, addMessage } =
+    useClippyState();
 
   useInteractionTracker(enableTracking);
   const context = useContextBuilder();
@@ -785,12 +766,12 @@ export function ClippyAssistant({
 
     if (trigger) {
       show();
-      setBehavior('excited');
+      setBehavior("excited");
 
       // Show greeting message
       setTimeout(() => {
         addMessage({
-          role: 'assistant',
+          role: "assistant",
           content: trigger.message,
         });
         toggleChat();
@@ -811,15 +792,12 @@ export function ClippyAssistant({
         style={{
           left: position.x,
           top: position.y,
-          width: '200px',
-          height: '200px',
+          width: "200px",
+          height: "200px",
         }}
         onClick={toggleChat}
       >
-        <Canvas
-          camera={{ position: [0, 0, 5], fov: 50 }}
-          style={{ background: 'transparent' }}
-        >
+        <Canvas camera={{ position: [0, 0, 5], fov: 50 }} style={{ background: "transparent" }}>
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} intensity={1} color="#00ffff" />
           <pointLight position={[-10, -10, -10]} intensity={0.5} color="#ff00ff" />
@@ -848,9 +826,11 @@ export function ClippyAssistant({
 ## Implementation Phases
 
 ### Phase 1: Foundation Setup (4-6 hours)
+
 **Goal:** Set up React Three Fiber and basic robot rendering
 
 **Tasks:**
+
 - [ ] Install dependencies (R3F, drei, three, zustand)
 - [ ] Create project structure and component files
 - [ ] Build basic RobotModel with simple geometry
@@ -859,14 +839,17 @@ export function ClippyAssistant({
 - [ ] Export from library entry point
 
 **Deliverables:**
+
 - ✅ Working 3D robot that appears on screen
 - ✅ Basic state management with Zustand
 - ✅ Show/hide toggle functionality
 
 ### Phase 2: Animations & Behaviors (4-6 hours)
+
 **Goal:** Add personality through animations
 
 **Tasks:**
+
 - [ ] Implement idle floating animation
 - [ ] Create behavior states (thinking, excited, confused, helping)
 - [ ] Add spring animations with @react-spring/three
@@ -875,13 +858,16 @@ export function ClippyAssistant({
 - [ ] Create smooth transitions between behaviors
 
 **Deliverables:**
+
 - ✅ Animated robot with 5+ behavior states
 - ✅ Smooth transitions and personality
 
 ### Phase 3: Context Tracking (6-8 hours)
+
 **Goal:** Monitor user interactions and build context
 
 **Tasks:**
+
 - [ ] Build useInteractionTracker hook
 - [ ] Implement event listeners (click, input, scroll, error)
 - [ ] Create useContextBuilder hook
@@ -890,14 +876,17 @@ export function ClippyAssistant({
 - [ ] Add localStorage persistence for interactions
 
 **Deliverables:**
+
 - ✅ Comprehensive interaction tracking
 - ✅ Context builder with page/user state
 - ✅ Trigger rules for auto-showing Clippy
 
 ### Phase 4: Chat Interface (4-6 hours)
+
 **Goal:** Build chat UI and message system
 
 **Tasks:**
+
 - [ ] Create ChatBox component
 - [ ] Build MessageList with scrolling
 - [ ] Add MessageInput with validation
@@ -906,14 +895,17 @@ export function ClippyAssistant({
 - [ ] Add message persistence
 
 **Deliverables:**
+
 - ✅ Functional chat interface
 - ✅ Message history and persistence
 - ✅ Typing indicators
 
 ### Phase 5: LLM Integration (6-8 hours)
+
 **Goal:** Connect to AI for intelligent responses
 
 **Tasks:**
+
 - [ ] Design LLM API abstraction layer
 - [ ] Implement context serialization
 - [ ] Add OpenAI/Anthropic integration
@@ -922,6 +914,7 @@ export function ClippyAssistant({
 - [ ] Implement error handling and fallbacks
 
 **Deliverables:**
+
 - ✅ Working AI chat functionality
 - ✅ Context-aware responses
 - ✅ Graceful error handling
@@ -933,37 +926,52 @@ export function ClippyAssistant({
 ## Testing Strategy
 
 ### Unit Tests
+
 ```typescript
 // useInteractionTracker.test.ts
-describe('useInteractionTracker', () => {
-  it('should track click events', () => { /* ... */ });
-  it('should sanitize sensitive input values', () => { /* ... */ });
-  it('should debounce scroll events', () => { /* ... */ });
+describe("useInteractionTracker", () => {
+  it("should track click events", () => {
+    /* ... */
+  });
+  it("should sanitize sensitive input values", () => {
+    /* ... */
+  });
+  it("should debounce scroll events", () => {
+    /* ... */
+  });
 });
 
 // triggerDetection.test.ts
-describe('evaluateTriggers', () => {
-  it('should detect error conditions', () => { /* ... */ });
-  it('should prioritize high-priority triggers', () => { /* ... */ });
-  it('should return null when no triggers match', () => { /* ... */ });
+describe("evaluateTriggers", () => {
+  it("should detect error conditions", () => {
+    /* ... */
+  });
+  it("should prioritize high-priority triggers", () => {
+    /* ... */
+  });
+  it("should return null when no triggers match", () => {
+    /* ... */
+  });
 });
 ```
 
 ### Integration Tests
+
 - Verify robot appears/disappears correctly
 - Test chat message flow (user → assistant)
 - Validate context building from interactions
 - Test trigger detection with simulated events
 
 ### Visual Tests (Storybook)
+
 ```typescript
 // ClippyAssistant.stories.tsx
 export const Idle: Story = {
-  args: { behavior: 'idle' },
+  args: { behavior: "idle" },
 };
 
 export const Thinking: Story = {
-  args: { behavior: 'thinking' },
+  args: { behavior: "thinking" },
 };
 
 export const WithChat: Story = {
@@ -999,6 +1007,7 @@ export const WithChat: Story = {
    - Stream LLM responses
 
 **Bundle Size Targets:**
+
 - Base component: ~50KB (gzipped)
 - R3F + dependencies: ~120KB (gzipped)
 - Total: <200KB (acceptable for enhancement feature)
@@ -1018,7 +1027,7 @@ interface ClippyAssistantProps {
   triggerRules?: TriggerRule[];
   onMessageSent?: (message: string) => void;
   llmConfig?: {
-    provider: 'openai' | 'anthropic' | 'custom';
+    provider: "openai" | "anthropic" | "custom";
     apiKey?: string;
     model?: string;
     endpoint?: string;
@@ -1030,17 +1039,17 @@ interface ClippyAssistantProps {
 
 ```typescript
 // Exported hooks for custom usage
-export { useClippyState } from './hooks/useClippyState';
-export { useInteractionTracker } from './hooks/useInteractionTracker';
-export { useContextBuilder } from './hooks/useContextBuilder';
+export { useClippyState } from "./hooks/useClippyState";
+export { useInteractionTracker } from "./hooks/useInteractionTracker";
+export { useContextBuilder } from "./hooks/useContextBuilder";
 ```
 
 ### Utils
 
 ```typescript
 // Exported utilities
-export { evaluateTriggers, DEFAULT_TRIGGERS } from './utils/triggerDetection';
-export { serializeContext } from './utils/contextSerializer';
+export { evaluateTriggers, DEFAULT_TRIGGERS } from "./utils/triggerDetection";
+export { serializeContext } from "./utils/contextSerializer";
 ```
 
 ---
@@ -1048,6 +1057,7 @@ export { serializeContext } from './utils/contextSerializer';
 ## Future Enhancements
 
 ### Post-MVP Features
+
 - [ ] **Voice Interaction** - Speech-to-text and text-to-speech
 - [ ] **Multi-Robot Modes** - Different robot personalities/designs
 - [ ] **Custom Animations** - User-provided animation sequences
@@ -1060,6 +1070,7 @@ export { serializeContext } from './utils/contextSerializer';
 - [ ] **Easter Eggs** - Hidden behaviors (Konami code, etc.)
 
 ### Advanced Context Tracking
+
 - [ ] Network request monitoring
 - [ ] Performance metrics (FPS, load times)
 - [ ] Clipboard events
@@ -1087,6 +1098,7 @@ export { serializeContext } from './utils/contextSerializer';
 ```
 
 **Bundle Impact:**
+
 - `@react-three/fiber`: ~45KB gzipped
 - `three`: ~150KB gzipped (will be externalized for tree-shaking)
 - `zustand`: ~3KB gzipped
@@ -1123,16 +1135,19 @@ export { serializeContext } from './utils/contextSerializer';
 ## Success Metrics
 
 **Adoption:**
+
 - [ ] Used in at least 3 demo applications
 - [ ] Positive feedback from 80% of users in surveys
 - [ ] <5% disable rate after first interaction
 
 **Performance:**
+
 - [ ] <200KB bundle size increase
 - [ ] <16ms frame time for 60fps animations
 - [ ] <100ms response time for trigger detection
 
 **Functionality:**
+
 - [ ] Successfully tracks 10+ interaction types
 - [ ] Context builder provides useful information
 - [ ] Chat interface handles 100+ messages smoothly

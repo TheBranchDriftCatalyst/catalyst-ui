@@ -19,19 +19,23 @@ Create a seamless in-app annotation system that bridges the gap between visual U
 ### Existing Infrastructure We Can Leverage
 
 ✅ **Theme System with LocalStorage** (`lib/contexts/Theme/`)
+
 - Persistent state management pattern we can reuse
 - Theme toggle mechanism similar to annotation mode toggle
 - Already integrated throughout the app
 
 ✅ **Dialog/Sheet Components** (`lib/ui/dialog.tsx`, `lib/ui/sheet.tsx`)
+
 - Modal UI for annotation panels
 - Can display annotation details and editing interface
 
 ✅ **Button & Form Components** (`lib/ui/button.tsx`, `lib/ui/form.tsx`)
+
 - UI primitives for annotation controls
 - React Hook Form integration for annotation editing
 
 ✅ **Card Components** (`lib/cards/`)
+
 - Display annotations in a structured format
 - Visual containers for annotation lists
 
@@ -113,12 +117,12 @@ const sourceInfo = resolveSourceLocation(fiber);
 
 // 3. Annotation created
 const annotation = {
-  id: 'uuid',
-  componentPath: 'CardDemo',
+  id: "uuid",
+  componentPath: "CardDemo",
   sourceLocation: sourceInfo,
-  note: 'TODO: Add loading state',
-  type: 'todo',
-  timestamp: Date.now()
+  note: "TODO: Add loading state",
+  type: "todo",
+  timestamp: Date.now(),
 };
 
 // 4. Persisted and displayed
@@ -284,8 +288,8 @@ interface ComponentInfo {
 
 export function getComponentInfo(element: HTMLElement): ComponentInfo | null {
   // Access React Fiber from DOM element
-  const fiberKey = Object.keys(element).find(key =>
-    key.startsWith('__reactFiber') || key.startsWith('__reactInternalInstance')
+  const fiberKey = Object.keys(element).find(
+    key => key.startsWith("__reactFiber") || key.startsWith("__reactInternalInstance")
   );
 
   if (!fiberKey) return null;
@@ -296,10 +300,8 @@ export function getComponentInfo(element: HTMLElement): ComponentInfo | null {
   // Walk up fiber tree to find component with source location
   let currentFiber = fiber;
   while (currentFiber) {
-    if (currentFiber.type && typeof currentFiber.type === 'function') {
-      const displayName = currentFiber.type.displayName ||
-                         currentFiber.type.name ||
-                         'Anonymous';
+    if (currentFiber.type && typeof currentFiber.type === "function") {
+      const displayName = currentFiber.type.displayName || currentFiber.type.name || "Anonymous";
 
       // Extract source location from fiber._debugSource (dev mode only)
       const debugSource = currentFiber._debugSource;
@@ -308,11 +310,13 @@ export function getComponentInfo(element: HTMLElement): ComponentInfo | null {
         id: generateComponentId(currentFiber),
         displayName,
         fiber: currentFiber,
-        sourceLocation: debugSource ? {
-          file: debugSource.fileName,
-          line: debugSource.lineNumber,
-          column: debugSource.columnNumber || 0,
-        } : undefined,
+        sourceLocation: debugSource
+          ? {
+              file: debugSource.fileName,
+              line: debugSource.lineNumber,
+              column: debugSource.columnNumber || 0,
+            }
+          : undefined,
       };
     }
     currentFiber = currentFiber.return;
@@ -323,12 +327,12 @@ export function getComponentInfo(element: HTMLElement): ComponentInfo | null {
 
 function generateComponentId(fiber: any): string {
   // Generate stable ID from fiber key and component name
-  const componentName = fiber.type?.name || 'Anonymous';
-  const key = fiber.key || 'no-key';
+  const componentName = fiber.type?.name || "Anonymous";
+  const key = fiber.key || "no-key";
   return `${componentName}-${key}-${fiber.index}`;
 }
 
-export function getSourceMapLocation(sourceLocation: ComponentInfo['sourceLocation']): Promise<{
+export function getSourceMapLocation(sourceLocation: ComponentInfo["sourceLocation"]): Promise<{
   file: string;
   line: number;
   column: number;
@@ -575,7 +579,7 @@ function AnnotationBadge({ annotation }: { annotation: any }) {
 **File**: `lib/components/AnnotationMode/utils/exporters.ts`
 
 ```typescript
-import { Annotation } from '../AnnotationModeProvider';
+import { Annotation } from "../AnnotationModeProvider";
 
 export function exportAsJSON(annotations: Annotation[]): string {
   return JSON.stringify(annotations, null, 2);
@@ -584,10 +588,10 @@ export function exportAsJSON(annotations: Annotation[]): string {
 export function exportAsTODOComments(annotations: Annotation[]): string {
   return annotations
     .map(a => {
-      const priority = a.priority ? ` @${a.priority}` : '';
+      const priority = a.priority ? ` @${a.priority}` : "";
       return `// ${a.type.toUpperCase()}${priority}: ${a.note}\n// Location: ${a.sourceLocation.file}:${a.sourceLocation.line}`;
     })
-    .join('\n\n');
+    .join("\n\n");
 }
 
 export function exportAsGitHubIssues(annotations: Annotation[]): Array<{
@@ -608,32 +612,35 @@ export function exportAsGitHubIssues(annotations: Annotation[]): Array<{
 ${a.note}
 
 ## Priority
-${a.priority || 'Not set'}
+${a.priority || "Not set"}
 
 ## Type
 ${a.type}
     `.trim(),
-    labels: [a.type, a.priority || 'medium'].filter(Boolean),
+    labels: [a.type, a.priority || "medium"].filter(Boolean),
   }));
 }
 
 export function exportAsMarkdown(annotations: Annotation[]): string {
-  const grouped = annotations.reduce((acc, a) => {
-    const file = a.sourceLocation.file;
-    if (!acc[file]) acc[file] = [];
-    acc[file].push(a);
-    return acc;
-  }, {} as Record<string, Annotation[]>);
+  const grouped = annotations.reduce(
+    (acc, a) => {
+      const file = a.sourceLocation.file;
+      if (!acc[file]) acc[file] = [];
+      acc[file].push(a);
+      return acc;
+    },
+    {} as Record<string, Annotation[]>
+  );
 
-  let markdown = '# Component Annotations\n\n';
+  let markdown = "# Component Annotations\n\n";
 
   for (const [file, anns] of Object.entries(grouped)) {
     markdown += `## ${file}\n\n`;
     anns.forEach(a => {
       markdown += `### Line ${a.sourceLocation.line}: ${a.componentName}\n`;
-      markdown += `**Type**: ${a.type} | **Priority**: ${a.priority || 'N/A'}\n\n`;
+      markdown += `**Type**: ${a.type} | **Priority**: ${a.priority || "N/A"}\n\n`;
       markdown += `${a.note}\n\n`;
-      markdown += '---\n\n';
+      markdown += "---\n\n";
     });
   }
 
@@ -709,17 +716,11 @@ export default withAnnotationMode(App);
 ### Hook API
 
 ```typescript
-import { useAnnotationMode } from '@/catalyst-ui/components/AnnotationMode';
+import { useAnnotationMode } from "@/catalyst-ui/components/AnnotationMode";
 
 function MyComponent() {
-  const {
-    enabled,
-    toggleMode,
-    annotations,
-    addAnnotation,
-    removeAnnotation,
-    updateAnnotation,
-  } = useAnnotationMode();
+  const { enabled, toggleMode, annotations, addAnnotation, removeAnnotation, updateAnnotation } =
+    useAnnotationMode();
 
   // Use annotation mode programmatically
 }
@@ -738,8 +739,8 @@ interface Annotation {
     column: number;
   };
   note: string;
-  type: 'todo' | 'bug' | 'note' | 'docs';
-  priority?: 'low' | 'medium' | 'high';
+  type: "todo" | "bug" | "note" | "docs";
+  priority?: "low" | "medium" | "high";
   timestamp: number;
   author?: string;
 }
@@ -773,11 +774,13 @@ lib/
 ### Example 1: Basic Annotation
 
 **Action:**
+
 1. Enable annotation mode (toggle button)
 2. Ctrl+Click on a Card component
 3. Add note: "TODO: Add loading skeleton"
 
 **Output:**
+
 ```json
 {
   "id": "550e8400-e29b-41d4-a716-446655440000",
@@ -801,12 +804,14 @@ lib/
 Multiple annotations on different components
 
 **Output:**
+
 ```markdown
 # Component Annotations
 
 ## app/tabs/CardsTab.tsx
 
 ### Line 13: CardDemo
+
 **Type**: todo | **Priority**: medium
 
 TODO: Add loading skeleton
@@ -814,6 +819,7 @@ TODO: Add loading skeleton
 ---
 
 ### Line 13: CardDemo
+
 **Type**: bug | **Priority**: high
 
 Button doesn't trigger action on first click
@@ -923,11 +929,13 @@ Button doesn't trigger action on first click
 **Description**: Build as a browser extension that extends React DevTools
 
 **Pros:**
+
 - Direct access to React DevTools API
 - No app code changes needed
 - More reliable component introspection
 
 **Cons:**
+
 - Separate installation required
 - Limited to browser environment
 - Can't integrate with app's existing UI/theme
@@ -939,11 +947,13 @@ Button doesn't trigger action on first click
 **Description**: Use Babel transform to inject annotation props into every component
 
 **Pros:**
+
 - More reliable component identification
 - Works in production builds
 - Can inject metadata at build time
 
 **Cons:**
+
 - Build step complexity
 - Performance overhead (extra props on every component)
 - Couples to build tooling
@@ -980,11 +990,13 @@ Button doesn't trigger action on first click
 This feature enables developers to bridge the visual-to-code gap by annotating components directly in the running application. The HOC approach was chosen for seamless integration with catalyst-ui's existing theming and UI components.
 
 Key technical challenges:
+
 1. **React Fiber Introspection**: Accessing internal React structures to identify components from DOM elements
 2. **Source Map Accuracy**: Ensuring line numbers map correctly, especially with transpiled code
 3. **Production Viability**: Dev mode relies on `_debugSource`; production needs alternative source map parsing
 
 Next steps:
+
 1. Prototype component introspection with React Fiber
 2. Build basic annotation CRUD with LocalStorage
 3. Create visual overlay system

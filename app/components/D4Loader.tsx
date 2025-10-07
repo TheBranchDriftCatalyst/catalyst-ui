@@ -26,62 +26,84 @@ export function D4Loader() {
     svg.selectAll("*").remove();
 
     // Set up SVG with glow filter
-    svg
-      .attr("width", width)
-      .attr("height", height)
-      .attr("viewBox", `0 0 ${width} ${height}`);
+    svg.attr("width", width).attr("height", height).attr("viewBox", `0 0 ${width} ${height}`);
 
     // Define glow filter
     const defs = svg.append("defs");
-    const filter = defs.append("filter")
+    const filter = defs
+      .append("filter")
       .attr("id", "glow")
       .attr("x", "-100%")
       .attr("y", "-100%")
       .attr("width", "300%")
       .attr("height", "300%");
 
-    filter.append("feGaussianBlur")
-      .attr("stdDeviation", "8")
-      .attr("result", "coloredBlur");
+    filter.append("feGaussianBlur").attr("stdDeviation", "8").attr("result", "coloredBlur");
 
     const feMerge = filter.append("feMerge");
     feMerge.append("feMergeNode").attr("in", "coloredBlur");
     feMerge.append("feMergeNode").attr("in", "SourceGraphic");
 
     // Container group
-    const g = svg.append("g")
-      .attr("transform", `translate(${centerX}, ${centerY})`);
+    const g = svg.append("g").attr("transform", `translate(${centerX}, ${centerY})`);
 
     // Define two cubes: outer and inner (tesseract = cube within cube)
     // Outer cube vertices
     const outerSize = 100;
     const outerCube = [
-      [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],  // front face
-      [-1, -1, 1],  [1, -1, 1],  [1, 1, 1],  [-1, 1, 1],   // back face
+      [-1, -1, -1],
+      [1, -1, -1],
+      [1, 1, -1],
+      [-1, 1, -1], // front face
+      [-1, -1, 1],
+      [1, -1, 1],
+      [1, 1, 1],
+      [-1, 1, 1], // back face
     ].map(([x, y, z]) => [x * outerSize, y * outerSize, z * outerSize]);
 
     // Inner cube (will be scaled dynamically)
     const innerCube = [
-      [-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1],
-      [-1, -1, 1],  [1, -1, 1],  [1, 1, 1],  [-1, 1, 1],
+      [-1, -1, -1],
+      [1, -1, -1],
+      [1, 1, -1],
+      [-1, 1, -1],
+      [-1, -1, 1],
+      [1, -1, 1],
+      [1, 1, 1],
+      [-1, 1, 1],
     ];
 
     // Cube edges (12 edges for a cube)
     const cubeEdges = [
-      [0, 1], [1, 2], [2, 3], [3, 0],  // front face
-      [4, 5], [5, 6], [6, 7], [7, 4],  // back face
-      [0, 4], [1, 5], [2, 6], [3, 7],  // connecting edges
+      [0, 1],
+      [1, 2],
+      [2, 3],
+      [3, 0], // front face
+      [4, 5],
+      [5, 6],
+      [6, 7],
+      [7, 4], // back face
+      [0, 4],
+      [1, 5],
+      [2, 6],
+      [3, 7], // connecting edges
     ];
 
     // Connecting edges between outer and inner cubes
     const connectingEdges = [
-      [0, 0], [1, 1], [2, 2], [3, 3],
-      [4, 4], [5, 5], [6, 6], [7, 7],
+      [0, 0],
+      [1, 1],
+      [2, 2],
+      [3, 3],
+      [4, 4],
+      [5, 5],
+      [6, 6],
+      [7, 7],
     ];
 
     // Get computed primary color from CSS variable
     const computedStyle = getComputedStyle(document.documentElement);
-    const primaryColor = computedStyle.getPropertyValue('--primary').trim();
+    const primaryColor = computedStyle.getPropertyValue("--primary").trim();
 
     // Create groups for outer cube, inner cube, and connections
     const outerGroup = g.append("g").attr("class", "outer-cube");
@@ -196,14 +218,18 @@ export function D4Loader() {
       angleZ += 0.006;
 
       // Pulsing scale for inner cube (infold/unfold effect)
-      const innerScale = 0.3 + Math.sin(time * 2) * 0.15;  // Pulses between 0.15 and 0.45
+      const innerScale = 0.3 + Math.sin(time * 2) * 0.15; // Pulses between 0.15 and 0.45
 
       // Project outer cube vertices
       const outerProjected = outerCube.map(p => project3Dto2D(p, 1));
 
       // Project inner cube vertices with pulsing scale
       const innerProjected = innerCube.map(p => {
-        const scaled = [p[0] * outerSize * innerScale, p[1] * outerSize * innerScale, p[2] * outerSize * innerScale];
+        const scaled = [
+          p[0] * outerSize * innerScale,
+          p[1] * outerSize * innerScale,
+          p[2] * outerSize * innerScale,
+        ];
         return project3Dto2D(scaled, 1);
       });
 
@@ -251,10 +277,7 @@ export function D4Loader() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
-      <svg
-        ref={svgRef}
-        className="drop-shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]"
-      />
+      <svg ref={svgRef} className="drop-shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]" />
       <div className="text-sm text-muted-foreground animate-pulse">
         Loading dimensional matrix...
       </div>

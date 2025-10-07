@@ -3,7 +3,7 @@
  * Groups nodes into communities based on connection density
  */
 
-import { NodeData, EdgeData } from '../types';
+import { NodeData, EdgeData } from "../types";
 
 export interface Community {
   id: number;
@@ -14,10 +14,7 @@ export interface Community {
  * Detect communities using simplified Louvain algorithm
  * Returns map of nodeId -> communityId
  */
-export function detectCommunities(
-  nodes: NodeData[],
-  edges: EdgeData[]
-): Map<string, number> {
+export function detectCommunities(nodes: NodeData[], edges: EdgeData[]): Map<string, number> {
   // Build adjacency list
   const adjacency = new Map<string, Set<string>>();
   const degrees = new Map<string, number>();

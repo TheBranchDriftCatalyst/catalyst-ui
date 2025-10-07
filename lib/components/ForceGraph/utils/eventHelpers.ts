@@ -12,8 +12,8 @@ export const safeStopPropagation = (event: any): void => {
     event?.sourceEvent?.stopPropagation();
   } catch (err) {
     // Silently fail - event propagation is a best-effort operation
-    if (process.env.NODE_ENV === 'development') {
-      console.warn('Failed to stop event propagation:', err);
+    if (process.env.NODE_ENV === "development") {
+      console.warn("Failed to stop event propagation:", err);
     }
   }
 };
@@ -27,8 +27,8 @@ export const safePreventDefault = (event: any): void => {
     event?.sourceEvent?.preventDefault();
   } catch (err) {
     // Silently fail
-    if (process.env.NODE_ENV === 'development') {
-      console.warn('Failed to prevent default behavior:', err);
+    if (process.env.NODE_ENV === "development") {
+      console.warn("Failed to prevent default behavior:", err);
     }
   }
 };

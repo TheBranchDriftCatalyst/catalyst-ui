@@ -4,21 +4,18 @@ import * as React from "react";
 import { cn } from "@/catalyst-ui/utils";
 import { VariantProps, cva } from "class-variance-authority";
 
-const progressBarVariants = cva(
-  "relative h-4 w-full overflow-hidden rounded-full bg-secondary",
-  {
-    variants: {
-      variant: {
-        secondary: "bg-secondary",
-        default: "bg-secondary",
-        destructive: "bg-destructive",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
+const progressBarVariants = cva("relative h-4 w-full overflow-hidden rounded-full bg-secondary", {
+  variants: {
+    variant: {
+      secondary: "bg-secondary",
+      default: "bg-secondary",
+      destructive: "bg-destructive",
     },
   },
-);
+  defaultVariants: {
+    variant: "default",
+  },
+});
 
 const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,

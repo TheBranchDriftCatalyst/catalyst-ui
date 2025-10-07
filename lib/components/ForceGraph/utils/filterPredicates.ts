@@ -1,6 +1,6 @@
-import { NodeData, EdgeData } from '../types';
-import { GraphFilters, GraphConnectionFilter } from '../types/filterTypes';
-import { GraphConfig } from '../config/types';
+import { NodeData, EdgeData } from "../types";
+import { GraphFilters, GraphConnectionFilter } from "../types/filterTypes";
+import { GraphConfig } from "../config/types";
 
 /**
  * Pure filter predicate functions
@@ -20,7 +20,7 @@ export const isOrphanedNode = (nodeId: string, edges: EdgeData[]): boolean => {
  * NOTE: This is domain-specific logic (e.g., Docker container statuses)
  */
 export const matchesStatusFilter = (node: NodeData, filter: string): boolean => {
-  if (filter === 'all') {
+  if (filter === "all") {
     return true;
   }
 
@@ -28,12 +28,12 @@ export const matchesStatusFilter = (node: NodeData, filter: string): boolean => 
 
   // Domain-specific status matching (currently Docker-focused)
   switch (filter) {
-    case 'running':
-      return status === 'running';
-    case 'stopped':
-      return status === 'stopped' || status === 'exited';
-    case 'in-use':
-      return status === 'in-use' || status === 'running';
+    case "running":
+      return status === "running";
+    case "stopped":
+      return status === "stopped" || status === "exited";
+    case "in-use":
+      return status === "in-use" || status === "running";
     default:
       return true;
   }
@@ -48,16 +48,16 @@ export const matchesConnectionFilter = (
   filter: GraphConnectionFilter,
   edges: EdgeData[]
 ): boolean => {
-  if (filter === 'all') {
+  if (filter === "all") {
     return true;
   }
 
   const isOrphaned = isOrphanedNode(nodeId, edges);
 
   switch (filter) {
-    case 'connected':
+    case "connected":
       return !isOrphaned;
-    case 'orphaned':
+    case "orphaned":
       return isOrphaned;
     default:
       return true;
@@ -73,7 +73,7 @@ export const matchesSearchQuery = (node: NodeData, query: string): boolean => {
   }
 
   const searchLower = query.toLowerCase();
-  const nodeName = (node.name || node.Name || '').toLowerCase();
+  const nodeName = (node.name || node.Name || "").toLowerCase();
   const nodeId = node.id.toLowerCase();
 
   return nodeName.includes(searchLower) || nodeId.includes(searchLower);
@@ -118,7 +118,7 @@ export const matchesAttributeFilters = (
 export const matchesRunningOnly = (node: NodeData, enabled: boolean): boolean => {
   if (!enabled) return true;
   const status = node.attributes?.status?.toLowerCase();
-  return status === 'running';
+  return status === "running";
 };
 
 /**
@@ -127,5 +127,5 @@ export const matchesRunningOnly = (node: NodeData, enabled: boolean): boolean =>
 export const matchesInUseOnly = (node: NodeData, enabled: boolean): boolean => {
   if (!enabled) return true;
   const status = node.attributes?.status?.toLowerCase();
-  return status === 'in-use' || status === 'running';
+  return status === "in-use" || status === "running";
 };

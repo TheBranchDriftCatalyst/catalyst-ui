@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { Separator } from "@/catalyst-ui/ui/separator";
 import React from "react";
@@ -12,9 +12,17 @@ interface CatalystHeaderProps {
   breadcrumbs?: any[];
 }
 
-export const CatalystHeader = ({ navigationItems, userSettings, title, tabs }: CatalystHeaderProps) => {
+export const CatalystHeader = ({
+  navigationItems,
+  userSettings,
+  title,
+  tabs,
+}: CatalystHeaderProps) => {
   return (
-    <header className="header-glow bg-background/70 backdrop-blur-2xl sticky top-0 z-50 w-full border-b transition-all duration-300" style={{ borderColor: 'color-mix(in srgb, var(--border) 40%, transparent)' }}>
+    <header
+      className="header-glow bg-background/70 backdrop-blur-2xl sticky top-0 z-50 w-full border-b transition-all duration-300"
+      style={{ borderColor: "color-mix(in srgb, var(--border) 40%, transparent)" }}
+    >
       <div className="flex h-14 items-center gap-3 px-6">
         {/* Left Zone: Brand */}
         {title && (
@@ -40,9 +48,7 @@ export const CatalystHeader = ({ navigationItems, userSettings, title, tabs }: C
           {navigationItems && navigationItems.length > 0 && (
             <>
               <Separator orientation="vertical" className="h-8 bg-border/60" />
-              <div className="flex items-center gap-2">
-                {navigationItems}
-              </div>
+              <div className="flex items-center gap-2">{navigationItems}</div>
             </>
           )}
           {userSettings}

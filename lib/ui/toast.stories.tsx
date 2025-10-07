@@ -65,9 +65,7 @@ function ToastDemo() {
             toast({
               title: "With Action",
               description: "You can add action buttons to toasts.",
-              action: (
-                <ToastAction altText="Undo">Undo</ToastAction>
-              ),
+              action: <ToastAction altText="Undo">Undo</ToastAction>,
               duration: 5000,
             });
           }}
@@ -154,9 +152,7 @@ export const MultipleToasts: Story = {
     return (
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">Multiple Toasts</h3>
-        <p className="text-sm text-muted-foreground">
-          Trigger multiple toasts to see them stack
-        </p>
+        <p className="text-sm text-muted-foreground">Trigger multiple toasts to see them stack</p>
         <Button
           onClick={() => {
             toast({

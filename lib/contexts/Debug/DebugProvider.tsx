@@ -20,19 +20,15 @@ interface DebuggerProviderProps {
 }
 
 // DebuggerProvider component
-export const DebuggerProvider: React.FC<DebuggerProviderProps> = ({
-  children,
-}) => {
+export const DebuggerProvider: React.FC<DebuggerProviderProps> = ({ children }) => {
   // State to store cached debuggers
-  const [debuggers, setDebuggers] = useState<Record<string, Debug.Debugger>>(
-    {},
-  );
+  const [debuggers, setDebuggers] = useState<Record<string, Debug.Debugger>>({});
 
   const getDebugger = (namespace: string): Debug.Debugger => {
     // Check if the debugger already exists, if not create a new one and cache it
     if (!debuggers[namespace]) {
       const newDebugger = Debug(namespace);
-      setDebuggers((prev) => ({ ...prev, [namespace]: newDebugger }));
+      setDebuggers(prev => ({ ...prev, [namespace]: newDebugger }));
       return newDebugger;
     }
     return debuggers[namespace];

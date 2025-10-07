@@ -1,8 +1,8 @@
-import { useEffect, useMemo } from 'react';
-import { useGraphContext } from '../context/GraphContext';
-import { NodeData, EdgeData, NodeKind, EdgeKind } from '../types';
-import { GraphFilters, GraphConnectionFilter } from '../types/filterTypes';
-import { GraphConfig } from '../config/types';
+import { useEffect, useMemo } from "react";
+import { useGraphContext } from "../context/GraphContext";
+import { NodeData, EdgeData, NodeKind, EdgeKind } from "../types";
+import { GraphFilters, GraphConnectionFilter } from "../types/filterTypes";
+import { GraphConfig } from "../config/types";
 import {
   isOrphanedNode,
   matchesStatusFilter,
@@ -11,7 +11,7 @@ import {
   matchesAttributeFilters,
   matchesRunningOnly,
   matchesInUseOnly,
-} from '../utils/filterPredicates';
+} from "../utils/filterPredicates";
 
 export const useGraphFilters = (config?: GraphConfig<any, any>) => {
   const { state, dispatch } = useGraphContext();
@@ -30,9 +30,7 @@ export const useGraphFilters = (config?: GraphConfig<any, any>) => {
     const edgeArray = rawEdges as EdgeData[];
 
     // Optimize excluded nodes lookup with Set (O(1) instead of O(n))
-    const excludedSet = filters.excludedNodeIds
-      ? new Set(filters.excludedNodeIds)
-      : null;
+    const excludedSet = filters.excludedNodeIds ? new Set(filters.excludedNodeIds) : null;
 
     // Filter nodes
     let filteredNodes = nodeArray.filter(node => {
@@ -86,7 +84,7 @@ export const useGraphFilters = (config?: GraphConfig<any, any>) => {
     });
 
     // Apply connection filter (must be done after initial edge filtering)
-    if (filters.connectionFilter !== 'all' || filters.showOrphanedOnly) {
+    if (filters.connectionFilter !== "all" || filters.showOrphanedOnly) {
       filteredNodes = filteredNodes.filter(node => {
         const isOrphaned = isOrphanedNode(node.id, filteredEdges);
 
@@ -102,8 +100,8 @@ export const useGraphFilters = (config?: GraphConfig<any, any>) => {
 
       // Update filtered node IDs after connection filtering
       const finalNodeIds = new Set(filteredNodes.map(n => n.id));
-      filteredEdges = filteredEdges.filter(edge =>
-        finalNodeIds.has(edge.src) && finalNodeIds.has(edge.dst)
+      filteredEdges = filteredEdges.filter(
+        edge => finalNodeIds.has(edge.src) && finalNodeIds.has(edge.dst)
       );
     }
 
@@ -115,28 +113,28 @@ export const useGraphFilters = (config?: GraphConfig<any, any>) => {
 
     return {
       nodes: filteredNodesObj,
-      edges: filteredEdges
+      edges: filteredEdges,
     };
   }, [state.rawData, state.filters, config]);
 
   // Update filtered data when filters change
   useEffect(() => {
     if (applyFilters) {
-      dispatch({ type: 'SET_FILTERED_DATA', payload: applyFilters });
+      dispatch({ type: "SET_FILTERED_DATA", payload: applyFilters });
     }
   }, [applyFilters, dispatch]);
 
   // Filter actions
   const updateFilters = (newFilters: Partial<GraphFilters>) => {
-    dispatch({ type: 'UPDATE_FILTERS', payload: newFilters });
+    dispatch({ type: "UPDATE_FILTERS", payload: newFilters });
   };
 
   const toggleNodeVisibility = (nodeKind: NodeKind) => {
-    dispatch({ type: 'TOGGLE_NODE_VISIBILITY', payload: nodeKind });
+    dispatch({ type: "TOGGLE_NODE_VISIBILITY", payload: nodeKind });
   };
 
   const toggleEdgeVisibility = (edgeKind: EdgeKind) => {
-    dispatch({ type: 'TOGGLE_EDGE_VISIBILITY', payload: edgeKind });
+    dispatch({ type: "TOGGLE_EDGE_VISIBILITY", payload: edgeKind });
   };
 
   const setStatusFilter = (filter: string) => {
@@ -180,7 +178,7 @@ export const useGraphFilters = (config?: GraphConfig<any, any>) => {
   };
 
   const resetFilters = () => {
-    dispatch({ type: 'RESET_FILTERS' });
+    dispatch({ type: "RESET_FILTERS" });
   };
 
   // Exclusion helpers
@@ -204,27 +202,27 @@ export const useGraphFilters = (config?: GraphConfig<any, any>) => {
   const showOnlyOrphaned = () => {
     updateFilters({
       showOrphanedOnly: true,
-      statusFilter: 'all',
-      connectionFilter: 'orphaned',
+      statusFilter: "all",
+      connectionFilter: "orphaned",
       showRunningOnly: false,
-      showInUseOnly: false
+      showInUseOnly: false,
     });
   };
 
   const showOnlyRunning = () => {
     updateFilters({
       showRunningOnly: true,
-      statusFilter: 'running',
+      statusFilter: "running",
       showOrphanedOnly: false,
-      showInUseOnly: false
+      showInUseOnly: false,
     });
   };
 
   const showMinimalView = () => {
     updateFilters({
       showOrphanedOnly: false,
-      statusFilter: 'in-use',
-      connectionFilter: 'connected'
+      statusFilter: "in-use",
+      connectionFilter: "connected",
     });
   };
 

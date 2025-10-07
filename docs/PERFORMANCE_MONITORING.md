@@ -32,6 +32,7 @@ catalyst-ui includes a comprehensive suite of performance monitoring tools desig
 - **Identify unnecessary re-renders** and optimization opportunities
 
 All tools are:
+
 - ✅ **Development-only** (automatically stripped in production builds)
 - ✅ **Zero-impact on production** bundle size
 - ✅ **Easy to integrate** with a single provider
@@ -91,7 +92,7 @@ import { DevModeProvider } from "@/catalyst-ui/contexts/DevMode";
 
 // Initialize react-scan (development only)
 if (import.meta.env.DEV) {
-  import('react-scan').then((mod) => {
+  import("react-scan").then(mod => {
     mod.scan({
       enabled: true,
       log: false, // Set to true to log all renders
@@ -105,7 +106,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <DevModeProvider
         config={{
           enableWebVitals: true,
-          webVitalsReporting: 'console',
+          webVitalsReporting: "console",
           enableReactScan: true,
         }}
       >
@@ -114,7 +115,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     ) : (
       <App />
     )}
-  </React.StrictMode>,
+  </React.StrictMode>
 );
 ```
 
@@ -140,7 +141,7 @@ See `.storybook/preview.tsx` for the integration.
 ### Usage
 
 ```tsx
-import { DevModeProvider } from '@/catalyst-ui/contexts/DevMode';
+import { DevModeProvider } from "@/catalyst-ui/contexts/DevMode";
 
 function App() {
   return (
@@ -156,10 +157,10 @@ function App() {
 
         // web-vitals options
         enableWebVitals: true,
-        webVitalsReporting: 'console', // 'console' | 'callback' | 'none'
-        onWebVital: (metric) => {
+        webVitalsReporting: "console", // 'console' | 'callback' | 'none'
+        onWebVital: metric => {
           // Custom callback for analytics
-          analytics.track('web-vital', metric);
+          analytics.track("web-vital", metric);
         },
 
         // Profiler options
@@ -182,7 +183,7 @@ function App() {
 Access dev mode utilities from any component:
 
 ```tsx
-import { useDevMode } from '@/catalyst-ui/contexts/DevMode';
+import { useDevMode } from "@/catalyst-ui/contexts/DevMode";
 
 function PerformancePanel() {
   const {
@@ -200,18 +201,18 @@ function PerformancePanel() {
   return (
     <div>
       <button onClick={toggleReactScan}>
-        {config.reactScanEnabled ? 'Disable' : 'Enable'} React Scan
+        {config.reactScanEnabled ? "Disable" : "Enable"} React Scan
       </button>
 
       <div>
         <h3>Core Web Vitals</h3>
-        <p>LCP: {vitals.get('LCP')?.value}ms</p>
-        <p>INP: {vitals.get('INP')?.value}ms</p>
-        <p>CLS: {vitals.get('CLS')?.value}</p>
+        <p>LCP: {vitals.get("LCP")?.value}ms</p>
+        <p>INP: {vitals.get("INP")?.value}ms</p>
+        <p>CLS: {vitals.get("CLS")?.value}</p>
       </div>
 
       <button onClick={isProfiling ? stopProfiling : startProfiling}>
-        {isProfiling ? 'Stop' : 'Start'} Profiling
+        {isProfiling ? "Stop" : "Start"} Profiling
       </button>
     </div>
   );
@@ -236,7 +237,7 @@ Can be used independently of DevModeProvider.
 ### Usage
 
 ```tsx
-import { useWebVitals } from '@/catalyst-ui/hooks/useWebVitals';
+import { useWebVitals } from "@/catalyst-ui/hooks/useWebVitals";
 
 function App() {
   const { metrics, latestMetric, clear } = useWebVitals({
@@ -247,9 +248,9 @@ function App() {
     enableDetailedLog: true,
 
     // Custom callback for analytics
-    onMetric: (metric) => {
+    onMetric: metric => {
       // Send to analytics service
-      analytics.track('web-vital', {
+      analytics.track("web-vital", {
         name: metric.name,
         value: metric.value,
         rating: metric.rating,
@@ -261,9 +262,15 @@ function App() {
   return (
     <div>
       <h2>Core Web Vitals</h2>
-      <p>LCP: {metrics.get('LCP')?.value}ms ({metrics.get('LCP')?.rating})</p>
-      <p>INP: {metrics.get('INP')?.value}ms ({metrics.get('INP')?.rating})</p>
-      <p>CLS: {metrics.get('CLS')?.value} ({metrics.get('CLS')?.rating})</p>
+      <p>
+        LCP: {metrics.get("LCP")?.value}ms ({metrics.get("LCP")?.rating})
+      </p>
+      <p>
+        INP: {metrics.get("INP")?.value}ms ({metrics.get("INP")?.rating})
+      </p>
+      <p>
+        CLS: {metrics.get("CLS")?.value} ({metrics.get("CLS")?.rating})
+      </p>
 
       <button onClick={clear}>Clear Metrics</button>
     </div>
@@ -306,7 +313,7 @@ Attribution: { element: '<img>', url: '/hero.jpg', ... }
 ### Usage
 
 ```tsx
-import { PerformanceProfiler } from '@/catalyst-ui/components/PerformanceProfiler';
+import { PerformanceProfiler } from "@/catalyst-ui/components/PerformanceProfiler";
 
 // Basic usage with logging
 function App() {
@@ -320,11 +327,7 @@ function App() {
 // Only log renders slower than 16ms (60fps threshold)
 function DataTable({ data }) {
   return (
-    <PerformanceProfiler
-      id="data-table"
-      enableLogging
-      slowRenderThreshold={16}
-    >
+    <PerformanceProfiler id="data-table" enableLogging slowRenderThreshold={16}>
       <Table data={data} />
     </PerformanceProfiler>
   );
@@ -337,7 +340,7 @@ function CheckoutFlow() {
       id="checkout"
       onRender={(id, phase, actualDuration, baseDuration) => {
         if (actualDuration > 100) {
-          analytics.track('slow-render', {
+          analytics.track("slow-render", {
             component: id,
             phase,
             duration: actualDuration,
@@ -375,12 +378,14 @@ Commit Time: 1258.01ms
 ### How It Works
 
 react-scan is automatically initialized in development mode for both:
+
 - **Storybook** (`.storybook/preview.tsx`)
 - **App** (`app/main.tsx`)
 
 ### Visual Indicators
 
 When enabled, react-scan shows:
+
 - **Colored overlays** on re-rendering components
 - **Render count** in component corners
 - **Render duration** overlay
@@ -389,14 +394,14 @@ When enabled, react-scan shows:
 
 ```tsx
 // Via DevModeProvider
-import { useDevMode } from '@/catalyst-ui/contexts/DevMode';
+import { useDevMode } from "@/catalyst-ui/contexts/DevMode";
 
 function DebugPanel() {
   const { toggleReactScan, config } = useDevMode();
 
   return (
     <button onClick={toggleReactScan}>
-      {config.reactScanEnabled ? 'Hide' : 'Show'} Render Highlights
+      {config.reactScanEnabled ? "Hide" : "Show"} Render Highlights
     </button>
   );
 }
@@ -407,7 +412,7 @@ function DebugPanel() {
 ```tsx
 // Without DevModeProvider (direct API)
 if (import.meta.env.DEV) {
-  import('react-scan').then((mod) => {
+  import("react-scan").then(mod => {
     const scan = mod.scan;
 
     // Enable
@@ -437,7 +442,7 @@ interface DevModeConfig {
 
   // web-vitals
   enableWebVitals?: boolean; // Collect Core Web Vitals
-  webVitalsReporting?: 'console' | 'callback' | 'none';
+  webVitalsReporting?: "console" | "callback" | "none";
   onWebVital?: (metric: Metric) => void; // Custom callback
 
   // Profiler
@@ -461,7 +466,7 @@ All dev mode code is automatically excluded from production builds:
 ```tsx
 // This entire block is removed in production builds
 if (import.meta.env.DEV) {
-  import('react-scan').then((mod) => {
+  import("react-scan").then(mod => {
     mod.scan({ enabled: true });
   });
 }
@@ -496,7 +501,7 @@ import App from "./App";
 import { DevModeProvider } from "@/catalyst-ui/contexts/DevMode";
 
 if (import.meta.env.DEV) {
-  import('react-scan').then((mod) => {
+  import("react-scan").then(mod => {
     mod.scan({ enabled: true, log: false });
   });
 }
@@ -507,11 +512,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <DevModeProvider
         config={{
           enableWebVitals: true,
-          webVitalsReporting: 'console',
+          webVitalsReporting: "console",
           enableReactScan: true,
-          onWebVital: (metric) => {
+          onWebVital: metric => {
             // Send to analytics in dev (for testing)
-            console.log('[Analytics Test]', metric.name, metric.value);
+            console.log("[Analytics Test]", metric.name, metric.value);
           },
         }}
       >
@@ -520,16 +525,16 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     ) : (
       <App />
     )}
-  </React.StrictMode>,
+  </React.StrictMode>
 );
 ```
 
 ### Performance Dashboard Component
 
 ```tsx
-import { useDevMode } from '@/catalyst-ui/contexts/DevMode';
-import { Card } from '@/catalyst-ui/ui/card';
-import { Button } from '@/catalyst-ui/ui/button';
+import { useDevMode } from "@/catalyst-ui/contexts/DevMode";
+import { Card } from "@/catalyst-ui/ui/card";
+import { Button } from "@/catalyst-ui/ui/button";
 
 function PerformanceDashboard() {
   const {
@@ -551,39 +556,37 @@ function PerformanceDashboard() {
       <div className="space-y-2">
         <Button
           onClick={toggleReactScan}
-          variant={config.reactScanEnabled ? 'default' : 'outline'}
+          variant={config.reactScanEnabled ? "default" : "outline"}
           size="sm"
           className="w-full"
         >
-          {config.reactScanEnabled ? '🟢' : '⚪'} React Scan
+          {config.reactScanEnabled ? "🟢" : "⚪"} React Scan
         </Button>
 
         <Button
           onClick={isProfiling ? stopProfiling : startProfiling}
-          variant={isProfiling ? 'default' : 'outline'}
+          variant={isProfiling ? "default" : "outline"}
           size="sm"
           className="w-full"
         >
-          {isProfiling ? '🔴 Stop' : '⚪ Start'} Profiling
+          {isProfiling ? "🔴 Stop" : "⚪ Start"} Profiling
         </Button>
       </div>
 
       <div className="mt-4 space-y-1 text-sm">
         <h4 className="font-semibold">Core Web Vitals</h4>
-        {['LCP', 'INP', 'CLS', 'FCP', 'TTFB'].map((name) => {
+        {["LCP", "INP", "CLS", "FCP", "TTFB"].map(name => {
           const metric = vitals.get(name);
           if (!metric) return null;
 
           const emoji =
-            metric.rating === 'good'
-              ? '✅'
-              : metric.rating === 'needs-improvement'
-              ? '⚠️'
-              : '❌';
+            metric.rating === "good" ? "✅" : metric.rating === "needs-improvement" ? "⚠️" : "❌";
 
           return (
             <div key={name} className="flex justify-between">
-              <span>{emoji} {name}:</span>
+              <span>
+                {emoji} {name}:
+              </span>
               <span>{metric.value.toFixed(2)}</span>
             </div>
           );
@@ -605,7 +608,7 @@ export default PerformanceDashboard;
 ### Profiling Expensive Components
 
 ```tsx
-import { PerformanceProfiler } from '@/catalyst-ui/components/PerformanceProfiler';
+import { PerformanceProfiler } from "@/catalyst-ui/components/PerformanceProfiler";
 
 function ExpensiveDataTable({ data }) {
   return (
@@ -620,7 +623,7 @@ function ExpensiveDataTable({ data }) {
       }}
     >
       <table>
-        {data.map((row) => (
+        {data.map(row => (
           <TableRow key={row.id} data={row} />
         ))}
       </table>
@@ -683,10 +686,10 @@ function ExpensiveDataTable({ data }) {
 
 ```tsx
 const { metrics } = useWebVitals({
-  onMetric: (metric) => {
+  onMetric: metric => {
     // Only send poor/needs-improvement to reduce noise
-    if (metric.rating !== 'good') {
-      analytics.track('web-vital', {
+    if (metric.rating !== "good") {
+      analytics.track("web-vital", {
         name: metric.name,
         value: metric.value,
         rating: metric.rating,
@@ -726,23 +729,25 @@ const { metrics } = useWebVitals({
 ## Resources
 
 ### Documentation
+
 - [React Profiler API](https://react.dev/reference/react/Profiler)
 - [Web Vitals](https://web.dev/articles/vitals)
 - [react-scan GitHub](https://github.com/aidenybai/react-scan)
 
 ### Related Docs
+
 - [LIGHTHOUSE_OPTIMIZATIONS.md](./LIGHTHOUSE_OPTIMIZATIONS.md) - Build-time optimizations
 - [architecture/animation-hoc.md](./architecture/animation-hoc.md) - Animation performance
 
 ### Core Web Vitals Thresholds
 
-| Metric | Good | Needs Improvement | Poor |
-|--------|------|-------------------|------|
-| LCP | ≤ 2.5s | 2.5s - 4.0s | > 4.0s |
-| INP | ≤ 200ms | 200ms - 500ms | > 500ms |
-| CLS | ≤ 0.1 | 0.1 - 0.25 | > 0.25 |
-| FCP | ≤ 1.8s | 1.8s - 3.0s | > 3.0s |
-| TTFB | ≤ 800ms | 800ms - 1800ms | > 1800ms |
+| Metric | Good    | Needs Improvement | Poor     |
+| ------ | ------- | ----------------- | -------- |
+| LCP    | ≤ 2.5s  | 2.5s - 4.0s       | > 4.0s   |
+| INP    | ≤ 200ms | 200ms - 500ms     | > 500ms  |
+| CLS    | ≤ 0.1   | 0.1 - 0.25        | > 0.25   |
+| FCP    | ≤ 1.8s  | 1.8s - 3.0s       | > 3.0s   |
+| TTFB   | ≤ 800ms | 800ms - 1800ms    | > 1800ms |
 
 ---
 
@@ -762,6 +767,7 @@ const { metrics } = useWebVitals({
 ### Contributions
 
 Want to add a feature? Check out:
+
 - `lib/contexts/DevMode/` - DevMode context
 - `lib/hooks/useWebVitals.ts` - Web Vitals hook
 - `lib/components/PerformanceProfiler/` - Profiler component

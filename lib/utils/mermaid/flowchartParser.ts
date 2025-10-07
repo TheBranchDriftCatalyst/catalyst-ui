@@ -12,7 +12,7 @@ import type {
   FlowDirection,
   NodeShape,
   EdgeType,
-} from './types';
+} from "./types";
 
 /**
  * Parse a Mermaid flowchart into structured data
@@ -25,7 +25,7 @@ export function parseFlowchart(mermaidText: string): ParsedMermaid {
 class FlowchartParser {
   private lines: string[];
   private currentLine = 0;
-  private direction: FlowDirection = 'TB';
+  private direction: FlowDirection = "TB";
   private nodes = new Map<string, ParsedNode>();
   private edges: ParsedEdge[] = [];
   private subgraphs: ParsedSubgraph[] = [];
@@ -33,7 +33,10 @@ class FlowchartParser {
   private currentSubgraph: string | null = null;
 
   constructor(mermaidText: string) {
-    this.lines = mermaidText.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('%%'));
+    this.lines = mermaidText
+      .split("\n")
+      .map(l => l.trim())
+      .filter(l => l && !l.startsWith("%%"));
   }
 
   parse(): ParsedMermaid {
@@ -47,19 +50,19 @@ class FlowchartParser {
       }
 
       // Parse subgraph
-      if (line.startsWith('subgraph')) {
+      if (line.startsWith("subgraph")) {
         this.parseSubgraph();
         continue;
       }
 
       // Parse class definition
-      if (line.startsWith('classDef')) {
+      if (line.startsWith("classDef")) {
         this.parseClassDef(line);
         continue;
       }
 
       // Parse class application
-      if (line.startsWith('class ')) {
+      if (line.startsWith("class ")) {
         this.parseClassApplication(line);
         continue;
       }
@@ -103,7 +106,7 @@ class FlowchartParser {
 
     // Find matching 'end'
     this.currentLine++;
-    while (this.currentLine < this.lines.length && this.lines[this.currentLine] !== 'end') {
+    while (this.currentLine < this.lines.length && this.lines[this.currentLine] !== "end") {
       const line = this.lines[this.currentLine];
 
       // Check for direction statement
@@ -148,9 +151,9 @@ class FlowchartParser {
     const classObj: ParsedClass = { name };
 
     // Parse CSS-like properties
-    const styleProps = styles.split(',').map(s => s.trim());
+    const styleProps = styles.split(",").map(s => s.trim());
     for (const prop of styleProps) {
-      const [key, value] = prop.split(':').map(s => s.trim());
+      const [key, value] = prop.split(":").map(s => s.trim());
       if (key && value) {
         classObj[key] = value;
       }
@@ -164,7 +167,7 @@ class FlowchartParser {
     if (!match) return;
 
     const [, nodeIds, className] = match;
-    const ids = nodeIds.split(',').map(id => id.trim());
+    const ids = nodeIds.split(",").map(id => id.trim());
 
     for (const id of ids) {
       const node = this.nodes.get(id);
@@ -185,7 +188,8 @@ class FlowchartParser {
 
   private parseEdge(line: string): void {
     // Match edge patterns with optional labels
-    const edgePattern = /([\w-]+)\s*(-->|---|\.->|==>|~~~|<-->)\s*(?:\|"([^"]+)"\||"([^"]+)")?\s*([\w-]+)/g;
+    const edgePattern =
+      /([\w-]+)\s*(-->|---|\.->|==>|~~~|<-->)\s*(?:\|"([^"]+)"\||"([^"]+)")?\s*([\w-]+)/g;
     let match;
 
     while ((match = edgePattern.exec(line)) !== null) {
@@ -193,7 +197,7 @@ class FlowchartParser {
       const label = labelPipe || labelQuote;
 
       const edgeType = this.getEdgeType(arrow);
-      const bidirectional = arrow === '<-->';
+      const bidirectional = arrow === "<-->";
 
       // Ensure nodes exist
       if (!this.nodes.has(src)) {
@@ -217,31 +221,31 @@ class FlowchartParser {
     // Try to match different node patterns
     const patterns = [
       // Triple parentheses (must come before double)
-      { regex: /([\w-]+)\(\(\(([^)]+)\)\)\)/, shape: 'double_circle' as NodeShape },
+      { regex: /([\w-]+)\(\(\(([^)]+)\)\)\)/, shape: "double_circle" as NodeShape },
       // Double braces
-      { regex: /([\w-]+)\{\{([^}]+)\}\}/, shape: 'hexagon' as NodeShape },
+      { regex: /([\w-]+)\{\{([^}]+)\}\}/, shape: "hexagon" as NodeShape },
       // Double brackets
-      { regex: /([\w-]+)\[\[([^\]]+)\]\]/, shape: 'subroutine' as NodeShape },
+      { regex: /([\w-]+)\[\[([^\]]+)\]\]/, shape: "subroutine" as NodeShape },
       // Double parentheses
-      { regex: /([\w-]+)\(\(([^)]+)\)\)/, shape: 'circle' as NodeShape },
+      { regex: /([\w-]+)\(\(([^)]+)\)\)/, shape: "circle" as NodeShape },
       // Stadium
-      { regex: /([\w-]+)\(\[([^\]]+)\]\)/, shape: 'stadium' as NodeShape },
+      { regex: /([\w-]+)\(\[([^\]]+)\]\)/, shape: "stadium" as NodeShape },
       // Database
-      { regex: /([\w-]+)\[\(([^)]+)\)\]/, shape: 'database' as NodeShape },
+      { regex: /([\w-]+)\[\(([^)]+)\)\]/, shape: "database" as NodeShape },
       // Trapezoid variations
-      { regex: /([\w-]+)\[\\([^/]+)\/\]/, shape: 'trapezoid_alt' as NodeShape },
-      { regex: /([\w-]+)\[\/([^\\]+)\\\]/, shape: 'trapezoid' as NodeShape },
+      { regex: /([\w-]+)\[\\([^/]+)\/\]/, shape: "trapezoid_alt" as NodeShape },
+      { regex: /([\w-]+)\[\/([^\\]+)\\\]/, shape: "trapezoid" as NodeShape },
       // Parallelogram variations
-      { regex: /([\w-]+)\[\\([^\\]+)\\\]/, shape: 'parallelogram_alt' as NodeShape },
-      { regex: /([\w-]+)\[\/([^\/]+)\/\]/, shape: 'parallelogram' as NodeShape },
+      { regex: /([\w-]+)\[\\([^\\]+)\\\]/, shape: "parallelogram_alt" as NodeShape },
+      { regex: /([\w-]+)\[\/([^\/]+)\/\]/, shape: "parallelogram" as NodeShape },
       // Asymmetric
-      { regex: /([\w-]+)>([^\]]+)\]/, shape: 'asymmetric' as NodeShape },
+      { regex: /([\w-]+)>([^\]]+)\]/, shape: "asymmetric" as NodeShape },
       // Diamond
-      { regex: /([\w-]+)\{([^}]+)\}/, shape: 'diamond' as NodeShape },
+      { regex: /([\w-]+)\{([^}]+)\}/, shape: "diamond" as NodeShape },
       // Round
-      { regex: /([\w-]+)\(([^)]+)\)/, shape: 'round' as NodeShape },
+      { regex: /([\w-]+)\(([^)]+)\)/, shape: "round" as NodeShape },
       // Rectangle (basic)
-      { regex: /([\w-]+)\[([^\]]+)\]/, shape: 'rectangle' as NodeShape },
+      { regex: /([\w-]+)\[([^\]]+)\]/, shape: "rectangle" as NodeShape },
     ];
 
     for (const { regex, shape } of patterns) {
@@ -251,7 +255,7 @@ class FlowchartParser {
         if (!this.nodes.has(id)) {
           this.nodes.set(id, {
             id,
-            label: label.replace(/<br\/?>/g, '\n').trim(),
+            label: label.replace(/<br\/?>/g, "\n").trim(),
             shape,
             subgraph: this.currentSubgraph || undefined,
           });
@@ -265,23 +269,29 @@ class FlowchartParser {
     return {
       id,
       label: id,
-      shape: 'rectangle',
+      shape: "rectangle",
       subgraph: this.currentSubgraph || undefined,
     };
   }
 
   private getEdgeType(arrow: string): EdgeType {
     switch (arrow) {
-      case '-->': return 'solid';
-      case '---': return 'open';
-      case '.->': return 'dotted';
-      case '==>': return 'thick';
-      case '~~~': return 'invisible';
-      default: return 'solid';
+      case "-->":
+        return "solid";
+      case "---":
+        return "open";
+      case ".->":
+        return "dotted";
+      case "==>":
+        return "thick";
+      case "~~~":
+        return "invisible";
+      default:
+        return "solid";
     }
   }
 
   private sanitizeId(str: string): string {
-    return str.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    return str.toLowerCase().replace(/[^a-z0-9]/g, "_");
   }
 }

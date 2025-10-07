@@ -11,6 +11,7 @@
 Comprehensive refactoring of the ForceGraph component to eliminate code duplication, improve type safety, enhance performance, and reduce complexity.
 
 **Key Metrics:**
+
 - Total codebase: ~7,100 lines across 40+ files
 - Code duplication to eliminate: ~370 lines
 - Target: Zero `@ts-ignore`, no file >300 lines
@@ -27,6 +28,7 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 ### Tasks
 
 #### ✅ 1.1 Extract Shared Utilities - COMPLETE
+
 - [x] Create `lib/components/ForceGraph/utils/nodeDimensions.ts`
   - ✅ Extracted `getNodeDimensions` from ReactD3Node and ReactD3Edge
   - ✅ Updated both files to import from shared utility
@@ -40,10 +42,12 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
   - **Impact:** Cleaner event handling, production-ready error logging
 
 #### ⏸️ 1.2 Create Shared Hooks - DEFERRED TO PHASE 2
+
 - [ ] Create `lib/components/ForceGraph/hooks/useFilterPanelConfig.ts`
   - **Reason:** More complex refactoring, saved for Phase 3 panel consolidation
 
 #### ✅ 1.3 Fix Type Safety - PARTIALLY COMPLETE
+
 - [x] Remove `@ts-ignore` in FilterPanelNodeTypes.tsx
   - ✅ Properly typed `kind` as `NodeKind` instead of `any`
 - [x] Remove `@ts-ignore` in FilterPanelEdgeTypes.tsx
@@ -54,6 +58,7 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 - **Impact:** 2 of 6 `@ts-ignore` removed (33% complete), remaining tied to legacy code
 
 #### ⏸️ 1.4 Cleanup - DEFERRED TO NEXT SESSION
+
 - [ ] Remove/replace console.logs (5 files identified)
   - Legend.tsx, ReactD3Graph.tsx, elk.ts, community.ts
 - [ ] Note: eventHelpers.ts console.warn is intentional for development
@@ -62,6 +67,7 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 ### Progress
 
 **Files Modified:** (7 files)
+
 - [x] `lib/components/ForceGraph/ReactD3Node.tsx` - Removed duplicate getNodeDimensions
 - [x] `lib/components/ForceGraph/ReactD3Edge.tsx` - Removed duplicate getNodeDimensions & export
 - [x] `lib/components/ForceGraph/ReactD3Graph.tsx` - Replaced try-catch with safe helpers
@@ -69,10 +75,12 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 - [x] `lib/components/ForceGraph/FilterPanel/FilterPanelEdgeTypes.tsx` - Fixed types, removed @ts-ignore
 
 **Files Created:** (2 files)
+
 - [x] `lib/components/ForceGraph/utils/nodeDimensions.ts` - Shared node dimension calculator
 - [x] `lib/components/ForceGraph/utils/eventHelpers.ts` - Safe event handling utilities
 
 **Results Achieved:**
+
 - ✅ ~30 lines of duplicate code eliminated
 - ✅ 3 try-catch patterns replaced with utilities
 - ✅ 2 of 6 `@ts-ignore` comments removed (33%)
@@ -81,6 +89,7 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 - ⏸️ Console.log cleanup deferred to next phase
 
 **Notes:**
+
 - Remaining @ts-ignore instances are in ForceGraph.tsx legacy wrapper functions
 - These wrappers are scheduled for removal in Phase 3, so fixing types now would be wasted effort
 - Phase 1 core goal achieved: eliminate critical duplication and improve type safety
@@ -99,6 +108,7 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 ### Tasks
 
 #### ✅ 2.1 Memoize ReactD3Graph Computations - COMPLETE
+
 - [x] Memoize `enrichGraph(data)` with useMemo
 - [x] Memoize filtered nodes and edges arrays
 - [x] Optimize useEffect dependency array
@@ -107,6 +117,7 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 - **Result:** useEffect now only runs when filtered data actually changes, not on every visibility toggle
 
 #### ✅ 2.2 Optimize useGraphFilters - COMPLETE
+
 - [x] Extract filter predicates to pure functions
 - [x] Combine useMemo + useEffect patterns (already well-optimized)
 - [x] Use indexed lookups for excludedNodeIds (Set instead of Array)
@@ -116,6 +127,7 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 - **Result:** Filter predicates no longer recreated on every render
 
 #### ✅ 2.3 Memoize Edge Path Calculations - COMPLETE
+
 - [x] Add useMemo to path calculations in ReactD3Edge
 - [x] Cache edge endpoints based on node positions
 - [x] Cache orthogonal path calculation (expensive collision detection)
@@ -126,14 +138,17 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 ### Phase 2 Summary
 
 **Files Modified:** (3 files)
+
 - [x] `lib/components/ForceGraph/ReactD3Graph.tsx` - Added memoization for graph enrichment and filtering
 - [x] `lib/components/ForceGraph/hooks/useGraphFilters.ts` - Optimized filter predicates and Set lookups
 - [x] `lib/components/ForceGraph/ReactD3Edge.tsx` - Memoized path calculations
 
 **Files Created:** (1 file)
+
 - [x] `lib/components/ForceGraph/utils/filterPredicates.ts` - 7 pure filter functions
 
 **Results Achieved:**
+
 - ✅ Graph enrichment and filtering only happen when data actually changes
 - ✅ O(1) excluded node lookups (Set instead of Array.includes)
 - ✅ Filter predicates are pure functions, no longer recreated on every render
@@ -157,6 +172,7 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 ### Tasks
 
 #### ✅ 3.1 Extract Edge Path Calculations - COMPLETE
+
 - [x] Create `utils/edgePathCalculations.ts`
 - [x] Move `calculateEdgeEndpoints()` from ReactD3Edge
 - [x] Move `calculateOrthogonalPath()` from ReactD3Edge
@@ -166,6 +182,7 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 - **Result:** Build successful, no new errors introduced
 
 #### 3.2 Extract ReactD3Graph Hooks
+
 - [ ] Create `hooks/useSimulation.ts` - D3 force simulation lifecycle
 - [ ] Create `hooks/useZoomPan.ts` - Zoom and pan behavior
 - [ ] Create `hooks/useNodeDragging.ts` - Drag event handlers
@@ -174,6 +191,7 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 - **Reason:** Separation of concerns, reusable behaviors
 
 #### ✅ 3.3 Fix Remaining Type Safety Issues - COMPLETE
+
 - [x] Remove remaining 4 @ts-ignore in ForceGraph.tsx
 - [x] Fix type errors in community.ts (unused estimatedHeight)
 - [x] Fix type errors in elk.ts (width/height properties)
@@ -181,6 +199,7 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 - **Result:** Full type safety achieved, build successful with 0 errors
 
 #### ✅ 3.4 Final Cleanup - COMPLETE
+
 - [x] Remove console.log statements from production code
   - Removed 5 debug logs from Legend.tsx (export functionality)
   - Removed 8 debug logs from community.ts (layout positioning)
@@ -193,6 +212,7 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 ### Phase 3 Summary
 
 **Files Modified:** (5 files)
+
 - [x] `lib/components/ForceGraph/ReactD3Edge.tsx` - Extracted path calculations, reduced from 397 to 164 lines
 - [x] `lib/components/ForceGraph/ForceGraph.tsx` - Fixed type safety, removed 4 @ts-ignore
 - [x] `lib/components/ForceGraph/utils/layering/community.ts` - Fixed unused variable, removed 8 console.log
@@ -200,9 +220,11 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 - [x] `lib/components/ForceGraph/Legend.tsx` - Removed 5 console.log from export function
 
 **Files Created:** (1 file)
+
 - [x] `lib/components/ForceGraph/utils/edgePathCalculations.ts` - 3 pure path calculation functions (233 lines)
 
 **Results Achieved:**
+
 - ✅ ReactD3Edge.tsx reduced by 233 lines (397 → 164)
 - ✅ Zero @ts-ignore comments across entire ForceGraph codebase
 - ✅ All TypeScript errors fixed (community.ts, elk.ts)
@@ -211,6 +233,7 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 - ✅ **Build successful with 0 errors**
 
 **Note on Task 3.2:**
+
 - Extracting simulation/zoom/drag hooks from ReactD3Graph was deferred
 - These hooks would be useful for code reuse but aren't critical for maintainability
 - Can be revisited in a future refactoring session if needed
@@ -229,6 +252,7 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 ### Tasks
 
 #### ✅ 4.1 Analyze Current Panel Implementations - COMPLETE
+
 - [x] Review FilterPanel vs GraphContentPanel vs NodeDetails
 - [x] Identify common patterns (draggable, collapsible, resizable)
 - [x] Document differences and use cases
@@ -240,6 +264,7 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
   - useDraggable and useResizable already well-abstracted
 
 #### ✅ 4.2 Create Shared Panel Hook - COMPLETE
+
 - [x] Create `hooks/useFloatingPanel.ts` combining draggable + resizable + collapse
 - [x] Support conditional enabling of features (drag/resize/collapse)
 - [x] LocalStorage persistence for all features
@@ -248,6 +273,7 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 - **Result:** 140 lines, feature flags for drag/resize/collapse
 
 #### ✅ 4.3 Consolidate Panel Components - COMPLETE
+
 - [x] Refactor NodeDetails to use useFloatingPanel
 - [x] Refactor Legend to use useFloatingPanel
 - [ ] GraphContentPanel doesn't need dragging/resizing (deferred)
@@ -256,6 +282,7 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 - **Result:** NodeDetails reduced by 9 lines, Legend simplified by removing separate collapse state
 
 #### ✅ 4.4 Final Verification - COMPLETE
+
 - [x] Verify build passes (✓ 6566 modules, 0 errors)
 - [x] Export types from hooks for proper TypeScript support
 - [x] Test hook composition (drag + resize + collapse)
@@ -265,15 +292,18 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 ### Phase 4 Summary
 
 **Files Modified:** (4 files)
+
 - [x] `lib/components/ForceGraph/NodeDetails.tsx` - Now uses useFloatingPanel (reduced by 9 lines)
 - [x] `lib/components/ForceGraph/Legend.tsx` - Now uses useFloatingPanel (simplified collapse logic)
 - [x] `lib/components/ForceGraph/hooks/useDraggable.ts` - Exported Position type
 - [x] `lib/components/ForceGraph/hooks/useResizable.ts` - Exported Size type
 
 **Files Created:** (1 file)
+
 - [x] `lib/components/ForceGraph/hooks/useFloatingPanel.ts` - 160 lines, unified panel hook
 
 **Results Achieved:**
+
 - ✅ Single unified hook for all floating panel behaviors
 - ✅ NodeDetails simplified (removed manual ref merging, separate collapse state)
 - ✅ Legend simplified (removed separate collapse state)
@@ -284,13 +314,23 @@ Comprehensive refactoring of the ForceGraph component to eliminate code duplicat
 
 **Pattern Established:**
 All floating panels now use a consistent pattern with `useFloatingPanel`:
+
 ```typescript
-const { panelRef, dragHandleRef, resizeHandleRef, isCollapsed, toggleCollapse, style } = useFloatingPanel({
-  initialPosition, positionStorageKey,
-  initialSize, minWidth, minHeight, maxWidth, maxHeight, sizeStorageKey,
-  collapseStorageKey,
-  enableDragging, enableResizing, enableCollapse
-});
+const { panelRef, dragHandleRef, resizeHandleRef, isCollapsed, toggleCollapse, style } =
+  useFloatingPanel({
+    initialPosition,
+    positionStorageKey,
+    initialSize,
+    minWidth,
+    minHeight,
+    maxWidth,
+    maxHeight,
+    sizeStorageKey,
+    collapseStorageKey,
+    enableDragging,
+    enableResizing,
+    enableCollapse,
+  });
 ```
 
 ---
@@ -307,6 +347,7 @@ const { panelRef, dragHandleRef, resizeHandleRef, isCollapsed, toggleCollapse, s
 ### Tasks
 
 #### ✅ 5.1 Create useNodePositions Hook - COMPLETE
+
 - [x] Create `lib/components/ForceGraph/hooks/useNodePositions.ts`
 - [x] Implement `loadPositions()` - load from localStorage
 - [x] Implement `savePositions()` - save with 500ms debounce
@@ -318,6 +359,7 @@ const { panelRef, dragHandleRef, resizeHandleRef, isCollapsed, toggleCollapse, s
 - **Result:** 160 lines, full localStorage integration with error handling
 
 #### ✅ 5.2 Integrate into ReactD3Graph - COMPLETE
+
 - [x] Import and initialize useNodePositions hook
 - [x] Apply saved positions after layout calculation
 - [x] Save positions on drag end (both static and force layouts)
@@ -326,12 +368,14 @@ const { panelRef, dragHandleRef, resizeHandleRef, isCollapsed, toggleCollapse, s
 - **Result:** Seamless integration with 4 line changes
 
 #### ✅ 5.3 Update Type Definitions - COMPLETE
+
 - [x] Add `storageKey?: string` to ReactD3GraphProps
 - [x] Document position persistence behavior
 - **Impact:** Type-safe position persistence
 - **Result:** Full TypeScript support
 
 #### ✅ 5.4 Update ForceGraph Component - COMPLETE
+
 - [x] Pass storageKey prop to ReactD3Graph
 - **Impact:** Connects user-provided storageKey to position persistence
 - **Result:** Single line change, complete flow
@@ -339,6 +383,7 @@ const { panelRef, dragHandleRef, resizeHandleRef, isCollapsed, toggleCollapse, s
 ### Phase 5 Summary
 
 **Files Modified:** (6 files)
+
 - [x] `lib/components/ForceGraph/types/index.ts` - Added storageKey to ReactD3GraphProps
 - [x] `lib/components/ForceGraph/ReactD3Graph.tsx` - Integrated useNodePositions hook
 - [x] `lib/components/ForceGraph/ForceGraph.tsx` - Pass storageKey prop to components
@@ -347,9 +392,11 @@ const { panelRef, dragHandleRef, resizeHandleRef, isCollapsed, toggleCollapse, s
 - [x] `lib/components/ForceGraph/GraphContentPanel.tsx` - Pass storageKey to children
 
 **Files Created:** (1 file)
+
 - [x] `lib/components/ForceGraph/hooks/useNodePositions.ts` - Position persistence hook (160 lines)
 
 **Results Achieved:**
+
 - ✅ Node positions persist across page reloads
 - ✅ Each layout type maintains independent arrangements
 - ✅ Debounced saves (500ms) prevent localStorage thrashing
@@ -361,6 +408,7 @@ const { panelRef, dragHandleRef, resizeHandleRef, isCollapsed, toggleCollapse, s
 - ✅ **Build successful with 0 errors**
 
 **Storage Structure:**
+
 ```json
 // Key: "myGraph.positions.force"
 {
@@ -375,6 +423,7 @@ const { panelRef, dragHandleRef, resizeHandleRef, isCollapsed, toggleCollapse, s
 ```
 
 **User Experience:**
+
 - Drag nodes to arrange your graph
 - Positions automatically saved after 500ms
 - Reload page → positions restored
@@ -382,6 +431,7 @@ const { panelRef, dragHandleRef, resizeHandleRef, isCollapsed, toggleCollapse, s
 - Works seamlessly with existing storageKey pattern
 
 #### ✅ 5.5 Add UI Controls for Position Reset - COMPLETE
+
 - [x] Add reset button to Legend next to Layout selector
 - [x] Add reset button to LayoutOptionsPanel header
 - [x] Use refresh/cycle icon (SVG) for visual consistency
@@ -395,12 +445,15 @@ const { panelRef, dragHandleRef, resizeHandleRef, isCollapsed, toggleCollapse, s
 ## Issues & Notes
 
 ### Current Issues
+
 - None yet
 
 ### Decisions Made
+
 - None yet
 
 ### Testing Notes
+
 - Will test after each major change
 - Focus on: Layout rendering, filter operations, drag/resize functionality
 
@@ -411,6 +464,7 @@ const { panelRef, dragHandleRef, resizeHandleRef, isCollapsed, toggleCollapse, s
 Each phase is independent and can be reverted. All changes committed per phase with descriptive messages.
 
 **Rollback Commands:**
+
 ```bash
 # Rollback Phase 1
 git revert <phase1-commit-hash>
@@ -431,26 +485,31 @@ git reset --hard v0.5.0
 ### All Phases Completed
 
 ✅ **Phase 1: Critical Fixes** (~2 hours)
+
 - Eliminated code duplication
 - Improved type safety (2/6 @ts-ignore removed)
 - Created shared utilities
 
 ✅ **Phase 2: Performance Optimizations** (~1.5 hours)
+
 - Memoized graph enrichment and filtering
 - Optimized filter predicates
 - Cached edge path calculations
 
 ✅ **Phase 3: Structural Refactoring** (~2 hours)
+
 - Extracted edge path calculations (233 lines)
 - Fixed all remaining type errors (0 @ts-ignore!)
 - Removed 16 debug console.log statements
 
 ✅ **Phase 4: Panel Consolidation** (~1 hour)
+
 - Created unified useFloatingPanel hook
 - Refactored NodeDetails and Legend
 - Established consistent panel pattern
 
 ✅ **Phase 5: Persist Node Positions** (~1 hour)
+
 - Created useNodePositions hook with localStorage integration
 - Position persistence per layout type
 - Debounced saves with graceful error handling
@@ -465,6 +524,7 @@ git reset --hard v0.5.0
 **Build Status:** ✅ 0 errors, 0 warnings
 
 ### Key Achievements
+
 - ✅ Zero TypeScript errors
 - ✅ Zero @ts-ignore comments
 - ✅ Significantly improved performance

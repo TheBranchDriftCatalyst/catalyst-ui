@@ -2,7 +2,13 @@ import { cn } from "@/catalyst-ui/utils";
 import { Check, Copy, Hash, Palette, Pencil, Eye } from "lucide-react";
 import * as React from "react";
 import { Button } from "@/catalyst-ui/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/catalyst-ui/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/catalyst-ui/ui/select";
 import { Toggle } from "@/catalyst-ui/ui/toggle";
 
 export interface CodeBlockHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -39,22 +45,25 @@ export const AVAILABLE_THEMES = [
 ] as const;
 
 const CodeBlockHeader = React.forwardRef<HTMLDivElement, CodeBlockHeaderProps>(
-  ({
-    fileName,
-    language,
-    code,
-    showCopyButton = true,
-    interactive = false,
-    editable = false,
-    isEditMode = false,
-    currentTheme = "vitesse-dark",
-    showLineNumbers = true,
-    onThemeChange,
-    onLineNumbersChange,
-    onEditModeChange,
-    className,
-    ...props
-  }, ref) => {
+  (
+    {
+      fileName,
+      language,
+      code,
+      showCopyButton = true,
+      interactive = false,
+      editable = false,
+      isEditMode = false,
+      currentTheme = "vitesse-dark",
+      showLineNumbers = true,
+      onThemeChange,
+      onLineNumbersChange,
+      onEditModeChange,
+      className,
+      ...props
+    },
+    ref
+  ) => {
     const [copied, setCopied] = React.useState(false);
 
     const handleCopy = async () => {
@@ -72,14 +81,12 @@ const CodeBlockHeader = React.forwardRef<HTMLDivElement, CodeBlockHeaderProps>(
         ref={ref}
         className={cn(
           "flex items-center justify-between px-4 py-2 bg-card border-b border-border",
-          className,
+          className
         )}
         {...props}
       >
         <div className="flex items-center gap-2">
-          {fileName && (
-            <span className="text-sm text-foreground font-mono">{fileName}</span>
-          )}
+          {fileName && <span className="text-sm text-foreground font-mono">{fileName}</span>}
           <span className="text-xs text-muted-foreground font-mono uppercase px-2 py-0.5 bg-muted rounded">
             {language}
           </span>
@@ -93,7 +100,7 @@ const CodeBlockHeader = React.forwardRef<HTMLDivElement, CodeBlockHeaderProps>(
                 <SelectValue placeholder="Theme" />
               </SelectTrigger>
               <SelectContent>
-                {AVAILABLE_THEMES.map((theme) => (
+                {AVAILABLE_THEMES.map(theme => (
                   <SelectItem key={theme.value} value={theme.value} className="text-xs">
                     {theme.label}
                   </SelectItem>
@@ -149,7 +156,7 @@ const CodeBlockHeader = React.forwardRef<HTMLDivElement, CodeBlockHeaderProps>(
         </div>
       </div>
     );
-  },
+  }
 );
 
 CodeBlockHeader.displayName = "CodeBlockHeader";

@@ -1,4 +1,11 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/catalyst-ui/ui/card";
 import { Button } from "@/catalyst-ui/ui/button";
 
 export function CardPrimitiveDemo() {
@@ -43,7 +50,9 @@ export function CardPrimitiveDemo() {
           </p>
         </CardContent>
         <CardFooter>
-          <Button variant="secondary" className="w-full">Action</Button>
+          <Button variant="secondary" className="w-full">
+            Action
+          </Button>
         </CardFooter>
       </Card>
     </div>

@@ -84,6 +84,7 @@ function App() {
 ## 🎨 Components
 
 ### UI Components
+
 - **Forms**: Button, Input, Label, Checkbox, Radio, Select, Slider
 - **Layout**: Card, Accordion, Dialog, Dropdown Menu, Menubar
 - **Navigation**: Navigation Menu, Breadcrumb
@@ -92,6 +93,7 @@ function App() {
 - **Typography**: Typography component with variants
 
 ### Advanced Components
+
 - **ForceGraph** - D3.js-powered force-directed graph visualization
 - **CatalystHeader** - Themed application header with navigation
 - **NavigationHeader** - Customizable navigation with dropdown support
@@ -116,6 +118,7 @@ function App() {
 ```
 
 **Available themes:**
+
 - `catalyst` - Default cyberpunk theme
 - `dracula` - Dark purple vampire vibes
 - `gold` - Warm golden accent
@@ -127,6 +130,7 @@ function App() {
 ## 🔧 Development
 
 ### Prerequisites
+
 - Node.js 18+
 - Yarn 1.22+
 
@@ -188,18 +192,22 @@ See [docs/development/workflow.md](./docs/development/workflow.md) for detailed 
 ## 📚 Documentation
 
 ### Getting Started
+
 - **Storybook**: Run `yarn dev:storybook` and visit http://localhost:6006
 - **Changelog**: [CHANGELOG.md](./CHANGELOG.md)
 
 ### Development Guides
+
 - **Developer Workflow**: [docs/development/workflow.md](./docs/development/workflow.md) - Complete development workflow, tooling, and best practices
 - **Deployment Guide**: [docs/development/deployment.md](./docs/development/deployment.md) - GitHub Pages deployment and CI/CD setup
 
 ### Architecture & Design
+
 - **Design Tokens System**: [docs/architecture/design-tokens.md](./docs/architecture/design-tokens.md) - Theme system and design token architecture
 - **ForceGraph Refactor**: [docs/architecture/force-graph-refactor.md](./docs/architecture/force-graph-refactor.md) - 5-phase refactoring documentation
 
 ### Features & Roadmaps
+
 - **Design Tokens Auto-Generation**: [docs/features/design-tokens-autogen.md](./docs/features/design-tokens-autogen.md) - Automated token extraction from CSS
 - **CodeBlock Roadmap**: [docs/features/codeblock-roadmap.md](./docs/features/codeblock-roadmap.md) - CodeBlock component development plan
 
@@ -218,19 +226,19 @@ Commitlint will validate your commit messages automatically via git hooks.
 
 ## 🛠️ Tech Stack
 
-| Technology | Purpose |
-|------------|---------|
-| [React 18](https://react.dev) | UI library |
-| [TypeScript](https://www.typescriptlang.org/) | Type safety |
-| [Tailwind CSS v4](https://tailwindcss.com/) | Styling framework |
-| [Radix UI](https://www.radix-ui.com/) | Accessible primitives |
-| [shadcn/ui](https://ui.shadcn.com/) | Component patterns |
-| [D3.js](https://d3js.org/) | Data visualization |
-| [Vite](https://vitejs.dev/) | Build tool & dev server |
-| [Storybook](https://storybook.js.org/) | Component development |
-| [React Hook Form](https://react-hook-form.com/) | Form handling |
-| [Zod](https://zod.dev/) | Schema validation |
-| [Lucide Icons](https://lucide.dev/) | Icon set |
+| Technology                                      | Purpose                 |
+| ----------------------------------------------- | ----------------------- |
+| [React 18](https://react.dev)                   | UI library              |
+| [TypeScript](https://www.typescriptlang.org/)   | Type safety             |
+| [Tailwind CSS v4](https://tailwindcss.com/)     | Styling framework       |
+| [Radix UI](https://www.radix-ui.com/)           | Accessible primitives   |
+| [shadcn/ui](https://ui.shadcn.com/)             | Component patterns      |
+| [D3.js](https://d3js.org/)                      | Data visualization      |
+| [Vite](https://vitejs.dev/)                     | Build tool & dev server |
+| [Storybook](https://storybook.js.org/)          | Component development   |
+| [React Hook Form](https://react-hook-form.com/) | Form handling           |
+| [Zod](https://zod.dev/)                         | Schema validation       |
+| [Lucide Icons](https://lucide.dev/)             | Icon set                |
 
 ## 📄 License
 
@@ -240,7 +248,7 @@ MIT © [TheBranchDriftCatalyst](https://github.com/TheBranchDriftCatalyst)
 
 <div align="center">
 
-**🔮 NEURAL INTERFACE DISENGAGED** · *Transmission complete*
+**🔮 NEURAL INTERFACE DISENGAGED** · _Transmission complete_
 
 [GitHub](https://github.com/TheBranchDriftCatalyst/catalyst-ui) · [Issues](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues)
 

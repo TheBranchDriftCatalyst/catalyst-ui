@@ -17,11 +17,11 @@ export const THEMES = [
 ];
 
 export interface ThemeEffects {
-  glow: boolean;              // Glow/shadow effects on buttons, inputs, cards
-  scanlines: boolean;         // Grid/scanline overlays on body
-  borderAnimations: boolean;  // Border shimmer, scan, pulse animations
-  gradientShift: boolean;     // Animated gradient backgrounds and headings
-  debug: boolean;             // Red outlines on all elements (for testing)
+  glow: boolean; // Glow/shadow effects on buttons, inputs, cards
+  scanlines: boolean; // Grid/scanline overlays on body
+  borderAnimations: boolean; // Border shimmer, scan, pulse animations
+  gradientShift: boolean; // Animated gradient backgrounds and headings
+  debug: boolean; // Red outlines on all elements (for testing)
 }
 
 export interface ThemeContextType {

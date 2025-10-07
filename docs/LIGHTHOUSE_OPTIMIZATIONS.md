@@ -13,6 +13,7 @@ This document tracks all performance, accessibility, and best practices improvem
 ## 1. Vite Build Optimizations ✅
 
 ### Changes Made
+
 - **Enabled CSS minification** (`cssMinify: true`)
 - **Enabled JavaScript minification** with Terser
   - Added drop_console: false (keep console for debugging)
@@ -29,6 +30,7 @@ This document tracks all performance, accessibility, and best practices improvem
   - vendor-utils: Utility libraries (clsx, tailwind-merge, CVA)
 
 ### Expected Impact
+
 - **Reduced JavaScript payload** by ~2,001 KiB (minification + tree-shaking)
 - **Improved cache hit rates** with content hashing
 - **Faster parsing/execution** from smaller bundle sizes
@@ -40,11 +42,13 @@ This document tracks all performance, accessibility, and best practices improvem
 ## 2. Font Optimization ✅
 
 ### Changes Made
+
 - Added `<link rel="preconnect" href="https://fonts.googleapis.com" />`
 - Added `<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />`
 - Changed `cdn.jsdelivr.net` from preconnect to `dns-prefetch` (lower priority)
 
 ### Expected Impact
+
 - **~250ms faster** Google Fonts loading time
 - Early DNS resolution for font origins
 - Reduced render-blocking time
@@ -56,6 +60,7 @@ This document tracks all performance, accessibility, and best practices improvem
 ## 3. Image Optimization ✅
 
 ### Changes Made
+
 - Added size parameters to all GitHub avatar images
   - Example: `https://github.com/shadcn.png?s=64` (was loading 460x460)
 - Optimized avatar sizes based on actual display dimensions:
@@ -65,11 +70,13 @@ This document tracks all performance, accessibility, and best practices improvem
   - XL (128px): `?s=128`
 
 ### Expected Impact
+
 - **Saved ~29.7 KiB** per properly-sized avatar
 - Faster LCP (Largest Contentful Paint)
 - Reduced bandwidth usage
 
 **Files:**
+
 - `lib/ui/avatar.stories.tsx`
 - `app/demos/AvatarToggleDemo.tsx`
 
@@ -78,18 +85,22 @@ This document tracks all performance, accessibility, and best practices improvem
 ## 4. Accessibility Improvements ✅
 
 ### ARIA Labels for Status Indicators
+
 - Added `aria-label` and `role="status"` to status indicator spans
   - "Online", "Away", "Offline" labels for screen readers
 
 ### Improved Color Contrast
+
 - Updated `--muted-foreground` from `hsl(215.4 16.3% 46.9%)` to `hsl(215.4 16.3% 40%)`
 - Now meets WCAG AA contrast requirements (4.5:1 minimum)
 
 ### Fixed Heading Hierarchy
+
 - Replaced `<h4>` elements with `<div>` + semantic classes
 - Prevents skipping heading levels (h3 → h4 without h2)
 
 **Files:**
+
 - `lib/global.css` (color contrast)
 - `lib/ui/avatar.stories.tsx` (ARIA labels)
 - `app/tabs/CardsTab.tsx` (heading hierarchy)
@@ -99,16 +110,20 @@ This document tracks all performance, accessibility, and best practices improvem
 ## 5. Cache Headers Configuration ✅
 
 ### Vercel Configuration
+
 Created `vercel.json` with aggressive caching for static assets:
+
 - **JavaScript/CSS:** 1 year (immutable)
 - **Fonts (woff/woff2):** 1 year (immutable)
 - **Assets directory:** 1 year (immutable)
 - **HTML files:** No cache (must-revalidate)
 
 ### Netlify Configuration
+
 Created `netlify.toml` with equivalent cache headers for Netlify deployments.
 
 ### Expected Impact
+
 - **Saved 1,393 KiB** on repeat visits (from cache headers)
 - Instant page loads for returning users
 - Reduced server bandwidth costs
@@ -120,12 +135,14 @@ Created `netlify.toml` with equivalent cache headers for Netlify deployments.
 ## 6. Dependency Cleanup ✅
 
 ### Removed Unused Dependencies
+
 - `react-hooks` (0 usages)
 - `react-hooks-form` (0 usages, duplicate of react-hook-form)
 - `dlx` (0 usages)
 - `react-wrap-balancer` (0 usages)
 
 ### Expected Impact
+
 - Smaller `node_modules` size
 - Faster `yarn install` times
 - Cleaner dependency tree
@@ -138,6 +155,7 @@ Created `netlify.toml` with equivalent cache headers for Netlify deployments.
 ## Performance Metrics Comparison
 
 ### Before Optimizations
+
 ```
 Performance:  71/100
 Accessibility: 92/100
@@ -153,6 +171,7 @@ Metrics:
 ```
 
 ### After Optimizations (Expected)
+
 ```
 Performance:  85+/100 (target)
 Accessibility: 100/100
@@ -185,6 +204,7 @@ Expected Improvements:
 ## Next Steps (Future Optimizations)
 
 ### Deferred Improvements
+
 1. **Code Splitting by Route** - Implement lazy loading for tab components
 2. **Image Formats** - Add WebP with fallbacks for better compression
 3. **Service Worker** - Add offline support and precaching
@@ -193,6 +213,7 @@ Expected Improvements:
 6. **Third-party Script Optimization** - Lazy load analytics/tracking
 
 ### Monitoring
+
 - Set up performance budgets in CI/CD
 - Add Lighthouse CI to GitHub Actions
 - Monitor Core Web Vitals in production

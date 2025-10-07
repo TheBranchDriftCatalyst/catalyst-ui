@@ -5,7 +5,8 @@
 
 /* Header glow shift - cycles through neon colors */
 @keyframes header-glow-shift {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 4px 16px -4px var(--neon-cyan);
   }
   33% {
@@ -28,7 +29,8 @@
 
 /* Pulse scale effect - fade in/out while scaling */
 @keyframes pulse-scale {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0;
     transform: scale(0);
   }
@@ -133,7 +135,7 @@ html[data-effect-border-animations="true"] header.header-glow {
 
 /* Subtle gradient overlay for glass effect */
 html[data-effect-border-animations="true"] header.header-glow::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -183,7 +185,7 @@ html[data-effect-border-animations="true"] .pulse-scale-container {
 
 html[data-effect-border-animations="true"] .pulse-scale-container::before,
 html[data-effect-border-animations="true"] .pulse-scale-container::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 1.5px;
   height: 1.5px;
@@ -214,11 +216,12 @@ html[data-effect-border-animations="true"] .border-scan {
 }
 
 html[data-effect-border-animations="true"] .border-scan::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 60px;
   height: 1.5px;
-  background: linear-gradient(90deg,
+  background: linear-gradient(
+    90deg,
     transparent,
     rgba(0, 252, 214, 0.15),
     rgba(0, 252, 214, 0.4),
@@ -245,11 +248,12 @@ html[data-effect-border-animations="true"] .border-scan-bottom {
 }
 
 html[data-effect-border-animations="true"] .border-scan-bottom::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 60px;
   height: 1.5px;
-  background: linear-gradient(90deg,
+  background: linear-gradient(
+    90deg,
     transparent,
     rgba(0, 252, 214, 0.15),
     rgba(0, 252, 214, 0.4),
@@ -272,15 +276,10 @@ html[data-effect-border-animations="true"] .border-scan-bottom::before {
 /* Ultra subtle shimmer on primary buttons */
 html[data-effect-border-animations="true"] button[class*="bg-primary"]::before,
 html[data-effect-border-animations="true"] [class*="bg-primary"] button::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255, 255, 255, 0.05),
-    transparent
-  );
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.05), transparent);
   background-size: 200% 100%;
   animation: border-shimmer 6s ease-in-out infinite;
   pointer-events: none;

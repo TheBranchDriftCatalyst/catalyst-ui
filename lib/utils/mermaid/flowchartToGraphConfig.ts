@@ -3,15 +3,19 @@
  * Converts parsed Mermaid flowcharts into GraphConfig and GraphData
  */
 
-import type { GraphConfig, NodeTypeConfig, EdgeTypeConfig } from '../../components/ForceGraph/config/types';
-import type { GraphData, NodeData, EdgeData } from '../../components/ForceGraph/types';
-import type { ParsedMermaid, NodeShape, EdgeType } from './types';
-import { parseFlowchart } from './flowchartParser';
+import type {
+  GraphConfig,
+  NodeTypeConfig,
+  EdgeTypeConfig,
+} from "../../components/ForceGraph/config/types";
+import type { GraphData, NodeData, EdgeData } from "../../components/ForceGraph/types";
+import type { ParsedMermaid, NodeShape, EdgeType } from "./types";
+import { parseFlowchart } from "./flowchartParser";
 
 /**
  * Color assignment strategy
  */
-export type ColorStrategy = 'subgraph' | 'shape' | 'auto';
+export type ColorStrategy = "subgraph" | "shape" | "auto";
 
 /**
  * Configurator options
@@ -49,64 +53,64 @@ export interface ConfiguratorOptions {
  * Default neon color palette
  */
 const DEFAULT_NEON_PALETTE = [
-  'var(--neon-cyan)',
-  'var(--neon-purple)',
-  'var(--neon-yellow)',
-  'var(--neon-red)',
-  'var(--neon-blue)',
-  'var(--neon-gold)',
-  'var(--neon-pink)',
+  "var(--neon-cyan)",
+  "var(--neon-purple)",
+  "var(--neon-yellow)",
+  "var(--neon-red)",
+  "var(--neon-blue)",
+  "var(--neon-gold)",
+  "var(--neon-pink)",
 ];
 
 /**
  * Shape to icon mapping
  */
 const SHAPE_ICONS: Record<NodeShape, string> = {
-  rectangle: '▭',
-  round: '●',
-  stadium: '⬭',
-  subroutine: '▢',
-  database: '🗄️',
-  circle: '○',
-  asymmetric: '⯈',
-  diamond: '◆',
-  hexagon: '⬡',
-  parallelogram: '▱',
-  parallelogram_alt: '▱',
-  trapezoid: '⏢',
-  trapezoid_alt: '⏢',
-  double_circle: '◎',
+  rectangle: "▭",
+  round: "●",
+  stadium: "⬭",
+  subroutine: "▢",
+  database: "🗄️",
+  circle: "○",
+  asymmetric: "⯈",
+  diamond: "◆",
+  hexagon: "⬡",
+  parallelogram: "▱",
+  parallelogram_alt: "▱",
+  trapezoid: "⏢",
+  trapezoid_alt: "⏢",
+  double_circle: "◎",
 };
 
 /**
  * Shape to node kind mapping
  */
 const SHAPE_TO_KIND: Record<NodeShape, string> = {
-  rectangle: 'process',
-  round: 'process',
-  stadium: 'start_end',
-  subroutine: 'subroutine',
-  database: 'storage',
-  circle: 'connector',
-  asymmetric: 'flag',
-  diamond: 'decision',
-  hexagon: 'preparation',
-  parallelogram: 'input',
-  parallelogram_alt: 'output',
-  trapezoid: 'manual',
-  trapezoid_alt: 'manual',
-  double_circle: 'junction',
+  rectangle: "process",
+  round: "process",
+  stadium: "start_end",
+  subroutine: "subroutine",
+  database: "storage",
+  circle: "connector",
+  asymmetric: "flag",
+  diamond: "decision",
+  hexagon: "preparation",
+  parallelogram: "input",
+  parallelogram_alt: "output",
+  trapezoid: "manual",
+  trapezoid_alt: "manual",
+  double_circle: "junction",
 };
 
 /**
  * Edge type to kind mapping
  */
 const EDGE_TO_KIND: Record<EdgeType, string> = {
-  solid: 'flow',
-  open: 'association',
-  dotted: 'data',
-  thick: 'primary',
-  invisible: 'hidden',
+  solid: "flow",
+  open: "association",
+  dotted: "data",
+  thick: "primary",
+  invisible: "hidden",
 };
 
 /**
@@ -118,21 +122,18 @@ export class MermaidFlowChartGraphConfigurator {
   private nodeKindMap = new Map<string, string>(); // node ID -> kind
   private edgeKindMap = new Map<string, string>(); // edge type -> kind
 
-  constructor(
-    mermaidText: string,
-    options: ConfiguratorOptions = {}
-  ) {
+  constructor(mermaidText: string, options: ConfiguratorOptions = {}) {
     this.parsed = parseFlowchart(mermaidText);
     this.options = {
       autoDetectNodeTypes: true,
       autoDetectEdgeTypes: true,
-      colorStrategy: 'auto',
+      colorStrategy: "auto",
       neonPalette: DEFAULT_NEON_PALETTE,
       nodeTypeOverrides: {},
       edgeTypeOverrides: {},
-      title: 'MERMAID FLOWCHART',
+      title: "MERMAID FLOWCHART",
       enableSubgraphGrouping: true,
-      subgraphBorderColor: 'var(--primary)',
+      subgraphBorderColor: "var(--primary)",
       ...options,
     };
   }
@@ -221,7 +222,7 @@ export class MermaidFlowChartGraphConfigurator {
     for (const kind of kindsSeen) {
       const color = this.assignColor(kind, colorIndex++);
       const shape = this.getShapeForKind(kind);
-      const icon = SHAPE_ICONS[shape] || '●';
+      const icon = SHAPE_ICONS[shape] || "●";
 
       nodeTypes[kind] = {
         label: this.formatLabel(kind),
@@ -249,17 +250,17 @@ export class MermaidFlowChartGraphConfigurator {
 
     // Build edge type configs
     const edgeColors = {
-      flow: 'var(--primary)',
-      data: 'var(--secondary)',
-      primary: 'var(--neon-red)',
-      association: 'var(--neon-yellow)',
-      hidden: 'transparent',
+      flow: "var(--primary)",
+      data: "var(--secondary)",
+      primary: "var(--neon-red)",
+      association: "var(--neon-yellow)",
+      hidden: "transparent",
     };
 
     for (const kind of kindsSeen) {
       edgeTypes[kind] = {
         label: this.formatLabel(kind),
-        color: edgeColors[kind as keyof typeof edgeColors] || 'var(--primary)',
+        color: edgeColors[kind as keyof typeof edgeColors] || "var(--primary)",
         ...this.options.edgeTypeOverrides[kind],
       };
     }
@@ -277,16 +278,16 @@ export class MermaidFlowChartGraphConfigurator {
 
     let kind: string;
 
-    if (this.options.colorStrategy === 'subgraph') {
+    if (this.options.colorStrategy === "subgraph") {
       // Use subgraph as kind
       const node = this.parsed.nodes.find(n => n.id === nodeId);
       if (node?.subgraph) {
         const subgraph = this.parsed.subgraphs.find(s => s.id === node.subgraph);
         kind = subgraph?.id || SHAPE_TO_KIND[shape];
       } else {
-        kind = 'default';
+        kind = "default";
       }
-    } else if (this.options.colorStrategy === 'shape') {
+    } else if (this.options.colorStrategy === "shape") {
       // Use shape as kind
       kind = SHAPE_TO_KIND[shape];
     } else {
@@ -334,7 +335,7 @@ export class MermaidFlowChartGraphConfigurator {
         return shape as NodeShape;
       }
     }
-    return 'rectangle';
+    return "rectangle";
   }
 
   /**
@@ -342,8 +343,8 @@ export class MermaidFlowChartGraphConfigurator {
    */
   private formatLabel(kind: string): string {
     return kind
-      .split('_')
+      .split("_")
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
+      .join(" ");
   }
 }

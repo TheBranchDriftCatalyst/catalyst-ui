@@ -1,6 +1,6 @@
-import React from 'react';
-import { QuickFilter } from '../config/types';
-import { GraphFilters } from '../types/filterTypes';
+import React from "react";
+import { QuickFilter } from "../config/types";
+import { GraphFilters } from "../types/filterTypes";
 
 interface FilterPanelQuickFiltersProps {
   quickFilters: QuickFilter[];
@@ -21,7 +21,10 @@ export const FilterPanelQuickFilters: React.FC<FilterPanelQuickFiltersProps> = (
 
   return (
     <div className="mb-4 pb-3 border-b border-primary/20">
-      <div className="text-xs font-semibold mb-2 text-primary uppercase tracking-wide" style={{ textShadow: '0 0 6px var(--primary)' }}>
+      <div
+        className="text-xs font-semibold mb-2 text-primary uppercase tracking-wide"
+        style={{ textShadow: "0 0 6px var(--primary)" }}
+      >
         Quick Filters
       </div>
       <div className="flex flex-wrap gap-1">

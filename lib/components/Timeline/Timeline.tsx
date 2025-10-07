@@ -23,9 +23,7 @@ export function TimelineItem({
   return (
     <div className={cn("relative flex gap-4 pb-8", className)}>
       {/* Vertical line */}
-      {!isLast && (
-        <div className="absolute left-[7px] top-[28px] h-full w-0.5 bg-border" />
-      )}
+      {!isLast && <div className="absolute left-[7px] top-[28px] h-full w-0.5 bg-border" />}
 
       {/* Date marker */}
       <div className="relative z-10 mt-1">
@@ -36,12 +34,8 @@ export function TimelineItem({
       <div className="flex-1 space-y-1.5 pt-0">
         <div className="text-xs text-muted-foreground">{date}</div>
         <h4 className="text-sm font-semibold text-foreground">{title}</h4>
-        {company && (
-          <div className="text-sm text-muted-foreground">{company}</div>
-        )}
-        {description && (
-          <p className="text-sm text-muted-foreground">{description}</p>
-        )}
+        {company && <div className="text-sm text-muted-foreground">{company}</div>}
+        {description && <p className="text-sm text-muted-foreground">{description}</p>}
         {achievements && achievements.length > 0 && (
           <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
             {achievements.map((achievement, i) => (

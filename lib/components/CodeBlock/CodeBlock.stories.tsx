@@ -207,7 +207,7 @@ export const LightTheme: Story = {
 };
 
 export const FullyInteractive: Story = {
-  render: (args) => {
+  render: args => {
     const [code, setCode] = React.useState(args.code || reactCode);
     const [theme, setTheme] = React.useState(args.theme || "github-dark");
     const [showLineNumbers, setShowLineNumbers] = React.useState(args.showLineNumbers ?? true);

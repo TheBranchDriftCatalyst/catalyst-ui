@@ -29,9 +29,9 @@
   --ring: hsl(37, 19%, 58%);
 
   /* @token Typography - Modern tech aesthetic */
-  --font-heading: 'Nunito', 'Montserrat', sans-serif; /* @token */
-  --font-body: 'Open Sans', 'Helvetica', sans-serif; /* @token */
-  --font-mono: 'Fira Code', 'Monaco', monospace; /* @token */
+  --font-heading: "Nunito", "Montserrat", sans-serif; /* @token */
+  --font-body: "Open Sans", "Helvetica", sans-serif; /* @token */
+  --font-mono: "Fira Code", "Monaco", monospace; /* @token */
 
   /* @token Neon Colors - Laravel vibrance */
   --neon-cyan: hsl(185, 90%, 52%); /* @token - bright cyan */
@@ -58,14 +58,21 @@
   --glow-hover: 0 0 25px rgba(247, 56, 39, 0.5), 0 0 50px rgba(247, 56, 39, 0.25); /* @token */
 
   /* @token Neon Shadows - Laravel brilliance */
-  --shadow-neon-sm: 0 2px 8px rgba(247, 56, 39, 0.2), 0 4px 16px rgba(255, 153, 26, 0.1); /* @token */
-  --shadow-neon-md: 0 4px 16px rgba(247, 56, 39, 0.25), 0 8px 32px rgba(255, 153, 26, 0.12); /* @token */
-  --shadow-neon-lg: 0 8px 24px rgba(247, 56, 39, 0.3), 0 16px 48px rgba(255, 153, 26, 0.15); /* @token */
+  --shadow-neon-sm:
+    0 2px 8px rgba(247, 56, 39, 0.2), 0 4px 16px rgba(255, 153, 26, 0.1); /* @token */
+  --shadow-neon-md:
+    0 4px 16px rgba(247, 56, 39, 0.25), 0 8px 32px rgba(255, 153, 26, 0.12); /* @token */
+  --shadow-neon-lg:
+    0 8px 24px rgba(247, 56, 39, 0.3), 0 16px 48px rgba(255, 153, 26, 0.15); /* @token */
 }
 
 /* Light mode - Laravel warmth background */
 .theme-laracon.light body {
-  background: linear-gradient(135deg, var(--background) 0%, color-mix(in srgb, var(--background) 95%, var(--accent)) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--background) 0%,
+    color-mix(in srgb, var(--background) 95%, var(--accent)) 100%
+  );
   background-attachment: fixed;
 }
 
@@ -101,9 +108,9 @@
   --ring: hsl(2, 94%, 57%);
 
   /* @token Typography - Modern Laravel aesthetic */
-  --font-heading: 'Nunito', 'Montserrat', sans-serif; /* @token */
-  --font-body: 'Open Sans', 'Helvetica', sans-serif; /* @token */
-  --font-mono: 'Fira Code', 'Monaco', monospace; /* @token */
+  --font-heading: "Nunito", "Montserrat", sans-serif; /* @token */
+  --font-body: "Open Sans", "Helvetica", sans-serif; /* @token */
+  --font-mono: "Fira Code", "Monaco", monospace; /* @token */
 
   /* @token Neon Colors - Laravel vibrance */
   --neon-cyan: hsl(185, 95%, 48%); /* @token - bright cyan */
@@ -125,14 +132,18 @@
 
   /* @token Glow Effects - Laravel energy */
   --glow-primary: 0 0 20px rgba(247, 56, 39, 0.5), 0 0 40px rgba(247, 56, 39, 0.25); /* @token */
-  --glow-secondary: 0 0 20px rgba(255, 145, 13, 0.45), 0 0 40px rgba(255, 145, 13, 0.22); /* @token */
+  --glow-secondary:
+    0 0 20px rgba(255, 145, 13, 0.45), 0 0 40px rgba(255, 145, 13, 0.22); /* @token */
   --glow-accent: 0 0 15px rgba(255, 158, 26, 0.4); /* @token */
   --glow-hover: 0 0 25px rgba(247, 56, 39, 0.6), 0 0 50px rgba(247, 56, 39, 0.3); /* @token */
 
   /* @token Neon Shadows - Laravel brilliance */
-  --shadow-neon-sm: 0 2px 8px rgba(247, 56, 39, 0.25), 0 4px 16px rgba(255, 145, 13, 0.12); /* @token */
-  --shadow-neon-md: 0 4px 16px rgba(247, 56, 39, 0.3), 0 8px 32px rgba(255, 145, 13, 0.15); /* @token */
-  --shadow-neon-lg: 0 8px 24px rgba(247, 56, 39, 0.4), 0 16px 48px rgba(255, 145, 13, 0.2); /* @token */
+  --shadow-neon-sm:
+    0 2px 8px rgba(247, 56, 39, 0.25), 0 4px 16px rgba(255, 145, 13, 0.12); /* @token */
+  --shadow-neon-md:
+    0 4px 16px rgba(247, 56, 39, 0.3), 0 8px 32px rgba(255, 145, 13, 0.15); /* @token */
+  --shadow-neon-lg:
+    0 8px 24px rgba(247, 56, 39, 0.4), 0 16px 48px rgba(255, 145, 13, 0.2); /* @token */
 }
 
 /* Dark mode - Laravel link effects */

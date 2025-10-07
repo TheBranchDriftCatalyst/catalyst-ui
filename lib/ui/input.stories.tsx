@@ -115,7 +115,9 @@ export const WithHelperText: Story = {
 export const WithError: Story = {
   render: () => (
     <div className="grid w-full max-w-sm items-center gap-1.5">
-      <Label htmlFor="email-error" className="text-destructive">Email</Label>
+      <Label htmlFor="email-error" className="text-destructive">
+        Email
+      </Label>
       <Input
         type="email"
         id="email-error"

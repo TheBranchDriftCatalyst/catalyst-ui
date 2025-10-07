@@ -1,6 +1,6 @@
-import React from 'react';
-import { NodeData } from '../types';
-import { GraphFilters } from '../types/filterTypes';
+import React from "react";
+import { NodeData } from "../types";
+import { GraphFilters } from "../types/filterTypes";
 
 /**
  * Props for custom node renderer components
@@ -55,7 +55,7 @@ export type AttributeFilterPredicate<T = any> = (
 export interface AttributeFilter {
   name: string;
   label: string;
-  type: 'text' | 'select' | 'boolean' | 'number';
+  type: "text" | "select" | "boolean" | "number";
   attributePath?: string; // Optional: direct path to attribute
   predicate: AttributeFilterPredicate;
   defaultValue?: any;

@@ -78,7 +78,9 @@ export function SliderProgressDemo() {
           </div>
 
           <div className="space-y-3">
-            <Label>Outside Label (Hover): {skillLabels[skillLevel[0] as keyof typeof skillLabels]}</Label>
+            <Label>
+              Outside Label (Hover): {skillLabels[skillLevel[0] as keyof typeof skillLabels]}
+            </Label>
             <Slider
               value={skillLevel}
               onValueChange={setSkillLevel}
@@ -218,7 +220,9 @@ export function SliderProgressDemo() {
       <Card>
         <CardHeader>
           <CardTitle>Custom Formatter with Inside Labels</CardTitle>
-          <CardDescription>Format values with custom function displayed inside thumb</CardDescription>
+          <CardDescription>
+            Format values with custom function displayed inside thumb
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-3">
@@ -231,7 +235,7 @@ export function SliderProgressDemo() {
               step={1}
               showValue
               labelPosition="inside"
-              formatValue={(value) => `${value}°`}
+              formatValue={value => `${value}°`}
               thumbShape="rounded-rectangle"
             />
           </div>
@@ -246,7 +250,7 @@ export function SliderProgressDemo() {
               step={1}
               showValue
               labelPosition="inside"
-              formatValue={(value) => `${value}`}
+              formatValue={value => `${value}`}
               thumbShape="circle"
             />
           </div>
@@ -261,7 +265,7 @@ export function SliderProgressDemo() {
               step={5}
               showValue
               labelPosition="inside"
-              formatValue={(value) => `${value}%`}
+              formatValue={value => `${value}%`}
               thumbShape="rounded-rectangle"
             />
           </div>

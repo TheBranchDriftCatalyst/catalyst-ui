@@ -46,7 +46,8 @@ const DemoCard = ({ children }: { children?: React.ReactNode }) => (
     <CardContent>
       {children || (
         <p className="text-sm text-muted-foreground">
-          Move your mouse around to see the tilt effect in action. The card responds to your cursor position.
+          Move your mouse around to see the tilt effect in action. The card responds to your cursor
+          position.
         </p>
       )}
     </CardContent>
@@ -61,7 +62,7 @@ export const Default: Story = {
     perspective: 1000,
     transitionSpeed: 400,
   },
-  render: (args) => (
+  render: args => (
     <Tilt {...args}>
       <DemoCard />
     </Tilt>
@@ -73,7 +74,8 @@ export const Subtle: Story = {
     <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} perspective={1500}>
       <DemoCard>
         <p className="text-sm text-muted-foreground">
-          Subtle tilt with minimal angles (5°) and gentle scale (1.02). Perfect for professional interfaces.
+          Subtle tilt with minimal angles (5°) and gentle scale (1.02). Perfect for professional
+          interfaces.
         </p>
       </DemoCard>
     </Tilt>
@@ -129,7 +131,7 @@ export const Interactive: Story = {
               max="45"
               step="1"
               value={angleX}
-              onChange={(e) => setAngleX(Number(e.target.value))}
+              onChange={e => setAngleX(Number(e.target.value))}
               className="w-full"
             />
           </div>
@@ -142,7 +144,7 @@ export const Interactive: Story = {
               max="45"
               step="1"
               value={angleY}
-              onChange={(e) => setAngleY(Number(e.target.value))}
+              onChange={e => setAngleY(Number(e.target.value))}
               className="w-full"
             />
           </div>
@@ -155,7 +157,7 @@ export const Interactive: Story = {
               max="1.5"
               step="0.01"
               value={scale}
-              onChange={(e) => setScale(Number(e.target.value))}
+              onChange={e => setScale(Number(e.target.value))}
               className="w-full"
             />
           </div>
@@ -168,7 +170,7 @@ export const Interactive: Story = {
               max="3000"
               step="100"
               value={perspective}
-              onChange={(e) => setPerspective(Number(e.target.value))}
+              onChange={e => setPerspective(Number(e.target.value))}
               className="w-full"
             />
           </div>
@@ -189,9 +191,7 @@ export const Comparison: Story = {
               <CardTitle className="text-base">Subtle</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-xs text-muted-foreground">
-                5° angles, 1.02 scale
-              </p>
+              <p className="text-xs text-muted-foreground">5° angles, 1.02 scale</p>
             </CardContent>
           </Card>
         </Tilt>
@@ -205,9 +205,7 @@ export const Comparison: Story = {
               <CardTitle className="text-base">Default</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-xs text-muted-foreground">
-                20° angles, 1.05 scale
-              </p>
+              <p className="text-xs text-muted-foreground">20° angles, 1.05 scale</p>
             </CardContent>
           </Card>
         </Tilt>
@@ -221,9 +219,7 @@ export const Comparison: Story = {
               <CardTitle className="text-base">Extreme</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-xs text-muted-foreground">
-                35° angles, 1.2 scale
-              </p>
+              <p className="text-xs text-muted-foreground">35° angles, 1.2 scale</p>
             </CardContent>
           </Card>
         </Tilt>

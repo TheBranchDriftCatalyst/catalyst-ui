@@ -82,9 +82,7 @@ export const Interactive: Story = {
         <Toggle pressed={pressed} onPressedChange={setPressed}>
           {pressed ? "Pressed" : "Not Pressed"}
         </Toggle>
-        <p className="text-sm text-muted-foreground">
-          State: {pressed ? "Active ✓" : "Inactive"}
-        </p>
+        <p className="text-sm text-muted-foreground">State: {pressed ? "Active ✓" : "Inactive"}</p>
       </div>
     );
   },
@@ -105,25 +103,13 @@ export const TextFormatting: Story = {
     return (
       <div className="space-y-4">
         <div className="flex gap-2">
-          <Toggle
-            pressed={bold}
-            onPressedChange={setBold}
-            aria-label="Toggle bold"
-          >
+          <Toggle pressed={bold} onPressedChange={setBold} aria-label="Toggle bold">
             <span className="font-bold">B</span>
           </Toggle>
-          <Toggle
-            pressed={italic}
-            onPressedChange={setItalic}
-            aria-label="Toggle italic"
-          >
+          <Toggle pressed={italic} onPressedChange={setItalic} aria-label="Toggle italic">
             <span className="italic">I</span>
           </Toggle>
-          <Toggle
-            pressed={underline}
-            onPressedChange={setUnderline}
-            aria-label="Toggle underline"
-          >
+          <Toggle pressed={underline} onPressedChange={setUnderline} aria-label="Toggle underline">
             <span className="underline">U</span>
           </Toggle>
         </div>
@@ -164,9 +150,7 @@ export const ToggleGroup: Story = {
             ➡
           </Toggle>
         </div>
-        <p className="text-sm text-muted-foreground">
-          Alignment: {alignment}
-        </p>
+        <p className="text-sm text-muted-foreground">Alignment: {alignment}</p>
       </div>
     );
   },

@@ -4,78 +4,78 @@
  * Perfect for flowcharts and directed graphs
  */
 
-import * as dagre from 'dagre';
-import { NodeData, EdgeData } from '../../types';
-import { LayoutDimensions } from '../layouts';
+import * as dagre from "dagre";
+import { NodeData, EdgeData } from "../../types";
+import { LayoutDimensions } from "../layouts";
 
 export interface DagreLayoutOptions {
-  rankdir?: 'TB' | 'BT' | 'LR' | 'RL';  // Direction: Top-Bottom, Bottom-Top, Left-Right, Right-Left
-  ranksep?: number;      // Separation between ranks/layers
-  nodesep?: number;      // Separation between nodes in same rank
-  edgesep?: number;      // Separation between edges
-  marginx?: number;      // Horizontal margin
-  marginy?: number;      // Vertical margin
-  ranker?: 'network-simplex' | 'tight-tree' | 'longest-path';  // Ranking algorithm
+  rankdir?: "TB" | "BT" | "LR" | "RL"; // Direction: Top-Bottom, Bottom-Top, Left-Right, Right-Left
+  ranksep?: number; // Separation between ranks/layers
+  nodesep?: number; // Separation between nodes in same rank
+  edgesep?: number; // Separation between edges
+  marginx?: number; // Horizontal margin
+  marginy?: number; // Vertical margin
+  ranker?: "network-simplex" | "tight-tree" | "longest-path"; // Ranking algorithm
 }
 
 export const DagreLayoutConfig = {
-  name: 'Dagre (Mermaid)',
-  description: 'Layered graph layout algorithm used by Mermaid.js',
+  name: "Dagre (Mermaid)",
+  description: "Layered graph layout algorithm used by Mermaid.js",
   fields: [
     {
-      key: 'rankdir',
-      label: 'Direction',
-      type: 'select' as const,
+      key: "rankdir",
+      label: "Direction",
+      type: "select" as const,
       options: [
-        { value: 'TB', label: 'Top → Bottom' },
-        { value: 'BT', label: 'Bottom → Top' },
-        { value: 'LR', label: 'Left → Right' },
-        { value: 'RL', label: 'Right → Left' },
+        { value: "TB", label: "Top → Bottom" },
+        { value: "BT", label: "Bottom → Top" },
+        { value: "LR", label: "Left → Right" },
+        { value: "RL", label: "Right → Left" },
       ],
-      defaultValue: 'TB',
+      defaultValue: "TB",
     },
     {
-      key: 'ranker',
-      label: 'Ranking Algorithm',
-      type: 'select' as const,
+      key: "ranker",
+      label: "Ranking Algorithm",
+      type: "select" as const,
       options: [
-        { value: 'network-simplex', label: 'Network Simplex (Best)' },
-        { value: 'tight-tree', label: 'Tight Tree' },
-        { value: 'longest-path', label: 'Longest Path' },
+        { value: "network-simplex", label: "Network Simplex (Best)" },
+        { value: "tight-tree", label: "Tight Tree" },
+        { value: "longest-path", label: "Longest Path" },
       ],
-      defaultValue: 'network-simplex',
+      defaultValue: "network-simplex",
     },
     {
-      key: 'ranksep',
-      label: 'Layer Separation',
-      type: 'number' as const,
+      key: "ranksep",
+      label: "Layer Separation",
+      type: "number" as const,
       min: 20,
       max: 300,
       step: 10,
       defaultValue: 100,
     },
     {
-      key: 'nodesep',
-      label: 'Node Separation',
-      type: 'number' as const,
+      key: "nodesep",
+      label: "Node Separation",
+      type: "number" as const,
       min: 20,
       max: 200,
       step: 10,
       defaultValue: 80,
     },
     {
-      key: 'marginx',
-      label: 'Horizontal Margin',
-      type: 'number' as const,
+      key: "marginx",
+      label: "Horizontal Margin",
+      type: "number" as const,
       min: 0,
       max: 200,
       step: 10,
       defaultValue: 50,
     },
     {
-      key: 'marginy',
-      label: 'Vertical Margin',
-      type: 'number' as const,
+      key: "marginy",
+      label: "Vertical Margin",
+      type: "number" as const,
       min: 0,
       max: 200,
       step: 10,
@@ -95,13 +95,13 @@ export function applyDagreLayout(
   options: DagreLayoutOptions = {}
 ): NodeData[] {
   const {
-    rankdir = 'TB',
+    rankdir = "TB",
     ranksep = 100,
     nodesep = 80,
     edgesep = 10,
     marginx = 50,
     marginy = 50,
-    ranker = 'network-simplex',
+    ranker = "network-simplex",
   } = options;
 
   // Create a new directed graph
@@ -126,8 +126,8 @@ export function applyDagreLayout(
     // Dagre needs node dimensions - use defaults for now
     g.setNode(node.id, {
       label: node.name || node.id,
-      width: 120,   // Approximate node width
-      height: 60,   // Approximate node height
+      width: 120, // Approximate node width
+      height: 60, // Approximate node height
     });
   });
 
@@ -147,7 +147,7 @@ export function applyDagreLayout(
     if (dagreNode) {
       node.x = dagreNode.x;
       node.y = dagreNode.y;
-      node.fx = dagreNode.x;  // Fix position (static layout)
+      node.fx = dagreNode.x; // Fix position (static layout)
       node.fy = dagreNode.y;
     }
   });

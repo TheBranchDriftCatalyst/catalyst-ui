@@ -11,6 +11,7 @@ A syntax highlighting code block component with advanced features and performanc
 ## Features
 
 ### Core Features ✅
+
 - **Syntax Highlighting**: Powered by [Shiki](https://shiki.matsu.io/) with WASM support
 - **Language Support**: All bundled languages via lazy-loading
 - **Theme Support**: Custom Catalyst theme + all Shiki bundled themes
@@ -19,12 +20,14 @@ A syntax highlighting code block component with advanced features and performanc
 - **File Names**: Optional header with file name display
 
 ### Interactive Features ✅
+
 - **Editable Mode**: Convert to live-editable textarea
 - **Theme Switcher**: Dynamic theme switching in interactive mode
 - **Line Number Toggle**: Show/hide line numbers on demand
 - **Header Controls**: Slim control header with all options
 
 ### Performance Optimizations ✅
+
 - **Singleton Highlighter**: Shared instance across all CodeBlock components
 - **Lazy Language Loading**: Languages loaded on-demand, not upfront
 - **Lazy Theme Loading**: Themes loaded only when needed
@@ -34,6 +37,7 @@ A syntax highlighting code block component with advanced features and performanc
 ## Architecture
 
 ### Component Structure
+
 ```
 lib/components/CodeBlock/
 ├── CodeBlock.tsx              # Main component with Shiki integration
@@ -46,15 +50,15 @@ lib/components/CodeBlock/
 
 ```typescript
 interface CodeBlockProps {
-  code: string;                    // Code to highlight
-  language: string;                // Language for syntax highlighting
-  theme?: string;                  // Theme name (default: "catalyst")
-  showLineNumbers?: boolean;       // Show line numbers (default: true)
-  showCopyButton?: boolean;        // Show copy button (default: true)
-  fileName?: string;               // Optional file name in header
-  startLineNumber?: number;        // Custom line number start (default: 1)
-  interactive?: boolean;           // Enable interactive controls (default: false)
-  editable?: boolean;              // Enable edit mode (default: false)
+  code: string; // Code to highlight
+  language: string; // Language for syntax highlighting
+  theme?: string; // Theme name (default: "catalyst")
+  showLineNumbers?: boolean; // Show line numbers (default: true)
+  showCopyButton?: boolean; // Show copy button (default: true)
+  fileName?: string; // Optional file name in header
+  startLineNumber?: number; // Custom line number start (default: 1)
+  interactive?: boolean; // Enable interactive controls (default: false)
+  editable?: boolean; // Enable edit mode (default: false)
   onThemeChange?: (theme: string) => void;
   onLineNumbersChange?: (show: boolean) => void;
   onCodeChange?: (code: string) => void;
@@ -87,6 +91,7 @@ import { CodeBlock } from 'catalyst-ui';
 ## Shiki Integration
 
 ### Lazy Loading Pattern
+
 ```typescript
 // Singleton pattern with lazy-loaded languages/themes
 async function getHighlighter() {
@@ -108,7 +113,9 @@ if (!loadedLanguages.has(language)) {
 ```
 
 ### Custom Theme
+
 The Catalyst theme (`catalyst-theme.ts`) provides cyberpunk-inspired syntax colors:
+
 - Neon cyan for keywords
 - Electric purple for strings
 - Bright green for comments
@@ -117,6 +124,7 @@ The Catalyst theme (`catalyst-theme.ts`) provides cyberpunk-inspired syntax colo
 ## Known Issues
 
 ### WASM Loading in Production
+
 - **Issue**: Shiki WASM files may fail to load in some production environments
 - **Mitigation**: Component has error handling to fall back to plain `<pre><code>` blocks
 - **Status**: Gracefully degraded, no blocking errors
@@ -124,6 +132,7 @@ The Catalyst theme (`catalyst-theme.ts`) provides cyberpunk-inspired syntax colo
 ## Future Enhancements
 
 ### Planned Features
+
 - [ ] **Code Execution**: Run JavaScript/TypeScript in sandboxed environment
 - [ ] **Diff View**: Side-by-side or inline diff highlighting
 - [ ] **Virtual Scrolling**: Performance for extremely large code blocks (10k+ lines)
@@ -131,6 +140,7 @@ The Catalyst theme (`catalyst-theme.ts`) provides cyberpunk-inspired syntax colo
 - [ ] **Code Folding**: Collapsible code sections
 
 ### Potential Improvements
+
 - [ ] **Line Highlighting**: Highlight specific lines (e.g., error lines)
 - [ ] **Search/Filter**: In-block code search
 - [ ] **Annotations**: Inline comments and explanations
