@@ -55,10 +55,21 @@ export default defineConfig({
   build: {
     outDir: "../dist/lib",
     copyPublicDir: false,
-    cssMinify: false,
+    cssMinify: true,
     cssCodeSplit: true,
     sourcemap: true,
     manifest: "vite-manifest.json",
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: false,
+        drop_debugger: true,
+        pure_funcs: ['console.log'],
+      },
+      format: {
+        comments: false,
+      },
+    },
     lib: {
       entry: resolve(__dirname, "lib/catalyst.ts"),
       formats: ["es"],
@@ -106,9 +117,9 @@ export default defineConfig({
           // if (assetInfo.name.endsWith('.css')) {
           //   return 'styles/catalyst.css';
           // }
-          return 'assets/[name][extname]';
+          return 'assets/[name]-[hash][extname]';
         },
-        entryFileNames: "[name].js",
+        entryFileNames: "[name]-[hash].js",
         chunkFileNames: "chunks/[name]-[hash].js",
         // Share common vendor chunks across components
         manualChunks(id) {

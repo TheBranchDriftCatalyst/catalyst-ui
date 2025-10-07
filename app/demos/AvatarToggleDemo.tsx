@@ -6,7 +6,7 @@ export function AvatarToggleDemo() {
     <div className="space-y-4">
       <div className="flex gap-4 items-center">
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarImage src="https://github.com/shadcn.png?s=64" alt="User avatar" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
         <Avatar>

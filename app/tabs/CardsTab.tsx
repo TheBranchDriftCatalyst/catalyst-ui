@@ -67,7 +67,7 @@ export function CardsTab() {
           <CardContent className="space-y-6">
             {/* Click to Flip */}
             <div className="space-y-2">
-              <h4 className="text-sm font-medium text-muted-foreground">Click to Flip</h4>
+              <div className="text-sm font-semibold text-muted-foreground">Click to Flip</div>
               <CodeFlipCard
                 sourceCode={CodeFlipCardExampleDemoSource}
                 fileName="CodeFlipCardExampleDemo.tsx"
@@ -80,7 +80,7 @@ export function CardsTab() {
 
             {/* Hover to Flip Examples */}
             <div className="space-y-2">
-              <h4 className="text-sm font-medium text-muted-foreground">Hover to Flip (Horizontal & Vertical)</h4>
+              <div className="text-sm font-semibold text-muted-foreground">Hover to Flip (Horizontal & Vertical)</div>
               <div className="grid md:grid-cols-2 gap-4">
                 <CodeFlipCard
                   sourceCode={CodeFlipCardExampleDemoSource}
