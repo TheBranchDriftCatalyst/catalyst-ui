@@ -8,8 +8,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from "@/catalyst-ui/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/catalyst-ui/ui/tooltip";
 import { Button } from "@/catalyst-ui/ui/button";
-import { Activity } from "lucide-react";
+import { Activity, InfoIcon } from "lucide-react";
 
 /**
  * PerformanceMonitor - Status light and dropdown for performance monitoring
@@ -17,6 +23,7 @@ import { Activity } from "lucide-react";
  * Features:
  * - Color-coded status light based on Core Web Vitals aggregate rating
  * - Dropdown showing detailed metrics with emoji indicators
+ * - Metric info tooltips
  * - react-scan toggle button
  * - Development-only component
  */
@@ -45,6 +52,15 @@ export function PerformanceMonitor() {
     setReactScanEnabled(newState);
   };
 
+  // Web Vitals metric descriptions
+  const metricInfo: Record<string, string> = {
+    LCP: "Largest Contentful Paint - Time until the largest content element is rendered (< 2.5s is good)",
+    INP: "Interaction to Next Paint - Responsiveness to user interactions (< 200ms is good)",
+    CLS: "Cumulative Layout Shift - Visual stability, avoiding unexpected layout shifts (< 0.1 is good)",
+    FCP: "First Contentful Paint - Time until the first content is painted (< 1.8s is good)",
+    TTFB: "Time to First Byte - Server response time (< 800ms is good)",
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -63,43 +79,65 @@ export function PerformanceMonitor() {
         </Button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="w-64">
+      <DropdownMenuContent align="end" className="w-72">
         <DropdownMenuLabel>Performance Monitor</DropdownMenuLabel>
         <DropdownMenuSeparator />
 
         {/* Web Vitals Section */}
-        <div className="px-2 py-2 space-y-1">
-          <p className="text-xs font-semibold text-muted-foreground mb-2">Core Web Vitals</p>
-          {['LCP', 'INP', 'CLS', 'FCP', 'TTFB'].map((name) => {
-            const metric = metrics.get(name);
-            if (!metric) {
+        <TooltipProvider>
+          <div className="px-2 py-2 space-y-1">
+            <p className="text-xs font-semibold text-muted-foreground mb-2">Core Web Vitals</p>
+            {['LCP', 'INP', 'CLS', 'FCP', 'TTFB'].map((name) => {
+              const metric = metrics.get(name);
+              if (!metric) {
+                return (
+                  <div key={name} className="flex justify-between items-center text-xs">
+                    <div className="flex items-center gap-1">
+                      <span className="text-muted-foreground">{name}:</span>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <InfoIcon className="h-3 w-3 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent side="left" className="max-w-xs text-xs">
+                          <p>{metricInfo[name]}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
+                    <span className="text-muted-foreground">—</span>
+                  </div>
+                );
+              }
+
+              const emoji =
+                metric.rating === 'good'
+                  ? '✅'
+                  : metric.rating === 'needs-improvement'
+                  ? '⚠️'
+                  : '❌';
+
               return (
                 <div key={name} className="flex justify-between items-center text-xs">
-                  <span className="text-muted-foreground">{name}:</span>
-                  <span className="text-muted-foreground">—</span>
+                  <div className="flex items-center gap-1">
+                    <span>
+                      {emoji} {name}:
+                    </span>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <InfoIcon className="h-3 w-3 text-muted-foreground cursor-help" />
+                      </TooltipTrigger>
+                      <TooltipContent side="left" className="max-w-xs text-xs">
+                        <p>{metricInfo[name]}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                  <span className="font-mono">
+                    {name === 'CLS' ? metric.value.toFixed(3) : `${metric.value.toFixed(0)}ms`}
+                  </span>
                 </div>
               );
-            }
-
-            const emoji =
-              metric.rating === 'good'
-                ? '✅'
-                : metric.rating === 'needs-improvement'
-                ? '⚠️'
-                : '❌';
-
-            return (
-              <div key={name} className="flex justify-between items-center text-xs">
-                <span>
-                  {emoji} {name}:
-                </span>
-                <span className="font-mono">
-                  {name === 'CLS' ? metric.value.toFixed(3) : `${metric.value.toFixed(0)}ms`}
-                </span>
-              </div>
-            );
-          })}
-        </div>
+            })}
+          </div>
+        </TooltipProvider>
 
         <DropdownMenuSeparator />
 

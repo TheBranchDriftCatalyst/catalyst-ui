@@ -1,0 +1,34 @@
+/* Debug Effect Layer - Obvious red outlines on all elements */
+/* Only applies when data-effect-debug="true" is set on <html> */
+
+html[data-effect-debug="true"] * {
+  outline: 2px solid red !important;
+  outline-offset: -2px;
+}
+
+html[data-effect-debug="true"] body {
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(255, 0, 0, 0.1) 10px,
+    rgba(255, 0, 0, 0.1) 20px
+  ) !important;
+}
+
+html[data-effect-debug="true"]::before {
+  content: '🔴 DEBUG MODE ACTIVE';
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 0, 0, 0.9);
+  color: white;
+  padding: 20px 40px;
+  font-size: 24px;
+  font-weight: bold;
+  z-index: 999999;
+  pointer-events: none;
+  border: 4px solid white;
+  box-shadow: 0 0 40px rgba(255, 0, 0, 0.8);
+}

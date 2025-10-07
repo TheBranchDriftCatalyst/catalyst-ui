@@ -1,0 +1,66 @@
+/* Shared Keyframes - Used by multiple effect layers or available as utilities */
+
+/* === SHARED ANIMATIONS === */
+
+/* Glow pulse - extremely subtle pulsing shadow glow (used by borders.css and glow.css) */
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 5px color-mix(in srgb, var(--primary) 8%, transparent),
+      0 0 10px color-mix(in srgb, var(--primary) 4%, transparent),
+      inset 0 0 5px color-mix(in srgb, var(--primary) 2%, transparent);
+  }
+  50% {
+    box-shadow:
+      0 0 8px color-mix(in srgb, var(--primary) 12%, transparent),
+      0 0 15px color-mix(in srgb, var(--primary) 6%, transparent),
+      0 0 20px color-mix(in srgb, var(--secondary) 3%, transparent),
+      inset 0 0 8px color-mix(in srgb, var(--primary) 4%, transparent);
+  }
+}
+
+/* === UTILITY ANIMATIONS === */
+
+/* Opacity pulse - simple fade in/out */
+@keyframes opacity-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+/* Neon glow - box-shadow pulse using glow tokens */
+@keyframes neon-glow {
+  0%, 100% {
+    box-shadow: var(--glow-primary);
+  }
+  50% {
+    box-shadow: var(--glow-hover);
+  }
+}
+
+/* Glitch effect - chaotic transform animation */
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+    opacity: 1;
+  }
+  20% {
+    transform: translate(-2px, 2px);
+    opacity: 0.8;
+  }
+  40% {
+    transform: translate(-2px, -2px);
+    opacity: 0.9;
+  }
+  60% {
+    transform: translate(2px, 2px);
+    opacity: 0.8;
+  }
+  80% {
+    transform: translate(2px, -2px);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(0);
+    opacity: 1;
+  }
+}

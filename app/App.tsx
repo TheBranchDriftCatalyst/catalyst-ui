@@ -1,15 +1,13 @@
 import "../lib/global.css";
 import { ThemeProvider } from "@/catalyst-ui/contexts/Theme/ThemeProvider";
-import { ToggleVariantButton } from "@/catalyst-ui/contexts/Theme/ToggleDarkMode";
-import { ChangeThemeDropdown } from "@/catalyst-ui/contexts/Theme/ChangeThemeDropdown";
 import { CatalystHeader } from "@/catalyst-ui/components/CatalystHeader/CatalystHeader";
 import { HeaderProvider } from "@/catalyst-ui/components/CatalystHeader/HeaderProvider";
-import { Menubar } from "@/catalyst-ui/ui/menubar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/catalyst-ui/ui/tabs";
 import { Toaster } from "@/catalyst-ui/ui/toaster";
 import { ScrollSnapContainer } from "@/catalyst-ui/components/effects";
 import { useState, useEffect, lazy, Suspense } from "react";
 import { D4Loader } from "./components/D4Loader";
+import { UserSettingsDropdown } from "./components/UserSettingsDropdown";
 import { PerformanceMonitor } from "./components/PerformanceMonitor";
 
 // Lazy-load tab components using Vite's import.meta.glob for code-splitting
@@ -70,15 +68,12 @@ function KitchenSink() {
   }, []);
 
   const navigationItems = [
+    // Performance Monitor (dev-only)
+    <PerformanceMonitor key="performance" />,
     // TODO: probably need to turn this into a env var and handle it in gh-pages and our build to link them???
     <a key="storybook" href="http://localhost:6006" target="_blank" rel="noopener noreferrer" className="text-sm hover:text-primary transition-colors">
       Storybook
     </a>,
-    <Menubar key="theme">
-      <ChangeThemeDropdown />
-    </Menubar>,
-    <ToggleVariantButton key="variant" />,
-    <PerformanceMonitor key="performance" />,
   ];
 
   return (
@@ -87,36 +82,37 @@ function KitchenSink() {
         <CatalystHeader
           title="CATALYST"
           navigationItems={navigationItems}
+          userSettings={<UserSettingsDropdown />}
           tabs={
             <TabsList className="inline-flex h-auto items-center gap-1 bg-transparent p-0">
-              <TabsTrigger value="overview" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+              <TabsTrigger value="overview" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
                 Overview
               </TabsTrigger>
-              <TabsTrigger value="tokens" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+              <TabsTrigger value="tokens" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
                 Tokens
               </TabsTrigger>
-              <TabsTrigger value="typography" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+              <TabsTrigger value="typography" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
                 Type
               </TabsTrigger>
-              <TabsTrigger value="forms" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+              <TabsTrigger value="forms" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
                 Forms
               </TabsTrigger>
-              <TabsTrigger value="components" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+              <TabsTrigger value="components" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
                 Components
               </TabsTrigger>
-              <TabsTrigger value="display" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+              <TabsTrigger value="display" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
                 Display
               </TabsTrigger>
-              <TabsTrigger value="cards" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+              <TabsTrigger value="cards" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
                 Cards
               </TabsTrigger>
-              <TabsTrigger value="forcegraph" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+              <TabsTrigger value="forcegraph" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
                 ForceGraph
               </TabsTrigger>
-              <TabsTrigger value="animations" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+              <TabsTrigger value="animations" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
                 Animations
               </TabsTrigger>
-              <TabsTrigger value="resume" className="text-xs md:text-sm px-2 md:px-3 py-1.5 data-[state=active]:shadow-[0_2px_0_0_var(--primary)]">
+              <TabsTrigger value="resume" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
                 Resume
               </TabsTrigger>
             </TabsList>

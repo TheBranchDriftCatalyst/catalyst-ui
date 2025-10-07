@@ -63,32 +63,10 @@
   --shadow-neon-lg: 0 8px 24px rgba(247, 56, 39, 0.3), 0 16px 48px rgba(255, 153, 26, 0.15); /* @token */
 }
 
-/* Light mode - Laravel warmth */
+/* Light mode - Laravel warmth background */
 .theme-laracon.light body {
-  background: linear-gradient(135deg, hsl(2, 94%, 57%) 0%, hsl(5, 88%, 54%) 100%);
+  background: linear-gradient(135deg, var(--background) 0%, color-mix(in srgb, var(--background) 95%, var(--accent)) 100%);
   background-attachment: fixed;
-}
-
-.theme-laracon.light [class*="card"] {
-  box-shadow: 0 2px 8px rgba(68, 28, 23, 0.12), 0 4px 16px rgba(255, 45, 32, 0.08);
-  transition: all 0.3s ease;
-}
-
-.theme-laracon.light [class*="card"]:hover {
-  box-shadow: 0 4px 16px rgba(68, 28, 23, 0.18), 0 8px 24px rgba(255, 45, 32, 0.12);
-  transform: translateY(-2px);
-}
-
-.theme-laracon.light button[class*="bg-primary"]:hover {
-  box-shadow: 0 4px 12px rgba(255, 45, 32, 0.25);
-  transform: translateY(-1px);
-  transition: all 0.25s ease;
-}
-
-.theme-laracon.light input:focus,
-.theme-laracon.light textarea:focus {
-  box-shadow: 0 0 0 3px rgba(255, 45, 32, 0.15);
-  transition: box-shadow 0.2s ease;
 }
 
 .theme-laracon.dark {
@@ -122,6 +100,11 @@
   --link-text: hsl(2, 94%, 57%);
   --ring: hsl(2, 94%, 57%);
 
+  /* @token Typography - Modern Laravel aesthetic */
+  --font-heading: 'Nunito', 'Montserrat', sans-serif; /* @token */
+  --font-body: 'Open Sans', 'Helvetica', sans-serif; /* @token */
+  --font-mono: 'Fira Code', 'Monaco', monospace; /* @token */
+
   /* @token Neon Colors - Laravel vibrance */
   --neon-cyan: hsl(185, 95%, 48%); /* @token - bright cyan */
   --neon-pink: hsl(330, 100%, 60%); /* @token - hot magenta */
@@ -152,33 +135,7 @@
   --shadow-neon-lg: 0 8px 24px rgba(247, 56, 39, 0.4), 0 16px 48px rgba(255, 145, 13, 0.2); /* @token */
 }
 
-/* Dark mode - Laravel elegance */
-.theme-laracon.dark [class*="card"] {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 45, 32, 0.12);
-  transition: all 0.3s ease;
-}
-
-.theme-laracon.dark [class*="card"]:hover {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 32px rgba(255, 45, 32, 0.18);
-  transform: translateY(-2px);
-}
-
-.theme-laracon.dark button[class*="bg-primary"] {
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
-  transition: all 0.25s ease;
-}
-
-.theme-laracon.dark button[class*="bg-primary"]:hover {
-  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.35), 0 0 24px rgba(239, 68, 68, 0.15);
-  transform: translateY(-1px);
-}
-
-.theme-laracon.dark input:focus,
-.theme-laracon.dark textarea:focus {
-  box-shadow: 0 0 0 3px rgba(255, 45, 32, 0.25);
-  transition: box-shadow 0.2s ease;
-}
-
+/* Dark mode - Laravel link effects */
 .theme-laracon.dark a {
   color: var(--link-text);
   transition: color 0.2s ease;

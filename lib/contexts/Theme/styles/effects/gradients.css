@@ -1,0 +1,117 @@
+/* Gradient Effect Layer - Animated gradients for headings and backgrounds */
+/* Only applies when data-effect-gradient-shift="true" is set on <html> */
+
+/* === KEYFRAME DEFINITIONS === */
+
+/* Animated gradient shift - smooth flowing color */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* === ANIMATED GRADIENT HEADINGS === */
+
+/* Add animation to light mode headings */
+html[data-effect-gradient-shift="true"].light h1,
+html[data-effect-gradient-shift="true"].light h2,
+html[data-effect-gradient-shift="true"].light h3,
+html[data-effect-gradient-shift="true"].light h4,
+html[data-effect-gradient-shift="true"].light h5,
+html[data-effect-gradient-shift="true"].light h6 {
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* Add animation to dark mode headings */
+html[data-effect-gradient-shift="true"].dark h1,
+html[data-effect-gradient-shift="true"].dark h2,
+html[data-effect-gradient-shift="true"].dark h3,
+html[data-effect-gradient-shift="true"].dark h4,
+html[data-effect-gradient-shift="true"].dark h5,
+html[data-effect-gradient-shift="true"].dark h6 {
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* === LIGHT MODE GRADIENT BACKGROUNDS === */
+
+/* Gradient background using theme colors */
+html[data-effect-gradient-shift="true"].light body {
+  background: linear-gradient(135deg,
+    var(--background) 0%,
+    var(--muted) 50%,
+    var(--accent) 100%);
+  background-attachment: fixed;
+}
+
+/* Cards - colorful gradient backgrounds */
+html[data-effect-gradient-shift="true"].light [class*="card"] {
+  background: linear-gradient(135deg, var(--card), var(--muted));
+  border: 1px solid var(--border);
+}
+
+/* Table rows - gradient hover */
+html[data-effect-gradient-shift="true"].light tbody tr:hover {
+  background: linear-gradient(90deg, var(--accent), var(--muted));
+  box-shadow: inset 0 0 20px color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+/* Dropdown/Popover - gradient background */
+html[data-effect-gradient-shift="true"].light [role="menu"],
+html[data-effect-gradient-shift="true"].light [role="listbox"],
+html[data-effect-gradient-shift="true"].light [role="dialog"] {
+  border: 1px solid var(--border);
+  background: linear-gradient(135deg, var(--popover), var(--muted));
+}
+
+/* === DARK MODE GRADIENT BACKGROUNDS === */
+
+/* Table rows - sleek hover */
+html[data-effect-gradient-shift="true"].dark tbody tr:hover {
+  background-color: color-mix(in srgb, var(--primary) 5%, transparent);
+  box-shadow: inset 0 0 20px color-mix(in srgb, var(--primary) 8%, transparent);
+}
+
+/* Progress bars - neon fill */
+html[data-effect-gradient-shift="true"].dark [role="progressbar"] {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+
+/* === CHROMATIC EFFECTS === */
+
+/* Light mode chromatic effect on h1/h2 */
+html[data-effect-gradient-shift="true"].light h1::before,
+html[data-effect-gradient-shift="true"].light h2::before {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0.3;
+  filter: blur(8px);
+}
+
+/* Dark mode chromatic aberration effect on h1/h2 */
+html[data-effect-gradient-shift="true"].dark h1::after,
+html[data-effect-gradient-shift="true"].dark h2::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 2px;
+  top: 0;
+  z-index: -1;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--secondary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0.3;
+  mix-blend-mode: screen;
+}

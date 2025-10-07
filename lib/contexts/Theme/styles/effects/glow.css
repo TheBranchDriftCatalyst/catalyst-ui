@@ -1,0 +1,150 @@
+/* Glow Effect Layer - Neon glows for buttons, inputs, links, cards */
+/* Only applies when data-effect-glow="true" is set on <html> */
+
+/* === KEYFRAME DEFINITIONS === */
+
+/* Text glow animation for links - ultra subtle text-shadow pulse */
+@keyframes text-glow {
+  0%, 100% {
+    text-shadow:
+      0 0 8px color-mix(in srgb, var(--primary) 30%, transparent),
+      0 2px 0 color-mix(in srgb, var(--primary) 8%, transparent);
+  }
+  50% {
+    text-shadow:
+      0 0 12px color-mix(in srgb, var(--primary) 40%, transparent),
+      0 2px 0 color-mix(in srgb, var(--primary) 12%, transparent);
+  }
+}
+
+/* === LIGHT MODE GLOWS === */
+
+/* Cards - colorful shadows */
+html[data-effect-glow="true"].light [class*="card"] {
+  box-shadow: var(--shadow-neon-sm);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html[data-effect-glow="true"].light [class*="card"]:hover {
+  box-shadow: var(--shadow-neon-md);
+}
+
+/* Links - rich purple glow */
+html[data-effect-glow="true"].light a {
+  text-shadow: 0 0 10px rgba(192, 38, 211, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html[data-effect-glow="true"].light a:hover {
+  text-shadow: 0 0 20px rgba(192, 38, 211, 0.5), 0 0 40px rgba(192, 38, 211, 0.25);
+}
+
+/* Primary buttons - vibrant glow */
+html[data-effect-glow="true"].light button[class*="bg-primary"],
+html[data-effect-glow="true"].light [class*="bg-primary"] button {
+  box-shadow: var(--glow-primary);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html[data-effect-glow="true"].light button[class*="bg-primary"]:hover,
+html[data-effect-glow="true"].light [class*="bg-primary"] button:hover {
+  box-shadow: var(--glow-hover);
+}
+
+/* Input focus - purple glow */
+html[data-effect-glow="true"].light input:focus,
+html[data-effect-glow="true"].light textarea:focus,
+html[data-effect-glow="true"].light select:focus {
+  box-shadow: var(--glow-secondary);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+/* Dropdown/Popover - opulent elevation */
+html[data-effect-glow="true"].light [role="menu"],
+html[data-effect-glow="true"].light [role="listbox"],
+html[data-effect-glow="true"].light [role="dialog"] {
+  box-shadow: var(--shadow-neon-lg);
+}
+
+/* === DARK MODE GLOWS === */
+
+/* Links get cyberpunk glow */
+html[data-effect-glow="true"].dark a {
+  text-shadow: 0 0 8px rgba(0, 252, 214, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html[data-effect-glow="true"].dark a:hover {
+  text-shadow: 0 0 15px rgba(0, 252, 214, 0.6), 0 0 30px rgba(0, 252, 214, 0.3);
+  animation: text-glow 4s ease-in-out infinite;
+}
+
+/* Primary buttons - sleek with glow */
+html[data-effect-glow="true"].dark button[class*="bg-primary"],
+html[data-effect-glow="true"].dark [class*="bg-primary"] button {
+  box-shadow: var(--glow-accent);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html[data-effect-glow="true"].dark button[class*="bg-primary"]:hover,
+html[data-effect-glow="true"].dark [class*="bg-primary"] button:hover {
+  box-shadow: var(--glow-hover);
+}
+
+/* Input focus - pronounced cyberpunk glow */
+html[data-effect-glow="true"].dark input:focus,
+html[data-effect-glow="true"].dark textarea:focus,
+html[data-effect-glow="true"].dark select:focus {
+  box-shadow: var(--glow-primary);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+/* Cards - subtle elevation with neon accent */
+html[data-effect-glow="true"].dark [class*="card"] {
+  box-shadow: var(--shadow-neon-sm);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html[data-effect-glow="true"].dark [class*="card"]:hover {
+  box-shadow: var(--shadow-neon-md);
+}
+
+/* Apply very subtle glow pulse to cards on hover */
+html[data-effect-glow="true"].dark [class*="card"]:hover {
+  animation: glow-pulse 8s ease-in-out infinite;
+}
+
+/* Dropdown/Popover - elevated with glow */
+html[data-effect-glow="true"] [role="menu"],
+html[data-effect-glow="true"] [role="listbox"],
+html[data-effect-glow="true"] [role="dialog"] {
+  box-shadow: var(--shadow-neon-lg);
+}
+
+/* Progress bars - neon fill */
+html[data-effect-glow="true"].dark [role="progressbar"] {
+  box-shadow: var(--glow-accent);
+}
+
+/* Enhanced focus states - cyberpunk style */
+html[data-effect-glow="true"].dark *:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 15%, transparent), var(--glow-accent);
+}
+
+/* Heading hover states with enhanced glow */
+html[data-effect-glow="true"].dark h1:hover,
+html[data-effect-glow="true"].dark h2:hover,
+html[data-effect-glow="true"].dark h3:hover {
+  filter: drop-shadow(var(--glow-primary));
+  transition: filter 0.3s ease;
+}
+
+/* Extremely subtle pulse on focus states - barely noticeable */
+html[data-effect-glow="true"] input:focus,
+html[data-effect-glow="true"] textarea:focus {
+  animation: glow-pulse 10s ease-in-out infinite;
+}

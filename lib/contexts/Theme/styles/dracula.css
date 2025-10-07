@@ -63,29 +63,6 @@
   --shadow-neon-lg: 0 8px 24px rgba(189, 147, 249, 0.25), 0 16px 48px rgba(255, 121, 198, 0.15); /* @token */
 }
 
-/* Light mode polish */
-.theme-dracula.light [class*="card"] {
-  box-shadow: 0 2px 8px rgba(190, 80, 255, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
-  transition: all 0.25s ease;
-}
-
-.theme-dracula.light [class*="card"]:hover {
-  box-shadow: 0 4px 12px rgba(190, 80, 255, 0.12), 0 8px 24px rgba(0, 0, 0, 0.06);
-  transform: translateY(-1px);
-}
-
-.theme-dracula.light button[class*="bg-primary"]:hover {
-  box-shadow: 0 4px 12px rgba(190, 80, 255, 0.25);
-  transform: translateY(-1px);
-  transition: all 0.25s ease;
-}
-
-.theme-dracula.light input:focus,
-.theme-dracula.light textarea:focus {
-  box-shadow: 0 0 0 3px rgba(190, 80, 255, 0.15);
-  transition: box-shadow 0.2s ease;
-}
-
 .theme-dracula.dark {
   --background: hsl(231, 15%, 18%);
   --foreground: hsl(60, 30%, 96%);
@@ -151,34 +128,7 @@
   --shadow-neon-lg: 0 8px 24px rgba(189, 147, 249, 0.3), 0 16px 48px rgba(255, 121, 198, 0.2); /* @token */
 }
 
-/* Dark mode polish - vampire elegance */
-.theme-dracula.dark [class*="card"] {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 20px rgba(190, 80, 255, 0.08);
-  transition: all 0.25s ease;
-}
-
-.theme-dracula.dark [class*="card"]:hover {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 30px rgba(190, 80, 255, 0.12);
-  transform: translateY(-2px);
-}
-
-.theme-dracula.dark button[class*="bg-primary"] {
-  box-shadow: 0 2px 8px rgba(190, 80, 255, 0.2);
-  transition: all 0.25s ease;
-}
-
-.theme-dracula.dark button[class*="bg-primary"]:hover {
-  box-shadow: 0 4px 16px rgba(190, 80, 255, 0.35), 0 0 20px rgba(190, 80, 255, 0.15);
-  transform: translateY(-1px);
-}
-
-.theme-dracula.dark input:focus,
-.theme-dracula.dark textarea:focus {
-  box-shadow: 0 0 0 3px rgba(190, 80, 255, 0.2), 0 0 20px rgba(190, 80, 255, 0.1);
-  border-color: hsl(265, 89%, 78%);
-  transition: all 0.2s ease;
-}
-
+/* Dark mode - vampire link effects */
 .theme-dracula.dark a {
   transition: color 0.2s ease, text-shadow 0.2s ease;
 }

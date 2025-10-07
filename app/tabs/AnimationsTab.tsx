@@ -9,8 +9,12 @@ import { AnimatedSlideDemo } from "../demos/AnimatedSlideDemo";
 import { AnimatedBounceDemo } from "../demos/AnimatedBounceDemo";
 import { ScrollSnapItem } from "@/catalyst-ui/components/effects";
 import { D4Loader } from "../components/D4Loader";
+import { useTheme } from "@/catalyst-ui/contexts/Theme/ThemeContext";
+import { Badge } from "@/catalyst-ui/ui/badge";
 
 export function AnimationsTab() {
+  const { effects } = useTheme();
+
   return (
     <div className="space-y-6 mt-0">
       {/* Overview Card */}
@@ -49,15 +53,15 @@ export function AnimationsTab() {
                 </p>
               </div>
               <div className="space-y-2">
-                <Typography variant="h4" className="text-sm font-semibold">CSS Theme Animations</Typography>
+                <Typography variant="h4" className="text-sm font-semibold">Theme Effect Layers</Typography>
                 <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                  <li>Glow Pulse - Subtle shadow pulse</li>
-                  <li>Border Shimmer - Gradient shimmer</li>
-                  <li>Pulse Scale - Fade + scale effect</li>
-                  <li>Text Glow - Text shadow pulse</li>
+                  <li>Glow - Neon shadows on buttons/cards/inputs</li>
+                  <li>Scanlines - Grid/scanline overlays</li>
+                  <li>Borders - Shimmer, scan, pulse effects</li>
+                  <li>Gradients - Animated heading/bg gradients</li>
                 </ul>
                 <p className="text-xs text-muted-foreground italic pt-2">
-                  ✅ Best for: Theme-specific effects, hover states, cyberpunk aesthetic
+                  ✅ Toggle in Settings dropdown • Pure CSS with data attributes
                 </p>
               </div>
             </div>
@@ -167,7 +171,7 @@ export function AnimationsTab() {
       <Tabs defaultValue="hocs" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="hocs">React HOCs</TabsTrigger>
-          <TabsTrigger value="css">CSS Animations</TabsTrigger>
+          <TabsTrigger value="effects">Effect Layers</TabsTrigger>
         </TabsList>
 
         {/* React HOCs Tab */}
@@ -267,120 +271,137 @@ export function AnimationsTab() {
           </ScrollSnapItem>
         </TabsContent>
 
-        {/* CSS Animations Tab */}
-        <TabsContent value="css" className="space-y-4 mt-4">
+        {/* Effect Layers Tab */}
+        <TabsContent value="effects" className="space-y-4 mt-4">
           <ScrollSnapItem align="start">
             <Card>
             <CardHeader>
-              <CardTitle>CSS Keyframe Animations</CardTitle>
+              <CardTitle>Theme Effect Layers</CardTitle>
               <CardDescription>
-                Ultra-subtle animations from the Catalyst theme • Hover to see effects • Best viewed in dark mode
+                Modular CSS effects controlled via data attributes • Toggle in Settings dropdown (avatar icon)
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Border Shimmer */}
-              <div className="space-y-2">
-                <Label className="text-sm font-semibold">Border Shimmer</Label>
-                <div
-                  className="h-32 rounded-lg border-2 flex items-center justify-center text-sm"
-                  style={{
-                    borderColor: 'var(--primary)',
-                    animation: 'border-shimmer 8s linear infinite',
-                    background: 'linear-gradient(90deg, transparent, rgba(var(--neon-cyan-rgb), 0.05), transparent)'
-                  }}
-                >
-                  Subtle shimmer animation (8s loop)
+              <div className="p-4 bg-accent/10 border border-primary/20 rounded">
+                <Typography variant="h4" className="text-sm font-semibold mb-2">Current Effect Status:</Typography>
+                <div className="flex flex-wrap gap-2">
+                  <Badge variant={effects.glow ? "default" : "outline"}>
+                    Glow: {effects.glow ? "✅ ON" : "❌ OFF"}
+                  </Badge>
+                  <Badge variant={effects.scanlines ? "default" : "outline"}>
+                    Scanlines: {effects.scanlines ? "✅ ON" : "❌ OFF"}
+                  </Badge>
+                  <Badge variant={effects.borderAnimations ? "default" : "outline"}>
+                    Border Animations: {effects.borderAnimations ? "✅ ON" : "❌ OFF"}
+                  </Badge>
+                  <Badge variant={effects.gradientShift ? "default" : "outline"}>
+                    Gradient Shift: {effects.gradientShift ? "✅ ON" : "❌ OFF"}
+                  </Badge>
                 </div>
-                <code className="text-xs text-muted-foreground">animation: border-shimmer 8s linear infinite</code>
               </div>
-
-              {/* Glow Pulse */}
+              {/* Glow Layer */}
               <div className="space-y-2">
-                <Label className="text-sm font-semibold">Glow Pulse</Label>
-                <div
-                  className="h-32 rounded-lg bg-card flex items-center justify-center text-sm"
-                  style={{
-                    animation: 'glow-pulse 8s ease-in-out infinite'
-                  }}
-                >
-                  Ultra-subtle pulsing box-shadow (8s loop)
-                </div>
-                <code className="text-xs text-muted-foreground">animation: glow-pulse 8s ease-in-out infinite</code>
-              </div>
-
-              {/* Pulse Scale */}
-              <div className="space-y-2">
-                <Label className="text-sm font-semibold">Pulse Scale</Label>
-                <div
-                  className="h-32 rounded-lg bg-primary/10 border border-primary flex items-center justify-center text-sm relative overflow-hidden"
-                  style={{
-                    animation: 'pulse-scale 8s ease-in-out infinite'
-                  }}
-                >
-                  Fade + scale effect (8s loop)
-                </div>
-                <code className="text-xs text-muted-foreground">animation: pulse-scale 8s ease-in-out infinite</code>
-              </div>
-
-              {/* Text Glow */}
-              <div className="space-y-2">
-                <Label className="text-sm font-semibold">Text Glow (for links)</Label>
-                <div className="h-32 flex items-center justify-center">
-                  <a
-                    href="#"
-                    className="text-2xl relative inline-block"
-                    style={{
-                      animation: 'text-glow 4s ease-in-out infinite'
-                    }}
-                  >
-                    Pulsing text-shadow glow
-                  </a>
-                </div>
-                <code className="text-xs text-muted-foreground">animation: text-glow 4s ease-in-out infinite</code>
-              </div>
-
-              {/* Hover Card Demo */}
-              <div className="space-y-2">
-                <Label className="text-sm font-semibold">Card Hover Effect</Label>
-                <Card className="hover:shadow-[var(--shadow-neon-lg)] transition-all duration-300 cursor-pointer">
+                <Label className="text-sm font-semibold">1. Glow Layer</Label>
+                <Typography variant="small" className="text-muted-foreground">
+                  Neon shadows on buttons, inputs, cards, and links • Requires dark mode for full effect
+                </Typography>
+                <Card className="cursor-pointer">
                   <CardHeader>
-                    <CardTitle>Interactive Card</CardTitle>
-                    <CardDescription>Hover to see the glow-pulse animation</CardDescription>
+                    <CardTitle>Hover Me!</CardTitle>
+                    <CardDescription>
+                      {effects.glow ? "Glow effect is ON - you should see subtle neon shadows" : "Glow effect is OFF - enable in Settings"}
+                    </CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    In the Catalyst dark theme, cards automatically get the glow-pulse animation on hover.
-                    This creates a very subtle, almost imperceptible box-shadow glow that adds depth.
+                  <CardContent className="space-y-3">
+                    <Button>Primary Button</Button>
+                    <Button variant="outline">Outline Button</Button>
+                    <a href="#" className="text-primary underline">Sample Link</a>
                   </CardContent>
                 </Card>
-                <code className="text-xs text-muted-foreground">.theme-catalyst.dark [class*="card"]:hover</code>
+                <code className="text-xs text-muted-foreground">html[data-effect-glow="true"].dark</code>
               </div>
 
-              {/* Button Shimmer */}
+              {/* Scanlines Layer */}
               <div className="space-y-2">
-                <Label className="text-sm font-semibold">Button Shimmer on Hover</Label>
-                <div className="flex gap-4">
-                  <Button className="relative overflow-hidden">
-                    Hover for shimmer
-                  </Button>
-                  <Button variant="outline" className="relative overflow-hidden">
-                    Outline variant
-                  </Button>
-                  <Button variant="secondary" className="relative overflow-hidden">
-                    Secondary variant
-                  </Button>
+                <Label className="text-sm font-semibold">2. Scanlines & Grid Layer</Label>
+                <Typography variant="small" className="text-muted-foreground">
+                  Full-page grid pattern and horizontal scanlines overlay • CRT monitor aesthetic
+                </Typography>
+                <div className="p-4 bg-accent/10 border border-primary/20 rounded">
+                  {effects.scanlines ? (
+                    <Typography variant="p" className="text-sm">
+                      ✅ Scanlines are ON - Look at the entire page background to see the grid pattern and subtle scanlines
+                    </Typography>
+                  ) : (
+                    <Typography variant="p" className="text-sm">
+                      ❌ Scanlines are OFF - Enable in Settings to see grid pattern and scanlines on the page background
+                    </Typography>
+                  )}
                 </div>
-                <code className="text-xs text-muted-foreground">Buttons get button-shimmer animation on hover (applied via theme CSS)</code>
+                <code className="text-xs text-muted-foreground">html[data-effect-scanlines="true"] body::before/::after</code>
+              </div>
+
+              {/* Border Animations Layer */}
+              <div className="space-y-2">
+                <Label className="text-sm font-semibold">3. Border Animations Layer</Label>
+                <Typography variant="small" className="text-muted-foreground">
+                  Shimmer, scan, and pulse effects on borders • Includes header glow gradient
+                </Typography>
+                <div className="space-y-3">
+                  <div className="border-shimmer h-20 rounded-lg border-2 border-primary/50 flex items-center justify-center">
+                    <code className="text-xs">.border-shimmer</code>
+                  </div>
+                  <div className="border-glow-pulse h-20 rounded-lg flex items-center justify-center">
+                    <code className="text-xs">.border-glow-pulse</code>
+                  </div>
+                  {effects.borderAnimations ? (
+                    <Typography variant="small" className="text-muted-foreground">
+                      ✅ Border animations ON - Look at the header for gradient glow cycling
+                    </Typography>
+                  ) : (
+                    <Typography variant="small" className="text-muted-foreground">
+                      ❌ Border animations OFF - Enable to see effects
+                    </Typography>
+                  )}
+                </div>
+                <code className="text-xs text-muted-foreground">html[data-effect-border-animations="true"]</code>
+              </div>
+
+              {/* Gradient Shift Layer */}
+              <div className="space-y-2">
+                <Label className="text-sm font-semibold">4. Gradient Shift Layer</Label>
+                <Typography variant="small" className="text-muted-foreground">
+                  Animated gradient on headings and backgrounds • 8-second color cycle
+                </Typography>
+                <div className="space-y-3">
+                  <Typography variant="h1">Sample Heading</Typography>
+                  <Typography variant="h3">Smaller Heading</Typography>
+                  {effects.gradientShift ? (
+                    <Typography variant="small" className="text-muted-foreground">
+                      ✅ Gradient animations ON - Watch the heading colors shift slowly
+                    </Typography>
+                  ) : (
+                    <Typography variant="small" className="text-muted-foreground">
+                      ❌ Gradient animations OFF - Headings are static
+                    </Typography>
+                  )}
+                </div>
+                <code className="text-xs text-muted-foreground">html[data-effect-gradient-shift="true"] h1-h6</code>
               </div>
             </CardContent>
             <CardFooter className="flex flex-col items-start gap-2 border-t pt-4">
-              <Typography variant="h4" className="text-sm font-semibold">Animation Design Philosophy:</Typography>
+              <Typography variant="h4" className="text-sm font-semibold">Effect Layer Architecture:</Typography>
               <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
-                <li><strong>Ultra-Subtle</strong> - Opacity values reduced by 60-85% for barely perceptible effects</li>
-                <li><strong>Slow Timing</strong> - 4-10 second durations to avoid being distracting</li>
-                <li><strong>Theme-Specific</strong> - Only applied in Catalyst theme for cybersynthpunk aesthetic</li>
-                <li><strong>Performance</strong> - Uses GPU-accelerated properties (box-shadow, opacity, transform)</li>
-                <li><strong>Contextual</strong> - Applied on hover or specific elements to add depth without overwhelming</li>
+                <li><strong>Modular</strong> - Each effect is a separate CSS file loaded at build time</li>
+                <li><strong>Data Attributes</strong> - Controlled via <code>html[data-effect-*="true"]</code> selectors</li>
+                <li><strong>React State</strong> - Toggle state managed by ThemeProvider + localStorage</li>
+                <li><strong>Pure CSS</strong> - No JavaScript for rendering, only for state management</li>
+                <li><strong>Theme-Agnostic</strong> - Works with ALL themes (Catalyst, Dracula, Nord, etc.)</li>
+                <li><strong>CSS Variables</strong> - Uses theme colors via <code>var(--primary)</code>, adapts to each theme automatically</li>
               </ul>
+              <Typography variant="small" className="text-xs text-muted-foreground mt-2">
+                💡 Tip: Switch between themes in Settings to see how effects adapt to different color palettes!
+              </Typography>
             </CardFooter>
           </Card>
           </ScrollSnapItem>

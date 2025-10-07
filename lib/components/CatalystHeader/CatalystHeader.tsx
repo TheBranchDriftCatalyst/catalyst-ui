@@ -1,20 +1,20 @@
 'use client';
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/catalyst-ui/ui/avatar";
 import { Separator } from "@/catalyst-ui/ui/separator";
 import React from "react";
 
 //  TODO: when we get to it, this interface is going to == the CatalystHeaderContext shape
 interface CatalystHeaderProps {
   navigationItems?: React.ReactNode[];
+  userSettings?: React.ReactNode;
   title?: string;
   tabs?: React.ReactNode;
   breadcrumbs?: any[];
 }
 
-export const CatalystHeader = ({ navigationItems, title, tabs }: CatalystHeaderProps) => {
+export const CatalystHeader = ({ navigationItems, userSettings, title, tabs }: CatalystHeaderProps) => {
   return (
-    <header className="bg-background/80 backdrop-blur-xl sticky top-0 z-50 w-full border-b border-border/40 transition-all duration-200" style={{ boxShadow: '0 4px 16px -4px var(--primary)' }}>
+    <header className="header-glow bg-background/70 backdrop-blur-2xl sticky top-0 z-50 w-full border-b transition-all duration-300" style={{ borderColor: 'color-mix(in srgb, var(--border) 40%, transparent)' }}>
       <div className="flex h-14 items-center gap-3 px-6">
         {/* Left Zone: Brand */}
         {title && (
@@ -35,7 +35,7 @@ export const CatalystHeader = ({ navigationItems, title, tabs }: CatalystHeaderP
           </div>
         )}
 
-        {/* Right Zone: Utilities */}
+        {/* Right Zone: Utilities + User Settings */}
         <div className="ml-auto flex items-center gap-2">
           {navigationItems && navigationItems.length > 0 && (
             <>
@@ -45,11 +45,7 @@ export const CatalystHeader = ({ navigationItems, title, tabs }: CatalystHeaderP
               </div>
             </>
           )}
-          <Avatar className="h-8 w-8 ring-1 ring-border/40 transition-all hover:ring-primary/50">
-            {/* TODO: turn this into the login widget */}
-            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+          {userSettings}
         </div>
       </div>
     </header>

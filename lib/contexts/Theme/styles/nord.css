@@ -63,29 +63,6 @@
   --shadow-neon-lg: 0 8px 24px rgba(112, 166, 235, 0.2), 0 16px 48px rgba(108, 194, 224, 0.12); /* @token */
 }
 
-/* Light mode - arctic clarity */
-.theme-nord.light [class*="card"] {
-  box-shadow: 0 2px 8px rgba(67, 76, 94, 0.08), 0 4px 16px rgba(67, 76, 94, 0.04);
-  transition: all 0.3s ease;
-}
-
-.theme-nord.light [class*="card"]:hover {
-  box-shadow: 0 4px 16px rgba(67, 76, 94, 0.12), 0 8px 24px rgba(67, 76, 94, 0.06);
-  transform: translateY(-2px);
-}
-
-.theme-nord.light button[class*="bg-primary"]:hover {
-  box-shadow: 0 4px 12px rgba(67, 76, 94, 0.2);
-  transform: translateY(-1px);
-  transition: all 0.25s ease;
-}
-
-.theme-nord.light input:focus,
-.theme-nord.light textarea:focus {
-  box-shadow: 0 0 0 3px rgba(94, 129, 172, 0.15);
-  transition: box-shadow 0.2s ease;
-}
-
 .theme-nord.dark {
   --background: hsl(220, 16%, 16%);
   --foreground: hsl(222, 20%, 96%);
@@ -116,6 +93,11 @@
 
   --ring: hsl(222, 20%, 40%);
 
+  /* @token Typography - Minimalist Nordic fonts */
+  --font-heading: 'Inter', 'Helvetica Neue', sans-serif; /* @token */
+  --font-body: 'Inter', 'Arial', sans-serif; /* @token */
+  --font-mono: 'JetBrains Mono', 'Monaco', monospace; /* @token */
+
   /* @token Neon Colors - Nordic aurora palette */
   --neon-cyan: hsl(193, 80%, 52%); /* @token - frost cyan */
   --neon-pink: hsl(350, 65%, 62%); /* @token - aurora pink */
@@ -144,31 +126,4 @@
   --shadow-neon-sm: 0 2px 8px rgba(99, 156, 230, 0.15), 0 4px 16px rgba(85, 186, 217, 0.1); /* @token */
   --shadow-neon-md: 0 4px 16px rgba(99, 156, 230, 0.2), 0 8px 32px rgba(85, 186, 217, 0.12); /* @token */
   --shadow-neon-lg: 0 8px 24px rgba(99, 156, 230, 0.25), 0 16px 48px rgba(85, 186, 217, 0.15); /* @token */
-}
-
-/* Dark mode - nordic night */
-.theme-nord.dark [class*="card"] {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 16px rgba(94, 129, 172, 0.06);
-  transition: all 0.3s ease;
-}
-
-.theme-nord.dark [class*="card"]:hover {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 24px rgba(94, 129, 172, 0.08);
-  transform: translateY(-2px);
-}
-
-.theme-nord.dark button[class*="bg-primary"] {
-  box-shadow: 0 2px 8px rgba(94, 129, 172, 0.15);
-  transition: all 0.25s ease;
-}
-
-.theme-nord.dark button[class*="bg-primary"]:hover {
-  box-shadow: 0 4px 16px rgba(94, 129, 172, 0.25), 0 0 20px rgba(94, 129, 172, 0.1);
-  transform: translateY(-1px);
-}
-
-.theme-nord.dark input:focus,
-.theme-nord.dark textarea:focus {
-  box-shadow: 0 0 0 3px rgba(94, 129, 172, 0.2);
-  transition: box-shadow 0.2s ease;
 }
