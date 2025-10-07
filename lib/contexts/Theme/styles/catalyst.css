@@ -172,13 +172,15 @@
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  background: linear-gradient(135deg, var(--neon-purple), var(--neon-gold));
+  background: linear-gradient(135deg, var(--neon-purple), var(--neon-gold), var(--neon-purple));
+  background-size: 200% 200%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: none;
   position: relative;
   filter: drop-shadow(0 0 8px rgba(192, 38, 211, 0.3));
+  animation: gradient-shift 8s ease infinite;
 }
 
 .theme-catalyst.light h1::before,
@@ -479,11 +481,13 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   position: relative;
-  background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 100%);
+  background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 50%, var(--neon-cyan) 100%);
+  background-size: 200% 200%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 0 12px rgba(0, 252, 214, 0.4)) drop-shadow(0 0 24px rgba(192, 38, 211, 0.2));
+  animation: gradient-shift 8s ease infinite;
 }
 
 /* Chromatic aberration effect on large headings */
@@ -623,6 +627,19 @@
   100% {
     transform: translate(0);
     opacity: 1;
+  }
+}
+
+/* Animated gradient shift - smooth flowing color */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 
