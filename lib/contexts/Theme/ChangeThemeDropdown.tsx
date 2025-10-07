@@ -16,7 +16,10 @@ export const ChangeThemeDropdown = () => {
 
   return (
     <MenubarMenu>
-      <MenubarTrigger className="text-sm font-medium hover:text-primary transition-colors cursor-pointer">
+      <MenubarTrigger
+        className="text-sm font-medium hover:text-primary transition-colors cursor-pointer"
+        aria-label="Change theme"
+      >
         {displayTheme}
       </MenubarTrigger>
       <MenubarPortal>

@@ -18,6 +18,7 @@ export const ToggleVariantButton = forwardRef(
         size="icon"
         variant="outline"
         onClick={() => setVariant(variant === "dark" ? "light" : "dark")}
+        aria-label={`Switch to ${variant === "dark" ? "light" : "dark"} mode`}
       >
         <Icon className="h-5 w-5" />
       </Component>

@@ -16,7 +16,7 @@ export default defineConfig({
     }),
   ],
   optimizeDeps: {
-    exclude: ['shiki'],
+    // shiki is dynamically imported, no need to exclude anymore
   },
   build: {
     outDir: "../dist/app",

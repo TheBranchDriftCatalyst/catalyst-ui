@@ -1,5 +1,5 @@
 import { cn } from "@/catalyst-ui/utils";
-import { createHighlighter, type Highlighter, type BundledLanguage, type BundledTheme } from "shiki";
+import type { Highlighter, BundledLanguage, BundledTheme } from "shiki";
 import * as React from "react";
 import CodeBlockHeader from "./CodeBlockHeader";
 import { catalystTheme } from "./catalyst-theme";
@@ -57,10 +57,14 @@ async function getHighlighter() {
   }
 
   // Start creation and cache the promise
-  highlighterPromise = createHighlighter({
-    themes: [],
-    langs: [],
-  }).catch((error) => {
+  // Dynamic import of shiki to reduce initial bundle size
+  highlighterPromise = (async () => {
+    const { createHighlighter } = await import("shiki");
+    return createHighlighter({
+      themes: [],
+      langs: [],
+    });
+  })().catch((error) => {
     console.warn('Shiki WASM loading failed, falling back to basic highlighting:', error);
     // Reset so it can retry
     highlighterPromise = null;
