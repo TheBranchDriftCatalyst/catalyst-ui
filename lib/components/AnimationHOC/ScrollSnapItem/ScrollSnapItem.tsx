@@ -47,6 +47,8 @@ export const ScrollSnapItem = React.forwardRef<HTMLDivElement, ScrollSnapItemPro
           scrollSnapAlign: align === "none" ? undefined : align,
           scrollMarginTop: offset > 0 ? `${offset}px` : undefined,
           scrollSnapStop: stop,
+          // Ensure snap points are respected even with spacing
+          marginBottom: '1rem',
         }}
         {...props}
       >
