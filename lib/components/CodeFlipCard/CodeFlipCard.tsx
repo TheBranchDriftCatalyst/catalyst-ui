@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "@/catalyst-ui/utils";
 import { CodeBlock, CodeBlockProps } from "@/catalyst-ui/components/CodeBlock";
 import { CodeBlockHeader } from "@/catalyst-ui/components/CodeBlock/CodeBlockHeader";
 import { CardContent } from "@/catalyst-ui/ui/card";
