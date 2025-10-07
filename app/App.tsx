@@ -10,18 +10,35 @@ import { Toaster } from "@/catalyst-ui/ui/toaster";
 import { ScrollSnapContainer } from "@/catalyst-ui/components/effects";
 import { useState, useEffect, lazy, Suspense } from "react";
 import { D4Loader } from "./components/D4Loader";
+import { PerformanceMonitor } from "./components/PerformanceMonitor";
 
-// Lazy-load tab components for code-splitting
-const OverviewTab = lazy(() => import("./tabs/OverviewTab").then(m => ({ default: m.OverviewTab })));
-const TokensTab = lazy(() => import("./tabs/TokensTab").then(m => ({ default: m.TokensTab })));
-const TypographyTab = lazy(() => import("./tabs/TypographyTab").then(m => ({ default: m.TypographyTab })));
-const FormsTab = lazy(() => import("./tabs/FormsTab").then(m => ({ default: m.FormsTab })));
-const ComponentsTab = lazy(() => import("./tabs/ComponentsTab").then(m => ({ default: m.ComponentsTab })));
-const DisplayTab = lazy(() => import("./tabs/DisplayTab").then(m => ({ default: m.DisplayTab })));
-const CardsTab = lazy(() => import("./tabs/CardsTab").then(m => ({ default: m.CardsTab })));
-const AnimationsTab = lazy(() => import("./tabs/AnimationsTab").then(m => ({ default: m.AnimationsTab })));
-const ForceGraphTab = lazy(() => import("./tabs/ForceGraphTab").then(m => ({ default: m.ForceGraphTab })));
-const ResumeTab = lazy(() => import("./tabs/ResumeTab").then(m => ({ default: m.ResumeTab })));
+// Lazy-load tab components using Vite's import.meta.glob for code-splitting
+const tabModules = import.meta.glob('./tabs/*Tab.tsx', { eager: false });
+
+// Create lazy components dynamically
+const tabComponents = Object.keys(tabModules).reduce((acc, path) => {
+  const tabName = path.match(/\.\/tabs\/(.+)Tab\.tsx$/)?.[1];
+  if (tabName) {
+    acc[`${tabName}Tab`] = lazy(() => 
+      tabModules[path]().then((m: any) => ({ default: m[`${tabName}Tab`] }))
+    );
+  }
+  return acc;
+}, {} as Record<string, React.LazyExoticComponent<any>>);
+
+// Destructure for easier access
+const { 
+  OverviewTab, 
+  TokensTab, 
+  TypographyTab, 
+  FormsTab, 
+  ComponentsTab, 
+  DisplayTab, 
+  CardsTab, 
+  AnimationsTab, 
+  ForceGraphTab, 
+  ResumeTab 
+} = tabComponents;
 
 function KitchenSink() {
   // Read initial tab from URL params
@@ -61,6 +78,7 @@ function KitchenSink() {
       <ChangeThemeDropdown />
     </Menubar>,
     <ToggleVariantButton key="variant" />,
+    <PerformanceMonitor key="performance" />,
   ];
 
   return (
