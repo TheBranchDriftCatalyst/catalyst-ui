@@ -4,7 +4,7 @@ This repository is configured to automatically deploy both the demo app and Stor
 
 ## Quick Start
 
-- [ ] **Push to GitHub**
+- [x] **Push to GitHub**
   ```bash
   git push origin main
   ```

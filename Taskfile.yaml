@@ -17,3 +17,26 @@ tasks:
         code ${fzf_path}/${component_name}/$(echo ${component_name^}).tsx
         code ${fzf_path}/${component_name}/$(echo ${component_name^}).stories.tsx'
 
+  # GitHub Actions Testing
+  test:gh-actions:
+    desc: Run GitHub Actions workflow locally with act
+    cmds:
+      - echo "Running GitHub Actions workflow locally..."
+      - act -j build
+
+  test:gh-actions:dry:
+    desc: Dry run of GitHub Actions workflow (shows what would run)
+    cmds:
+      - echo "Dry run of GitHub Actions workflow..."
+      - act -n
+
+  test:gh-actions:list:
+    desc: List all workflows and jobs
+    cmds:
+      - act -l
+
+  test:gh-actions:validate:
+    desc: Validate GitHub Pages build output
+    cmds:
+      - bash scripts/validate-gh-pages.sh
+

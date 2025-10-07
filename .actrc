@@ -1,0 +1,20 @@
+# act configuration
+# https://github.com/nektos/act
+
+# Use medium-sized Docker images with Node.js pre-installed
+# These images are optimized for GitHub Actions compatibility
+-P ubuntu-latest=catthehacker/ubuntu:act-latest
+-P ubuntu-22.04=catthehacker/ubuntu:act-22.04
+-P ubuntu-20.04=catthehacker/ubuntu:act-20.04
+
+# M1/M2 Mac compatibility - use linux/amd64 architecture
+--container-architecture linux/amd64
+
+# Bind the Docker socket for Docker-in-Docker support (if needed)
+# --container-daemon-socket -
+
+# Set environment variables (optional)
+# --env KEY=VALUE
+
+# Verbose output for debugging
+# --verbose
