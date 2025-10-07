@@ -3,6 +3,13 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+### [1.1.1](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v1.1.0...v1.1.1) (2025-10-07)
+
+
+### 🛠️  MAINTENANCE
+
+* **build:** auto-sync CHANGELOG.md to public directory ([2724461](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/2724461f8ec7c9d3f7bd716d7b689634c98e1f73))
+
 ## [1.1.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v1.0.0...v1.1.0) (2025-10-07)
 
 
