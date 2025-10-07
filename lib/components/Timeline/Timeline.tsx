@@ -3,10 +3,10 @@ import { cn } from "@/catalyst-ui/utils";
 
 export interface TimelineItemProps {
   date: string;
-  title: string;
+  title: string | React.ReactNode;
   company?: string;
   description?: string;
-  achievements?: string[];
+  achievements?: (string | React.ReactNode)[];
   isLast?: boolean;
   className?: string;
 }
@@ -41,7 +41,9 @@ export function TimelineItem({
             {achievements.map((achievement, i) => (
               <li key={i} className="flex items-start gap-2">
                 <span className="text-primary mt-0.5">▸</span>
-                <span>{achievement}</span>
+                <div className="flex-1">
+                  {typeof achievement === "string" ? achievement : achievement}
+                </div>
               </li>
             ))}
           </ul>

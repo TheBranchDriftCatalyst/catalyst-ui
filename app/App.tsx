@@ -39,6 +39,7 @@ const {
   AnimationsTab,
   ForceGraphTab,
   ResumeTab,
+  ChangelogTab,
 } = tabComponents;
 
 function KitchenSink() {
@@ -124,6 +125,9 @@ function KitchenSink() {
               <TabsTrigger value="resume" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
                 Resume
               </TabsTrigger>
+              <TabsTrigger value="changelog" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
+                Changelog
+              </TabsTrigger>
             </TabsList>
           }
         />
@@ -199,6 +203,13 @@ function KitchenSink() {
           <TabsContent value="resume" className="space-y-4 mt-0">
             <Suspense fallback={<D4Loader />}>
               <ResumeTab />
+            </Suspense>
+          </TabsContent>
+
+          {/* Changelog Tab */}
+          <TabsContent value="changelog" className="space-y-4 mt-0">
+            <Suspense fallback={<D4Loader />}>
+              <ChangelogTab />
             </Suspense>
           </TabsContent>
         </ScrollSnapContainer>

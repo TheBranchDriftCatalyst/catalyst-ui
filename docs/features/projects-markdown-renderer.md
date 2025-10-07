@@ -22,6 +22,72 @@ A single-source-of-truth system where:
 4. **Type-Safe**: Full TypeScript support with AST types
 5. **Theme-Aware**: All rendered components use Catalyst theme system
 
+## Phase 0: MVP - Changelog Tab ✅ COMPLETED
+
+**Status**: Implemented (2025-10-07)
+
+**Objective**: Validate the markdown rendering system with a simpler use case before building the full Projects tab.
+
+### What Was Built
+
+1. **Core Markdown Utilities** (`lib/utils/markdown/`)
+   - ✅ `types.ts` - Type definitions for AST nodes and extracted data
+   - ✅ `parser.ts` - Parse markdown string → AST using unified/remark
+   - ✅ `mapper.tsx` - Map AST nodes → React components (CodeBlock, Table, Typography)
+   - ✅ `index.ts` - Barrel exports
+
+2. **MarkdownRenderer Component** (`lib/components/MarkdownRenderer/`)
+   - ✅ Main renderer component that parses and renders markdown
+   - ✅ Accepts custom component mappings for flexibility
+   - ✅ Memoized parsing and rendering for performance
+
+3. **Changelog Tab** (`app/tabs/ChangelogTab.tsx`)
+   - ✅ Dual view toggle: "Custom Rendered" vs "GitHub Style"
+   - ✅ Custom view uses our component mapper (CodeBlock, Typography, Table)
+   - ✅ GitHub style uses react-markdown for comparison
+   - ✅ Fetches CHANGELOG.md from public directory
+   - ✅ Integrated into App.tsx with lazy loading
+
+### Dependencies Installed
+
+```json
+{
+  "dependencies": {
+    "unified": "^11.0.5",
+    "remark-parse": "^11.0.0",
+    "remark-gfm": "^4.0.1",
+    "react-markdown": "^10.1.0",
+    "@types/mdast": "^4.0.4",
+    "@types/unist": "^3.0.3"
+  }
+}
+```
+
+### Key Learnings
+
+1. **Component Mapping Works**: Successfully maps markdown AST to themed components
+2. **Performance**: Memoization prevents unnecessary re-parsing
+3. **Flexibility**: Can override component renderers via componentMap prop
+4. **Dual Views**: Side-by-side comparison validates our custom renderer quality
+
+### Files Created
+
+- `lib/utils/markdown/types.ts` (70 lines)
+- `lib/utils/markdown/parser.ts` (24 lines)
+- `lib/utils/markdown/mapper.tsx` (222 lines)
+- `lib/utils/markdown/index.ts` (3 lines)
+- `lib/components/MarkdownRenderer/MarkdownRenderer.tsx` (38 lines)
+- `lib/components/MarkdownRenderer/index.ts` (2 lines)
+- `app/tabs/ChangelogTab.tsx` (130 lines)
+- Updated `app/App.tsx` (added changelog tab)
+- Copied `CHANGELOG.md` to `public/`
+
+**Total**: ~490 lines of code
+
+### Next Steps
+
+The system is now validated and ready for Phase 1+ (Full Projects System) when needed.
+
 ## Current State
 
 ### Existing Infrastructure We Can Leverage
