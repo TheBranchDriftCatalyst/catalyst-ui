@@ -169,11 +169,12 @@ export function AnimationsTab() {
 
       {/* Tabbed Content */}
       <Tabs defaultValue="hocs" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="hocs">React HOCs</TabsTrigger>
-          <TabsTrigger value="effects">Effect Layers</TabsTrigger>
-        </TabsList>
-
+        <ScrollSnapItem>
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="hocs">React HOCs</TabsTrigger>
+            <TabsTrigger value="effects">Effect Layers</TabsTrigger>
+          </TabsList>
+        </ScrollSnapItem>
         {/* React HOCs Tab */}
         <TabsContent value="hocs" className="space-y-6 mt-4">
           <ScrollSnapItem align="start">
