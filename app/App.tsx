@@ -8,19 +8,20 @@ import { Menubar } from "@/catalyst-ui/ui/menubar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/catalyst-ui/ui/tabs";
 import { Toaster } from "@/catalyst-ui/ui/toaster";
 import { ScrollSnapContainer } from "@/catalyst-ui/components/effects";
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
+import { D4Loader } from "./components/D4Loader";
 
-// Import tab components
-import { OverviewTab } from "./tabs/OverviewTab";
-import { TokensTab } from "./tabs/TokensTab";
-import { TypographyTab } from "./tabs/TypographyTab";
-import { FormsTab } from "./tabs/FormsTab";
-import { ComponentsTab } from "./tabs/ComponentsTab";
-import { DisplayTab } from "./tabs/DisplayTab";
-import { CardsTab } from "./tabs/CardsTab";
-import { AnimationsTab } from "./tabs/AnimationsTab";
-import { ForceGraphTab } from "./tabs/ForceGraphTab";
-import { ResumeTab } from "./tabs/ResumeTab";
+// Lazy-load tab components for code-splitting
+const OverviewTab = lazy(() => import("./tabs/OverviewTab").then(m => ({ default: m.OverviewTab })));
+const TokensTab = lazy(() => import("./tabs/TokensTab").then(m => ({ default: m.TokensTab })));
+const TypographyTab = lazy(() => import("./tabs/TypographyTab").then(m => ({ default: m.TypographyTab })));
+const FormsTab = lazy(() => import("./tabs/FormsTab").then(m => ({ default: m.FormsTab })));
+const ComponentsTab = lazy(() => import("./tabs/ComponentsTab").then(m => ({ default: m.ComponentsTab })));
+const DisplayTab = lazy(() => import("./tabs/DisplayTab").then(m => ({ default: m.DisplayTab })));
+const CardsTab = lazy(() => import("./tabs/CardsTab").then(m => ({ default: m.CardsTab })));
+const AnimationsTab = lazy(() => import("./tabs/AnimationsTab").then(m => ({ default: m.AnimationsTab })));
+const ForceGraphTab = lazy(() => import("./tabs/ForceGraphTab").then(m => ({ default: m.ForceGraphTab })));
+const ResumeTab = lazy(() => import("./tabs/ResumeTab").then(m => ({ default: m.ResumeTab })));
 
 function KitchenSink() {
   // Read initial tab from URL params
@@ -52,6 +53,7 @@ function KitchenSink() {
   }, []);
 
   const navigationItems = [
+    // TODO: probably need to turn this into a env var and handle it in gh-pages and our build to link them???
     <a key="storybook" href="http://localhost:6006" target="_blank" rel="noopener noreferrer" className="text-sm hover:text-primary transition-colors">
       Storybook
     </a>,
@@ -105,53 +107,72 @@ function KitchenSink() {
         <ScrollSnapContainer type="y" behavior="mandatory" className="w-full h-[calc(100vh-80px)] overflow-y-auto scrollbar-hide p-6 md:p-8">
           {/* Overview Tab */}
           <TabsContent value="overview" className="space-y-4 mt-0">
-            <OverviewTab />
+            <Suspense fallback={<D4Loader />}>
+              <OverviewTab />
+            </Suspense>
           </TabsContent>
 
           {/* Design Tokens Tab */}
           <TabsContent value="tokens" className="space-y-4 mt-0">
-            <TokensTab />
+            <Suspense fallback={<D4Loader />}>
+              <TokensTab />
+            </Suspense>
           </TabsContent>
 
           {/* Typography Tab */}
           <TabsContent value="typography" className="space-y-4 mt-0">
-            <TypographyTab />
+            <Suspense fallback={<D4Loader />}>
+              <TypographyTab />
+            </Suspense>
           </TabsContent>
 
           {/* Forms Tab */}
           <TabsContent value="forms" className="space-y-4 mt-0">
-            <FormsTab />
+            <Suspense fallback={<D4Loader />}>
+              <FormsTab />
+            </Suspense>
           </TabsContent>
 
           {/* Components Tab */}
           <TabsContent value="components" className="space-y-4 mt-0">
-            <ComponentsTab />
+            <Suspense fallback={<D4Loader />}>
+              <ComponentsTab />
+            </Suspense>
           </TabsContent>
 
           {/* Display Tab */}
           <TabsContent value="display" className="space-y-4 mt-0">
-            <DisplayTab />
-
+            <Suspense fallback={<D4Loader />}>
+              <DisplayTab />
+            </Suspense>
           </TabsContent>
 
           {/* Cards Tab */}
           <TabsContent value="cards" className="space-y-4 mt-0">
-            <CardsTab />
+            <Suspense fallback={<D4Loader />}>
+              <CardsTab />
+            </Suspense>
           </TabsContent>
 
           {/* Animations Tab */}
           <TabsContent value="animations" className="space-y-4 mt-0">
-            <AnimationsTab />
+            <Suspense fallback={<D4Loader />}>
+              <AnimationsTab />
+            </Suspense>
           </TabsContent>
 
           {/* Force Graph Tab */}
           <TabsContent value="forcegraph" className="space-y-4 mt-0">
-            <ForceGraphTab />
+            <Suspense fallback={<D4Loader />}>
+              <ForceGraphTab />
+            </Suspense>
           </TabsContent>
 
           {/* Resume Tab */}
           <TabsContent value="resume" className="space-y-4 mt-0">
-            <ResumeTab />
+            <Suspense fallback={<D4Loader />}>
+              <ResumeTab />
+            </Suspense>
           </TabsContent>
         </ScrollSnapContainer>
       </Tabs>
