@@ -22,57 +22,11 @@ echo -e "${GREEN}✓${NC} gh-pages directory exists"
 # Track validation status
 errors=0
 
-# Check for index.html (landing page)
+# Check for index.html (app entry point)
 if [ -f "gh-pages/index.html" ]; then
   echo -e "${GREEN}✓${NC} index.html exists"
-
-  # Validate it contains expected content
-  if grep -q "Catalyst UI" gh-pages/index.html; then
-    echo -e "${GREEN}  ✓${NC} Contains 'Catalyst UI' title"
-  else
-    echo -e "${RED}  ❌${NC} Missing 'Catalyst UI' title"
-    errors=$((errors + 1))
-  fi
-
-  if grep -q "demo.html" gh-pages/index.html; then
-    echo -e "${GREEN}  ✓${NC} Links to demo.html"
-  else
-    echo -e "${RED}  ❌${NC} Missing link to demo.html"
-    errors=$((errors + 1))
-  fi
-
-  if grep -q "storybook/" gh-pages/index.html; then
-    echo -e "${GREEN}  ✓${NC} Links to storybook/"
-  else
-    echo -e "${RED}  ❌${NC} Missing link to storybook/"
-    errors=$((errors + 1))
-  fi
 else
   echo -e "${RED}❌ index.html missing${NC}"
-  errors=$((errors + 1))
-fi
-
-# Check for demo.html (app build)
-if [ -f "gh-pages/demo.html" ]; then
-  echo -e "${GREEN}✓${NC} demo.html exists (renamed from app's index.html)"
-else
-  echo -e "${RED}❌ demo.html missing${NC}"
-  errors=$((errors + 1))
-fi
-
-# Check for storybook directory
-if [ -d "gh-pages/storybook" ]; then
-  echo -e "${GREEN}✓${NC} storybook/ directory exists"
-
-  # Check for storybook's index.html
-  if [ -f "gh-pages/storybook/index.html" ]; then
-    echo -e "${GREEN}  ✓${NC} storybook/index.html exists"
-  else
-    echo -e "${RED}  ❌${NC} storybook/index.html missing"
-    errors=$((errors + 1))
-  fi
-else
-  echo -e "${RED}❌ storybook/ directory missing${NC}"
   errors=$((errors + 1))
 fi
 
