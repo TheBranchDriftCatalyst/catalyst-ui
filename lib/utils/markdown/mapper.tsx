@@ -221,10 +221,12 @@ export function renderMarkdown(
   const map = { ...MARKDOWN_COMPONENT_MAP, ...componentMap };
 
   const elements = ast.children.map((node, index) => {
-    const renderer = map[node.type as keyof typeof map];
+    const nodeType = node.type as keyof typeof map;
+    const renderer = map[nodeType];
 
     if (renderer) {
-      return React.createElement(renderer, { node: node as any, index });
+      // Type assertion needed due to union types in renderer map
+      return React.createElement(renderer as React.ComponentType<any>, { node, index });
     }
 
     // Fallback for unhandled types

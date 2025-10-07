@@ -1,5 +1,4 @@
 import { CardFooter } from "@/catalyst-ui/ui/card";
-import { Button } from "@/catalyst-ui/ui/button";
 import { Copy, Check } from "lucide-react";
 import { useState } from "react";
 import { getMainImport } from "./utils";
