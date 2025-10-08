@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useControllableState } from "@/catalyst-ui/hooks/useControllableState";
 import { usePrefersReducedMotion } from "@/catalyst-ui/hooks/usePrefersReducedMotion";
+import { useAnimationTriggers } from "@/catalyst-ui/hooks/useAnimationTriggers";
 import type { AnimationTrigger } from "../types";
 
 export interface AnimatedBounceProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -55,22 +56,12 @@ const AnimatedBounceComponent = React.forwardRef<HTMLDivElement, AnimatedBounceP
       onBounceChange
     );
     const prefersReducedMotion = usePrefersReducedMotion();
+    const { handleMouseEnter, handleMouseLeave } = useAnimationTriggers(trigger, setIsBouncing);
 
     // Respect user's motion preferences
     const effectiveDuration = prefersReducedMotion ? 0 : duration;
 
-    const handleMouseEnter = () => {
-      if (trigger === "hover") {
-        setIsBouncing(true);
-      }
-    };
-
-    const handleMouseLeave = () => {
-      if (trigger === "hover") {
-        setIsBouncing(false);
-      }
-    };
-
+    // Custom click handler with auto-reset for bounce effect
     const handleClick = () => {
       if (trigger === "click") {
         setIsBouncing(true);

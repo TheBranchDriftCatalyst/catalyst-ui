@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useControllableState } from "@/catalyst-ui/hooks/useControllableState";
 import { usePrefersReducedMotion } from "@/catalyst-ui/hooks/usePrefersReducedMotion";
+import { useAnimationTriggers } from "@/catalyst-ui/hooks/useAnimationTriggers";
 import type { AnimationTrigger, FlipDirection } from "../types";
 
 export interface AnimatedFlipProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -61,27 +62,13 @@ const AnimatedFlipComponent = React.forwardRef<HTMLDivElement, AnimatedFlipProps
       onFlipChange
     );
     const prefersReducedMotion = usePrefersReducedMotion();
+    const { handleMouseEnter, handleMouseLeave, handleClick } = useAnimationTriggers(
+      trigger,
+      setIsFlipped
+    );
 
     // Respect user's motion preferences - disable animation if preferred
     const effectiveDuration = prefersReducedMotion ? 0 : duration;
-
-    const handleMouseEnter = () => {
-      if (trigger === "hover") {
-        setIsFlipped(true);
-      }
-    };
-
-    const handleMouseLeave = () => {
-      if (trigger === "hover") {
-        setIsFlipped(false);
-      }
-    };
-
-    const handleClick = () => {
-      if (trigger === "click") {
-        setIsFlipped(!isFlipped);
-      }
-    };
 
     const containerStyle: React.CSSProperties = {
       position: "relative",

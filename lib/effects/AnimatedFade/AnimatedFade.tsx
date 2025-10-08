@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useControllableState } from "@/catalyst-ui/hooks/useControllableState";
 import { usePrefersReducedMotion } from "@/catalyst-ui/hooks/usePrefersReducedMotion";
+import { useAnimationTriggers } from "@/catalyst-ui/hooks/useAnimationTriggers";
 import type { AnimationTrigger } from "../types";
 
 export interface AnimatedFadeProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -52,27 +53,13 @@ const AnimatedFadeComponent = React.forwardRef<HTMLDivElement, AnimatedFadeProps
       onVisibilityChange
     );
     const prefersReducedMotion = usePrefersReducedMotion();
+    const { handleMouseEnter, handleMouseLeave, handleClick } = useAnimationTriggers(
+      trigger,
+      setIsVisible
+    );
 
     // Respect user's motion preferences
     const effectiveDuration = prefersReducedMotion ? 0 : duration;
-
-    const handleMouseEnter = () => {
-      if (trigger === "hover") {
-        setIsVisible(true);
-      }
-    };
-
-    const handleMouseLeave = () => {
-      if (trigger === "hover") {
-        setIsVisible(false);
-      }
-    };
-
-    const handleClick = () => {
-      if (trigger === "click") {
-        setIsVisible(!isVisible);
-      }
-    };
 
     const containerStyle: React.CSSProperties = {
       transition: `opacity ${effectiveDuration}ms ease-in-out`,
