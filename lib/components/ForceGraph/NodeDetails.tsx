@@ -8,7 +8,7 @@ interface NodeDetailsProps {
   node?: NodeData;
 }
 
-const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
+const NodeDetailsComponent: React.FC<NodeDetailsProps> = ({ node }) => {
   const [activeTab, setActiveTab] = useState<"details" | "attributes">("details");
   const [visible, setVisible] = useState(false);
   const [delayedNode, setDelayedNode] = useState<NodeData | undefined>(undefined);
@@ -214,5 +214,17 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
     document.body
   );
 };
+
+/**
+ * Memoized NodeDetails component for performance optimization
+ * Only re-renders when the node id changes
+ */
+const NodeDetails = React.memo(NodeDetailsComponent, (prevProps, nextProps) => {
+  // Compare node by id - this is all we need since the component handles
+  // its own internal state for animations and panel management
+  return prevProps.node?.id === nextProps.node?.id;
+});
+
+NodeDetails.displayName = "NodeDetails";
 
 export default NodeDetails;

@@ -14,8 +14,9 @@ import {
 } from "./utils/layouts";
 import { safeStopPropagation } from "./utils/eventHelpers";
 import { useNodePositions } from "./hooks/useNodePositions";
+import { shallowEqual } from "@/catalyst-ui/utils/shallowEqual";
 
-const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
+const ReactD3GraphComponent: React.FC<ReactD3GraphProps> = ({
   data,
   dimensions,
   visibleNodes,
@@ -428,5 +429,39 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
     </svg>
   );
 };
+
+/**
+ * Memoized ReactD3Graph component for performance optimization
+ * Custom comparison prevents expensive re-renders on large graphs
+ */
+const ReactD3Graph = React.memo(ReactD3GraphComponent, (prevProps, nextProps) => {
+  // Compare dimensions
+  const dimensionsEqual =
+    prevProps.dimensions.width === nextProps.dimensions.width &&
+    prevProps.dimensions.height === nextProps.dimensions.height;
+
+  // Compare visibility records
+  const visibilityEqual =
+    shallowEqual(prevProps.visibleNodes, nextProps.visibleNodes) &&
+    shallowEqual(prevProps.visibleEdges, nextProps.visibleEdges);
+
+  // Compare selected/hovered nodes (they are string ids)
+  const interactionEqual =
+    prevProps.hoveredNode === nextProps.hoveredNode &&
+    prevProps.selectedNode === nextProps.selectedNode;
+
+  // Compare data reference (graph data should be memoized by parent)
+  const dataEqual = prevProps.data === nextProps.data;
+
+  // Compare config and storageKey
+  const metaEqual =
+    prevProps.config === nextProps.config && prevProps.storageKey === nextProps.storageKey;
+
+  // Note: setHoveredNode and setSelectedNode are stable from useState
+
+  return dimensionsEqual && visibilityEqual && interactionEqual && dataEqual && metaEqual;
+});
+
+ReactD3Graph.displayName = "ReactD3Graph";
 
 export default ReactD3Graph;
