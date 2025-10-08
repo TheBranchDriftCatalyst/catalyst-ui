@@ -6,7 +6,6 @@ import { useGraphConfig } from "./context/GraphContext";
 import { LayoutKind } from "./utils/layouts";
 import { useFloatingPanel } from "./hooks/useFloatingPanel";
 import { useNodePositions } from "./hooks/useNodePositions";
-import { shallowEqual } from "@/catalyst-ui/utils/shallowEqual";
 
 interface LegendProps {
   visibleNodes: Record<NodeKind, boolean>;
@@ -16,7 +15,7 @@ interface LegendProps {
   storageKey?: string;
 }
 
-const LegendComponent: React.FC<LegendProps> = ({
+const Legend: React.FC<LegendProps> = ({
   visibleNodes,
   setVisibleNodes,
   visibleEdges,
@@ -424,21 +423,5 @@ const LegendComponent: React.FC<LegendProps> = ({
     document.body
   );
 };
-
-/**
- * Memoized Legend component for performance optimization
- * Custom comparison prevents re-renders when visibility records haven't changed
- */
-const Legend = React.memo(LegendComponent, (prevProps, nextProps) => {
-  // Compare visibility records and storageKey
-  return (
-    shallowEqual(prevProps.visibleNodes, nextProps.visibleNodes) &&
-    shallowEqual(prevProps.visibleEdges, nextProps.visibleEdges) &&
-    prevProps.storageKey === nextProps.storageKey
-    // Note: setVisibleNodes and setVisibleEdges are stable from useState/useGraphState
-  );
-});
-
-Legend.displayName = "Legend";
 
 export default Legend;
