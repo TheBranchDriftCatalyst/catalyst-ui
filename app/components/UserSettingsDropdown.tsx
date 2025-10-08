@@ -32,7 +32,7 @@ export function UserSettingsDropdown() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="h-8 w-8 cursor-pointer ring-1 ring-border/40 transition-all hover:ring-primary/50">
-          <AvatarImage src="/shadcn-avatar.png" alt="Settings" />
+          <AvatarImage src="shadcn-avatar.png" alt="Settings" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
