@@ -6,6 +6,7 @@ import { extname, relative, resolve } from "path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 import tsconfigPaths from "vite-tsconfig-paths";
+import tabsManifestPlugin from "./build/vite-plugin-tabs-manifest";
 
 // Plugin to preserve "use client" directives in build output
 function preserveUseClient() {
@@ -46,6 +47,7 @@ export default defineConfig({
   root: "./app",
   publicDir: "../public",
   plugins: [
+    tabsManifestPlugin(),
     react(),
     tailwindcss(),
     tsconfigPaths({
