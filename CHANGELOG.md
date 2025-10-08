@@ -3,6 +3,19 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+### [1.2.1](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v1.2.0...v1.2.1) (2025-10-08)
+
+
+### ♻️  REFACTORING
+
+* **hooks:** extract useControllableState hook to eliminate duplication ([2597ee2](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/2597ee2f8d334a25f83f3edac5f89e54978146f6)), closes [#4](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues/4)
+
+
+### ⚡ NEW FEATURES
+
+* **a11y:** add prefers-reduced-motion support to animation HOCs ([a693466](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/a693466f6cdacac94f3f8c5feda5c010c0c07eb4)), closes [#17](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues/17)
+* **utils:** add centralized logger utility with environment-aware levels ([457997c](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/457997cf5408e1bf3d5ebf009b65029cb9fabe3b)), closes [#5](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues/5)
+
 ## [1.2.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v1.1.4...v1.2.0) (2025-10-08)
 
 
