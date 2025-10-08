@@ -8,6 +8,39 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { parseChangelog, changelogEntryToTimelineData } from "@/catalyst-ui/utils/markdown";
 
+// Fallback changelog DTO for when CHANGELOG.md is not found
+const FALLBACK_CHANGELOG = `# Changelog
+
+All notable changes to this project will be documented in this file.
+
+## [1.0.0] - ${new Date().toISOString().split("T")[0]}
+
+### Added
+- Initial release of Catalyst UI component library
+- React components with TypeScript support
+- Tailwind CSS styling
+- Radix UI primitives integration
+- Storybook documentation
+
+### Features
+- **Card Components**: Flexible card layouts with multiple variants
+- **Form Components**: Accessible form controls with validation
+- **Animation HOCs**: Reusable animation wrappers (Flip, Fade, Slide, Bounce)
+- **Timeline Component**: Visual timeline for displaying chronological events
+- **Theme System**: Multi-theme support with dark/light variants
+- **Markdown Renderer**: Custom markdown rendering with syntax highlighting
+
+### Developer Experience
+- Full TypeScript support
+- Component stories in Storybook
+- Comprehensive documentation
+- Web Vitals monitoring integration
+
+---
+
+*This is a generated example changelog. Create a CHANGELOG.md file in your project root to see your actual changelog.*
+`;
+
 /**
  * Render achievement text with linked commit hashes
  * Converts (abc1234) -> clickable link to commit
@@ -61,7 +94,6 @@ function renderAchievementWithLinks(text: string, repoBaseUrl?: string): React.R
 export function ChangelogTab() {
   const [changelog, setChangelog] = useState<string>("");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Fetch CHANGELOG.md from the root of the project
@@ -75,7 +107,14 @@ export function ChangelogTab() {
         setLoading(false);
       })
       .catch(err => {
-        setError(err.message);
+        // Use fallback changelog when file is not found
+        console.warn(
+          "⚠️ CHANGELOG.md not found - using generated example changelog.",
+          "\nCreate a CHANGELOG.md file in your project's public directory to see your actual changelog.",
+          "\nOriginal error:",
+          err.message
+        );
+        setChangelog(FALLBACK_CHANGELOG);
         setLoading(false);
       });
   }, []);
@@ -92,19 +131,6 @@ export function ChangelogTab() {
         <Card>
           <CardHeader>
             <CardTitle>Loading Changelog...</CardTitle>
-          </CardHeader>
-        </Card>
-      </ScrollSnapItem>
-    );
-  }
-
-  if (error) {
-    return (
-      <ScrollSnapItem align="start">
-        <Card>
-          <CardHeader>
-            <CardTitle>Error Loading Changelog</CardTitle>
-            <CardDescription className="text-destructive">{error}</CardDescription>
           </CardHeader>
         </Card>
       </ScrollSnapItem>
