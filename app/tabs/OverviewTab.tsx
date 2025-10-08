@@ -10,6 +10,8 @@ import {
 } from "@/catalyst-ui/ui/table";
 import { ScrollSnapItem } from "@/catalyst-ui/effects";
 
+export const TAB_ORDER = 0;
+
 export function OverviewTab() {
   return (
     <div className="space-y-4 mt-0">

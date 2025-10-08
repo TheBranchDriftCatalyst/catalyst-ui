@@ -8,6 +8,8 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { parseChangelog, changelogEntryToTimelineData } from "@/catalyst-ui/utils/markdown";
 
+export const TAB_ORDER = 999;
+
 // Fallback changelog DTO for when CHANGELOG.md is not found
 const FALLBACK_CHANGELOG = `# Changelog
 

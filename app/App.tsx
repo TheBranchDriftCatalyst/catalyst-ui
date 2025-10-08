@@ -5,42 +5,12 @@ import { HeaderProvider } from "@/catalyst-ui/components/CatalystHeader/HeaderPr
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/catalyst-ui/ui/tabs";
 import { Toaster } from "@/catalyst-ui/ui/toaster";
 import { ScrollSnapContainer } from "@/catalyst-ui/effects";
-import { useState, useEffect, lazy, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { D4Loader } from "./components/D4Loader";
 import { UserSettingsDropdown } from "./components/UserSettingsDropdown";
 import { PerformanceMonitor } from "./components/PerformanceMonitor";
 
-// Lazy-load tab components using Vite's import.meta.glob for code-splitting
-const tabModules = import.meta.glob("./tabs/*Tab.tsx", { eager: false });
-
-// Create lazy components dynamically
-const tabComponents = Object.keys(tabModules).reduce(
-  (acc, path) => {
-    const tabName = path.match(/\.\/tabs\/(.+)Tab\.tsx$/)?.[1];
-    if (tabName) {
-      acc[`${tabName}Tab`] = lazy(() =>
-        tabModules[path]().then((m: any) => ({ default: m[`${tabName}Tab`] }))
-      );
-    }
-    return acc;
-  },
-  {} as Record<string, React.LazyExoticComponent<any>>
-);
-
-// Destructure for easier access
-const {
-  OverviewTab,
-  TokensTab,
-  TypographyTab,
-  FormsTab,
-  ComponentsTab,
-  DisplayTab,
-  CardsTab,
-  AnimationsTab,
-  ForceGraphTab,
-  ResumeTab,
-  ChangelogTab,
-} = tabComponents;
+import { tabComponents, initialTabs } from "./tabs/loader";
 
 function KitchenSink() {
   // Read initial tab from URL params
@@ -50,6 +20,29 @@ function KitchenSink() {
   };
 
   const [activeTab, setActiveTab] = useState(getInitialTab());
+
+  // Tabs state is initialized synchronously from the build-time manifest (initialTabs)
+  // and filtered to only include discovered components. This avoids any runtime
+  // imports of tab modules and preserves lazy loading for the component bundles.
+  const [TABS] = useState(() => {
+    const discoveredKeys = new Set(Object.keys(tabComponents));
+    const filtered = initialTabs.filter(t => discoveredKeys.has(t.compKey));
+    // Append any discovered components missing from manifest deterministically
+    for (const compKey of Object.keys(tabComponents)) {
+      if (!filtered.some(f => f.compKey === compKey)) {
+        const name = compKey.replace(/Tab$/, "");
+        const parts = name.split(/(?=[A-Z])/).filter(Boolean);
+        filtered.push({
+          compKey,
+          name,
+          value: parts.join("").toLowerCase(),
+          label: parts.join(" "),
+          order: filtered.length,
+        });
+      }
+    }
+    return filtered.sort((a, b) => a.order - b.order || a.name.localeCompare(b.name));
+  });
 
   // Update URL when tab changes
   useEffect(() => {
@@ -70,6 +63,8 @@ function KitchenSink() {
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
+
+  // No async metadata effect — manifest is trusted and loaded at build/dev start.
 
   const navigationItems = [
     // Performance Monitor (dev-only)
@@ -95,39 +90,15 @@ function KitchenSink() {
           userSettings={<UserSettingsDropdown />}
           tabs={
             <TabsList className="inline-flex h-auto items-center gap-1 bg-transparent p-0">
-              <TabsTrigger value="overview" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
-                Overview
-              </TabsTrigger>
-              <TabsTrigger value="tokens" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
-                Tokens
-              </TabsTrigger>
-              <TabsTrigger value="typography" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
-                Type
-              </TabsTrigger>
-              <TabsTrigger value="forms" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
-                Forms
-              </TabsTrigger>
-              <TabsTrigger value="components" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
-                Components
-              </TabsTrigger>
-              <TabsTrigger value="display" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
-                Display
-              </TabsTrigger>
-              <TabsTrigger value="cards" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
-                Cards
-              </TabsTrigger>
-              <TabsTrigger value="forcegraph" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
-                ForceGraph
-              </TabsTrigger>
-              <TabsTrigger value="animations" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
-                Animations
-              </TabsTrigger>
-              <TabsTrigger value="resume" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
-                Resume
-              </TabsTrigger>
-              <TabsTrigger value="changelog" className="text-xs md:text-sm px-2 md:px-3 py-1.5">
-                Changelog
-              </TabsTrigger>
+              {TABS.map(t => (
+                <TabsTrigger
+                  key={t.value}
+                  value={t.value}
+                  className="text-xs md:text-sm px-2 md:px-3 py-1.5"
+                >
+                  {t.label}
+                </TabsTrigger>
+              ))}
             </TabsList>
           }
         />
@@ -136,82 +107,15 @@ function KitchenSink() {
           behavior="mandatory"
           className="w-full h-[calc(100vh-80px)] overflow-y-auto scrollbar-hide p-6 md:p-8"
         >
-          {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-4 mt-0">
-            <Suspense fallback={<D4Loader />}>
-              <OverviewTab />
-            </Suspense>
-          </TabsContent>
-
-          {/* Design Tokens Tab */}
-          <TabsContent value="tokens" className="space-y-4 mt-0">
-            <Suspense fallback={<D4Loader />}>
-              <TokensTab />
-            </Suspense>
-          </TabsContent>
-
-          {/* Typography Tab */}
-          <TabsContent value="typography" className="space-y-4 mt-0">
-            <Suspense fallback={<D4Loader />}>
-              <TypographyTab />
-            </Suspense>
-          </TabsContent>
-
-          {/* Forms Tab */}
-          <TabsContent value="forms" className="space-y-4 mt-0">
-            <Suspense fallback={<D4Loader />}>
-              <FormsTab />
-            </Suspense>
-          </TabsContent>
-
-          {/* Components Tab */}
-          <TabsContent value="components" className="space-y-4 mt-0">
-            <Suspense fallback={<D4Loader />}>
-              <ComponentsTab />
-            </Suspense>
-          </TabsContent>
-
-          {/* Display Tab */}
-          <TabsContent value="display" className="space-y-4 mt-0">
-            <Suspense fallback={<D4Loader />}>
-              <DisplayTab />
-            </Suspense>
-          </TabsContent>
-
-          {/* Cards Tab */}
-          <TabsContent value="cards" className="space-y-4 mt-0">
-            <Suspense fallback={<D4Loader />}>
-              <CardsTab />
-            </Suspense>
-          </TabsContent>
-
-          {/* Animations Tab */}
-          <TabsContent value="animations" className="space-y-4 mt-0">
-            <Suspense fallback={<D4Loader />}>
-              <AnimationsTab />
-            </Suspense>
-          </TabsContent>
-
-          {/* Force Graph Tab */}
-          <TabsContent value="forcegraph" className="space-y-4 mt-0">
-            <Suspense fallback={<D4Loader />}>
-              <ForceGraphTab />
-            </Suspense>
-          </TabsContent>
-
-          {/* Resume Tab */}
-          <TabsContent value="resume" className="space-y-4 mt-0">
-            <Suspense fallback={<D4Loader />}>
-              <ResumeTab />
-            </Suspense>
-          </TabsContent>
-
-          {/* Changelog Tab */}
-          <TabsContent value="changelog" className="space-y-4 mt-0">
-            <Suspense fallback={<D4Loader />}>
-              <ChangelogTab />
-            </Suspense>
-          </TabsContent>
+          {/* Render tab contents by mapping the discovered TABS so labels, values, and component keys stay in sync */}
+          {TABS.map(t => {
+            const Comp = (tabComponents as any)[t.compKey];
+            return (
+              <TabsContent key={t.value} value={t.value} className="space-y-4 mt-0">
+                <Suspense fallback={<D4Loader />}>{Comp ? <Comp /> : null}</Suspense>
+              </TabsContent>
+            );
+          })}
         </ScrollSnapContainer>
       </Tabs>
     </div>

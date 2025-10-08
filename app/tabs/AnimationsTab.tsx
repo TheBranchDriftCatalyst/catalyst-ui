@@ -18,6 +18,8 @@ import { ScrollSnapItem } from "@/catalyst-ui/effects";
 import { D4Loader } from "../components/D4Loader";
 import { useTheme } from "@/catalyst-ui/contexts/Theme/ThemeContext";
 
+export const TAB_ORDER = 10;
+
 export function AnimationsTab() {
   const { effects, updateEffect } = useTheme();
 
