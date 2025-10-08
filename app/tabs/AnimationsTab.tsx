@@ -16,12 +16,20 @@ import { AnimatedSlideDemo } from "../demos/AnimatedSlideDemo";
 import { AnimatedBounceDemo } from "../demos/AnimatedBounceDemo";
 import { ScrollSnapItem } from "@/catalyst-ui/effects";
 import { D4Loader } from "../components/D4Loader";
+import { Toggle } from "@/catalyst-ui/ui/toggle";
+import { Slider } from "@/catalyst-ui/ui/slider";
+import { useState } from "react";
 import { useTheme } from "@/catalyst-ui/contexts/Theme/ThemeContext";
 
 export const TAB_ORDER = 10;
 
 export function AnimationsTab() {
   const { effects, updateEffect } = useTheme();
+  const [rotationSpeed, setRotationSpeed] = useState(1);
+  const [chromaIntensity, setChromaIntensity] = useState(0.6);
+  const [sparksEnabled, setSparksEnabled] = useState(true);
+  const [chromaEnabled, setChromaEnabled] = useState(true);
+  const [sparkFrequency, setSparkFrequency] = useState(0.06);
 
   return (
     <div className="space-y-6 mt-0">
@@ -173,7 +181,75 @@ export function AnimationsTab() {
             </Typography>
 
             <div className="border border-primary/20 rounded-lg bg-accent/5 p-4">
-              <D4Loader />
+              <D4Loader
+                rotationSpeed={rotationSpeed}
+                chromaIntensity={chromaIntensity}
+                sparksEnabled={sparksEnabled}
+                chromaEnabled={chromaEnabled}
+                sparkFrequency={sparkFrequency}
+              />
+              <div className="mt-4 grid grid-cols-2 gap-3">
+                <div className="space-y-2">
+                  <Label>Rotation Speed</Label>
+                  <Slider
+                    value={[rotationSpeed]}
+                    min={0}
+                    max={3}
+                    step={0.1}
+                    onValueChange={vals => setRotationSpeed(Number(vals[0] ?? 0))}
+                    showValue
+                    labelPosition="outside"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Chromatic Intensity</Label>
+                  <Slider
+                    value={[chromaIntensity]}
+                    min={0}
+                    max={1}
+                    step={0.05}
+                    onValueChange={vals => setChromaIntensity(Number(vals[0] ?? 0))}
+                    showValue
+                    labelPosition="outside"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label>Sparks</Label>
+                  <Toggle
+                    pressed={sparksEnabled}
+                    onPressedChange={setSparksEnabled}
+                    size="sm"
+                    aria-label="Toggle sparks"
+                  >
+                    Toggle
+                  </Toggle>
+                </div>
+                <div className="space-y-2">
+                  <Label>Chromatic</Label>
+                  <Toggle
+                    pressed={chromaEnabled}
+                    onPressedChange={setChromaEnabled}
+                    size="sm"
+                    aria-label="Toggle chromatic"
+                  >
+                    Toggle
+                  </Toggle>
+                </div>
+                <div className="col-span-2">
+                  <div className="space-y-2">
+                    <Label>Spark Frequency</Label>
+                    <Slider
+                      value={[sparkFrequency]}
+                      min={0}
+                      max={0.2}
+                      step={0.01}
+                      onValueChange={vals => setSparkFrequency(Number(vals[0] ?? 0))}
+                      showValue
+                      labelPosition="outside"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="p-3 bg-accent/10 border border-primary/20 rounded">
