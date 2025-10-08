@@ -44,6 +44,8 @@ jobs:
         run: |
           mkdir -p gh-pages
           cp -r dist/app/* gh-pages/
+          touch gh-pages/.nojekyll
+          ls -la gh-pages/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
