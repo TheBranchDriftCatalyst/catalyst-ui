@@ -3,6 +3,13 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+### [1.1.4](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v1.1.3...v1.1.4) (2025-10-08)
+
+
+### 🔧 BUG FIXES
+
+* remove [skip ci] from release commits to enable deployment ([a40e539](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/a40e539c243f0ff0cce680abea76d383ffb5ccf0))
+
 ### [1.1.3](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v1.1.2...v1.1.3) (2025-10-08)
 
 
