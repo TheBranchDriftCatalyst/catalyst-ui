@@ -2,6 +2,8 @@ import { clsx, type ClassValue } from "clsx";
 import React from "react";
 import { twMerge } from "tailwind-merge";
 
+export * from "./utils/logger";
+
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
 export const addKeysToChildren = (children: React.ReactNode): React.ReactNode => {
