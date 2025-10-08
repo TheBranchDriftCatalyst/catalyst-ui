@@ -23,7 +23,7 @@ interface ReactD3NodeProps {
   onDragEnd?: (event: any) => void;
 }
 
-const ReactD3Node: React.FC<ReactD3NodeProps> = ({
+const ReactD3NodeComponent: React.FC<ReactD3NodeProps> = ({
   data,
   isSelected = false,
   isHovered = false,
@@ -242,6 +242,32 @@ const ReactD3Node: React.FC<ReactD3NodeProps> = ({
     </g>
   );
 };
+
+/**
+ * Memoized ReactD3Node component for performance optimization
+ * Critical for large graphs with 100+ nodes - prevents unnecessary re-renders
+ */
+const ReactD3Node = React.memo(ReactD3NodeComponent, (prevProps, nextProps) => {
+  // Compare node data by position and id
+  const dataEqual =
+    prevProps.data.id === nextProps.data.id &&
+    prevProps.data.x === nextProps.data.x &&
+    prevProps.data.y === nextProps.data.y;
+
+  // Compare interaction states
+  const stateEqual =
+    prevProps.isSelected === nextProps.isSelected &&
+    prevProps.isHovered === nextProps.isHovered &&
+    prevProps.isDimmed === nextProps.isDimmed;
+
+  // Compare visual settings
+  const visualEqual =
+    prevProps.showLogo === nextProps.showLogo && prevProps.zoom === nextProps.zoom;
+
+  // Note: Event handlers and customRenderer are typically stable references
+
+  return dataEqual && stateEqual && visualEqual;
+});
 
 ReactD3Node.displayName = "ReactD3Node";
 

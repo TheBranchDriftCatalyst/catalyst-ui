@@ -32,7 +32,7 @@ const getEdgeColor = (kind: EdgeKind): string => {
   }
 };
 
-const ReactD3Edge: React.FC<ReactD3EdgeProps> = ({
+const ReactD3EdgeComponent: React.FC<ReactD3EdgeProps> = ({
   data,
   orthogonal = false,
   allNodes = [],
@@ -167,6 +167,32 @@ const ReactD3Edge: React.FC<ReactD3EdgeProps> = ({
     </g>
   );
 };
+
+/**
+ * Memoized ReactD3Edge component for performance optimization
+ * Critical for large graphs with many edges - prevents unnecessary re-renders
+ */
+const ReactD3Edge = React.memo(ReactD3EdgeComponent, (prevProps, nextProps) => {
+  // Compare edge data by source/target positions
+  const dataEqual =
+    prevProps.data.source === nextProps.data.source &&
+    prevProps.data.target === nextProps.data.target &&
+    prevProps.data.kind === nextProps.data.kind;
+
+  // Compare visual settings
+  const visualEqual =
+    prevProps.orthogonal === nextProps.orthogonal &&
+    prevProps.isDimmed === nextProps.isDimmed &&
+    prevProps.edgeIndex === nextProps.edgeIndex &&
+    prevProps.totalEdgesBetweenNodes === nextProps.totalEdgesBetweenNodes;
+
+  // Note: Event handlers are typically stable references
+  // allNodes array reference should be stable from parent
+
+  return dataEqual && visualEqual;
+});
+
+ReactD3Edge.displayName = "ReactD3Edge";
 
 export default ReactD3Edge;
 export type { ReactD3EdgeProps };
