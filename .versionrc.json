@@ -11,7 +11,7 @@
     { "type": "build", "section": "📦 BUILD SYSTEM" },
     { "type": "ci", "section": "🤖 CI/CD PIPELINE" }
   ],
-  "releaseCommitMessageFormat": "chore(release): v{{currentTag}} 🎉 [skip ci]",
+  "releaseCommitMessageFormat": "chore(release): v{{currentTag}} 🎉",
   "skip": {
     "changelog": false
   },
