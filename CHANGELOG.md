@@ -3,6 +3,25 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+## [1.2.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v1.1.4...v1.2.0) (2025-10-08)
+
+
+### 📚 DOCUMENTATION
+
+* add comprehensive mass-cleanup refactor proposal ([5e0af62](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/5e0af62622df351101065284dc1ee4fb224df000))
+
+
+### 📦 BUILD SYSTEM
+
+* add dynamic tab manifest generation ([dd50d7f](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/dd50d7fb415d4ce0c5a03ee90332200cd87a2ec4))
+
+
+### ⚡ NEW FEATURES
+
+* **animations:** convert effect status badges to toggle buttons ([8671290](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/8671290d55a5a8ec8ab831141e3001038f656fb5))
+* **changelog:** add fallback example changelog with console warning ([72d033c](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/72d033cced5434c24782a9a3d71567158920648e))
+* implement dynamic tab lazy loading system ([fd197e8](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/fd197e89fe77ad37f413ba2bc9b6c4638121d205))
+
 ### [1.1.4](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v1.1.3...v1.1.4) (2025-10-08)
 
 
