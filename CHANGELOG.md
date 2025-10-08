@@ -3,6 +3,13 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+### [1.1.3](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v1.1.2...v1.1.3) (2025-10-08)
+
+
+### 🔧 BUG FIXES
+
+* use relative paths for avatar images to work with base path ([0a8242d](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/0a8242d0cad296b9b35e25a51f0f50d65815117e))
+
 ### [1.1.2](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v1.1.0...v1.1.2) (2025-10-08)
 
 
