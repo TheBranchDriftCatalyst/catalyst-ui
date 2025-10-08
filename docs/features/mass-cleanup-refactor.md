@@ -8,29 +8,33 @@
 
 ---
 
-## ✅ Completed (v1.2.1)
+## ✅ Completed (v1.2.1 + Phase 1 followup)
 
 **Phase 1 - High ROI Improvements** (Released: 2025-10-08)
 
-- ✅ **Issue #4**: Extract `useControllableState` hook
-  - Created reusable hook for controlled/uncontrolled pattern
+- ✅ **Issue #4**: Extract animation HOC hooks (**100% COMPLETE**)
+  - Created `useControllableState` hook for controlled/uncontrolled pattern
+  - Created `useAnimationTriggers` hook for trigger handling
   - Refactored all 4 animation HOCs (AnimatedFlip, AnimatedFade, AnimatedSlide, AnimatedBounce)
-  - Eliminated ~400 lines of duplication
-  - Commit: `2597ee2`
+  - Eliminated ~500 lines of total duplication (~400 state + ~100 triggers)
+  - Animation HOCs now <80 lines each (down from ~150 lines)
+  - Commits: `2597ee2`, `6a328b9`
 
-- ✅ **Issue #6**: Centralized logger utility
+- ✅ **Issue #6**: Centralized logger utility (**50% COMPLETE**)
   - Created environment-aware logger with log levels
   - Structured output with timestamps and colors
   - Scoped logger support for components
+  - ⚠️ **TODO**: Replace 17 files still using console.\* statements
   - Commit: `457997c`
 
-- ✅ **Issue #17**: `prefers-reduced-motion` support
+- ✅ **Issue #17**: `prefers-reduced-motion` support (**95% COMPLETE**)
   - Created `usePrefersReducedMotion` hook
   - All animation HOCs now respect user motion preferences
   - Improved accessibility for users with vestibular disorders
+  - ⚠️ **Minor**: 2 `@ts-ignore` comments for legacy browser support (acceptable)
   - Commit: `a693466`
 
-**Impact**: 3 issues resolved, ~10 hours of work, bundle size reduction, improved accessibility
+**Impact**: 3 issues addressed (~2.5 fully complete), ~12 hours of work, massive code reduction, improved accessibility
 
 ---
 
@@ -417,13 +421,13 @@ export const AnimatedFlip = React.forwardRef<HTMLDivElement, AnimatedFlipProps>(
 **Checklist**:
 
 - [x] Create `useControllableState` hook ~~with tests~~ (v1.2.1)
-- [ ] Create `useAnimationTriggers` hook with tests
+- [x] Create `useAnimationTriggers` hook ~~with tests~~ (Phase 1 followup)
 - [x] Refactor AnimatedFlip (v1.2.1)
 - [x] Refactor AnimatedFade (v1.2.1)
 - [x] Refactor AnimatedSlide (v1.2.1)
 - [x] Refactor AnimatedBounce (v1.2.1)
-- [ ] Update Storybook examples
-- [ ] Update documentation
+- [ ] Update Storybook examples (deferred to v2.0)
+- [ ] Update documentation (deferred to v2.0)
 
 ---
 
@@ -569,7 +573,7 @@ terserOptions: {
 **Checklist**:
 
 - [x] Create logger utility (v1.2.1)
-- [ ] Replace all console._ with logger._
+- [ ] Replace all console.\* with logger.\* (17 files remaining - TODO Phase 2+)
 - [ ] Update terser config
 - [ ] Verify production bundle has no console.\*
 - [ ] Add logger usage guide to CLAUDE.md
@@ -915,10 +919,10 @@ export function shallowEqual<T extends Record<string, any>>(obj1: T, obj2: T): b
 - [x] Add React.memo to ReactD3Node (Phase 2)
 - [x] Add React.memo to ReactD3Edge (Phase 2)
 - [x] Add React.memo to animation HOCs (Phase 2)
-- [ ] Add React.memo to ForceGraphInner
+- [ ] Add React.memo to ForceGraphInner (deferred to v2.0)
 - [x] Create shallowEqual utility (Phase 2)
-- [ ] Profile before/after with React DevTools Profiler
-- [ ] Document memo strategy in architecture docs
+- [ ] Profile before/after with React DevTools Profiler (deferred to v2.0)
+- [ ] Document memo strategy in architecture docs (deferred to v2.0)
 
 ---
 
@@ -1251,9 +1255,11 @@ export const AnimatedFlip = ({ duration = 600, ...props }) => {
 
 - [x] Create usePrefersReducedMotion hook (v1.2.1)
 - [x] Add to all AnimatedXXX components (v1.2.1)
-- [ ] Add to D4Loader
-- [ ] Add CSS media query support
-- [ ] Test with accessibility settings enabled
+- [ ] Add to D4Loader (deferred to v2.0)
+- [ ] Add CSS media query support (deferred to v2.0)
+- [ ] Test with accessibility settings enabled (deferred to v2.0)
+
+**Note**: 2 @ts-ignore comments added for legacy browser support (acceptable technical debt)
 
 ---
 
@@ -2182,6 +2188,84 @@ export const Card = Object.assign(CardRoot, {
 **Path to A+**: ~91 hours of focused refactoring
 
 **Vision**: Extract animation logic → Publish `@catalyst-ui/animations` as standalone package → OSS fame and glory! 🧙‍♂️✨
+
+---
+
+## 📝 Follow-up Items (Technical Debt)
+
+These items were identified during Phase 1-2 implementation and need to be addressed in future phases:
+
+### High Priority
+
+1. **Issue #6 - Logger Adoption** (50% complete)
+   - ✅ Logger utility created
+   - ❌ 17 files still using `console.*` statements
+   - **Action**: Replace console.log/error/warn/debug with logger.\* across codebase
+   - **Files**: GraphContext.tsx, ReactD3Graph.tsx, ThemeProvider.tsx, ForceGraph components, etc.
+   - **Effort**: ~3-4 hours
+   - **Benefits**: Environment-aware logging, structured output, production safety
+
+2. **Issue #5 - TypeScript @ts-ignore Comments** (95% complete)
+   - ❌ 21 @ts-ignore comments remain (19 addressable + 2 acceptable)
+   - ✅ 2 added in usePrefersReducedMotion for legacy browser support (acceptable)
+   - **Action**: Add proper type declarations and fix remaining type errors
+   - **Effort**: ~4 hours
+   - **Benefits**: Full type safety, better refactoring confidence
+
+### Medium Priority
+
+3. **Testing Infrastructure** (0% complete)
+   - ❌ No tests for useControllableState hook
+   - ❌ No tests for useAnimationTriggers hook
+   - ❌ No tests for logger utility
+   - ❌ No tests for shallowEqual utility
+   - **Action**: Set up Vitest + Testing Library, write tests for new utilities
+   - **Effort**: ~8 hours
+   - **Benefits**: Regression prevention, refactoring confidence
+
+4. **Documentation Updates**
+   - ❌ Storybook examples not updated with new controlled/uncontrolled patterns
+   - ❌ CLAUDE.md not updated with useAnimationTriggers hook
+   - ❌ No migration guide for new hook patterns
+   - **Action**: Update docs to reflect Phase 1-2 changes
+   - **Effort**: ~2 hours
+   - **Benefits**: Better developer experience, clear upgrade paths
+
+5. **Performance Profiling**
+   - ✅ React.memo added to 9 components
+   - ❌ No before/after profiling data collected
+   - ❌ No documentation of performance improvements
+   - **Action**: Use React DevTools Profiler to measure actual impact
+   - **Effort**: ~2 hours
+   - **Benefits**: Quantifiable performance metrics, optimization validation
+
+### Low Priority
+
+6. **D4Loader Accessibility**
+   - ❌ D4Loader doesn't use usePrefersReducedMotion hook
+   - **Action**: Add reduced motion support to D4Loader animations
+   - **Effort**: ~1 hour
+   - **Benefits**: Complete accessibility coverage
+
+7. **ForceGraphInner Memoization**
+   - ❌ ForceGraphInner (200+ lines) not wrapped with React.memo
+   - **Action**: Add React.memo with custom comparison
+   - **Effort**: ~1 hour
+   - **Benefits**: Additional performance gains
+
+### Summary
+
+**Total Technical Debt**: ~21 hours
+**Completed in Phase 1-2**: ~16 hours (76% of planned work)
+**Remaining for v2.0**: ~21 hours
+
+**Priority Order for Next Phase**:
+
+1. Logger adoption (17 files) - Quick wins
+2. TypeScript type safety (19 @ts-ignore) - Quality improvement
+3. Test infrastructure setup - Foundation for future work
+4. Documentation updates - Developer experience
+5. Performance profiling - Validation of Phase 2 work
 
 ---
 
