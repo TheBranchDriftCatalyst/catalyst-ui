@@ -1,6 +1,8 @@
 "use client";
 
 import * as React from "react";
+import { useControllableState } from "@/catalyst-ui/hooks/useControllableState";
+import { usePrefersReducedMotion } from "@/catalyst-ui/hooks/usePrefersReducedMotion";
 import type { AnimationTrigger } from "../types";
 
 export interface AnimatedBounceProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -47,45 +49,41 @@ export const AnimatedBounce = React.forwardRef<HTMLDivElement, AnimatedBouncePro
     },
     ref
   ) => {
-    const [internalIsBouncing, setInternalIsBouncing] = React.useState(false);
+    const [isBouncing, setIsBouncing] = useControllableState(
+      controlledIsBouncing,
+      false,
+      onBounceChange
+    );
+    const prefersReducedMotion = usePrefersReducedMotion();
 
-    // Use controlled state if provided, otherwise use internal state
-    const isControlled = controlledIsBouncing !== undefined;
-    const isBouncing = isControlled ? controlledIsBouncing : internalIsBouncing;
-
-    const handleBounceChange = (newBouncing: boolean) => {
-      if (isControlled) {
-        onBounceChange?.(newBouncing);
-      } else {
-        setInternalIsBouncing(newBouncing);
-      }
-    };
+    // Respect user's motion preferences
+    const effectiveDuration = prefersReducedMotion ? 0 : duration;
 
     const handleMouseEnter = () => {
       if (trigger === "hover") {
-        handleBounceChange(true);
+        setIsBouncing(true);
       }
     };
 
     const handleMouseLeave = () => {
       if (trigger === "hover") {
-        handleBounceChange(false);
+        setIsBouncing(false);
       }
     };
 
     const handleClick = () => {
-      if (trigger === "click" && !isControlled) {
-        handleBounceChange(true);
+      if (trigger === "click") {
+        setIsBouncing(true);
         // Auto-reset after animation completes
         setTimeout(() => {
-          handleBounceChange(false);
-        }, duration);
+          setIsBouncing(false);
+        }, effectiveDuration);
       }
     };
 
     // Bounce animation using cubic-bezier for spring-like effect
     const containerStyle: React.CSSProperties = {
-      transition: `transform ${duration}ms cubic-bezier(0.68, -0.55, 0.265, 1.55)`,
+      transition: `transform ${effectiveDuration}ms cubic-bezier(0.68, -0.55, 0.265, 1.55)`,
       transform: isBouncing ? `scale(${intensity})` : "scale(1)",
       display: "inline-block",
     };
@@ -96,7 +94,7 @@ export const AnimatedBounce = React.forwardRef<HTMLDivElement, AnimatedBouncePro
       style: containerStyle,
       onMouseEnter: handleMouseEnter,
       onMouseLeave: handleMouseLeave,
-      ...(isControlled ? {} : { onClick: handleClick }),
+      onClick: handleClick,
       ...props,
     };
 

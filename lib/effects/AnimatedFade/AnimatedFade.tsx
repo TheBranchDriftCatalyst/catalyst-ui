@@ -1,6 +1,8 @@
 "use client";
 
 import * as React from "react";
+import { useControllableState } from "@/catalyst-ui/hooks/useControllableState";
+import { usePrefersReducedMotion } from "@/catalyst-ui/hooks/usePrefersReducedMotion";
 import type { AnimationTrigger } from "../types";
 
 export interface AnimatedFadeProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -44,40 +46,36 @@ export const AnimatedFade = React.forwardRef<HTMLDivElement, AnimatedFadeProps>(
     },
     ref
   ) => {
-    const [internalIsVisible, setInternalIsVisible] = React.useState(false);
+    const [isVisible, setIsVisible] = useControllableState(
+      controlledIsVisible,
+      false,
+      onVisibilityChange
+    );
+    const prefersReducedMotion = usePrefersReducedMotion();
 
-    // Use controlled state if provided, otherwise use internal state
-    const isControlled = controlledIsVisible !== undefined;
-    const isVisible = isControlled ? controlledIsVisible : internalIsVisible;
-
-    const handleVisibilityChange = (newVisible: boolean) => {
-      if (isControlled) {
-        onVisibilityChange?.(newVisible);
-      } else {
-        setInternalIsVisible(newVisible);
-      }
-    };
+    // Respect user's motion preferences
+    const effectiveDuration = prefersReducedMotion ? 0 : duration;
 
     const handleMouseEnter = () => {
       if (trigger === "hover") {
-        handleVisibilityChange(true);
+        setIsVisible(true);
       }
     };
 
     const handleMouseLeave = () => {
       if (trigger === "hover") {
-        handleVisibilityChange(false);
+        setIsVisible(false);
       }
     };
 
     const handleClick = () => {
-      if (trigger === "click" && !isControlled) {
-        handleVisibilityChange(!isVisible);
+      if (trigger === "click") {
+        setIsVisible(!isVisible);
       }
     };
 
     const containerStyle: React.CSSProperties = {
-      transition: `opacity ${duration}ms ease-in-out`,
+      transition: `opacity ${effectiveDuration}ms ease-in-out`,
       opacity: isVisible ? 1 : 0,
       pointerEvents: isVisible ? "auto" : "none",
     };
@@ -88,7 +86,7 @@ export const AnimatedFade = React.forwardRef<HTMLDivElement, AnimatedFadeProps>(
       style: containerStyle,
       onMouseEnter: handleMouseEnter,
       onMouseLeave: handleMouseLeave,
-      ...(isControlled ? {} : { onClick: handleClick }),
+      onClick: handleClick,
       ...props,
     };
 

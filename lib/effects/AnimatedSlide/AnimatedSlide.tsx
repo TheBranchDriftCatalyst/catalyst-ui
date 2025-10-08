@@ -1,6 +1,8 @@
 "use client";
 
 import * as React from "react";
+import { useControllableState } from "@/catalyst-ui/hooks/useControllableState";
+import { usePrefersReducedMotion } from "@/catalyst-ui/hooks/usePrefersReducedMotion";
 import type { AnimationTrigger, SlideDirection } from "../types";
 
 export interface AnimatedSlideProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -50,35 +52,31 @@ export const AnimatedSlide = React.forwardRef<HTMLDivElement, AnimatedSlideProps
     },
     ref
   ) => {
-    const [internalIsVisible, setInternalIsVisible] = React.useState(false);
+    const [isVisible, setIsVisible] = useControllableState(
+      controlledIsVisible,
+      false,
+      onVisibilityChange
+    );
+    const prefersReducedMotion = usePrefersReducedMotion();
 
-    // Use controlled state if provided, otherwise use internal state
-    const isControlled = controlledIsVisible !== undefined;
-    const isVisible = isControlled ? controlledIsVisible : internalIsVisible;
-
-    const handleVisibilityChange = (newVisible: boolean) => {
-      if (isControlled) {
-        onVisibilityChange?.(newVisible);
-      } else {
-        setInternalIsVisible(newVisible);
-      }
-    };
+    // Respect user's motion preferences
+    const effectiveDuration = prefersReducedMotion ? 0 : duration;
 
     const handleMouseEnter = () => {
       if (trigger === "hover") {
-        handleVisibilityChange(true);
+        setIsVisible(true);
       }
     };
 
     const handleMouseLeave = () => {
       if (trigger === "hover") {
-        handleVisibilityChange(false);
+        setIsVisible(false);
       }
     };
 
     const handleClick = () => {
-      if (trigger === "click" && !isControlled) {
-        handleVisibilityChange(!isVisible);
+      if (trigger === "click") {
+        setIsVisible(!isVisible);
       }
     };
 
@@ -101,7 +99,7 @@ export const AnimatedSlide = React.forwardRef<HTMLDivElement, AnimatedSlideProps
     };
 
     const containerStyle: React.CSSProperties = {
-      transition: `transform ${duration}ms ease-in-out, opacity ${duration}ms ease-in-out`,
+      transition: `transform ${effectiveDuration}ms ease-in-out, opacity ${effectiveDuration}ms ease-in-out`,
       transform: getTransform(),
       opacity: isVisible ? 1 : 0,
       pointerEvents: isVisible ? "auto" : "none",
@@ -113,7 +111,7 @@ export const AnimatedSlide = React.forwardRef<HTMLDivElement, AnimatedSlideProps
       style: containerStyle,
       onMouseEnter: handleMouseEnter,
       onMouseLeave: handleMouseLeave,
-      ...(isControlled ? {} : { onClick: handleClick }),
+      onClick: handleClick,
       ...props,
     };
 

@@ -1,6 +1,8 @@
 "use client";
 
 import * as React from "react";
+import { useControllableState } from "@/catalyst-ui/hooks/useControllableState";
+import { usePrefersReducedMotion } from "@/catalyst-ui/hooks/usePrefersReducedMotion";
 import type { AnimationTrigger, FlipDirection } from "../types";
 
 export interface AnimatedFlipProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -53,35 +55,31 @@ export const AnimatedFlip = React.forwardRef<HTMLDivElement, AnimatedFlipProps>(
     },
     ref
   ) => {
-    const [internalIsFlipped, setInternalIsFlipped] = React.useState(false);
+    const [isFlipped, setIsFlipped] = useControllableState(
+      controlledIsFlipped,
+      false,
+      onFlipChange
+    );
+    const prefersReducedMotion = usePrefersReducedMotion();
 
-    // Use controlled state if provided, otherwise use internal state
-    const isControlled = controlledIsFlipped !== undefined;
-    const isFlipped = isControlled ? controlledIsFlipped : internalIsFlipped;
-
-    const handleFlipChange = (newFlipped: boolean) => {
-      if (isControlled) {
-        onFlipChange?.(newFlipped);
-      } else {
-        setInternalIsFlipped(newFlipped);
-      }
-    };
+    // Respect user's motion preferences - disable animation if preferred
+    const effectiveDuration = prefersReducedMotion ? 0 : duration;
 
     const handleMouseEnter = () => {
       if (trigger === "hover") {
-        handleFlipChange(true);
+        setIsFlipped(true);
       }
     };
 
     const handleMouseLeave = () => {
       if (trigger === "hover") {
-        handleFlipChange(false);
+        setIsFlipped(false);
       }
     };
 
     const handleClick = () => {
-      if (trigger === "click" && !isControlled) {
-        handleFlipChange(!isFlipped);
+      if (trigger === "click") {
+        setIsFlipped(!isFlipped);
       }
     };
 
@@ -92,7 +90,7 @@ export const AnimatedFlip = React.forwardRef<HTMLDivElement, AnimatedFlipProps>(
     };
 
     const flipperStyle: React.CSSProperties = {
-      transition: `transform ${duration}ms`,
+      transition: `transform ${effectiveDuration}ms`,
       transformStyle: "preserve-3d",
       position: "relative",
       transform: isFlipped
@@ -128,7 +126,7 @@ export const AnimatedFlip = React.forwardRef<HTMLDivElement, AnimatedFlipProps>(
       style: containerStyle,
       onMouseEnter: handleMouseEnter,
       onMouseLeave: handleMouseLeave,
-      ...(isControlled ? {} : { onClick: handleClick }),
+      onClick: handleClick,
       ...props,
     };
 
