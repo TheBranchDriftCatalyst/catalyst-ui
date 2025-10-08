@@ -37,7 +37,7 @@ export interface AnimatedSlideProps extends React.HTMLAttributes<HTMLDivElement>
  * </AnimatedSlide>
  * ```
  */
-export const AnimatedSlide = React.forwardRef<HTMLDivElement, AnimatedSlideProps>(
+const AnimatedSlideComponent = React.forwardRef<HTMLDivElement, AnimatedSlideProps>(
   (
     {
       children,
@@ -119,6 +119,12 @@ export const AnimatedSlide = React.forwardRef<HTMLDivElement, AnimatedSlideProps
   }
 );
 
+AnimatedSlideComponent.displayName = "AnimatedSlideComponent";
+
+/**
+ * Memoized AnimatedSlide component for performance optimization
+ */
+export const AnimatedSlide = React.memo(AnimatedSlideComponent);
 AnimatedSlide.displayName = "AnimatedSlide";
 
 export default AnimatedSlide;

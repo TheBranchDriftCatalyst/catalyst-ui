@@ -3,6 +3,7 @@ import React from "react";
 import { twMerge } from "tailwind-merge";
 
 export * from "./utils/logger";
+export * from "./utils/shallowEqual";
 
 export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 

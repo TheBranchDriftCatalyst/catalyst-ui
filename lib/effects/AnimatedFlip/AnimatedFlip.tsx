@@ -40,7 +40,7 @@ export interface AnimatedFlipProps extends React.HTMLAttributes<HTMLDivElement> 
  * />
  * ```
  */
-export const AnimatedFlip = React.forwardRef<HTMLDivElement, AnimatedFlipProps>(
+const AnimatedFlipComponent = React.forwardRef<HTMLDivElement, AnimatedFlipProps>(
   (
     {
       front,
@@ -144,6 +144,13 @@ export const AnimatedFlip = React.forwardRef<HTMLDivElement, AnimatedFlipProps>(
   }
 );
 
+AnimatedFlipComponent.displayName = "AnimatedFlipComponent";
+
+/**
+ * Memoized AnimatedFlip component for performance optimization
+ * Prevents unnecessary re-renders when props haven't changed
+ */
+export const AnimatedFlip = React.memo(AnimatedFlipComponent);
 AnimatedFlip.displayName = "AnimatedFlip";
 
 export default AnimatedFlip;

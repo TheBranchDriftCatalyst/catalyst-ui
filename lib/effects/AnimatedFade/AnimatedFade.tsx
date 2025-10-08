@@ -33,7 +33,7 @@ export interface AnimatedFadeProps extends React.HTMLAttributes<HTMLDivElement> 
  * </AnimatedFade>
  * ```
  */
-export const AnimatedFade = React.forwardRef<HTMLDivElement, AnimatedFadeProps>(
+const AnimatedFadeComponent = React.forwardRef<HTMLDivElement, AnimatedFadeProps>(
   (
     {
       children,
@@ -94,6 +94,12 @@ export const AnimatedFade = React.forwardRef<HTMLDivElement, AnimatedFadeProps>(
   }
 );
 
+AnimatedFadeComponent.displayName = "AnimatedFadeComponent";
+
+/**
+ * Memoized AnimatedFade component for performance optimization
+ */
+export const AnimatedFade = React.memo(AnimatedFadeComponent);
 AnimatedFade.displayName = "AnimatedFade";
 
 export default AnimatedFade;

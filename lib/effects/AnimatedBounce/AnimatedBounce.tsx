@@ -35,7 +35,7 @@ export interface AnimatedBounceProps extends React.HTMLAttributes<HTMLDivElement
  * </AnimatedBounce>
  * ```
  */
-export const AnimatedBounce = React.forwardRef<HTMLDivElement, AnimatedBounceProps>(
+const AnimatedBounceComponent = React.forwardRef<HTMLDivElement, AnimatedBounceProps>(
   (
     {
       children,
@@ -102,6 +102,12 @@ export const AnimatedBounce = React.forwardRef<HTMLDivElement, AnimatedBouncePro
   }
 );
 
+AnimatedBounceComponent.displayName = "AnimatedBounceComponent";
+
+/**
+ * Memoized AnimatedBounce component for performance optimization
+ */
+export const AnimatedBounce = React.memo(AnimatedBounceComponent);
 AnimatedBounce.displayName = "AnimatedBounce";
 
 export default AnimatedBounce;
