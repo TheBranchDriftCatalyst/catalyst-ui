@@ -2,10 +2,10 @@
   "types": [
     { "type": "feat", "section": "⚡ NEW FEATURES" },
     { "type": "fix", "section": "🔧 BUG FIXES" },
-    { "type": "chore", "section": "🛠️  MAINTENANCE" },
+    { "type": "chore", "section": "🛠️ MAINTENANCE" },
     { "type": "docs", "section": "📚 DOCUMENTATION" },
     { "type": "style", "section": "💎 CODE STYLE" },
-    { "type": "refactor", "section": "♻️  REFACTORING" },
+    { "type": "refactor", "section": "♻️ REFACTORING" },
     { "type": "perf", "section": "🚀 PERFORMANCE" },
     { "type": "test", "section": "🧪 TESTING" },
     { "type": "build", "section": "📦 BUILD SYSTEM" },
@@ -18,5 +18,8 @@
   "header": "# 🔮 CATALYST UI CHANGELOG\n\n> **NEURAL INTERFACE ENGAGED** · Component library transmission log\n\n",
   "commitUrlFormat": "{{host}}/{{owner}}/{{repository}}/commit/{{hash}}",
   "compareUrlFormat": "{{host}}/{{owner}}/{{repository}}/compare/{{previousTag}}...{{currentTag}}",
-  "issueUrlFormat": "{{host}}/{{owner}}/{{repository}}/issues/{{id}}"
+  "issueUrlFormat": "{{host}}/{{owner}}/{{repository}}/issues/{{id}}",
+  "scripts": {
+    "postchangelog": "sed -i '' 's/^\\* /- /g' CHANGELOG.md"
+  }
 }
