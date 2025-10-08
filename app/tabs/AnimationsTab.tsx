@@ -17,10 +17,9 @@ import { AnimatedBounceDemo } from "../demos/AnimatedBounceDemo";
 import { ScrollSnapItem } from "@/catalyst-ui/effects";
 import { D4Loader } from "../components/D4Loader";
 import { useTheme } from "@/catalyst-ui/contexts/Theme/ThemeContext";
-import { Badge } from "@/catalyst-ui/ui/badge";
 
 export function AnimationsTab() {
-  const { effects } = useTheme();
+  const { effects, updateEffect } = useTheme();
 
   return (
     <div className="space-y-6 mt-0">
@@ -327,18 +326,34 @@ export function AnimationsTab() {
                     Current Effect Status:
                   </Typography>
                   <div className="flex flex-wrap gap-2">
-                    <Badge variant={effects.glow ? "default" : "outline"}>
+                    <Button
+                      variant={effects.glow ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => updateEffect("glow", !effects.glow)}
+                    >
                       Glow: {effects.glow ? "✅ ON" : "❌ OFF"}
-                    </Badge>
-                    <Badge variant={effects.scanlines ? "default" : "outline"}>
+                    </Button>
+                    <Button
+                      variant={effects.scanlines ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => updateEffect("scanlines", !effects.scanlines)}
+                    >
                       Scanlines: {effects.scanlines ? "✅ ON" : "❌ OFF"}
-                    </Badge>
-                    <Badge variant={effects.borderAnimations ? "default" : "outline"}>
+                    </Button>
+                    <Button
+                      variant={effects.borderAnimations ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => updateEffect("borderAnimations", !effects.borderAnimations)}
+                    >
                       Border Animations: {effects.borderAnimations ? "✅ ON" : "❌ OFF"}
-                    </Badge>
-                    <Badge variant={effects.gradientShift ? "default" : "outline"}>
+                    </Button>
+                    <Button
+                      variant={effects.gradientShift ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => updateEffect("gradientShift", !effects.gradientShift)}
+                    >
                       Gradient Shift: {effects.gradientShift ? "✅ ON" : "❌ OFF"}
-                    </Badge>
+                    </Button>
                   </div>
                 </div>
                 {/* Glow Layer */}
