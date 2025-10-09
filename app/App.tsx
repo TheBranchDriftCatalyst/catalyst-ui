@@ -66,13 +66,17 @@ function KitchenSink() {
 
   // No async metadata effect — manifest is trusted and loaded at build/dev start.
 
+  // Storybook URL: dev uses localhost, production uses relative path
+  const storybookUrl = import.meta.env.DEV
+    ? "http://localhost:6006"
+    : `${import.meta.env.BASE_URL}storybook/`;
+
   const navigationItems = [
     // Performance Monitor (dev-only)
     <PerformanceMonitor key="performance" />,
-    // TODO: probably need to turn this into a env var and handle it in gh-pages and our build to link them???
     <a
       key="storybook"
-      href="http://localhost:6006"
+      href={storybookUrl}
       target="_blank"
       rel="noopener noreferrer"
       className="text-sm hover:text-primary transition-colors"

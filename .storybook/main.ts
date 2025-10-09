@@ -8,7 +8,7 @@ const config: StorybookConfig = {
     "@storybook/addon-links",
     "@storybook/addon-themes",
     "@storybook/addon-docs",
-    "storybook-design-token",
+    // "storybook-design-token", // Disabled - causing build errors with Font presenter
   ],
 
   async viteFinal(config) {
@@ -17,8 +17,18 @@ const config: StorybookConfig = {
     const tailwindcss = (await import("@tailwindcss/vite")).default;
     const tsconfigPaths = (await import("vite-tsconfig-paths")).default;
 
+    // Support base path for GitHub Pages deployment
+    const basePath = process.env.STORYBOOK_BASE_PATH || "/";
+
+    // Filter out vite-plugin-dts - we don't need declaration files for Storybook
+    const filteredPlugins = (config.plugins || []).filter((plugin: any) => {
+      return plugin?.name !== "vite:dts";
+    });
+
     return mergeConfig(config, {
+      base: basePath,
       plugins: [
+        ...filteredPlugins,
         // Path resolution MUST come first, before any transformations
         tsconfigPaths({
           projects: [resolve(__dirname, "../tsconfig.json")],

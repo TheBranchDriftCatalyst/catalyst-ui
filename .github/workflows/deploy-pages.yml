@@ -35,17 +35,10 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Build App
-        run: yarn build:app
+      - name: Run CI Build Script
+        run: ./scripts/build-ci.sh
         env:
-          VITE_BASE_PATH: /catalyst-ui/
-
-      - name: Prepare GitHub Pages deployment
-        run: |
-          mkdir -p gh-pages
-          cp -r dist/app/* gh-pages/
-          touch gh-pages/.nojekyll
-          ls -la gh-pages/
+          BASE_PATH: /catalyst-ui/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
