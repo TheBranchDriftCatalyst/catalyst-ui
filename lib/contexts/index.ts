@@ -1,6 +1,7 @@
+// Context Providers
 export * from "./Theme";
 export * from "./Card";
-// export * from './Debug'
-export * from "../components/CatalystHeader";
 
-// require('./*');
+// NOTE: CatalystHeader exports HeaderProvider
+// Exported here for convenience, but lives in components/
+export * from "../components/CatalystHeader";
