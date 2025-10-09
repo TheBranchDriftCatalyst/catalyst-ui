@@ -192,6 +192,14 @@ export function UserSettingsDropdown() {
                   <span className="text-sm font-mono">{__GIT_HASH__}</span>
                 </div>
               </div>
+              <div className="space-y-1">
+                <Label className="text-xs font-semibold text-muted-foreground">Last Commit</Label>
+                <div className="rounded-md border border-border/40 bg-muted/20 px-3 py-2">
+                  <p className="text-xs leading-relaxed whitespace-pre-wrap break-words">
+                    {__LAST_COMMIT__}
+                  </p>
+                </div>
+              </div>
               <div className="pt-2 border-t border-border/40">
                 <p className="text-xs text-muted-foreground">
                   catalyst-ui · React component library

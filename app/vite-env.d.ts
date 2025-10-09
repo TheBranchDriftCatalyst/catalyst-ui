@@ -9,3 +9,4 @@ declare module "*?raw" {
 // Build-time injected constants
 declare const __APP_VERSION__: string;
 declare const __GIT_HASH__: string;
+declare const __LAST_COMMIT__: string;
