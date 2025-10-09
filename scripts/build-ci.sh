@@ -217,9 +217,12 @@ build_storybook() {
 
 create_landing_page() {
     local output="${PROJECT_ROOT}/gh-pages/index.html"
-    log_substep "Creating synthwave landing page"
+    local base_path="${BASE_PATH:-/catalyst-ui/}"
 
-    cat > "${output}" << 'LANDING_EOF'
+    log_substep "Creating synthwave landing page"
+    log_metric "Using base path: ${base_path}"
+
+    cat > "${output}" << LANDING_EOF
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -389,8 +392,8 @@ create_landing_page() {
         <h1>CATALYST UI</h1>
         <p class="tagline">⚡ Synthwave-Powered React Components ⚡</p>
         <div class="buttons">
-            <a href="./demo.html" class="button demo">🎮 Demo App</a>
-            <a href="./storybook/" class="button storybook">📚 Storybook</a>
+            <a href="${base_path}demo.html" class="button demo">🎮 Demo App</a>
+            <a href="${base_path}storybook/" class="button storybook">📚 Storybook</a>
         </div>
     </div>
 </body>
