@@ -1,5 +1,14 @@
 import type { ThemeRegistration } from "shiki";
 
+// Extended settings interface to include decorator content field
+// Some editors support the 'content' field for special decorators (e.g., carriage-return)
+interface ExtendedTokenSettings {
+  foreground?: string;
+  background?: string;
+  fontStyle?: string;
+  content?: string;
+}
+
 export const catalystTheme: ThemeRegistration = {
   name: "catalyst",
   type: "dark",
@@ -148,9 +157,8 @@ export const catalystTheme: ThemeRegistration = {
         fontStyle: "italic underline",
         background: "#c026d3",
         foreground: "#0a0a0f",
-        // @ts-ignore - content is a valid field for this decorator
         content: "^M",
-      },
+      } as ExtendedTokenSettings,
     },
     {
       scope: "message.error",

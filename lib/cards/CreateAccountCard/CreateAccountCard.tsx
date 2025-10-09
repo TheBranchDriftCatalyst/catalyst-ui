@@ -30,6 +30,9 @@ import {
 import { Input } from "@/catalyst-ui/ui/input";
 import { Typography } from "@/catalyst-ui/ui/typography";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { createLogger } from "@/catalyst-ui/utils/logger";
+
+const log = createLogger("CreateAccountCard");
 
 const InputFormSchema = z.object({
   username: z.string().min(2, {
@@ -58,7 +61,6 @@ interface CreateAccountCardProps {
   enableTilt?: boolean;
 }
 
-// @ts-ignore
 export const CreateAccountCard = ({
   oidcProviders,
   onLogin,
@@ -99,7 +101,7 @@ export const CreateAccountCard = ({
               control={form.control}
               name="username"
               render={({ field }) => {
-                console.log(field);
+                log.debug("Username field", field);
                 return (
                   <FormItem>
                     <FormLabel>Username</FormLabel>
@@ -119,7 +121,7 @@ export const CreateAccountCard = ({
               control={form.control}
               name="password"
               render={({ field }) => {
-                console.log(field);
+                log.debug("Password field", field);
                 return (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
@@ -155,7 +157,6 @@ export const CreateAccountCard = ({
   );
 
   return enableTilt ? (
-    // @ts-ignore - Tilt prop types issue
     <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} perspective={1500}>
       {cardContent}
     </Tilt>

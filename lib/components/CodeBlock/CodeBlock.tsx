@@ -4,6 +4,9 @@ import * as React from "react";
 import CodeBlockHeader from "./CodeBlockHeader";
 import { catalystTheme } from "./catalyst-theme";
 import { CardContext } from "@/catalyst-ui/contexts/Card";
+import { createLogger } from "@/catalyst-ui/utils/logger";
+
+const log = createLogger("CodeBlock");
 
 /**
  * Internal component that registers CodeBlock header elements in CardContext
@@ -65,7 +68,7 @@ async function getHighlighter() {
       langs: [],
     });
   })().catch(error => {
-    console.warn("Shiki WASM loading failed, falling back to basic highlighting:", error);
+    log.warn("Shiki WASM loading failed, falling back to basic highlighting", error);
     // Reset so it can retry
     highlighterPromise = null;
     highlighterInstance = null;
@@ -168,7 +171,7 @@ const CodeBlock = React.forwardRef<HTMLDivElement, CodeBlockProps>(
           });
           setHtml(highlighted);
         } catch (error) {
-          console.error("Shiki highlighting error:", error);
+          log.error("Shiki highlighting error", error);
           setHtml(`<pre><code>${code}</code></pre>`);
         } finally {
           setIsLoading(false);

@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import MultiChoiceQuestionCard from "./MultiChoiceQuestion";
 import React from "react";
+import { createLogger } from "@/catalyst-ui/utils/logger";
+
+const log = createLogger("MultiChoiceQuestion.stories");
 
 const meta = {
   title: "Cards/MultiChoiceQuestionCard",
@@ -24,6 +27,6 @@ export const Primary: Story = {
     options: ["The Midnight", "Carpenter Brut", "FM-84", "Gunship"],
   },
   render: args => (
-    <MultiChoiceQuestionCard {...args} onChange={value => console.log("Selected:", value)} />
+    <MultiChoiceQuestionCard {...args} onChange={value => log.debug("Selected:", value)} />
   ),
 };

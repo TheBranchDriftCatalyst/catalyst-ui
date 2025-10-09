@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { createLogger } from "@/catalyst-ui/utils/logger";
+
+const log = createLogger("useDynamicImport");
 
 const useDynamicImport = (iconName: string) => {
   const [IconComponent, setIconComponent] = useState<React.ComponentType | null>(null);
@@ -12,9 +15,8 @@ const useDynamicImport = (iconName: string) => {
         );
         setIconComponent(() => module.default);
       } catch (err) {
-        console.error(`Failed to load icon: ${iconName}`, err);
-        // @ts-ignore
-        setError(err);
+        log.error(`Failed to load icon: ${iconName}`, err);
+        setError(err instanceof Error ? err : new Error(String(err)));
       }
     };
 

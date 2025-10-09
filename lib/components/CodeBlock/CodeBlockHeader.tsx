@@ -10,6 +10,9 @@ import {
   SelectValue,
 } from "@/catalyst-ui/ui/select";
 import { Toggle } from "@/catalyst-ui/ui/toggle";
+import { createLogger } from "@/catalyst-ui/utils/logger";
+
+const log = createLogger("CodeBlockHeader");
 
 export interface CodeBlockHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   fileName?: string;
@@ -72,7 +75,7 @@ const CodeBlockHeader = React.forwardRef<HTMLDivElement, CodeBlockHeaderProps>(
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       } catch (err) {
-        console.error("Failed to copy code:", err);
+        log.error("Failed to copy code", err);
       }
     };
 

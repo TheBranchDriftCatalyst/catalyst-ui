@@ -1,6 +1,9 @@
 /**
  * Event handling utilities for D3 graph interactions
  */
+import { createLogger } from "@/catalyst-ui/utils/logger";
+
+const log = createLogger("ForceGraph:eventHelpers");
 
 /**
  * Safely stop propagation of a D3 drag event
@@ -13,7 +16,7 @@ export const safeStopPropagation = (event: any): void => {
   } catch (err) {
     // Silently fail - event propagation is a best-effort operation
     if (process.env.NODE_ENV === "development") {
-      console.warn("Failed to stop event propagation:", err);
+      log.warn("Failed to stop event propagation", err);
     }
   }
 };
@@ -28,7 +31,7 @@ export const safePreventDefault = (event: any): void => {
   } catch (err) {
     // Silently fail
     if (process.env.NODE_ENV === "development") {
-      console.warn("Failed to prevent default behavior:", err);
+      log.warn("Failed to prevent default behavior", err);
     }
   }
 };

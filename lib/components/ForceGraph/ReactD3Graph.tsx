@@ -14,6 +14,9 @@ import {
 } from "./utils/layouts";
 import { safeStopPropagation } from "./utils/eventHelpers";
 import { useNodePositions } from "./hooks/useNodePositions";
+import { createLogger } from "@/catalyst-ui/utils/logger";
+
+const log = createLogger("ReactD3Graph");
 
 const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
   data,
@@ -82,7 +85,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
               layoutOptions
             );
           } catch (e) {
-            console.error("Structured layout failed:", e);
+            log.error("Structured layout failed", e);
           }
           break;
 
@@ -96,7 +99,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
               layoutOptions
             );
           } catch (e) {
-            console.error("Community layout failed:", e);
+            log.error("Community layout failed", e);
           }
           break;
 
@@ -110,7 +113,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
               layoutOptions
             );
           } catch (e) {
-            console.error("Dagre layout failed:", e);
+            log.error("Dagre layout failed", e);
           }
           break;
 
@@ -124,7 +127,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
               layoutOptions
             );
           } catch (e) {
-            console.error("ELK layout failed:", e);
+            log.error("ELK layout failed", e);
           }
           break;
 
@@ -139,7 +142,7 @@ const ReactD3Graph: React.FC<ReactD3GraphProps> = ({
               layoutOptions
             );
           } catch (e) {
-            console.error("Force layout failed:", e);
+            log.error("Force layout failed", e);
           }
           break;
       }

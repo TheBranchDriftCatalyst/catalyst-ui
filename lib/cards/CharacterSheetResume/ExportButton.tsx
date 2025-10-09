@@ -11,6 +11,9 @@ import {
   DropdownMenuTrigger,
 } from "@/catalyst-ui/ui/dropdown-menu";
 import { Download, FileText, Image as ImageIcon } from "lucide-react";
+import { createLogger } from "@/catalyst-ui/utils/logger";
+
+const log = createLogger("ExportButton");
 
 export interface ExportButtonProps {
   contentRef: React.RefObject<HTMLDivElement | null>;
@@ -113,7 +116,7 @@ export function ExportButton({ contentRef, fileName = "resume" }: ExportButtonPr
         }
       }, "image/png");
     } catch (error) {
-      console.error("Failed to export PNG:", error);
+      log.error("Failed to export PNG", error);
     } finally {
       setIsExporting(false);
     }

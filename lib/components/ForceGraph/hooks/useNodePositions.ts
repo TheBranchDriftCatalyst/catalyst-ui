@@ -1,6 +1,9 @@
 import { useCallback, useRef } from "react";
 import { NodeData } from "../types";
 import { LayoutKind } from "../utils/layouts";
+import { createLogger } from "@/catalyst-ui/utils/logger";
+
+const log = createLogger("ForceGraph:useNodePositions");
 
 /**
  * Node position for persistence
@@ -53,7 +56,7 @@ export function useNodePositions(storageKey?: string, layout: LayoutKind = "forc
       const parsed = JSON.parse(stored);
       return parsed || {};
     } catch (e) {
-      console.warn("Failed to load node positions from localStorage:", e);
+      log.warn("Failed to load node positions from localStorage", e);
       return {};
     }
   }, [getStorageKey]);
@@ -88,7 +91,7 @@ export function useNodePositions(storageKey?: string, layout: LayoutKind = "forc
 
           localStorage.setItem(key, JSON.stringify(positions));
         } catch (e) {
-          console.warn("Failed to save node positions to localStorage:", e);
+          log.warn("Failed to save node positions to localStorage", e);
         }
       };
 
@@ -143,7 +146,7 @@ export function useNodePositions(storageKey?: string, layout: LayoutKind = "forc
     try {
       localStorage.removeItem(key);
     } catch (e) {
-      console.warn("Failed to clear node positions from localStorage:", e);
+      log.warn("Failed to clear node positions from localStorage", e);
     }
   }, [getStorageKey]);
 
@@ -161,7 +164,7 @@ export function useNodePositions(storageKey?: string, layout: LayoutKind = "forc
         localStorage.removeItem(key);
       });
     } catch (e) {
-      console.warn("Failed to clear all node positions from localStorage:", e);
+      log.warn("Failed to clear all node positions from localStorage", e);
     }
   }, [storageKey]);
 

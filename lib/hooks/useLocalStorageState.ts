@@ -1,10 +1,15 @@
 "use client";
 
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { createLogger } from "@/catalyst-ui/utils/logger";
 
+const log = createLogger("useLocalStorageState");
+
+// TODO: anything we can do here, what if we are on the phone,
+// any hybrid frameworks or alts in this case?
 export const getFromLocalStorage = <T>(key: string, defaultValue: T): T => {
   if (typeof localStorage === "undefined") {
-    console.warn("localStorage is not available. Returning default value.");
+    log.warn("localStorage is not available. Returning default value.");
     return defaultValue;
   }
 
@@ -14,7 +19,7 @@ export const getFromLocalStorage = <T>(key: string, defaultValue: T): T => {
 
 export const setToLocalStorage = <T>(key: string, value: T): void => {
   if (typeof localStorage === "undefined") {
-    console.warn("localStorage is not available. Skipping set operation.");
+    log.warn("localStorage is not available. Skipping set operation.");
     return;
   }
 

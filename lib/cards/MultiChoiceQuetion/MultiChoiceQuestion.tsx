@@ -46,7 +46,6 @@ const MultiChoiceQuestionCard: React.FC<MultiChoiceQuestionCardProps> = ({
   );
 
   return enableTilt ? (
-    // @ts-ignore - Tilt prop types issue
     <Tilt tiltMaxAngleX={2} tiltMaxAngleY={3} scale={1.02} perspective={1200}>
       {cardContent}
     </Tilt>

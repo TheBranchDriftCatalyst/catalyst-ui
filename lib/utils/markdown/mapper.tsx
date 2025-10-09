@@ -22,6 +22,9 @@ import {
   TableCell,
 } from "@/catalyst-ui/ui/table";
 import { Card, CardContent } from "@/catalyst-ui/ui/card";
+import { createLogger } from "@/catalyst-ui/utils/logger";
+
+const log = createLogger("MarkdownMapper");
 
 /**
  * Component renderers for each markdown node type
@@ -230,7 +233,7 @@ export function renderMarkdown(
     }
 
     // Fallback for unhandled types
-    console.warn(`Unhandled markdown node type: ${node.type}`);
+    log.warn(`Unhandled markdown node type: ${node.type}`);
     return null;
   });
 

@@ -2,39 +2,29 @@
 import useLocalStorageState from "@/catalyst-ui/hooks/useLocalStorageState";
 import { useCallback, useEffect, useMemo } from "react";
 import { ThemeContext, ThemeEffects, ThemeVariant } from "./ThemeContext";
+import { createLogger } from "@/catalyst-ui/utils/logger";
+
+const log = createLogger("ThemeProvider");
 
 // Map themes to their core CSS files
-const themeCoreStyles: Record<string, () => Promise<any>> = {
-  // @ts-ignore - Vite handles CSS imports
-  catalyst: () => import("./styles/catalyst.css"),
-  // @ts-ignore - Vite handles CSS imports
-  dracula: () => import("./styles/dracula.css"),
-  // @ts-ignore - Vite handles CSS imports
-  dungeon: () => import("./styles/dungeon.css"),
-  // @ts-ignore - Vite handles CSS imports
-  gold: () => import("./styles/gold.css"),
-  // @ts-ignore - Vite handles CSS imports
-  laracon: () => import("./styles/laracon.css"),
-  // @ts-ignore - Vite handles CSS imports
-  nature: () => import("./styles/nature.css"),
-  // @ts-ignore - Vite handles CSS imports
-  netflix: () => import("./styles/netflix.css"),
-  // @ts-ignore - Vite handles CSS imports
-  nord: () => import("./styles/nord.css"),
+// Dynamic CSS imports return Promise<void> since they're side-effect only
+const themeCoreStyles: Record<string, () => Promise<void>> = {
+  catalyst: () => import("./styles/catalyst.css") as Promise<void>,
+  dracula: () => import("./styles/dracula.css") as Promise<void>,
+  dungeon: () => import("./styles/dungeon.css") as Promise<void>,
+  gold: () => import("./styles/gold.css") as Promise<void>,
+  laracon: () => import("./styles/laracon.css") as Promise<void>,
+  nature: () => import("./styles/nature.css") as Promise<void>,
+  netflix: () => import("./styles/netflix.css") as Promise<void>,
+  nord: () => import("./styles/nord.css") as Promise<void>,
 };
 
 // Import all effect layers upfront (Vite bundles CSS at build time)
-// @ts-ignore - Vite handles CSS imports
 import "./styles/effects/keyframes.css";
-// @ts-ignore - Vite handles CSS imports
 import "./styles/effects/glow.css";
-// @ts-ignore - Vite handles CSS imports
 import "./styles/effects/scanlines.css";
-// @ts-ignore - Vite handles CSS imports
 import "./styles/effects/borders.css";
-// @ts-ignore - Vite handles CSS imports
 import "./styles/effects/gradients.css";
-// @ts-ignore - Vite handles CSS imports
 import "./styles/effects/debug.css";
 
 const defaultEffects: ThemeEffects = {
@@ -87,7 +77,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
     // Dev-only logging
     if (import.meta.env.DEV) {
-      console.log("[ThemeProvider] Applied:", {
+      log.debug("Applied:", {
         theme,
         variant,
         effects,

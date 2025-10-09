@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React from "react";
 import CodeBlock from "./CodeBlock";
+import { createLogger } from "@/catalyst-ui/utils/logger";
+
+const log = createLogger("CodeBlock.stories");
 
 const meta = {
   title: "Components/CodeBlock",

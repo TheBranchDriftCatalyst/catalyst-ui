@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import CreateAccountCard from "./CreateAccountCard";
+import { createLogger } from "@/catalyst-ui/utils/logger";
+
+const log = createLogger("CreateAccountCard.stories");
 
 const meta = {
   title: "Cards/CreateAccountCard",
@@ -18,11 +21,11 @@ export const Default: Story = {
     oidcProviders: [
       {
         name: "GitHub",
-        onClick: () => console.log("GitHub login clicked"),
+        onClick: () => log.debug("GitHub login clicked"),
       },
       {
         name: "Google",
-        onClick: () => console.log("Google login clicked"),
+        onClick: () => log.debug("Google login clicked"),
       },
     ],
   },

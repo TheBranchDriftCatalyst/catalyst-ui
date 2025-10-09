@@ -6,6 +6,9 @@ import { useGraphConfig } from "./context/GraphContext";
 import { LayoutKind } from "./utils/layouts";
 import { useFloatingPanel } from "./hooks/useFloatingPanel";
 import { useNodePositions } from "./hooks/useNodePositions";
+import { createLogger } from "@/catalyst-ui/utils/logger";
+
+const log = createLogger("Legend");
 
 interface LegendProps {
   visibleNodes: Record<NodeKind, boolean>;
@@ -96,7 +99,7 @@ const Legend: React.FC<LegendProps> = ({
       }) as SVGElement;
 
       if (!svgElement) {
-        console.error("Force graph SVG element not found");
+        log.error("Force graph SVG element not found");
         alert("Error: Could not find graph to export");
         return;
       }
@@ -188,7 +191,7 @@ const Legend: React.FC<LegendProps> = ({
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
       if (!ctx) {
-        console.error("Canvas context not available");
+        log.error("Canvas context not available");
         alert("Error: Canvas rendering not supported");
         return;
       }
@@ -231,26 +234,26 @@ const Legend: React.FC<LegendProps> = ({
               document.body.removeChild(a);
               URL.revokeObjectURL(url);
             } else {
-              console.error("Failed to create blob from canvas");
+              log.error("Failed to create blob from canvas");
               alert("Error: Failed to generate PNG image");
             }
           }, "image/png");
         } catch (err) {
-          console.error("Error during canvas rendering:", err);
+          log.error("Error during canvas rendering:", err);
           alert("Error: Failed to render graph image");
           URL.revokeObjectURL(svgUrl);
         }
       };
 
       img.onerror = error => {
-        console.error("Error loading SVG image:", error);
+        log.error("Error loading SVG image:", error);
         alert("Error: Failed to load graph for export");
         URL.revokeObjectURL(svgUrl);
       };
 
       img.src = svgUrl;
     } catch (error) {
-      console.error("Error downloading graph:", error);
+      log.error("Error downloading graph:", error);
       alert(`Error exporting graph: ${error}`);
     }
   };

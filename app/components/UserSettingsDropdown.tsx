@@ -17,7 +17,9 @@ import {
 import { Button } from "@/catalyst-ui/ui/button";
 import { Label } from "@/catalyst-ui/ui/label";
 import { Checkbox } from "@/catalyst-ui/ui/checkbox";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/catalyst-ui/ui/tabs";
 import { MoonIcon, SunIcon } from "lucide-react";
+import { LoggerControl } from "@/catalyst-ui/components/LoggerControl";
 
 /**
  * UserSettingsDropdown - Theme and effects settings panel
@@ -37,128 +39,143 @@ export function UserSettingsDropdown() {
         </Avatar>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="w-80 p-4">
+      <DropdownMenuContent align="end" className="w-96 p-4">
         <DropdownMenuLabel className="text-base font-semibold">Settings</DropdownMenuLabel>
         <DropdownMenuSeparator />
 
-        <div className="space-y-4 py-2">
-          {/* Theme Selection */}
-          <div className="space-y-2">
-            <Label className="text-xs font-semibold">Theme</Label>
-            <Select value={theme} onValueChange={setTheme}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {allThemes.map(
-                  themeName =>
-                    themeName && (
-                      <SelectItem key={themeName} value={themeName} className="capitalize">
-                        {themeName}
-                      </SelectItem>
-                    )
-                )}
-              </SelectContent>
-            </Select>
-          </div>
+        <Tabs defaultValue="theme" className="w-full mt-2">
+          <TabsList className="grid w-full grid-cols-2 mb-4">
+            <TabsTrigger value="theme">Theme</TabsTrigger>
+            <TabsTrigger value="logger">Logger</TabsTrigger>
+          </TabsList>
 
-          {/* Variant Toggle */}
-          <div className="space-y-2">
-            <Label className="text-xs font-semibold">Mode</Label>
-            <div className="flex gap-2">
-              <Button
-                variant={variant === "light" ? "default" : "outline"}
-                onClick={() => setVariant("light")}
-                className="flex-1"
-                size="sm"
-              >
-                <SunIcon className="mr-2 h-4 w-4" />
-                Light
-              </Button>
-              <Button
-                variant={variant === "dark" ? "default" : "outline"}
-                onClick={() => setVariant("dark")}
-                className="flex-1"
-                size="sm"
-              >
-                <MoonIcon className="mr-2 h-4 w-4" />
-                Dark
-              </Button>
-            </div>
-          </div>
-
-          {/* Effects */}
-          <div className="space-y-2">
-            <Label className="text-xs font-semibold">Effects</Label>
+          {/* Theme Tab */}
+          <TabsContent value="theme" className="space-y-4">
+            {/* Theme Selection */}
             <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="effect-glow"
-                  checked={effects.glow}
-                  onCheckedChange={checked => updateEffect("glow", checked as boolean)}
-                />
-                <label
-                  htmlFor="effect-glow"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              <Label className="text-xs font-semibold">Theme</Label>
+              <Select value={theme} onValueChange={setTheme}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {allThemes.map(
+                    themeName =>
+                      themeName && (
+                        <SelectItem key={themeName} value={themeName} className="capitalize">
+                          {themeName}
+                        </SelectItem>
+                      )
+                  )}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Variant Toggle */}
+            <div className="space-y-2">
+              <Label className="text-xs font-semibold">Mode</Label>
+              <div className="flex gap-2">
+                <Button
+                  variant={variant === "light" ? "default" : "outline"}
+                  onClick={() => setVariant("light")}
+                  className="flex-1"
+                  size="sm"
                 >
-                  Glow Effects
-                </label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="effect-scanlines"
-                  checked={effects.scanlines}
-                  onCheckedChange={checked => updateEffect("scanlines", checked as boolean)}
-                />
-                <label
-                  htmlFor="effect-scanlines"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  <SunIcon className="mr-2 h-4 w-4" />
+                  Light
+                </Button>
+                <Button
+                  variant={variant === "dark" ? "default" : "outline"}
+                  onClick={() => setVariant("dark")}
+                  className="flex-1"
+                  size="sm"
                 >
-                  Scanlines & Grid
-                </label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="effect-borders"
-                  checked={effects.borderAnimations}
-                  onCheckedChange={checked => updateEffect("borderAnimations", checked as boolean)}
-                />
-                <label
-                  htmlFor="effect-borders"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Border Animations
-                </label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="effect-gradients"
-                  checked={effects.gradientShift}
-                  onCheckedChange={checked => updateEffect("gradientShift", checked as boolean)}
-                />
-                <label
-                  htmlFor="effect-gradients"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Animated Gradients
-                </label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="effect-debug"
-                  checked={effects.debug}
-                  onCheckedChange={checked => updateEffect("debug", checked as boolean)}
-                />
-                <label
-                  htmlFor="effect-debug"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  🔴 Debug Mode
-                </label>
+                  <MoonIcon className="mr-2 h-4 w-4" />
+                  Dark
+                </Button>
               </div>
             </div>
-          </div>
-        </div>
+
+            {/* Effects */}
+            <div className="space-y-2">
+              <Label className="text-xs font-semibold">Effects</Label>
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="effect-glow"
+                    checked={effects.glow}
+                    onCheckedChange={checked => updateEffect("glow", checked as boolean)}
+                  />
+                  <label
+                    htmlFor="effect-glow"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Glow Effects
+                  </label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="effect-scanlines"
+                    checked={effects.scanlines}
+                    onCheckedChange={checked => updateEffect("scanlines", checked as boolean)}
+                  />
+                  <label
+                    htmlFor="effect-scanlines"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Scanlines & Grid
+                  </label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="effect-borders"
+                    checked={effects.borderAnimations}
+                    onCheckedChange={checked =>
+                      updateEffect("borderAnimations", checked as boolean)
+                    }
+                  />
+                  <label
+                    htmlFor="effect-borders"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Border Animations
+                  </label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="effect-gradients"
+                    checked={effects.gradientShift}
+                    onCheckedChange={checked => updateEffect("gradientShift", checked as boolean)}
+                  />
+                  <label
+                    htmlFor="effect-gradients"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Animated Gradients
+                  </label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="effect-debug"
+                    checked={effects.debug}
+                    onCheckedChange={checked => updateEffect("debug", checked as boolean)}
+                  />
+                  <label
+                    htmlFor="effect-debug"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    🔴 Debug Mode
+                  </label>
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Logger Tab */}
+          <TabsContent value="logger">
+            <LoggerControl />
+          </TabsContent>
+        </Tabs>
       </DropdownMenuContent>
     </DropdownMenu>
   );

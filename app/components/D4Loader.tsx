@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
+import { usePrefersReducedMotion } from "@/catalyst-ui/hooks/usePrefersReducedMotion";
 
 /**
  * D4 Loader - Infolding Hypercube Animation
@@ -26,6 +27,7 @@ export function D4Loader({
   sparkFrequency = 0.06,
 }: D4LoaderProps) {
   const svgRef = useRef<SVGSVGElement>(null);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   // Refs to hold latest prop values so the D3 animation reads live values
   const rotationSpeedRef = useRef<number>(rotationSpeed);
@@ -340,10 +342,13 @@ export function D4Loader({
     // This creates the illusion of the outer square collapsing onto the inner square,
     // which expands to become the new outer boundary.
     const animate = () => {
-      time += 0.016;
+      // Respect user's motion preference - stop or slow down animation significantly
+      const motionMultiplier = prefersReducedMotion ? 0 : 1;
+
+      time += 0.016 * motionMultiplier;
 
       // Update rotation angles (scaled by rotationSpeed ref so changes apply live)
-      const rs = rotationSpeedRef.current;
+      const rs = rotationSpeedRef.current * motionMultiplier;
       angleX += 0.008 * rs;
       angleY += 0.012 * rs;
       angleZ += 0.006 * rs;
@@ -413,7 +418,12 @@ export function D4Loader({
       }
 
       // Occasionally spawn sparks near vertices (cap total sparks to limit CPU)
-      if (sparksEnabledRef.current && Math.random() < sparkFrequencyRef.current) {
+      // Disable sparks when reduced motion is preferred
+      if (
+        !prefersReducedMotion &&
+        sparksEnabledRef.current &&
+        Math.random() < sparkFrequencyRef.current
+      ) {
         const idx = Math.floor(Math.random() * outerProjected.length);
         const ox = outerProjected[idx][0];
         const oy = outerProjected[idx][1];
