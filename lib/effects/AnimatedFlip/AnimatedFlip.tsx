@@ -62,6 +62,10 @@ const AnimatedFlipComponent = React.forwardRef<HTMLDivElement, AnimatedFlipProps
       onFlipChange
     );
     const prefersReducedMotion = usePrefersReducedMotion();
+
+    // Only use automatic triggers if component is uncontrolled
+    const isControlled = controlledIsFlipped !== undefined;
+
     const { handleMouseEnter, handleMouseLeave, handleClick } = useAnimationTriggers(
       trigger,
       setIsFlipped
@@ -107,24 +111,53 @@ const AnimatedFlipComponent = React.forwardRef<HTMLDivElement, AnimatedFlipProps
       transform: direction === "horizontal" ? "rotateY(180deg)" : "rotateX(180deg)",
     };
 
+    // Build props - when controlled, explicitly remove any click handlers
+    const {
+      onClick: _propsOnClick,
+      onMouseEnter: _propsOnMouseEnter,
+      onMouseLeave: _propsOnMouseLeave,
+      ...restProps
+    } = props;
+
     const containerProps = {
       ref,
       className,
       style: containerStyle,
-      onMouseEnter: handleMouseEnter,
-      onMouseLeave: handleMouseLeave,
-      onClick: handleClick,
-      ...props,
+      ...restProps,
+      // Only attach handlers when UNcontrolled
+      ...(!isControlled && {
+        onMouseEnter: handleMouseEnter,
+        onMouseLeave: handleMouseLeave,
+        onClick: handleClick,
+      }),
+      // When controlled, explicitly block all mouse events
+      ...(isControlled && {
+        onClick: (e: React.MouseEvent) => e.stopPropagation(),
+        onMouseEnter: undefined,
+        onMouseLeave: undefined,
+      }),
     };
+
+    // In controlled mode, prevent clicks on content from bubbling
+    const handleContentClick = isControlled
+      ? (e: React.MouseEvent) => {
+          // Stop propagation to prevent any parent handlers from firing
+          e.stopPropagation();
+        }
+      : undefined;
 
     return (
       <div {...containerProps}>
         <div style={flipperStyle}>
           {/* Front Face */}
-          <div style={frontFaceStyle}>{front}</div>
+          <div style={frontFaceStyle} onClick={handleContentClick}>
+            {front}
+          </div>
 
           {/* Back Face */}
-          <div style={backFaceStyle}>{back}</div>
+          <div style={backFaceStyle} onClick={handleContentClick}>
+            {back}
+          </div>
         </div>
       </div>
     );
