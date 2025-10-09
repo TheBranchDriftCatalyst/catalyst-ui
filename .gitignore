@@ -12,6 +12,14 @@ dist/
 dist-ssr
 *.local
 
+# Test coverage
+coverage/
+
+# Build artifacts
+gh-pages/
+html/
+test/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
