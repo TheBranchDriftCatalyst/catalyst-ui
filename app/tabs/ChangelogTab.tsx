@@ -98,8 +98,12 @@ export function ChangelogTab() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch CHANGELOG.md from the root of the project
-    fetch("/CHANGELOG.md")
+    // Fetch CHANGELOG.md - use base URL in production, root in dev
+    const changelogUrl = import.meta.env.DEV
+      ? "/CHANGELOG.md"
+      : `${import.meta.env.BASE_URL}CHANGELOG.md`;
+
+    fetch(changelogUrl)
       .then(res => {
         if (!res.ok) throw new Error("Failed to fetch CHANGELOG.md");
         return res.text();
