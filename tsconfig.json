@@ -25,7 +25,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["app", "lib", ".scratch"],
+  "include": ["app", "lib", ".scratch", "lib/types/**/*.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }],
   "exclude": ["**/*.stories.tsx"]
 }
