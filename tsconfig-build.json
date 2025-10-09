@@ -7,5 +7,14 @@
     "noEmit": false,
     "outDir": "./dist/lib"
   },
-  "include": ["lib"]
+  "include": ["lib"],
+  "exclude": [
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/*.stories.tsx",
+    "**/test/**",
+    "**/tests/**"
+  ]
 }
