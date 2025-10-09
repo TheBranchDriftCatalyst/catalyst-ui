@@ -1,4 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
+import { createLogger } from "@/catalyst-ui/utils/logger";
+
+const log = createLogger("useWebVitals");
 
 export interface WebVitalMetric {
   name: "LCP" | "INP" | "CLS" | "FCP" | "TTFB";
@@ -66,13 +69,13 @@ export function useWebVitals(options: UseWebVitalsOptions = {}): UseWebVitalsRet
           metric.rating === "good" ? "✅" : metric.rating === "needs-improvement" ? "⚠️" : "❌";
 
         if (enableDetailedLog) {
-          console.log(`${emoji} Web Vital: ${metric.name}`);
-          console.log(`Value: ${metric.value}`);
-          console.log(`Rating: ${metric.rating}`);
-          console.log(`Delta: ${metric.delta}`);
-          console.log(`ID: ${metric.id}`);
+          log.debug(`${emoji} Web Vital: ${metric.name}`);
+          log.debug(`Value: ${metric.value}`);
+          log.debug(`Rating: ${metric.rating}`);
+          log.debug(`Delta: ${metric.delta}`);
+          log.debug(`ID: ${metric.id}`);
         } else {
-          console.log(`${emoji} ${metric.name}: ${metric.value.toFixed(2)} (${metric.rating})`);
+          log.debug(`${emoji} ${metric.name}: ${metric.value.toFixed(2)} (${metric.rating})`);
         }
       }
 

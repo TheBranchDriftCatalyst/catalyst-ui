@@ -61,6 +61,50 @@ const LOG_EMOJIS: Record<LogLevel, string> = {
 };
 
 /**
+ * Color palette for logger names - vibrant, distinct colors
+ */
+const LOGGER_NAME_COLORS = [
+  "#10B981", // emerald-500
+  "#8B5CF6", // violet-500
+  "#EC4899", // pink-500
+  "#F59E0B", // amber-500
+  "#06B6D4", // cyan-500
+  "#F97316", // orange-500
+  "#84CC16", // lime-500
+  "#A855F7", // purple-500
+  "#14B8A6", // teal-500
+  "#EAB308", // yellow-500
+  "#6366F1", // indigo-500
+  "#22D3EE", // cyan-400
+  "#FB923C", // orange-400
+  "#A3E635", // lime-400
+  "#C084FC", // purple-400
+  "#2DD4BF", // teal-400
+];
+
+/**
+ * Simple hash function to generate consistent color index from string
+ */
+function hashStringToColorIndex(str: string): number {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = (hash << 5) - hash + char;
+    hash = hash & hash; // Convert to 32-bit integer
+  }
+  return Math.abs(hash) % LOGGER_NAME_COLORS.length;
+}
+
+/**
+ * Get consistent color for a logger name
+ * Exported so UI components can use the same colors as console output
+ */
+export function getLoggerColor(loggerName: string): string {
+  const index = hashStringToColorIndex(loggerName);
+  return LOGGER_NAME_COLORS[index];
+}
+
+/**
  * Detect if running in development environment
  */
 function isDev(): boolean {
@@ -69,6 +113,7 @@ function isDev(): boolean {
 
 class Logger {
   private options: Required<LoggerOptions>;
+  private globalMinLevel: LogLevel | null = null;
 
   constructor(options: LoggerOptions = {}) {
     this.options = {
@@ -86,31 +131,38 @@ class Logger {
   }
 
   /**
+   * Set global minimum log level (overrides instance minLevel)
+   */
+  setGlobalMinLevel(level: LogLevel | null): void {
+    this.globalMinLevel = level;
+  }
+
+  /**
+   * Get current effective minimum log level
+   */
+  getEffectiveMinLevel(): LogLevel {
+    return this.globalMinLevel ?? this.options.minLevel;
+  }
+
+  /**
    * Check if a log level should be output based on minimum level
    */
   private shouldLog(level: LogLevel): boolean {
     if (!this.options.enabled) return false;
-    return LOG_LEVELS[level] >= LOG_LEVELS[this.options.minLevel];
+    const effectiveMinLevel = this.getEffectiveMinLevel();
+    return LOG_LEVELS[level] >= LOG_LEVELS[effectiveMinLevel];
   }
 
   /**
-   * Format log message with consistent structure
-   */
-  private format(level: LogLevel, source: string, message: string): string {
-    const timestamp = new Date().toISOString().split("T")[1].split(".")[0];
-    const emoji = LOG_EMOJIS[level];
-    const sourceStr = source ? `[${source}]` : "";
-    return `${emoji} ${this.options.prefix} ${sourceStr} ${message} (${timestamp})`;
-  }
-
-  /**
-   * Core logging method
+   * Core logging method with per-logger color coding
    */
   private log(level: LogLevel, source: string, message: string, data?: unknown): void {
     if (!this.shouldLog(level)) return;
 
-    const formattedMessage = this.format(level, source, message);
-    const color = LOG_COLORS[level];
+    const timestamp = new Date().toISOString().split("T")[1].split(".")[0];
+    const emoji = LOG_EMOJIS[level];
+    const levelColor = LOG_COLORS[level];
+    const loggerColor = getLoggerColor(source);
 
     // Use appropriate console method based on level
     const consoleMethod =
@@ -124,8 +176,21 @@ class Logger {
 
     // Output with color styling in browsers that support it
     if (typeof window !== "undefined") {
-      consoleMethod(`%c${formattedMessage}`, `color: ${color}; font-weight: bold;`, data ?? "");
+      // Format: emoji + prefix + [source] + message + timestamp
+      // Colors: level color for emoji/message, logger-specific color for [source]
+      const sourceStr = source ? `[${source}]` : "";
+      consoleMethod(
+        `%c${emoji} ${this.options.prefix} %c${sourceStr}%c ${message} %c(${timestamp})`,
+        `color: ${levelColor}; font-weight: bold;`, // emoji + prefix style
+        `color: ${loggerColor}; font-weight: bold;`, // [source] style
+        `color: ${levelColor}; font-weight: bold;`, // message style
+        `color: ${levelColor}; font-weight: normal; opacity: 0.7;`, // timestamp style
+        data ?? ""
+      );
     } else {
+      // Node.js fallback - no colors
+      const sourceStr = source ? `[${source}]` : "";
+      const formattedMessage = `${emoji} ${this.options.prefix} ${sourceStr} ${message} (${timestamp})`;
       consoleMethod(formattedMessage, data ?? "");
     }
   }
@@ -179,27 +244,117 @@ class Logger {
  * Scoped logger that automatically includes source context
  */
 class ScopedLogger {
+  private _enabled: boolean = true;
+  private _minLevel: LogLevel = "debug";
+
   constructor(
     private logger: Logger,
     private source: string
-  ) {}
+  ) {
+    // Register this logger in the global registry
+    LoggerRegistry.register(this);
+  }
+
+  get name(): string {
+    return this.source;
+  }
+
+  get enabled(): boolean {
+    return this._enabled;
+  }
+
+  get minLevel(): LogLevel {
+    return this._minLevel;
+  }
+
+  setEnabled(enabled: boolean): void {
+    this._enabled = enabled;
+  }
+
+  setMinLevel(level: LogLevel): void {
+    this._minLevel = level;
+  }
+
+  private shouldLog(level: LogLevel): boolean {
+    if (!this._enabled) return false;
+    return LOG_LEVELS[level] >= LOG_LEVELS[this._minLevel];
+  }
 
   debug(message: string, data?: unknown): void {
-    this.logger.debug(this.source, message, data);
+    if (this.shouldLog("debug")) {
+      this.logger.debug(this.source, message, data);
+    }
   }
 
   info(message: string, data?: unknown): void {
-    this.logger.info(this.source, message, data);
+    if (this.shouldLog("info")) {
+      this.logger.info(this.source, message, data);
+    }
   }
 
   warn(message: string, data?: unknown): void {
-    this.logger.warn(this.source, message, data);
+    if (this.shouldLog("warn")) {
+      this.logger.warn(this.source, message, data);
+    }
   }
 
   error(message: string, error?: unknown): void {
-    this.logger.error(this.source, message, error);
+    if (this.shouldLog("error")) {
+      this.logger.error(this.source, message, error);
+    }
   }
 }
+
+/**
+ * Global logger registry for discovery and control
+ */
+class LoggerRegistryClass {
+  private loggers: Map<string, ScopedLogger> = new Map();
+
+  register(logger: ScopedLogger): void {
+    this.loggers.set(logger.name, logger);
+  }
+
+  getAll(): ScopedLogger[] {
+    return Array.from(this.loggers.values());
+  }
+
+  get(name: string): ScopedLogger | undefined {
+    return this.loggers.get(name);
+  }
+
+  enable(name: string): void {
+    this.loggers.get(name)?.setEnabled(true);
+  }
+
+  disable(name: string): void {
+    this.loggers.get(name)?.setEnabled(false);
+  }
+
+  enableAll(): void {
+    this.loggers.forEach(logger => logger.setEnabled(true));
+  }
+
+  disableAll(): void {
+    this.loggers.forEach(logger => logger.setEnabled(false));
+  }
+
+  getState(): Record<string, boolean> {
+    const state: Record<string, boolean> = {};
+    this.loggers.forEach((logger, name) => {
+      state[name] = logger.enabled;
+    });
+    return state;
+  }
+
+  setState(state: Record<string, boolean>): void {
+    Object.entries(state).forEach(([name, enabled]) => {
+      this.loggers.get(name)?.setEnabled(enabled);
+    });
+  }
+}
+
+export const LoggerRegistry = new LoggerRegistryClass();
 
 /**
  * Global logger instance
