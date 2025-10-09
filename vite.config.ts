@@ -7,6 +7,19 @@ import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 import tsconfigPaths from "vite-tsconfig-paths";
 import tabsManifestPlugin from "./build/vite-plugin-tabs-manifest";
+import { execSync } from "child_process";
+import { readFileSync } from "fs";
+
+// Get version from package.json
+const pkg = JSON.parse(readFileSync(resolve(__dirname, "package.json"), "utf-8"));
+
+// Get git hash (short), fallback to 'dev' if not in git repo
+let gitHash = "dev";
+try {
+  gitHash = execSync("git rev-parse --short HEAD").toString().trim();
+} catch (error) {
+  console.warn("Could not get git hash, using 'dev'");
+}
 
 // Plugin to preserve "use client" directives in build output
 function preserveUseClient() {
@@ -46,6 +59,10 @@ function preserveUseClient() {
 export default defineConfig({
   root: "./app",
   publicDir: "../public",
+  define: {
+    __APP_VERSION__: JSON.stringify(pkg.version),
+    __GIT_HASH__: JSON.stringify(gitHash),
+  },
   plugins: [
     tabsManifestPlugin(),
     react(),

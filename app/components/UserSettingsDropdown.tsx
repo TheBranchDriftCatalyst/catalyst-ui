@@ -44,9 +44,10 @@ export function UserSettingsDropdown() {
         <DropdownMenuSeparator />
 
         <Tabs defaultValue="theme" className="w-full mt-2">
-          <TabsList className="grid w-full grid-cols-2 mb-4">
+          <TabsList className="grid w-full grid-cols-3 mb-4">
             <TabsTrigger value="theme">Theme</TabsTrigger>
             <TabsTrigger value="logger">Logger</TabsTrigger>
+            <TabsTrigger value="about">About</TabsTrigger>
           </TabsList>
 
           {/* Theme Tab */}
@@ -174,6 +175,29 @@ export function UserSettingsDropdown() {
           {/* Logger Tab */}
           <TabsContent value="logger">
             <LoggerControl />
+          </TabsContent>
+
+          {/* About Tab */}
+          <TabsContent value="about" className="space-y-4">
+            <div className="space-y-3">
+              <div className="space-y-1">
+                <Label className="text-xs font-semibold text-muted-foreground">Version</Label>
+                <div className="flex items-center justify-between rounded-md border border-border/40 bg-muted/20 px-3 py-2">
+                  <span className="text-sm font-mono">{__APP_VERSION__}</span>
+                </div>
+              </div>
+              <div className="space-y-1">
+                <Label className="text-xs font-semibold text-muted-foreground">Git Hash</Label>
+                <div className="flex items-center justify-between rounded-md border border-border/40 bg-muted/20 px-3 py-2">
+                  <span className="text-sm font-mono">{__GIT_HASH__}</span>
+                </div>
+              </div>
+              <div className="pt-2 border-t border-border/40">
+                <p className="text-xs text-muted-foreground">
+                  catalyst-ui · React component library
+                </p>
+              </div>
+            </div>
           </TabsContent>
         </Tabs>
       </DropdownMenuContent>
