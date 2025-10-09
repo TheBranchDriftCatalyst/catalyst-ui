@@ -1,11 +1,33 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="theme-catalyst dark">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="A production-ready React component library featuring cyberpunk aesthetics with Radix UI primitives, 7 synthwave themes, advanced data visualization, and comprehensive developer tooling." />
     <title>Catalyst UI - Kitchen Sink</title>
+
+    <!-- Inline blocking script to prevent FOUC (Flash of Unstyled Content) -->
+    <!-- This runs BEFORE React loads and applies the saved theme immediately -->
+    <script>
+      (function() {
+        try {
+          // Read theme preferences from localStorage
+          const themeJson = localStorage.getItem('theme:name');
+          const variantJson = localStorage.getItem('theme:variant');
+
+          // Parse JSON values (localStorage stores as JSON strings)
+          const theme = themeJson ? JSON.parse(themeJson) : 'catalyst';
+          const variant = variantJson ? JSON.parse(variantJson) : 'dark';
+
+          // Apply theme classes immediately to prevent flash
+          document.documentElement.className = `theme-${theme} ${variant}`;
+        } catch (e) {
+          // Fallback to default if anything fails (localStorage unavailable, parse error, etc.)
+          document.documentElement.className = 'theme-catalyst dark';
+        }
+      })();
+    </script>
 
     <!-- Preconnect to required origins for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
