@@ -31,6 +31,7 @@ try {
 }
 
 // Plugin to preserve "use client" directives in build output
+// TODO lets move this with the other plugins
 function preserveUseClient() {
   return {
     name: "preserve-use-client",
@@ -69,6 +70,7 @@ export default defineConfig({
   root: "./app",
   publicDir: "../public",
   define: {
+    // Maybe move these to a build utils function???
     __APP_VERSION__: JSON.stringify(pkg.version),
     __GIT_HASH__: JSON.stringify(gitHash),
     __LAST_COMMIT__: JSON.stringify(lastCommit),

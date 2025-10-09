@@ -1,8 +1,25 @@
-import { withThemeByClassName } from "@storybook/addon-themes";
+/**
+ * Storybook Preview Configuration
+ *
+ * TODO: SPLIT & REFACTOR
+ * - Extract withBackgroundSync decorator to separate file (.storybook/decorators/withBackgroundSync.ts)
+ * - Extract theme switcher decorator to separate file (.storybook/decorators/withThemeSwitcher.ts)
+ * - Extract massive CSS injection logic to utility (.storybook/utils/injectDocsTheme.ts)
+ * - Move isColorDark helper to shared utils
+ *
+ * TODO: AUDIT & CLEANUP
+ * - Review if all those Storybook theme CSS overrides are still necessary (lines 78-338)
+ * - Check if we can simplify the background sync logic
+ * - Test if "pure-dark" and "pure-light" backgrounds are actually used
+ * - Consider removing unused addon configurations
+ * - Verify all globalTypes/toolbar items are needed
+ *
+ * TODO: OPTIMIZATION
+ * - The CSS injection on every background change might be heavy - consider memoization
+ * - Check if we can reduce specificity in CSS selectors
+ */
 import { addons } from "storybook/internal/preview-api";
 import { themes as sbThemes } from "storybook/theming";
-import { DOCS_RENDERED } from "storybook/internal/core-events";
-import reduce from "lodash/reduce";
 import "../lib/global.css";
 // Frontload all theme CSS for Storybook (normally dynamically loaded by ThemeProvider)
 // Using Vite's glob import to automatically load all theme CSS files
@@ -33,9 +50,32 @@ const withBackgroundSync = (Story, context) => {
 
     const backgrounds = context.parameters?.backgrounds?.values || [];
     const selectedBg = backgrounds.find(bg => bg.name === backgroundName);
-    const backgroundColor = selectedBg?.value || backgroundName || "#0a0a0a";
 
-    const isDark = isColorDark(backgroundColor);
+    // Use theme design tokens if "theme" option selected, otherwise use explicit color
+    let backgroundColor;
+    if (backgroundName === "theme-dark") {
+      // Use CSS variable from current theme
+      backgroundColor = getComputedStyle(document.documentElement)
+        .getPropertyValue("--background")
+        .trim();
+      backgroundColor = backgroundColor.startsWith("hsl")
+        ? `hsl(${backgroundColor})`
+        : backgroundColor;
+    } else if (backgroundName === "theme-light") {
+      // For light variant, still use theme's background
+      backgroundColor = getComputedStyle(document.documentElement)
+        .getPropertyValue("--background")
+        .trim();
+      backgroundColor = backgroundColor.startsWith("hsl")
+        ? `hsl(${backgroundColor})`
+        : backgroundColor;
+    } else {
+      backgroundColor = selectedBg?.value || backgroundName || "#0a0a0a";
+    }
+
+    const isDark =
+      backgroundName === "theme-dark" ||
+      (backgroundName !== "theme-light" && isColorDark(backgroundColor));
 
     // Update html class to include light/dark (but preserve theme-* classes)
     const html = document.documentElement;
@@ -342,10 +382,16 @@ const preview = {
       },
     },
     backgrounds: {
-      default: "dark",
+      default: "theme-dark",
       values: [
-        { name: "dark", value: "#0a0a0a" },
-        { name: "light", value: "#f5f5f5" },
+        { name: "theme-dark", title: "Theme Dark (uses --background)", value: "var(--background)" },
+        {
+          name: "theme-light",
+          title: "Theme Light (uses --background)",
+          value: "var(--background)",
+        },
+        { name: "pure-dark", title: "Pure Dark", value: "#0a0a0a" },
+        { name: "pure-light", title: "Pure Light", value: "#f5f5f5" },
       ],
     },
     docs: {
@@ -359,19 +405,45 @@ const preview = {
   },
   decorators: [
     withBackgroundSync,
-    withThemeByClassName({
-      themes: reduce(
-        ["catalyst", "dracula", "dungeon", "gold", "laracon", "nature", "netflix", "nord"],
-        (a, tName) => {
-          a[`${tName}`] = `theme-${tName}`;
-          return a;
-        },
-        {}
-      ),
-      defaultTheme: "catalyst",
-      parentSelector: "html",
-    }),
+    // Theme switcher decorator - applies theme-* class to html element
+    Story => {
+      const [globals] = useGlobals();
+      const selectedTheme = globals?.theme || "catalyst";
+
+      useEffect(() => {
+        const html = document.documentElement;
+        // Remove all theme-* classes
+        Array.from(html.classList)
+          .filter(c => c.startsWith("theme-"))
+          .forEach(c => html.classList.remove(c));
+
+        // Apply selected theme
+        html.classList.add(`theme-${selectedTheme}`);
+      }, [selectedTheme]);
+
+      return Story();
+    },
   ],
+  globalTypes: {
+    theme: {
+      description: "Global theme for components",
+      defaultValue: "catalyst",
+      toolbar: {
+        title: "Theme",
+        icon: "paintbrush",
+        items: [
+          { value: "catalyst", title: "Catalyst" },
+          { value: "dracula", title: "Dracula" },
+          { value: "gold", title: "Gold" },
+          { value: "laracon", title: "Laracon" },
+          { value: "nature", title: "Nature" },
+          { value: "netflix", title: "Netflix" },
+          { value: "nord", title: "Nord" },
+        ],
+        dynamicTitle: true,
+      },
+    },
+  },
 };
 
 export default preview;
