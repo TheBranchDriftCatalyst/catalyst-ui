@@ -121,7 +121,11 @@ Located in `lib/components/CatalystHeader/`:
 
 **Two complementary approaches:**
 
-**1. React Animation HOCs** (`lib/effects/`)
+**1. Animation Effect HOCs** (`lib/effects/`)
+
+> **Note**: The `effects/` directory was renamed from `animation/` in Phase 6 (Oct 2025).
+> These docs may still reference "animation HOCs" but the folder is now `effects/`.
+> See: `/docs/architecture/export-patterns.md` for details on the rename.
 
 Generic Higher-Order Components for interactive animations:
 
@@ -189,7 +193,10 @@ Theme-specific visual effects (Catalyst theme only):
 
 **Demo:** See `app/tabs/AnimationsTab.tsx` for live interactive examples
 
-**Architecture Doc:** `docs/architecture/animation-hoc.md` - Complete implementation details (note: folder renamed to effects)
+**Architecture Doc:** `docs/architecture/animation-hoc.md` - Complete implementation details
+
+> **Historical Note**: This document was written when the folder was called `animation/`.
+> Throughout the doc, "animation HOCs" and "effect HOCs" are used interchangeably to refer to the components in `lib/effects/`.
 
 ### Storybook Configuration
 

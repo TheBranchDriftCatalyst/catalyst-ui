@@ -1,5 +1,9 @@
 # Animation HOC Architecture
 
+> **Folder Name Note**: This document describes the animation system in `lib/effects/`.
+> The folder was renamed from `animation/` to `effects/` in Phase 6 (Oct 2025).
+> Throughout this doc, "animation HOCs" and "effect HOCs" refer to the same system.
+
 **Status:** ✅ COMPLETE - ALL PHASES DONE
 **Started:** 2025-01-06
 **Completed:** 2025-01-06

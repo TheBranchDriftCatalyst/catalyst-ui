@@ -10,18 +10,18 @@ This repository is configured to automatically deploy both the demo app and Stor
   git push origin main
   ```
 
-- [ ] **Enable GitHub Pages**
+- [x] **Enable GitHub Pages** _(Completed: 2025-10-08)_
   1. Go to your repository on GitHub
   2. Navigate to **Settings** → **Pages** (in left sidebar)
   3. Under **"Source"**, select **GitHub Actions** from the dropdown
   4. Save the changes
 
-- [ ] **Wait for deployment**
+- [x] **Wait for deployment** _(Completed: 2025-10-08)_
   - Go to the **Actions** tab in your repository
   - Watch the "Deploy to GitHub Pages" workflow run
   - First deployment takes ~2-5 minutes
 
-- [ ] **Access your deployed site**
+- [x] **Access your deployed site** _(Live at: https://thebranchdriftcatalyst.github.io/catalyst-ui/)_
   - **Root**: `https://<username>.github.io/<repo-name>/` - Landing page
   - **Demo App**: `https://<username>.github.io/<repo-name>/demo.html`
   - **Storybook**: `https://<username>.github.io/<repo-name>/storybook/`
