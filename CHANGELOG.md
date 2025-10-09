@@ -3,6 +3,59 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+## [1.3.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v1.2.1...v1.3.0) (2025-10-09)
+
+
+### 🚀 PERFORMANCE
+
+- add React.memo to animation HOCs for performance optimization ([d255162](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/d255162be11d09f243913e8d78f3c64eba6ae989)), closes [#11](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues/11)
+- add React.memo to large ForceGraph components ([bcb4ccd](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/bcb4ccdb6127328aecb96b3de06031048a847de9)), closes [#11](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues/11)
+- add React.memo to ReactD3Node and ReactD3Edge components ([f563104](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/f563104af7ecaf3737f876f18eb26556a4adb9ad)), closes [#11](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues/11)
+
+
+### 🔧 BUG FIXES
+
+- **standard-version:** standard version changelog ([e1378a3](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/e1378a36bea12e83ab5cfce982cf8175346e36e8))
+
+
+### 🧪 TESTING
+
+- add Vitest testing infrastructure with coverage ([92dd014](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/92dd014b8631b3aa442f7a620eda4ce8128ec309))
+
+
+### 🛠️ MAINTENANCE
+
+- add coverage and build artifacts to gitignore ([cde2d74](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/cde2d742c89540f183f3d1df686e8f5db1339aa5))
+- add Renovate configuration for automated dependency management ([84c788e](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/84c788e851e151c9986bfa7e4382af20a8391c65))
+- **deps:** standardize version pinning and add testing dependencies ([028629b](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/028629baf2457f11abb18bd0f6774d78f9d8e007))
+
+
+### ⚡ NEW FEATURES
+
+- **D4Loader:** add interactive controls and enhanced visual effects ([a47b90a](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/a47b90a2ec13818901b6c7ccf3f1e5e7b58b0a1b))
+- **logger:** add enhanced logging system with runtime controls ([9079127](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/9079127e207fec27bbf8e7f9d8b7edaa0bd45acc))
+
+
+### ♻️ REFACTORING
+
+- add shared type definitions and improve TypeScript config ([f432ad5](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/f432ad51a3448fb19d8a8d619d34043570820215))
+- **hooks:** create useAnimationTriggers hook to complete Issue [#4](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues/4) ([6a328b9](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/6a328b9f85e9f5a95b6e0abf88adc8fa29ce9990))
+- integrate logger and improve component consistency ([8c97eba](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/8c97eba542d58955c0f9f61b250dfce2901516ff))
+
+
+### 📚 DOCUMENTATION
+
+- update documentation and add feature tracking ([e250c81](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/e250c819e09ce6097ffcc3aba6c24e862b7b0e52))
+- update mass-cleanup doc with Phase 1-2 assessment ([add13ec](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/add13ecf2e90f10eabeaf9bb8ced32eb5a2f65b2)), closes [#4](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues/4) [#6](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues/6) [#17](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues/17) [#11](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues/11)
+- update mass-cleanup proposal with Phase 1 completion status ([10faec9](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/10faec9c4bcdefef035d416d318006e943e6e971)), closes [#4](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues/4) [#6](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues/6) [#17](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues/17)
+- update mass-cleanup proposal with Phase 2 completion status ([59f45c1](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/59f45c1a56f4225af6ceed910d61c50c14e93f2e))
+
+
+### 🤖 CI/CD PIPELINE
+
+- add GitHub Actions workflow for automated testing ([b167d5f](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/b167d5fb22836f9e9a9b5623ab0fe5e1a5d373ee))
+- add unified build pipeline for GitHub Pages deployment ([173c515](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/173c515ec5c2f3745e49307ed98664af02f83667))
+
 ### [1.2.1](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v1.2.0...v1.2.1) (2025-10-08)
 
 
