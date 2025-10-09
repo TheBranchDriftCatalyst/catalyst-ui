@@ -1,0 +1,68 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":separateMajorReleases"
+  ],
+  "timezone": "America/New_York",
+  "schedule": ["before 10am on monday"],
+  "labels": ["dependencies"],
+  "commitMessagePrefix": "chore(deps):",
+  "packageRules": [
+    {
+      "groupName": "React ecosystem",
+      "matchPackagePatterns": ["^react", "^@types/react"]
+    },
+    {
+      "groupName": "Radix UI",
+      "matchPackagePatterns": ["^@radix-ui/"]
+    },
+    {
+      "groupName": "Storybook",
+      "matchPackagePatterns": ["^storybook", "^@storybook/"]
+    },
+    {
+      "groupName": "Vite ecosystem",
+      "matchPackagePatterns": ["^vite", "^@vitejs/", "^vite-plugin-"]
+    },
+    {
+      "groupName": "TypeScript & ESLint",
+      "matchPackagePatterns": ["^typescript", "^eslint", "^@typescript-eslint/"]
+    },
+    {
+      "groupName": "Testing tools",
+      "matchPackagePatterns": ["^@testing-library/", "^jest", "^playwright"]
+    },
+    {
+      "groupName": "D3 & visualization",
+      "matchPackagePatterns": ["^d3", "^@types/d3", "^dagre", "^elkjs", "^three"]
+    },
+    {
+      "groupName": "Dev dependencies (minor & patch)",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "groupName": "Major updates",
+      "matchUpdateTypes": ["major"],
+      "labels": ["dependencies", "major-update"],
+      "automerge": false
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "labels": ["security"],
+    "automerge": true,
+    "schedule": ["at any time"]
+  },
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2,
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["before 10am on the first day of the month"]
+  },
+  "ignoreDeps": [],
+  "ignorePresets": []
+}
