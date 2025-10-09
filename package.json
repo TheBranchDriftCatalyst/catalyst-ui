@@ -126,6 +126,7 @@
     "react-scan": "^0.4.3",
     "standard-version": "^9.5.0",
     "storybook": "9.1.10",
+    "storybook-design-token": "^4.1.0",
     "tailwindcss-animate": "^1.0.7",
     "vite-plugin-dynamic-import": "^1.5.0",
     "vite-plugin-lib-inject-css": "^2.1.1",
