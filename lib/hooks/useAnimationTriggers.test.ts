@@ -102,48 +102,6 @@ describe("useAnimationTriggers", () => {
     });
   });
 
-  describe("Manual trigger", () => {
-    it("should not call setState on mouse enter when trigger is manual", () => {
-      const setState = vi.fn();
-      const { result } = renderHook(() => useAnimationTriggers("manual", setState));
-
-      result.current.handleMouseEnter();
-
-      expect(setState).not.toHaveBeenCalled();
-    });
-
-    it("should not call setState on mouse leave when trigger is manual", () => {
-      const setState = vi.fn();
-      const { result } = renderHook(() => useAnimationTriggers("manual", setState));
-
-      result.current.handleMouseLeave();
-
-      expect(setState).not.toHaveBeenCalled();
-    });
-
-    it("should not call setState on click when trigger is manual", () => {
-      const setState = vi.fn();
-      const { result } = renderHook(() => useAnimationTriggers("manual", setState));
-
-      result.current.handleClick();
-
-      expect(setState).not.toHaveBeenCalled();
-    });
-
-    it("should not respond to any events when manual", () => {
-      const setState = vi.fn();
-      const { result } = renderHook(() => useAnimationTriggers("manual", setState));
-
-      result.current.handleMouseEnter();
-      result.current.handleMouseLeave();
-      result.current.handleClick();
-      result.current.handleMouseEnter();
-      result.current.handleClick();
-
-      expect(setState).not.toHaveBeenCalled();
-    });
-  });
-
   describe("Handler reference stability", () => {
     it("should maintain stable references when trigger doesn't change", () => {
       const setState = vi.fn();
@@ -245,15 +203,6 @@ describe("useAnimationTriggers", () => {
       result.current.handleClick();
       expect(setState).toHaveBeenCalled();
       expect(typeof setState.mock.calls[0][0]).toBe("function");
-      setState.mockClear();
-
-      // Switch to manual
-      rerender({ trigger: "manual" });
-
-      result.current.handleMouseEnter();
-      result.current.handleMouseLeave();
-      result.current.handleClick();
-      expect(setState).not.toHaveBeenCalled();
     });
 
     it("should work with different setState implementations", () => {

@@ -289,8 +289,8 @@ describe("logger utility", () => {
 
   describe("LoggerRegistry", () => {
     it("should register scoped loggers automatically", () => {
-      const log1 = createLogger("Component1");
-      const log2 = createLogger("Component2");
+      createLogger("Component1");
+      createLogger("Component2");
 
       const allLoggers = LoggerRegistry.getAll();
       expect(allLoggers.length).toBeGreaterThanOrEqual(2);

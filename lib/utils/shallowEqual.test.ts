@@ -51,7 +51,7 @@ describe("shallowEqual", () => {
 
     it("should return false for different keys", () => {
       const objA = { a: 1 };
-      const objB = { b: 1 };
+      const objB = { b: 1 } as unknown as typeof objA;
       expect(shallowEqual(objA, objB)).toBe(false);
     });
 
@@ -75,7 +75,7 @@ describe("shallowEqual", () => {
 
     it("should distinguish null vs undefined values", () => {
       const objA = { a: null };
-      const objB = { a: undefined };
+      const objB = { a: undefined } as unknown as typeof objA;
       expect(shallowEqual(objA, objB)).toBe(false);
     });
   });

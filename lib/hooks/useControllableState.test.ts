@@ -38,7 +38,9 @@ describe("useControllableState", () => {
 
     it("should not call onChange callback when uncontrolled", () => {
       const onChange = vi.fn();
-      const { result } = renderHook(() => useControllableState(undefined, false, onChange));
+      const { result } = renderHook(() =>
+        useControllableState<boolean>(undefined, false, onChange)
+      );
 
       act(() => {
         result.current[1](true);
@@ -80,7 +82,7 @@ describe("useControllableState", () => {
 
     it("should call onChange callback when setValue is called", () => {
       const onChange = vi.fn();
-      const { result } = renderHook(() => useControllableState(false, false, onChange));
+      const { result } = renderHook(() => useControllableState<boolean>(false, false, onChange));
 
       act(() => {
         result.current[1](true);
@@ -92,7 +94,7 @@ describe("useControllableState", () => {
 
     it("should not update internal state when controlled", () => {
       const onChange = vi.fn();
-      const { result } = renderHook(() => useControllableState(false, false, onChange));
+      const { result } = renderHook(() => useControllableState<boolean>(false, false, onChange));
 
       act(() => {
         result.current[1](true);
@@ -252,8 +254,6 @@ describe("useControllableState", () => {
 
     it("should handle setValue reference changes when value updates", () => {
       const { result } = renderHook(() => useControllableState(undefined, false));
-
-      const firstSetValue = result.current[1];
 
       act(() => {
         result.current[1](true);
