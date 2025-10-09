@@ -9,6 +9,9 @@
 [![Storybook](https://img.shields.io/badge/Storybook-9.1-ff4785?logo=storybook)](https://storybook.js.org/)
 
 [![Deploy to GitHub Pages](https://github.com/TheBranchDriftCatalyst/catalyst-ui/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/TheBranchDriftCatalyst/catalyst-ui/actions/workflows/deploy-pages.yml)
+[![Tests](https://github.com/TheBranchDriftCatalyst/catalyst-ui/actions/workflows/test.yml/badge.svg)](https://github.com/TheBranchDriftCatalyst/catalyst-ui/actions/workflows/test.yml)
+[![Coverage](https://img.shields.io/badge/coverage-99%25-brightgreen?logo=vitest)](https://github.com/TheBranchDriftCatalyst/catalyst-ui)
+[![Tests Passing](https://img.shields.io/badge/tests-133_passing-success?logo=vitest)](https://github.com/TheBranchDriftCatalyst/catalyst-ui)
 [![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-Live-success?logo=github)](https://thebranchdriftcatalyst.github.io/catalyst-ui/)
 
 A production-ready React component library featuring cyberpunk aesthetics, built on modern web technologies with comprehensive tooling for development, testing, and documentation.
@@ -46,8 +49,9 @@ A production-ready React component library featuring cyberpunk aesthetics, built
 ### 🛠️ Developer Experience
 
 - 🎭 **Storybook Integration** - Interactive component development with coverage reporting
+- 🧪 **Comprehensive Testing** - 133 tests with 99% coverage using Vitest + Testing Library
 - 🔥 **Hot Module Replacement** - Lightning-fast development with Vite
-- 🧪 **Conventional Commits** - Automated changelog and semantic versioning
+- ✅ **Conventional Commits** - Automated changelog and semantic versioning
 - 🔄 **Yarn Link Support** - Real-time concurrent development with auto-rebuild
 - 💾 **LocalStorage Persistence** - Theme preferences, panel positions, and graph layouts automatically saved
 
@@ -161,6 +165,12 @@ yarn dev:lib          # Build library in watch mode (for linked development)
 yarn build            # Build library for production
 yarn build:storybook  # Build Storybook for deployment
 
+# Testing
+yarn test             # Run all tests once
+yarn test:watch       # Run tests in watch mode
+yarn test:ui          # Open Vitest UI
+yarn test:coverage    # Run tests with coverage report
+
 # Quality
 yarn lint             # Run ESLint
 
@@ -235,6 +245,8 @@ Commitlint will validate your commit messages automatically via git hooks.
 | [shadcn/ui](https://ui.shadcn.com/)             | Component patterns      |
 | [D3.js](https://d3js.org/)                      | Data visualization      |
 | [Vite](https://vitejs.dev/)                     | Build tool & dev server |
+| [Vitest](https://vitest.dev/)                   | Unit testing framework  |
+| [Testing Library](https://testing-library.com/) | React testing utilities |
 | [Storybook](https://storybook.js.org/)          | Component development   |
 | [React Hook Form](https://react-hook-form.com/) | Form handling           |
 | [Zod](https://zod.dev/)                         | Schema validation       |

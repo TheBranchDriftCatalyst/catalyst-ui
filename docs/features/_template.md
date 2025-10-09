@@ -1,5 +1,23 @@
 # [Feature Name]
 
+## Documentation Requirements
+
+**IMPORTANT**: If a tracking document exists (e.g.,
+`docs/features/mass-cleanup-refactor.md`, `docs/ROADMAP.md`, or similar), you
+MUST:
+
+1. **Update progress as you go** - Mark tasks as in_progress when starting,
+   completed when done
+2. **Document changes made** - Add notes about what was optimized and the impact
+3. **Update metrics** - Adjust effort estimates, completion percentages, etc.
+4. **Add new issues found** - Document any new technical debt or issues
+   discovered during optimization
+5. **Keep it current** - The tracking document should always reflect the latest
+   state of work
+
+This ensures continuity across sessions and helps track progress toward project
+goals.
+
 ## Overview
 
 Brief description of what this feature accomplishes and why it's needed.

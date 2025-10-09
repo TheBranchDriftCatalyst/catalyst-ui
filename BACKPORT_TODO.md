@@ -1,0 +1,5 @@
+- [ ] catalyst github-repo template
+- [ ] pull standard-version (soon to be deprecated and swapped)
+  - [ ] pull changesets config
+- [ ] pull renovate config
+- [ ] prettier RC
