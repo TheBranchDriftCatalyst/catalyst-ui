@@ -20,6 +20,9 @@ gh-pages/
 html/
 test/
 
+# Generated documentation
+public/docs-combined.md
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
