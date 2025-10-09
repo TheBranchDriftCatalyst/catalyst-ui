@@ -7,6 +7,7 @@ import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 import tsconfigPaths from "vite-tsconfig-paths";
 import tabsManifestPlugin from "./build/vite-plugin-tabs-manifest";
+import concatDocsPlugin from "./build/vite-plugin-concat-docs";
 import { execSync } from "child_process";
 import { readFileSync } from "fs";
 
@@ -19,6 +20,14 @@ try {
   gitHash = execSync("git rev-parse --short HEAD").toString().trim();
 } catch (error) {
   console.warn("Could not get git hash, using 'dev'");
+}
+
+// Get last commit message
+let lastCommit = "Development build";
+try {
+  lastCommit = execSync("git log -1 --pretty=%B").toString().trim();
+} catch (error) {
+  console.warn("Could not get last commit message");
 }
 
 // Plugin to preserve "use client" directives in build output
@@ -62,9 +71,11 @@ export default defineConfig({
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),
     __GIT_HASH__: JSON.stringify(gitHash),
+    __LAST_COMMIT__: JSON.stringify(lastCommit),
   },
   plugins: [
     tabsManifestPlugin(),
+    concatDocsPlugin(),
     react(),
     tailwindcss(),
     tsconfigPaths({
