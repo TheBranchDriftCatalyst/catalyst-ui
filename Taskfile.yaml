@@ -17,26 +17,105 @@ tasks:
         code ${fzf_path}/${component_name}/$(echo ${component_name^}).tsx
         code ${fzf_path}/${component_name}/$(echo ${component_name^}).stories.tsx'
 
-  # GitHub Actions Testing
-  test:gh-actions:
-    desc: Run GitHub Actions workflow locally with act
-    cmds:
-      - echo "Running GitHub Actions workflow locally..."
-      - act -j build
+  # ┌────────────────────────────────────────────────────────────────────────┐
+  # │ 🧪 GitHub Actions Testing (via act)                                    │
+  # └────────────────────────────────────────────────────────────────────────┘
 
-  test:gh-actions:dry:
-    desc: Dry run of GitHub Actions workflow (shows what would run)
-    cmds:
-      - echo "Dry run of GitHub Actions workflow..."
-      - act -n
-
-  test:gh-actions:list:
-    desc: List all workflows and jobs
+  # List available workflows
+  gh:list:
+    desc: List all GitHub Actions workflows and jobs
     cmds:
       - act -l
 
-  test:gh-actions:validate:
-    desc: Validate GitHub Pages build output
+  # Dry run tests
+  gh:test:dry:
+    desc: Dry run all workflows (shows what would run without executing)
+    cmds:
+      - echo "🔍 Dry run of all GitHub Actions workflows..."
+      - act -n
+
+  gh:test:dry-run:
+    desc: Dry run test workflow
+    cmds:
+      - echo "🔍 Dry run of test workflow..."
+      - act -W .github/workflows/test.yml -n
+
+  gh:deploy:dry-run:
+    desc: Dry run deploy workflow
+    cmds:
+      - echo "🔍 Dry run of deploy workflow..."
+      - act -W .github/workflows/deploy-pages.yml -n
+
+  # Test workflow
+  gh:test:
+    desc: Run test workflow locally (yarn test + coverage)
+    cmds:
+      - echo "🧪 Running test workflow locally..."
+      - act -W .github/workflows/test.yml -j test
+
+  gh:test:verbose:
+    desc: Run test workflow with verbose output
+    cmds:
+      - echo "🧪 Running test workflow (verbose)..."
+      - act -W .github/workflows/test.yml -j test --verbose
+
+  # Deploy workflow
+  gh:deploy:build:
+    desc: Run deploy workflow build job locally
+    cmds:
+      - echo "🏗️  Running deploy workflow build job..."
+      - act -W .github/workflows/deploy-pages.yml -j build
+
+  gh:deploy:build-verbose:
+    desc: Run deploy workflow build job with verbose output
+    cmds:
+      - echo "🏗️  Running deploy workflow build job (verbose)..."
+      - act -W .github/workflows/deploy-pages.yml -j build --verbose
+
+  gh:deploy:full:
+    desc: Run full deploy workflow (build + deploy jobs)
+    cmds:
+      - echo "🚀 Running full deploy workflow..."
+      - act -W .github/workflows/deploy-pages.yml
+
+  # Validation
+  gh:validate:
+    desc: Validate GitHub Pages build output structure
     cmds:
       - bash scripts/validate-gh-pages.sh
+
+  # Combined tests
+  gh:test:all:
+    desc: Run all workflow tests (test + deploy build)
+    cmds:
+      - echo "🧪 Running all workflow tests..."
+      - task: gh:test
+      - task: gh:deploy:build
+
+  gh:test:quick:
+    desc: Quick validation (dry run + list)
+    cmds:
+      - task: gh:list
+      - task: gh:test:dry
+
+  # CI Build Script Testing
+  gh:build-ci:
+    desc: Test CI build script directly (bypasses act)
+    cmds:
+      - echo "🏗️  Testing CI build script..."
+      - BASE_PATH=/catalyst-ui/ ./scripts/build-ci.sh
+
+  gh:build-ci:validate:
+    desc: Test CI build script and validate output
+    cmds:
+      - task: gh:build-ci
+      - task: gh:validate
+
+  # Cleanup
+  gh:clean:
+    desc: Clean GitHub Actions artifacts and build outputs
+    cmds:
+      - echo "🧹 Cleaning GitHub Actions artifacts..."
+      - rm -rf dist/ gh-pages/
+      - echo "✓ Cleaned dist/ and gh-pages/"
 

@@ -104,7 +104,7 @@
 
   /**
    * @tokens Typography
-   * @presenter Font
+   * @presenter FontFamily
    */
   /* Cyberpunk fonts */
   --font-heading:
@@ -299,7 +299,7 @@
 
   /**
    * @tokens Typography
-   * @presenter Font
+   * @presenter FontFamily
    */
   /* Cyberpunk fonts */
   --font-heading:
