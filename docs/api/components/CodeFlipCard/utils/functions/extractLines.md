@@ -20,7 +20,7 @@ Extracts a specific range of lines from source code
 
 ### range
 
-[`LineRange`](../interfaces/LineRange.md) | [`LineRangeTuple`](../type-aliases/LineRangeTuple.md)
+[`LineRangeTuple`](../type-aliases/LineRangeTuple.md) | [`LineRange`](../interfaces/LineRange.md)
 
 ## Returns
 

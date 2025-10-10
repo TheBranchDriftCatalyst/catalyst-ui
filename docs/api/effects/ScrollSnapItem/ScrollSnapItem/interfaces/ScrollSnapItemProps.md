@@ -16,7 +16,7 @@ Defined in: [workspace/catalyst-ui/lib/effects/ScrollSnapItem/ScrollSnapItem.tsx
 
 ### align?
 
-> `optional` **align**: `"center"` \| `"none"` \| `"start"` \| `"end"`
+> `optional` **align**: `"none"` \| `"start"` \| `"center"` \| `"end"`
 
 Defined in: [workspace/catalyst-ui/lib/effects/ScrollSnapItem/ScrollSnapItem.tsx:6](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/ScrollSnapItem/ScrollSnapItem.tsx#L6)
 
@@ -36,7 +36,7 @@ Offset from top (useful for sticky headers)
 
 ### stop?
 
-> `optional` **stop**: `"always"` \| `"normal"`
+> `optional` **stop**: `"normal"` \| `"always"`
 
 Defined in: [workspace/catalyst-ui/lib/effects/ScrollSnapItem/ScrollSnapItem.tsx:10](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/ScrollSnapItem/ScrollSnapItem.tsx#L10)
 

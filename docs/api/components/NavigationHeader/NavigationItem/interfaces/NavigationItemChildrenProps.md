@@ -28,6 +28,6 @@ Defined in: [workspace/catalyst-ui/lib/components/NavigationHeader/NavigationIte
 
 ### children?
 
-> `optional` **children**: `ReactNode`
+> `optional` **children**: `any`
 
 Defined in: [workspace/catalyst-ui/lib/components/NavigationHeader/NavigationItem.tsx:40](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/NavigationHeader/NavigationItem.tsx#L40)

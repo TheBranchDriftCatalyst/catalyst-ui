@@ -16,7 +16,7 @@ Normalizes line range input to a consistent format
 
 ### range
 
-[`LineRange`](../interfaces/LineRange.md) | [`LineRangeTuple`](../type-aliases/LineRangeTuple.md)
+[`LineRangeTuple`](../type-aliases/LineRangeTuple.md) | [`LineRange`](../interfaces/LineRange.md)
 
 ## Returns
 

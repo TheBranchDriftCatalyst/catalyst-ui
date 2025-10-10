@@ -16,7 +16,7 @@ Defined in: [workspace/catalyst-ui/lib/effects/ScrollSnapContainer/ScrollSnapCon
 
 ### type?
 
-> `optional` **type**: `"none"` \| `"x"` \| `"y"` \| `"both"`
+> `optional` **type**: `"x"` \| `"y"` \| `"none"` \| `"both"`
 
 Defined in: [workspace/catalyst-ui/lib/effects/ScrollSnapContainer/ScrollSnapContainer.tsx:6](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/ScrollSnapContainer/ScrollSnapContainer.tsx#L6)
 
@@ -26,7 +26,7 @@ Direction of scroll snapping
 
 ### behavior?
 
-> `optional` **behavior**: `"mandatory"` \| `"proximity"`
+> `optional` **behavior**: `"proximity"` \| `"mandatory"`
 
 Defined in: [workspace/catalyst-ui/lib/effects/ScrollSnapContainer/ScrollSnapContainer.tsx:8](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/ScrollSnapContainer/ScrollSnapContainer.tsx#L8)
 

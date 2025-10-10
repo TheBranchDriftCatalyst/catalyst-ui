@@ -38,6 +38,6 @@ Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/config/types.ts:28]
 
 ### renderer?
 
-> `optional` **renderer**: [`NodeRenderer`](../type-aliases/NodeRenderer.md)
+> `optional` **renderer**: `any`
 
 Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/config/types.ts:29](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/ForceGraph/config/types.ts#L29)

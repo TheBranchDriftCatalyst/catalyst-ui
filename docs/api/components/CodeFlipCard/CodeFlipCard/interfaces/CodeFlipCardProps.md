@@ -216,7 +216,7 @@ File name to display in CodeBlock header
 
 ### lineRange?
 
-> `optional` **lineRange**: [`LineRange`](../../utils/interfaces/LineRange.md) \| [`LineRangeTuple`](../../utils/type-aliases/LineRangeTuple.md)
+> `optional` **lineRange**: [`LineRangeTuple`](../../utils/type-aliases/LineRangeTuple.md) \| [`LineRange`](../../utils/interfaces/LineRange.md)
 
 Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:26](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L26)
 

@@ -22,7 +22,7 @@ Main processing pipeline for source code
 
 #### lineRange?
 
-[`LineRange`](../interfaces/LineRange.md) \| [`LineRangeTuple`](../type-aliases/LineRangeTuple.md)
+[`LineRangeTuple`](../type-aliases/LineRangeTuple.md) \| [`LineRange`](../interfaces/LineRange.md)
 
 #### stripImports?
 

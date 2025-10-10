@@ -30,6 +30,6 @@ Defined in: [workspace/catalyst-ui/lib/utils/markdown/types.ts:59](https://githu
 
 ### align
 
-> **align**: (`null` \| `"center"` \| `"right"` \| `"left"`)[]
+> **align**: (`null` \| `"left"` \| `"right"` \| `"center"`)[]
 
 Defined in: [workspace/catalyst-ui/lib/utils/markdown/types.ts:60](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/utils/markdown/types.ts#L60)

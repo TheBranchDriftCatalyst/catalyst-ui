@@ -30,7 +30,7 @@ Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/config/types.ts:57]
 
 ### type
 
-> **type**: `"number"` \| `"boolean"` \| `"select"` \| `"text"`
+> **type**: `"number"` \| `"boolean"` \| `"text"` \| `"select"`
 
 Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/config/types.ts:58](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/ForceGraph/config/types.ts#L58)
 

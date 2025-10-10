@@ -132,7 +132,7 @@ Defined in: [workspace/catalyst-ui/lib/types/tilt-react.d.ts:26](https://github.
 
 ### glarePosition?
 
-> `optional` **glarePosition**: `"top"` \| `"right"` \| `"bottom"` \| `"left"` \| `"all"`
+> `optional` **glarePosition**: `"all"` \| `"left"` \| `"right"` \| `"top"` \| `"bottom"`
 
 Defined in: [workspace/catalyst-ui/lib/types/tilt-react.d.ts:27](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/types/tilt-react.d.ts#L27)
 

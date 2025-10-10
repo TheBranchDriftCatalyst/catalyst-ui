@@ -6,6 +6,6 @@
 
 # Variable: AccordionItem
 
-> `const` **AccordionItem**: `ForwardRefExoticComponent`\<`Omit`\<`AccordionItemProps` & `RefAttributes`\<`HTMLDivElement`\>, `"ref"`\> & `RefAttributes`\<`HTMLDivElement`\>\>
+> `const` **AccordionItem**: `ForwardRefExoticComponent`\<`any`\>
 
 Defined in: [workspace/catalyst-ui/lib/ui/accordion.tsx:8](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/ui/accordion.tsx#L8)

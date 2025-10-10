@@ -16,7 +16,7 @@ Defined in: [workspace/catalyst-ui/lib/ui/badge.tsx:25](https://github.com/TheBr
 
 ### variant?
 
-> `optional` **variant**: `null` \| `"default"` \| `"destructive"` \| `"outline"` \| `"secondary"`
+> `optional` **variant**: `null` \| `"default"` \| `"secondary"` \| `"destructive"` \| `"outline"`
 
 Defined in: [workspace/catalyst-ui/lib/ui/badge.tsx:10](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/ui/badge.tsx#L10)
 

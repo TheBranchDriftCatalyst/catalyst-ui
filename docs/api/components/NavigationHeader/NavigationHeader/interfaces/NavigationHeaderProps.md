@@ -20,6 +20,6 @@ Defined in: [workspace/catalyst-ui/lib/components/NavigationHeader/NavigationHea
 
 ### direction?
 
-> `optional` **direction**: `"right"` \| `"left"`
+> `optional` **direction**: `"left"` \| `"right"`
 
 Defined in: [workspace/catalyst-ui/lib/components/NavigationHeader/NavigationHeader.tsx:14](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/NavigationHeader/NavigationHeader.tsx#L14)

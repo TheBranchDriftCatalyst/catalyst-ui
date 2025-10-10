@@ -6,6 +6,6 @@
 
 # Variable: ResponsiveTypography
 
-> `const` **ResponsiveTypography**: `ForwardRefExoticComponent`\<`ResponsiveTypographyProps` & `RefAttributes`\<`HTMLDivElement`\>\>
+> `const` **ResponsiveTypography**: `any`
 
 Defined in: [workspace/catalyst-ui/lib/ui/typography.tsx:92](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/ui/typography.tsx#L92)

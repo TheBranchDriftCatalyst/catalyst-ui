@@ -16,7 +16,7 @@ Defined in: [workspace/catalyst-ui/lib/ui/button.tsx:36](https://github.com/TheB
 
 ### variant?
 
-> `optional` **variant**: `null` \| `"link"` \| `"default"` \| `"destructive"` \| `"outline"` \| `"secondary"` \| `"ghost"`
+> `optional` **variant**: `null` \| `"default"` \| `"secondary"` \| `"destructive"` \| `"outline"` \| `"ghost"` \| `"link"`
 
 Defined in: [workspace/catalyst-ui/lib/ui/button.tsx:10](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/ui/button.tsx#L10)
 

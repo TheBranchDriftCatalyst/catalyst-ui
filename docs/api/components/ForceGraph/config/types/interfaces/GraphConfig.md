@@ -74,7 +74,7 @@ Graph title (defaults to "FORCE GRAPH")
 
 ### defaultNodeRenderer?
 
-> `optional` **defaultNodeRenderer**: [`NodeRenderer`](../type-aliases/NodeRenderer.md)
+> `optional` **defaultNodeRenderer**: `any`
 
 Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/config/types.ts:104](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/ForceGraph/config/types.ts#L104)
 

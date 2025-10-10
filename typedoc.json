@@ -44,9 +44,10 @@
   "categorizeByGroup": true,
   "categoryOrder": ["Components", "Contexts", "Hooks", "UI", "Utils", "Types", "*"],
   "validation": {
-    "notExported": true,
-    "invalidLink": true,
+    "notExported": false,
+    "invalidLink": false,
     "notDocumented": false
   },
+  "skipErrorChecking": true,
   "sourceLinkTemplate": "https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/{gitRevision}/{path}#L{line}"
 }

@@ -16,7 +16,7 @@ Helper to get node configuration for a Docker node
 
 ### kind
 
-`"image"` | `"container"` | `"network"` | `"volume"`
+`"container"` | `"network"` | `"image"` | `"volume"`
 
 ## Returns
 

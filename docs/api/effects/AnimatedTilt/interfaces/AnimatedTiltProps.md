@@ -6,7 +6,7 @@
 
 # Interface: AnimatedTiltProps
 
-Defined in: workspace/catalyst-ui/lib/effects/AnimatedTilt.tsx:32
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedTilt.tsx:32](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedTilt.tsx#L32)
 
 AnimatedTilt - 3D tilt effect that respects user's motion preferences
 
@@ -54,7 +54,7 @@ https://www.w3.org/WAI/WCAG21/Understanding/animation-from-interactions.html
 
 > `optional` **enabled**: `boolean`
 
-Defined in: workspace/catalyst-ui/lib/effects/AnimatedTilt.tsx:33
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedTilt.tsx:33](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedTilt.tsx#L33)
 
 ---
 
@@ -62,7 +62,7 @@ Defined in: workspace/catalyst-ui/lib/effects/AnimatedTilt.tsx:33
 
 > **children**: `ReactNode`
 
-Defined in: workspace/catalyst-ui/lib/effects/AnimatedTilt.tsx:34
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedTilt.tsx:34](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedTilt.tsx#L34)
 
 ---
 
@@ -236,7 +236,7 @@ Defined in: [workspace/catalyst-ui/lib/types/tilt-react.d.ts:26](https://github.
 
 ### glarePosition?
 
-> `optional` **glarePosition**: `"top"` \| `"right"` \| `"bottom"` \| `"left"` \| `"all"`
+> `optional` **glarePosition**: `"all"` \| `"left"` \| `"right"` \| `"top"` \| `"bottom"`
 
 Defined in: [workspace/catalyst-ui/lib/types/tilt-react.d.ts:27](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/types/tilt-react.d.ts#L27)
 

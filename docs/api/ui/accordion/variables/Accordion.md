@@ -6,6 +6,6 @@
 
 # Variable: Accordion
 
-> `const` **Accordion**: `ForwardRefExoticComponent`\<`AccordionSingleProps` \| `AccordionMultipleProps` & `RefAttributes`\<`HTMLDivElement`\>\> = `AccordionPrimitive.Root`
+> `const` **Accordion**: `ForwardRefExoticComponent`\<`any`\> = `AccordionPrimitive.Root`
 
 Defined in: [workspace/catalyst-ui/lib/ui/accordion.tsx:6](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/ui/accordion.tsx#L6)

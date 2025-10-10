@@ -8,7 +8,7 @@
 
 > **useA11yError**(`inputId`, `hasError`): `object`
 
-Defined in: workspace/catalyst-ui/lib/hooks/useA11yError.ts:31
+Defined in: [workspace/catalyst-ui/lib/hooks/useA11yError.ts:31](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useA11yError.ts#L31)
 
 useA11yError - Creates accessible error message associations for form inputs
 

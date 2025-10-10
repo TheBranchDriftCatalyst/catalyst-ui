@@ -60,7 +60,7 @@ Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/ReactD3Node.tsx:14]
 
 ### customRenderer?
 
-> `optional` **customRenderer**: [`NodeRenderer`](../../config/types/type-aliases/NodeRenderer.md)
+> `optional` **customRenderer**: `any`
 
 Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/ReactD3Node.tsx:15](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/ForceGraph/ReactD3Node.tsx#L15)
 
