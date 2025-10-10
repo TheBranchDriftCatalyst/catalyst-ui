@@ -1,8 +1,15 @@
 # Projects Module with Markdown-to-Component Renderer
 
+> **Status**: 🚧 Phase 0 COMPLETE (Changelog MVP) ✅ | Phase 1+ NOT STARTED
+> **Completed**: Phase 0 - Markdown rendering system validated with ChangelogTab
+> **Remaining**: Full Projects System (scanner, GitHub fetcher, ProjectCard)
+> **Priority**: 🟡 Medium - Foundation complete, full system planned for v1.4.0
+
 ## Overview
 
 Create a modular, DRY system that scans the workspace for `catalyst_repo.yaml` files, fetches GitHub READMEs, parses markdown into AST (Abstract Syntax Tree), and maps markdown nodes to React components via a central configuration. This creates a "Projects" tab showcasing all workspace repositories with beautifully rendered documentation.
+
+**Current State**: Phase 0 (MVP) is complete - the core markdown rendering system has been validated with the ChangelogTab. The full Projects System (Phase 1+) remains to be implemented.
 
 ### Vision
 
