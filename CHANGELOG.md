@@ -3,6 +3,67 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+## [1.4.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v1.3.0...v1.4.0) (2025-10-10)
+
+
+### 📦 BUILD SYSTEM
+
+- add documentation concatenation plugin ([ffce17c](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/ffce17c2848033a2a754557fcd8967dad3327a59))
+
+
+### ♻️ REFACTORING
+
+- **ForceGraph:** split GraphContext into focused modules ([82e7603](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/82e7603172b095a50f6c1462963441abaf89a2b9)), closes [#3](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues/3)
+- standardize barrel export patterns across modules ([a3cdaf7](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/a3cdaf73e5b2f3356723b0eba3c7b431cebded1e)), closes [#2](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues/2)
+
+
+### 🧪 TESTING
+
+- fix TypeScript errors in test files ([df89321](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/df893213f17962a3dee00edd4ede60d6129c8e45))
+
+
+### 🛠️ MAINTENANCE
+
+- **deps:** add accessibility testing tools ([44a4158](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/44a41585f08738e47397c5cd6143a142187164d2))
+- ignore generated documentation file ([1785ff2](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/1785ff25e19aed5dda829ff383526a45b895a5bc))
+
+
+### 🔧 BUG FIXES
+
+- **AnimatedFlip:** stop prop ([aa814a6](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/aa814a65a42f860d269161a89e644d16ec46433d))
+- **build:** exclude test files from TypeScript build ([6ad8cf1](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/6ad8cf12f00a8185da06455b238a8ef2bdb436b8))
+- **build:** missing public assets ([114ca6b](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/114ca6bd1410b3a003accffcc72984be1b3efda5))
+- **ci:** add missing @testing-library/dom dependency ([c6f7c5a](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/c6f7c5aac0243c8027f96455d375265cd7f40303))
+- **ci:** add missing test setup file to repository ([b89b074](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/b89b07492ae15adfb1c89584450c25b847a62238))
+- **ci:** make TypeDoc build optional and non-blocking ([170bea3](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/170bea3cbde2c26c0e90bc7823b31e699e21d726))
+- **storybook:** fix invalid Font presenter name in design tokens ([1bd24e2](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/1bd24e22a83b18d2b52ccd94a5e89806e5a1184b))
+- **storybook:** resolve acorn parsing errors and add refactor TODOs ([3461c60](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/3461c600bef7c680f70576d1b7b96251855e8fdd))
+- **ThemeProvider:** theme preloading ([d277b3d](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/d277b3d7f70e8c32301eecba76eef4242f6d90a6))
+- **typedoc:** resolve TypeScript compilation errors ([9ae5c9f](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/9ae5c9f802eb782a55ce7f9ad697c6516e09e829))
+- use BASE_URL for changelog fetch in production ([eb56db7](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/eb56db7572a968d30cfb33aab4a993a654d0dc69))
+
+
+### ⚡ NEW FEATURES
+
+- display last commit message in About tab ([cfb8095](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/cfb809533aeff0495c4959aaaa19c0b4314ac00b))
+- implement dual-section navigation system ([d1a844c](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/d1a844c2bce78c3ae32f4d14d825dcdb52c73565))
+- **settings:** add version and git hash to About tab ([84da03f](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/84da03fd68b3e66d85c408a4530c9480b4044825))
+- **storybook:** add storybook-design-token v4.1.0 integration ([91d3593](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/91d3593e696bae606689a33b9b42353abb73a82e))
+
+
+### 📚 DOCUMENTATION
+
+- add auto-generated TypeDoc API documentation ([929b8e2](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/929b8e2e358621c24c8601668fbd3642966870a4))
+- archive completed features to docs/archive/completed/ ([9f4cd93](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/9f4cd9351466393c8f4ce27acdcd002b78fa3465))
+- comprehensive documentation cleanup and improvements ([b4a4466](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/b4a4466266c5ffd0ffaa775599cfa103d1d78c8a))
+- create organized documentation directory structure ([6fb281e](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/6fb281e31da67a379daa4b1f26c40b244a83d5c8))
+- move PERFORMANCE_MONITORING to architecture directory ([a3964ae](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/a3964ae2559b141abe6352827f0b77eae553def6))
+- move proposed features to docs/proposals/ ([66384a2](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/66384a2549c98d0c03cb174fa96fbf782e1a33b6))
+- Phase 1 - Documentation improvement quick wins ([640d3ab](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/640d3ab6e7fd3328c32eb19c00d48aab0d67a0ca))
+- Phase 2 - Complete accessibility audit of all Storybook stories ([763878c](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/763878c71e21018367ab10f7cb7693deb49fb70c))
+- update mass cleanup with Phase 6 completion ([58e9eb0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/58e9eb0e26faf0c86707c8c3310eae622f3f903c)), closes [#2](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues/2) [#3](https://github.com/TheBranchDriftCatalyst/catalyst-ui/issues/3)
+- update status tracking for active feature documents ([9d2c02d](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/9d2c02d8fff60ad72b2355a9d098596e01dd5151))
+
 ## [1.3.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v1.2.1...v1.3.0) (2025-10-09)
 
 
