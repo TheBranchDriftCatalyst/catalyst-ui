@@ -1,0 +1,52 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["lib"],
+  "entryPointStrategy": "expand",
+  "out": "docs/api",
+  "plugin": ["typedoc-plugin-markdown"],
+  "readme": "none",
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeExternals": true,
+  "exclude": [
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx",
+    "**/*.stories.ts",
+    "**/*.stories.tsx",
+    "**/node_modules/**",
+    "**/dist/**",
+    "app/**/*"
+  ],
+  "includeVersion": true,
+  "githubPages": false,
+  "gitRevision": "main",
+  "name": "Catalyst UI API Documentation",
+  "tsconfig": "./tsconfig.typedoc.json",
+  "navigationLinks": {
+    "GitHub": "https://github.com/TheBranchDriftCatalyst/catalyst-ui",
+    "Storybook": "https://thebranchdriftcatalyst.github.io/catalyst-ui/"
+  },
+  "customCss": "./lib/contexts/Theme/styles/catalyst.css",
+  "sort": ["source-order"],
+  "kindSortOrder": [
+    "Project",
+    "Module",
+    "Namespace",
+    "Enum",
+    "Class",
+    "Interface",
+    "TypeAlias",
+    "Function",
+    "Variable"
+  ],
+  "categorizeByGroup": true,
+  "categoryOrder": ["Components", "Contexts", "Hooks", "UI", "Utils", "Types", "*"],
+  "validation": {
+    "notExported": true,
+    "invalidLink": true,
+    "notDocumented": false
+  },
+  "sourceLinkTemplate": "https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/{gitRevision}/{path}#L{line}"
+}

@@ -211,6 +211,28 @@ build_storybook() {
     fi
 }
 
+build_api_docs() {
+    log_step "Building API Documentation"
+    local build_start=$(date +%s)
+
+    log_substep "Running: yarn docs:api"
+
+    cd "${PROJECT_ROOT}"
+    yarn docs:api
+
+    local build_end=$(date +%s)
+    local duration=$((build_end - build_start))
+
+    if [[ -d "${PROJECT_ROOT}/docs/api" ]]; then
+        local size=$(du -sh "${PROJECT_ROOT}/docs/api" 2>/dev/null | cut -f1)
+        local file_count=$(find "${PROJECT_ROOT}/docs/api" -type f | wc -l | tr -d ' ')
+        log_success "API docs build complete (${duration}s, ${size}, ${file_count} files)"
+    else
+        log_error "API docs build failed - output directory not found"
+        exit 1
+    fi
+}
+
 # ┌────────────────────────────────────────────────────────────────────────┐
 # │ 🎨 LANDING PAGE GENERATION                                              │
 # └────────────────────────────────────────────────────────────────────────┘
@@ -355,6 +377,19 @@ create_landing_page() {
             transform: translateY(-2px);
         }
 
+        .api {
+            color: #ffd700;
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .api:hover {
+            background: rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+            transform: translateY(-2px);
+        }
+
         /* CRT scanlines */
         .scanlines {
             position: fixed;
@@ -394,6 +429,7 @@ create_landing_page() {
         <div class="buttons">
             <a href="${base_path}demo.html" class="button demo">🎮 Demo App</a>
             <a href="${base_path}storybook/" class="button storybook">📚 Storybook</a>
+            <a href="${base_path}api/" class="button api">📖 API Docs</a>
         </div>
     </div>
 </body>
@@ -436,6 +472,11 @@ merge_outputs() {
     cp -r "${PROJECT_ROOT}/dist/storybook" "${gh_pages}/storybook"
     log_success "Storybook files copied"
 
+    # Copy API docs
+    log_substep "Copying API docs to gh-pages/api/"
+    cp -r "${PROJECT_ROOT}/docs/api" "${gh_pages}/api"
+    log_success "API docs copied"
+
     # Create landing page
     create_landing_page
 
@@ -463,6 +504,7 @@ validate_output() {
         "demo.html"
         ".nojekyll"
         "storybook/index.html"
+        "api/README.md"
     )
 
     for file in "${required_files[@]}"; do
@@ -506,6 +548,7 @@ generate_report() {
     log_metric "Total size: $(du -sh ${gh_pages} | cut -f1)"
     log_metric "App size: $(du -sh ${gh_pages}/demo.html ${gh_pages}/assets 2>/dev/null | awk '{s+=$1}END{print s}' || echo 'N/A')"
     log_metric "Storybook size: $(du -sh ${gh_pages}/storybook | cut -f1)"
+    log_metric "API docs size: $(du -sh ${gh_pages}/api | cut -f1)"
 
     log_substep "File Counts:"
     log_metric "Total files: $(find ${gh_pages} -type f | wc -l | tr -d ' ')"
@@ -561,6 +604,7 @@ HEADER
     cleanup
     build_app
     build_storybook
+    build_api_docs
     merge_outputs
     validate_output
     generate_report

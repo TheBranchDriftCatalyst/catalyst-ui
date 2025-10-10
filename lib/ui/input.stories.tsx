@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Input } from "./input";
 import { Label } from "./label";
 import { Button } from "./button";
+import { useA11yError } from "../hooks/useA11yError";
 
 const meta = {
   title: "UI/Input",
@@ -113,18 +114,25 @@ export const WithHelperText: Story = {
 };
 
 export const WithError: Story = {
-  render: () => (
-    <div className="grid w-full max-w-sm items-center gap-1.5">
-      <Label htmlFor="email-error" className="text-destructive">
-        Email
-      </Label>
-      <Input
-        type="email"
-        id="email-error"
-        placeholder="Email"
-        className="border-destructive focus-visible:ring-destructive"
-      />
-      <p className="text-sm text-destructive">Please enter a valid email address.</p>
-    </div>
-  ),
+  render: () => {
+    const { inputProps, errorProps } = useA11yError("email-error", true);
+
+    return (
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <Label htmlFor="email-error" className="text-destructive">
+          Email
+        </Label>
+        <Input
+          type="email"
+          id="email-error"
+          placeholder="Email"
+          className="border-destructive focus-visible:ring-destructive"
+          {...inputProps}
+        />
+        <p className="text-sm text-destructive" {...errorProps}>
+          Please enter a valid email address.
+        </p>
+      </div>
+    );
+  },
 };

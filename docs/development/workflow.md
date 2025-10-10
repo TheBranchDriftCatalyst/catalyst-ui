@@ -42,13 +42,13 @@ yarn unlink
 # First release (creates v0.0.1)
 yarn release:first
 
-# Patch release (0.0.1 → 0.0.2)
+# Patch release (1.3.0 → 1.3.1)
 yarn release:patch
 
-# Minor release (0.0.1 → 0.1.0)
+# Minor release (1.3.0 → 1.4.0)
 yarn release:minor
 
-# Major release (0.0.1 → 1.0.0)
+# Major release (1.3.0 → 2.0.0)
 yarn release:major
 ```
 
@@ -85,6 +85,7 @@ We use [Conventional Commits](https://www.conventionalcommits.org/):
 - `perf`: Performance improvements
 - `test`: Adding or updating tests
 - `chore`: Maintenance tasks
+- `revert`: Reverting previous commits
 - `build`: Build system changes
 - `ci`: CI/CD changes
 
@@ -109,14 +110,48 @@ yarn dev:app          # Vite dev server for kitchen sink app
 yarn dev:storybook    # Storybook only
 yarn dev:lib          # Build library in watch mode
 yarn dev:test         # Storybook test runner
+yarn dev:preview      # Preview production build
 
 # Building
 yarn build            # Build library for production
 yarn build:app        # Build kitchen sink app
 yarn build:storybook  # Build Storybook for deployment
+yarn build:full       # Build both library and app
+yarn build:ci         # Run CI build script
 
-# Quality
+# Testing
+yarn test             # Run all tests once
+yarn test:watch       # Run tests in watch mode
+yarn test:ui          # Open Vitest UI
+yarn test:coverage    # Run tests with coverage report
+
+# Documentation
+yarn docs:api         # Generate TypeDoc API documentation
+yarn docs:api:watch   # Generate TypeDoc in watch mode
+
+# Quality & Maintenance
 yarn lint             # ESLint check
+yarn format           # Format code with Prettier
+yarn update:badges    # Update README badges
+
+# Preview
+yarn preview:app      # Preview built app
+```
+
+## Task Runner Commands
+
+This project uses [Task](https://taskfile.dev/) for additional development utilities:
+
+```bash
+# GitHub Actions Testing (via act)
+task gh:list           # List all workflows and jobs
+task gh:test           # Run test workflow locally
+task gh:test:dry       # Dry run test workflow
+task gh:deploy:build   # Run deploy workflow build job
+task gh:test:all       # Run all workflow tests
+task gh:build-ci       # Test CI build script directly
+task gh:validate       # Validate GitHub Pages build output
+task gh:clean          # Clean build artifacts
 ```
 
 ## Source Maps

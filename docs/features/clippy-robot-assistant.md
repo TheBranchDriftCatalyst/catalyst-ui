@@ -663,8 +663,10 @@ export function ChatBox() {
     // Show typing indicator
     setTyping(true);
 
-    // TODO: Send to LLM API (OpenAI, Anthropic, etc.)
-    // For now, simulate response
+    // PLACEHOLDER: Send to LLM API (OpenAI, Anthropic, etc.)
+    // NOTE: This is example code for the proposal. Actual implementation
+    // would be completed in Phase 5: LLM Integration (see below).
+    // For MVP demo, simulate response:
     setTimeout(() => {
       addMessage({
         role: "assistant",

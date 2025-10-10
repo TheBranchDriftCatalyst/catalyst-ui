@@ -1,11 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Tilt } from "@jdion/tilt-react";
+import { AnimatedTilt } from "./AnimatedTilt";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
 import { useState } from "react";
+import { usePrefersReducedMotion } from "@/catalyst-ui/hooks/usePrefersReducedMotion";
 
 const meta = {
   title: "Effects/Tilt",
-  component: Tilt,
+  component: AnimatedTilt,
   parameters: {
     layout: "centered",
   },
@@ -63,34 +64,34 @@ export const Default: Story = {
     transitionSpeed: 400,
   },
   render: args => (
-    <Tilt {...args}>
+    <AnimatedTilt {...args}>
       <DemoCard />
-    </Tilt>
+    </AnimatedTilt>
   ),
 };
 
 export const Subtle: Story = {
   render: () => (
-    <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} perspective={1500}>
+    <AnimatedTilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} perspective={1500}>
       <DemoCard>
         <p className="text-sm text-muted-foreground">
           Subtle tilt with minimal angles (5°) and gentle scale (1.02). Perfect for professional
           interfaces.
         </p>
       </DemoCard>
-    </Tilt>
+    </AnimatedTilt>
   ),
 };
 
 export const Extreme: Story = {
   render: () => (
-    <Tilt tiltMaxAngleX={35} tiltMaxAngleY={35} scale={1.2} perspective={500}>
+    <AnimatedTilt tiltMaxAngleX={35} tiltMaxAngleY={35} scale={1.2} perspective={500}>
       <DemoCard>
         <p className="text-sm text-muted-foreground">
           Extreme tilt with high angles (35°) and dramatic scale (1.2). Very noticeable 3D effect.
         </p>
       </DemoCard>
-    </Tilt>
+    </AnimatedTilt>
   ),
 };
 
@@ -104,7 +105,7 @@ export const Interactive: Story = {
     return (
       <div className="space-y-6">
         <div className="flex justify-center">
-          <Tilt
+          <AnimatedTilt
             tiltMaxAngleX={angleX}
             tiltMaxAngleY={angleY}
             scale={scale}
@@ -119,7 +120,7 @@ export const Interactive: Story = {
                 <p className="font-mono text-xs">perspective: {perspective}</p>
               </div>
             </DemoCard>
-          </Tilt>
+          </AnimatedTilt>
         </div>
 
         <div className="max-w-md mx-auto space-y-4">
@@ -185,7 +186,7 @@ export const Comparison: Story = {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 p-8">
       <div className="text-center space-y-4">
         <h3 className="text-sm font-semibold">Subtle</h3>
-        <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} perspective={1500}>
+        <AnimatedTilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} perspective={1500}>
           <Card className="w-[240px]">
             <CardHeader>
               <CardTitle className="text-base">Subtle</CardTitle>
@@ -194,12 +195,12 @@ export const Comparison: Story = {
               <p className="text-xs text-muted-foreground">5° angles, 1.02 scale</p>
             </CardContent>
           </Card>
-        </Tilt>
+        </AnimatedTilt>
       </div>
 
       <div className="text-center space-y-4">
         <h3 className="text-sm font-semibold">Default</h3>
-        <Tilt tiltMaxAngleX={20} tiltMaxAngleY={20} scale={1.05} perspective={1000}>
+        <AnimatedTilt tiltMaxAngleX={20} tiltMaxAngleY={20} scale={1.05} perspective={1000}>
           <Card className="w-[240px]">
             <CardHeader>
               <CardTitle className="text-base">Default</CardTitle>
@@ -208,12 +209,12 @@ export const Comparison: Story = {
               <p className="text-xs text-muted-foreground">20° angles, 1.05 scale</p>
             </CardContent>
           </Card>
-        </Tilt>
+        </AnimatedTilt>
       </div>
 
       <div className="text-center space-y-4">
         <h3 className="text-sm font-semibold">Extreme</h3>
-        <Tilt tiltMaxAngleX={35} tiltMaxAngleY={35} scale={1.2} perspective={500}>
+        <AnimatedTilt tiltMaxAngleX={35} tiltMaxAngleY={35} scale={1.2} perspective={500}>
           <Card className="w-[240px]">
             <CardHeader>
               <CardTitle className="text-base">Extreme</CardTitle>
@@ -222,8 +223,80 @@ export const Comparison: Story = {
               <p className="text-xs text-muted-foreground">35° angles, 1.2 scale</p>
             </CardContent>
           </Card>
-        </Tilt>
+        </AnimatedTilt>
       </div>
     </div>
   ),
+};
+
+export const AccessibilitySupport: Story = {
+  render: () => {
+    const prefersReducedMotion = usePrefersReducedMotion();
+
+    return (
+      <div className="space-y-6 max-w-2xl mx-auto">
+        <div className="text-center">
+          <h3 className="text-lg font-semibold mb-2">Accessibility Support</h3>
+          <p className="text-sm text-muted-foreground">
+            AnimatedTilt automatically respects the <code>prefers-reduced-motion</code> setting
+          </p>
+          <p className="text-xs text-muted-foreground mt-2">
+            Current preference:{" "}
+            <strong>{prefersReducedMotion ? "Reduced Motion" : "Full Motion"}</strong>
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div className="text-center space-y-4">
+            <h4 className="text-sm font-medium">With AnimatedTilt (Respects Preference)</h4>
+            <AnimatedTilt tiltMaxAngleX={20} tiltMaxAngleY={20} scale={1.05} perspective={1000}>
+              <Card className="w-[240px]">
+                <CardHeader>
+                  <CardTitle className="text-base">Accessible</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xs text-muted-foreground">
+                    {prefersReducedMotion
+                      ? "Tilt disabled (reduced motion)"
+                      : "Tilt enabled (full motion)"}
+                  </p>
+                </CardContent>
+              </Card>
+            </AnimatedTilt>
+          </div>
+
+          <div className="text-center space-y-4">
+            <h4 className="text-sm font-medium">Force Disabled</h4>
+            <AnimatedTilt
+              enabled={false}
+              tiltMaxAngleX={20}
+              tiltMaxAngleY={20}
+              scale={1.05}
+              perspective={1000}
+            >
+              <Card className="w-[240px]">
+                <CardHeader>
+                  <CardTitle className="text-base">No Tilt</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-xs text-muted-foreground">
+                    Tilt always disabled via <code>enabled=false</code>
+                  </p>
+                </CardContent>
+              </Card>
+            </AnimatedTilt>
+          </div>
+        </div>
+
+        <div className="text-center mt-4 p-4 bg-muted rounded-lg">
+          <p className="text-xs text-muted-foreground">
+            💡 To test: Enable "Reduce Motion" in your OS accessibility settings
+          </p>
+          <p className="text-xs text-muted-foreground mt-1">
+            macOS: System Settings → Accessibility → Display → Reduce Motion
+          </p>
+        </div>
+      </div>
+    );
+  },
 };

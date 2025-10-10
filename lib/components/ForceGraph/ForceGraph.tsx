@@ -137,11 +137,24 @@ const ForceGraphInner: React.FC<{
     [dimensions.width, dimensions.height, activeTab]
   );
 
+  const nodeSummary = `Graph contains ${displayData.nodes?.length || 0} nodes and ${displayData.links?.length || 0} connections`;
+  const interactionHint =
+    "Use mouse to hover and click nodes. Keyboard: Delete/Backspace to exclude selected node, Escape to deselect";
+
   return (
     <div className="w-full h-screen relative bg-background overflow-hidden font-mono">
       <GraphHeader activeTab={activeTab} onTabChange={setActiveTab} />
 
-      <div className="absolute top-16 left-0 right-0 bottom-0">
+      <div
+        className="absolute top-16 left-0 right-0 bottom-0"
+        role="img"
+        aria-label={`Interactive force-directed graph visualization. ${nodeSummary}. ${interactionHint}.`}
+      >
+        {/* Visually hidden text description for screen readers */}
+        <div className="sr-only">
+          {nodeSummary}. {interactionHint}. Legend and node details available below the graph.
+        </div>
+
         <ReactD3Graph
           data={displayData}
           dimensions={graphDimensions}

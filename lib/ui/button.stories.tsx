@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn, userEvent, within } from "@storybook/test";
 import { Button } from "./button";
+import { Menu, ChevronDown, X } from "lucide-react";
 
 const meta = {
   title: "UI/Button",
@@ -83,9 +84,26 @@ export const LargeSize: Story = {
   },
 };
 
-export const IconSize: Story = {
-  args: {
-    size: "icon",
-    children: "Icon Button",
-  },
+export const IconButton: Story = {
+  render: () => (
+    <Button size="icon" variant="outline" aria-label="Open menu">
+      <Menu className="h-4 w-4" />
+    </Button>
+  ),
+};
+
+export const IconButtonExamples: Story = {
+  render: () => (
+    <div className="flex gap-2">
+      <Button size="icon" variant="outline" aria-label="Open menu">
+        <Menu className="h-4 w-4" />
+      </Button>
+      <Button size="icon" variant="ghost" aria-label="Expand">
+        <ChevronDown className="h-4 w-4" />
+      </Button>
+      <Button size="icon" variant="destructive" aria-label="Close">
+        <X className="h-4 w-4" />
+      </Button>
+    </div>
+  ),
 };

@@ -1,8 +1,10 @@
-# Animation HOC Architecture
+# Effects System Architecture
 
-> **Folder Name Note**: This document describes the animation system in `lib/effects/`.
-> The folder was renamed from `animation/` to `effects/` in Phase 6 (Oct 2025).
-> Throughout this doc, "animation HOCs" and "effect HOCs" refer to the same system.
+> **📍 Canonical Documentation**: This is the official architecture documentation for the `lib/effects/` animation system.
+>
+> **Historical Note**: The folder was renamed from `animation/` to `effects/` in Phase 6 (Oct 2025).
+> Throughout this document, "animation HOCs" and "effect HOCs" are used interchangeably to refer to the same system.
+> All code references now use `lib/effects/` as the correct path.
 
 **Status:** ✅ COMPLETE - ALL PHASES DONE
 **Started:** 2025-01-06

@@ -10,6 +10,10 @@ import { MermaidFlowChartGraphConfigurator, ConfiguratorOptions } from "../../ut
 import type { GraphConfig } from "../ForceGraph/config/types";
 import type { GraphData } from "../ForceGraph/types";
 
+/**
+ * Props for the MermaidFlowChartGraph component
+ * @interface MermaidFlowChartGraphProps
+ */
 export interface MermaidFlowChartGraphProps {
   /** Path to .mmd file in public folder (e.g., "/mermaid/solar-system.mmd") */
   filename?: string;
@@ -24,10 +28,18 @@ export interface MermaidFlowChartGraphProps {
   forceGraphProps?: Partial<Omit<ForceGraphProps, "data" | "config">>;
 }
 
+/**
+ * Internal state for managing Mermaid graph parsing and rendering
+ * @interface MermaidGraphState
+ */
 interface MermaidGraphState {
+  /** Parsed graph configuration */
   config: GraphConfig<string, string> | null;
+  /** Parsed graph data (nodes and edges) */
   data: GraphData | null;
+  /** Loading state while fetching or parsing */
   loading: boolean;
+  /** Error message if parsing or fetching failed */
   error: string | null;
 }
 
@@ -138,7 +150,11 @@ export const MermaidFlowChartGraph: React.FC<MermaidFlowChartGraphProps> = ({
   // Loading state
   if (state.loading) {
     return (
-      <div className="flex items-center justify-center h-full min-h-[400px]">
+      <div
+        className="flex items-center justify-center h-full min-h-[400px]"
+        role="status"
+        aria-live="polite"
+      >
         <div className="text-foreground/60">Loading Mermaid diagram...</div>
       </div>
     );
@@ -147,7 +163,11 @@ export const MermaidFlowChartGraph: React.FC<MermaidFlowChartGraphProps> = ({
   // Error state
   if (state.error) {
     return (
-      <div className="flex items-center justify-center h-full min-h-[400px]">
+      <div
+        className="flex items-center justify-center h-full min-h-[400px]"
+        role="alert"
+        aria-live="assertive"
+      >
         <div className="text-destructive space-y-2">
           <div className="font-semibold">Error loading Mermaid diagram</div>
           <div className="text-sm">{state.error}</div>
@@ -159,7 +179,7 @@ export const MermaidFlowChartGraph: React.FC<MermaidFlowChartGraphProps> = ({
   // No data state
   if (!state.config || !state.data) {
     return (
-      <div className="flex items-center justify-center h-full min-h-[400px]">
+      <div className="flex items-center justify-center h-full min-h-[400px]" role="status">
         <div className="text-foreground/60">
           No Mermaid diagram provided. Use `filename` or `mermaidText` prop.
         </div>

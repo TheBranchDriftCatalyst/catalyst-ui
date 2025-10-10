@@ -55,7 +55,7 @@ export function ImportFooter({
 
   return (
     <CardFooter
-      className="border-t pt-4 flex items-center justify-between gap-2 cursor-pointer hover:bg-accent/5 transition-colors duration-200 group/import"
+      className="border-t flex items-center justify-between gap-2 cursor-pointer hover:bg-accent/5 transition-colors duration-200 group/import"
       onClick={handleCopy}
     >
       <code className="text-xs text-muted-foreground flex-1 select-none">{displayText}</code>

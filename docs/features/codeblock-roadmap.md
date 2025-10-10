@@ -133,18 +133,18 @@ The Catalyst theme (`catalyst-theme.ts`) provides cyberpunk-inspired syntax colo
 
 ### Planned Features
 
-- [ ] **Code Execution**: Run JavaScript/TypeScript in sandboxed environment
-- [ ] **Diff View**: Side-by-side or inline diff highlighting
-- [ ] **Virtual Scrolling**: Performance for extremely large code blocks (10k+ lines)
-- [ ] **Export Options**: Export to HTML, SVG, or image formats
-- [ ] **Code Folding**: Collapsible code sections
+- [ ] **Code Execution**: Run JavaScript/TypeScript in sandboxed environment (not implemented)
+- [ ] **Diff View**: Side-by-side or inline diff highlighting (not implemented)
+- [ ] **Virtual Scrolling**: Performance for extremely large code blocks (10k+ lines) (not implemented)
+- [ ] **Export Options**: Export to HTML, SVG, or image formats (not implemented)
+- [ ] **Code Folding**: Collapsible code sections (not implemented)
 
 ### Potential Improvements
 
-- [ ] **Line Highlighting**: Highlight specific lines (e.g., error lines)
-- [ ] **Search/Filter**: In-block code search
-- [ ] **Annotations**: Inline comments and explanations
-- [ ] **Token Linking**: Click tokens to navigate to definitions
+- [ ] **Line Highlighting**: Highlight specific lines (e.g., error lines) (not implemented)
+- [ ] **Search/Filter**: In-block code search (not implemented)
+- [ ] **Annotations**: Inline comments and explanations (not implemented)
+- [ ] **Token Linking**: Click tokens to navigate to definitions (not implemented)
 
 ## Documentation
 

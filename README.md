@@ -201,10 +201,43 @@ See [docs/development/workflow.md](./docs/development/workflow.md) for detailed 
 
 ## 📚 Documentation
 
+### Version Glossary
+
+Understanding catalyst-ui version terminology:
+
+- **v1.3.0** - Current stable release (October 2025)
+  - Includes Phases 1-6 of mass cleanup refactor
+  - 99% test coverage, comprehensive testing infrastructure
+  - Export pattern standardization and ForceGraph context refactoring
+
+- **v1.4.0** - Next minor release (In Development)
+  - Planned: Storybook documentation updates
+  - Planned: Logger usage guide
+  - Planned: Performance profiling and bundle optimization
+
+- **v2.0.0** - Future major version (Date TBD)
+  - Breaking changes: Named exports only (no default exports)
+  - Canvas renderer for ForceGraph (large graph performance)
+  - Complete accessibility audit remediation
+  - Full API documentation with TypeDoc
+
+See [CHANGELOG.md](./CHANGELOG.md) for detailed release notes and [docs/features/mass-cleanup-refactor.md](./docs/features/mass-cleanup-refactor.md) for the refactoring roadmap.
+
 ### Getting Started
 
 - **Storybook**: Run `yarn dev:storybook` and visit http://localhost:6006
 - **Changelog**: [CHANGELOG.md](./CHANGELOG.md)
+
+### API Reference
+
+- **TypeDoc API Documentation**: [https://thebranchdriftcatalyst.github.io/catalyst-ui/api/](https://thebranchdriftcatalyst.github.io/catalyst-ui/api/) - Complete API documentation generated from TypeScript/JSDoc
+  - Component props and interfaces
+  - Hook signatures and usage
+  - Utility function references
+  - Context provider APIs
+  - Usage examples and code snippets
+
+To generate locally: `yarn docs:api`
 
 ### Development Guides
 

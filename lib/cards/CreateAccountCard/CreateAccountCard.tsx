@@ -13,7 +13,7 @@ import { SiGit, SiGoogle } from "@icons-pack/react-simple-icons";
 import { toLower } from "lodash";
 import { FileQuestionIcon } from "lucide-react";
 import React from "react";
-import { Tilt } from "@jdion/tilt-react";
+import { AnimatedTilt } from "@/catalyst-ui/effects/AnimatedTilt";
 
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -48,19 +48,65 @@ const ProviderIcons = {
   google: SiGoogle,
 };
 
+/**
+ * OIDC provider configuration for authentication buttons
+ * @interface OIDCProviderShape
+ */
 interface OIDCProviderShape {
+  /** Provider name (must match ProviderIcons keys: 'github' or 'google') */
   name: keyof typeof ProviderIcons;
+  /** Callback function triggered when provider button is clicked */
   onClick: () => void;
+  /** Optional custom icon component (overrides default provider icon) */
   icon?: React.ComponentType;
 }
 
+/**
+ * Props for the CreateAccountCard component
+ * @interface CreateAccountCardProps
+ */
 interface CreateAccountCardProps {
+  /** Array of OIDC authentication providers to display */
   oidcProviders: OIDCProviderShape[];
+  /** Callback function triggered when login form is submitted */
   onLogin: (values: z.infer<typeof InputFormSchema>) => void;
+  /** Callback function triggered when "Create account" button is clicked */
   onCreateAccount: () => void;
+  /** Enable 3D tilt animation effect on hover (default: true) */
   enableTilt?: boolean;
 }
 
+/**
+ * CreateAccountCard - Pre-styled authentication card with OIDC support
+ *
+ * A ready-to-use login card component featuring:
+ * - Username/password form with Zod validation
+ * - OIDC provider buttons (GitHub, Google)
+ * - Optional 3D tilt animation effect
+ * - Responsive design with Catalyst theme styling
+ *
+ * @param props - Component props
+ * @returns Rendered authentication card
+ *
+ * @example
+ * ```tsx
+ * import { CreateAccountCard } from 'catalyst-ui';
+ *
+ * function LoginPage() {
+ *   return (
+ *     <CreateAccountCard
+ *       oidcProviders={[
+ *         { name: "github", onClick: () => loginWithGitHub() },
+ *         { name: "google", onClick: () => loginWithGoogle() }
+ *       ]}
+ *       onLogin={(values) => console.log("Login:", values)}
+ *       onCreateAccount={() => navigate("/signup")}
+ *       enableTilt={true}
+ *     />
+ *   );
+ * }
+ * ```
+ */
 export const CreateAccountCard = ({
   oidcProviders,
   onLogin,
@@ -156,12 +202,16 @@ export const CreateAccountCard = ({
     </Card>
   );
 
-  return enableTilt ? (
-    <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} perspective={1500}>
+  return (
+    <AnimatedTilt
+      enabled={enableTilt}
+      tiltMaxAngleX={5}
+      tiltMaxAngleY={5}
+      scale={1.02}
+      perspective={1500}
+    >
       {cardContent}
-    </Tilt>
-  ) : (
-    cardContent
+    </AnimatedTilt>
   );
 };
 

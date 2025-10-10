@@ -235,15 +235,15 @@ Add script to validate:
 
 ## Testing Checklist
 
-- [ ] Script extracts all tokens from `catalyst.css`
-- [ ] Script handles all theme files
-- [ ] Generated JSON is valid
-- [ ] `DesignTokenDocBlock` loads in production
-- [ ] Storybook still works
-- [ ] Build pipeline runs without errors
-- [ ] No console errors in production
-- [ ] Token categories display correctly
-- [ ] Color previews render properly
+- [ ] Script extracts all tokens from `catalyst.css` (script not created)
+- [ ] Script handles all theme files (script not created)
+- [ ] Generated JSON is valid (JSON file not generated)
+- [ ] `DesignTokenDocBlock` loads in production (not tested - no JSON file)
+- [ ] Storybook still works (DesignTokens.stories.tsx was deleted per git status)
+- [ ] Build pipeline runs without errors (no build integration added)
+- [ ] No console errors in production (not deployed)
+- [ ] Token categories display correctly (not implemented)
+- [ ] Color previews render properly (not implemented)
 
 ## Alternative: Manual JSON Maintenance
 
@@ -269,8 +269,8 @@ If automation is too complex initially, manually create and maintain `public/des
 ## Status
 
 - [x] Problem identified
-- [x] CSS annotations verified
-- [ ] Extraction script created
-- [ ] Build integration added
-- [ ] Production tested
-- [ ] Documentation updated
+- [x] CSS annotations verified (CSS files have @token annotations)
+- [ ] Extraction script created (scripts/generate-design-tokens.js not found)
+- [ ] Build integration added (no prebuild:tokens script in package.json)
+- [ ] Production tested (cannot test without script)
+- [ ] Documentation updated (DesignTokens.stories.tsx deleted per git status)

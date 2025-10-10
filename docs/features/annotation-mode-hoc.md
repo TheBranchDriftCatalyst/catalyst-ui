@@ -901,26 +901,26 @@ Button doesn't trigger action on first click
 
 ### Phase 1: Core Functionality
 
-- [ ] Annotation mode toggle works
-- [ ] Ctrl+Click identifies components correctly
-- [ ] Source locations are accurate
-- [ ] Annotations persist in LocalStorage
-- [ ] CRUD operations work (create, read, update, delete)
+- [ ] Annotation mode toggle works (not implemented)
+- [ ] Ctrl+Click identifies components correctly (not implemented)
+- [ ] Source locations are accurate (not implemented)
+- [ ] Annotations persist in LocalStorage (not implemented)
+- [ ] CRUD operations work (create, read, update, delete) (not implemented)
 
 ### Phase 2: UI/UX
 
-- [ ] Visual overlay highlights components on hover
-- [ ] Annotation panel displays correctly
-- [ ] Form validation works
-- [ ] Existing annotations display properly
-- [ ] Works across all themes
+- [ ] Visual overlay highlights components on hover (not implemented)
+- [ ] Annotation panel displays correctly (not implemented)
+- [ ] Form validation works (not implemented)
+- [ ] Existing annotations display properly (not implemented)
+- [ ] Works across all themes (not implemented)
 
 ### Phase 3: Export Features
 
-- [ ] JSON export is valid
-- [ ] Markdown export is formatted correctly
-- [ ] GitHub issue format is valid
-- [ ] TODO comment format matches conventions
+- [ ] JSON export is valid (not implemented)
+- [ ] Markdown export is formatted correctly (not implemented)
+- [ ] GitHub issue format is valid (not implemented)
+- [ ] TODO comment format matches conventions (not implemented)
 
 ## Alternative Approaches
 
@@ -973,8 +973,8 @@ Button doesn't trigger action on first click
 - [x] Problem identified
 - [x] Solution designed
 - [x] Feature proposal documented
-- [ ] Dependencies installed
-- [ ] Implementation started
+- [ ] UNCLEAR: Dependencies installed (zustand not found in package.json - needs manual verification)
+- [ ] Implementation started (no AnnotationMode directory found in lib/components/)
 - [ ] Core features complete
 - [ ] Tests passing
 - [ ] Integration complete

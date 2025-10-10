@@ -736,8 +736,8 @@ const { metrics } = useWebVitals({
 
 ### Related Docs
 
-- [LIGHTHOUSE_OPTIMIZATIONS.md](./LIGHTHOUSE_OPTIMIZATIONS.md) - Build-time optimizations
-- [architecture/animation-hoc.md](./architecture/animation-hoc.md) - Animation performance
+- [LIGHTHOUSE_OPTIMIZATIONS.md](audits/LIGHTHOUSE_OPTIMIZATIONS.md) - Build-time optimizations
+- [architecture/animation-hoc.md](./architecture/animation-hoc.md) - Effects System Architecture (animation performance and HOCs in `lib/effects/`)
 
 ### Core Web Vitals Thresholds
 

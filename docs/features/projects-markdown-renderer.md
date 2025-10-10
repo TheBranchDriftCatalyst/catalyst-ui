@@ -48,17 +48,17 @@ A single-source-of-truth system where:
    - ✅ Fetches CHANGELOG.md from public directory
    - ✅ Integrated into App.tsx with lazy loading
 
-### Dependencies Installed
+### Dependencies Installed ✅
 
 ```json
 {
   "dependencies": {
-    "unified": "^11.0.5",
-    "remark-parse": "^11.0.0",
-    "remark-gfm": "^4.0.1",
-    "react-markdown": "^10.1.0",
-    "@types/mdast": "^4.0.4",
-    "@types/unist": "^3.0.3"
+    "unified": "^11.0.5", // ✅ Installed
+    "remark-parse": "^11.0.0", // ✅ Installed
+    "remark-gfm": "^4.0.1", // ✅ Installed
+    "react-markdown": "^10.1.0", // ✅ Installed (for GitHub comparison view)
+    "@types/mdast": "^4.0.4", // ✅ Installed
+    "@types/unist": "^3.0.3" // ✅ Installed
   }
 }
 ```
@@ -1301,55 +1301,48 @@ catalyst-ui/
 
 ## Testing Checklist
 
-### Phase 1: Utils
+### Phase 0 (MVP - Changelog): COMPLETED ✅
 
-- [ ] `parseMarkdown()` correctly parses GFM
-- [ ] `extractSection()` finds sections by heading
-- [ ] `extractCodeBlocks()` returns all code blocks
-- [ ] `extractTables()` parses table structure
-- [ ] `scanWorkspaceRepos()` loads JSON correctly
-- [ ] `filterRepos()` filters by all criteria
+- [x] `parseMarkdown()` correctly parses GFM (implemented in parser.ts)
+- [x] Core utility functions created (types.ts, parser.ts, mapper.tsx, changelog-parser.ts)
+- [x] Code blocks render with CodeBlock component (mapper.tsx)
+- [x] Tables render with Table component (mapper.tsx)
+- [x] Headings use Typography variants (mapper.tsx)
+- [x] MarkdownRenderer component created (MarkdownRenderer.tsx)
+- [x] ChangelogTab with dual view toggle created (ChangelogTab.tsx)
+- [x] Changelog tab integrated into App.tsx
 
-### Phase 2: Mapper
+### Phase 1+ (Full Projects System): NOT STARTED
 
-- [ ] Code blocks render with CodeBlock component
-- [ ] Tables render with Table component
-- [ ] Headings use Typography variants
-- [ ] Blockquotes styled as Cards
-- [ ] Links are theme-aware and external links open in new tab
-- [ ] Images render with proper sizing
-
-### Phase 3: Components
-
-- [ ] MarkdownRenderer handles empty content
-- [ ] MarkdownRenderer extracts sections correctly
-- [ ] useGitHubReadme fetches from raw URL
-- [ ] useGitHubReadme converts repo URL to raw URL
-- [ ] ProjectCard expands/collapses
-- [ ] ProjectCard displays tech stack badges
-- [ ] ProjectsTab filters work correctly
-- [ ] ProjectsTab search is case-insensitive
-
-### Phase 4: Integration
-
-- [ ] Projects tab appears in App.tsx
-- [ ] Build script generates workspace-repos.json
-- [ ] All themes render markdown consistently
-- [ ] No console errors on render
-- [ ] Performance acceptable with 10+ repos
+- [ ] `extractSection()` finds sections by heading (extractor functions not in current codebase)
+- [ ] `extractCodeBlocks()` returns all code blocks (not implemented beyond mapper)
+- [ ] `extractTables()` parses table structure (not implemented)
+- [ ] `scanWorkspaceRepos()` loads JSON correctly (scanner.ts not created)
+- [ ] `filterRepos()` filters by all criteria (not implemented)
+- [ ] useGitHubReadme fetches from raw URL (hook not created)
+- [ ] useGitHubReadme converts repo URL to raw URL (not implemented)
+- [ ] ProjectCard expands/collapses (ProjectCard component not created)
+- [ ] ProjectCard displays tech stack badges (not implemented)
+- [ ] ProjectsTab filters work correctly (ProjectsTab not created)
+- [ ] ProjectsTab search is case-insensitive (not implemented)
+- [ ] Projects tab appears in App.tsx (not added)
+- [ ] Build script generates workspace-repos.json (script not created)
+- [ ] All themes render markdown consistently (only tested with Changelog)
+- [ ] No console errors on render (Changelog works, Projects not tested)
+- [ ] Performance acceptable with 10+ repos (not tested)
 
 ## Status
 
 - [x] Problem identified
 - [x] Architecture designed
 - [x] Feature proposal documented
-- [ ] Dependencies installed
-- [ ] Utility layer implemented
-- [ ] Component mapper created
-- [ ] Components built
-- [ ] Integration complete
-- [ ] Tests passing
-- [ ] Production ready
+- [x] Dependencies installed (unified, remark-parse, remark-gfm, react-markdown)
+- [x] Utility layer implemented (Phase 0 MVP: lib/utils/markdown/)
+- [x] Component mapper created (Phase 0 MVP: lib/utils/markdown/mapper.tsx)
+- [x] Components built (Phase 0 MVP: MarkdownRenderer, ChangelogTab)
+- [x] Integration complete (Phase 0 MVP: Changelog tab in App.tsx)
+- [ ] Tests passing (no tests written yet)
+- [ ] Production ready (Phase 0 complete, Phase 1+ not started - Full Projects System with scanner, GitHub fetcher, ProjectCard pending)
 
 ## Resources
 

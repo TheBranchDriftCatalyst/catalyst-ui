@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/cat
 import { Label } from "@/catalyst-ui/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/catalyst-ui/ui/radio-group";
 import React, { useState } from "react";
-import { Tilt } from "@jdion/tilt-react";
+import { AnimatedTilt } from "@/catalyst-ui/effects/AnimatedTilt";
 
 interface MultiChoiceQuestionCardProps {
   question: string;
@@ -45,12 +45,16 @@ const MultiChoiceQuestionCard: React.FC<MultiChoiceQuestionCardProps> = ({
     </Card>
   );
 
-  return enableTilt ? (
-    <Tilt tiltMaxAngleX={2} tiltMaxAngleY={3} scale={1.02} perspective={1200}>
+  return (
+    <AnimatedTilt
+      enabled={enableTilt}
+      tiltMaxAngleX={2}
+      tiltMaxAngleY={3}
+      scale={1.02}
+      perspective={1200}
+    >
       {cardContent}
-    </Tilt>
-  ) : (
-    cardContent
+    </AnimatedTilt>
   );
 };
 

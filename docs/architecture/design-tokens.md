@@ -1,10 +1,19 @@
 # Design Token Documentation System
 
-> TODO: updating this framework soon see [Design Tokens RFC](../features/design-tokens-autogen.md)
+> **Status**: ✅ This document describes the CURRENT, working design token system.
+>
+> **Future Enhancement**: See [Design Tokens Auto-Generation RFC](../features/design-tokens-autogen.md) for a planned feature that will generate tokens JSON for production builds. That RFC is a proposal for enhancement, not a replacement of this system.
 
 ## Overview
 
 This project uses **storybook-design-token** addon to auto-generate documentation for all CSS design tokens. The system extracts tokens from annotated CSS files and displays them in interactive Storybook documentation.
+
+**Current Scope:**
+
+- ✅ Works in Storybook (development)
+- ✅ Parses CSS files with `@token` annotations
+- ✅ Displays tokens in interactive documentation
+- ⚠️ Production builds: DesignTokenDocBlock not yet supported (see RFC for planned fix)
 
 ## How It Works
 
