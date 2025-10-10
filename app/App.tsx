@@ -2,24 +2,42 @@ import "../lib/global.css";
 import { ThemeProvider } from "@/catalyst-ui/contexts/Theme/ThemeProvider";
 import { CatalystHeader } from "@/catalyst-ui/components/CatalystHeader/CatalystHeader";
 import { HeaderProvider } from "@/catalyst-ui/components/CatalystHeader/HeaderProvider";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/catalyst-ui/ui/tabs";
+import { Tabs, TabsContent } from "@/catalyst-ui/ui/tabs";
 import { Toaster } from "@/catalyst-ui/ui/toaster";
 import { ScrollSnapContainer } from "@/catalyst-ui/effects";
 import { useState, useEffect, Suspense } from "react";
 import { D4Loader } from "./components/D4Loader";
-import { UserSettingsDropdown } from "./components/UserSettingsDropdown";
+import { SettingsDropdown } from "./components/SettingsDropdown";
+import { ProfileDropdown } from "./components/ProfileDropdown";
 import { PerformanceMonitor } from "./components/PerformanceMonitor";
+import { SidebarNav } from "./components/SidebarNav";
+import { SectionNavigation, type Section } from "./components/SectionNavigation";
 
 import { tabComponents, initialTabs } from "./tabs/loader";
 
 function KitchenSink() {
-  // Read initial tab from URL params
-  const getInitialTab = () => {
+  // Read initial section and tab from URL params
+  const getInitialState = () => {
     const params = new URLSearchParams(window.location.search);
-    return params.get("tab") || "overview";
+    const section = (params.get("section") as Section) || "catalyst";
+    const tab = params.get("tab") || "overview";
+    return { section, tab };
   };
 
-  const [activeTab, setActiveTab] = useState(getInitialTab());
+  const initialState = getInitialState();
+  const [activeSection, setActiveSection] = useState<Section>(initialState.section);
+  const [activeTab, setActiveTab] = useState(initialState.tab);
+
+  // Sidebar state with localStorage persistence (default open on desktop)
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    const saved = localStorage.getItem("catalyst-sidebar-open");
+    return saved !== null ? JSON.parse(saved) : true;
+  });
+
+  // Persist sidebar state
+  useEffect(() => {
+    localStorage.setItem("catalyst-sidebar-open", JSON.stringify(sidebarOpen));
+  }, [sidebarOpen]);
 
   // Tabs state is initialized synchronously from the build-time manifest (initialTabs)
   // and filtered to only include discovered components. This avoids any runtime
@@ -38,31 +56,47 @@ function KitchenSink() {
           value: parts.join("").toLowerCase(),
           label: parts.join(" "),
           order: filtered.length,
+          section: "catalyst" as const,
         });
       }
     }
     return filtered.sort((a, b) => a.order - b.order || a.name.localeCompare(b.name));
   });
 
-  // Update URL when tab changes
+  // Filter tabs by active section
+  const sectionTabs = TABS.filter(t => t.section === activeSection);
+
+  // Update URL when section or tab changes
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
+    params.set("section", activeSection);
     params.set("tab", activeTab);
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     window.history.replaceState({}, "", newUrl);
-  }, [activeTab]);
+  }, [activeSection, activeTab]);
 
   // Handle browser back/forward
   useEffect(() => {
     const handlePopState = () => {
       const params = new URLSearchParams(window.location.search);
+      const section = (params.get("section") as Section) || "catalyst";
       const tab = params.get("tab") || "overview";
+      setActiveSection(section);
       setActiveTab(tab);
     };
 
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
+
+  // Handle section change - switch to first tab in new section
+  const handleSectionChange = (newSection: Section) => {
+    setActiveSection(newSection);
+    const firstTab = TABS.find(t => t.section === newSection);
+    if (firstTab) {
+      setActiveTab(firstTab.value);
+    }
+  };
 
   // No async metadata effect — manifest is trusted and loaded at build/dev start.
 
@@ -74,6 +108,7 @@ function KitchenSink() {
   const navigationItems = [
     // Performance Monitor (dev-only)
     <PerformanceMonitor key="performance" />,
+    <SettingsDropdown key="settings" />,
     <a
       key="storybook"
       href={storybookUrl}
@@ -91,36 +126,48 @@ function KitchenSink() {
         <CatalystHeader
           title="CATALYST"
           navigationItems={navigationItems}
-          userSettings={<UserSettingsDropdown />}
+          userSettings={<ProfileDropdown />}
           tabs={
-            <TabsList className="inline-flex h-auto items-center gap-1 bg-transparent p-0">
-              {TABS.map(t => (
-                <TabsTrigger
-                  key={t.value}
-                  value={t.value}
-                  className="text-xs md:text-sm px-2 md:px-3 py-1.5"
-                >
-                  {t.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
+            <SectionNavigation
+              activeSection={activeSection}
+              onSectionChange={handleSectionChange}
+            />
           }
         />
-        <ScrollSnapContainer
-          type="y"
-          behavior="mandatory"
-          className="w-full h-[calc(100vh-80px)] overflow-y-auto scrollbar-hide p-6 md:p-8"
-        >
-          {/* Render tab contents by mapping the discovered TABS so labels, values, and component keys stay in sync */}
-          {TABS.map(t => {
-            const Comp = (tabComponents as any)[t.compKey];
-            return (
-              <TabsContent key={t.value} value={t.value} className="space-y-4 mt-0">
-                <Suspense fallback={<D4Loader />}>{Comp ? <Comp /> : null}</Suspense>
-              </TabsContent>
-            );
-          })}
-        </ScrollSnapContainer>
+
+        {/* Main layout with sidebar */}
+        <div className="flex">
+          {/* Sidebar Navigation */}
+          <SidebarNav
+            items={sectionTabs.map(t => ({
+              label: t.label,
+              value: t.value,
+            }))}
+            activeValue={activeTab}
+            onValueChange={setActiveTab}
+            open={sidebarOpen}
+            onOpenChange={setSidebarOpen}
+          />
+
+          {/* Main content area - adjusts for sidebar on desktop */}
+          <main className={`flex-1 transition-all duration-300 ${sidebarOpen ? "md:ml-0" : ""}`}>
+            <ScrollSnapContainer
+              type="y"
+              behavior="mandatory"
+              className="w-full h-[calc(100vh-80px)] overflow-y-auto scrollbar-hide p-6 md:p-8"
+            >
+              {/* Render tab contents by mapping the discovered TABS so labels, values, and component keys stay in sync */}
+              {TABS.map(t => {
+                const Comp = (tabComponents as any)[t.compKey];
+                return (
+                  <TabsContent key={t.value} value={t.value} className="space-y-4 mt-0">
+                    <Suspense fallback={<D4Loader />}>{Comp ? <Comp /> : null}</Suspense>
+                  </TabsContent>
+                );
+              })}
+            </ScrollSnapContainer>
+          </main>
+        </div>
       </Tabs>
     </div>
   );

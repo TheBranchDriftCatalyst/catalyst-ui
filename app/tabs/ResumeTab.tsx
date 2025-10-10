@@ -8,6 +8,10 @@ import { ScrollSnapItem } from "@/catalyst-ui/effects";
 import { ImportFooter } from "@/catalyst-ui/components/CodeFlipCard/ImportFooter";
 import CharacterSheetResumeSource from "@/catalyst-ui/cards/CharacterSheetResume/CharacterSheetResume.tsx?raw";
 
+// Metadata for tabs manifest
+export const TAB_SECTION = "projects";
+export const TAB_LABEL = "Character Sheet";
+
 const demoData: CharacterSheetData = {
   profile: {
     name: "Alex Catalyst",

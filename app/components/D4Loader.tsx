@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { usePrefersReducedMotion } from "@/catalyst-ui/hooks/usePrefersReducedMotion";
 
@@ -28,6 +28,14 @@ export function D4Loader({
 }: D4LoaderProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const prefersReducedMotion = usePrefersReducedMotion();
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
+
+  // Detect mobile on mount
+  useEffect(() => {
+    setIsMobileDevice(
+      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768
+    );
+  }, []);
 
   // Refs to hold latest prop values so the D3 animation reads live values
   const rotationSpeedRef = useRef<number>(rotationSpeed);
@@ -50,6 +58,10 @@ export function D4Loader({
     if (!svgRef.current) {
       return;
     }
+
+    // Detect mobile for performance optimizations
+    const isMobile =
+      /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
 
     const width = 400;
     const height = 400;
@@ -94,7 +106,7 @@ export function D4Loader({
       computedStyle.getPropertyValue("--on-primary")
     ).trim();
 
-    // Define glow filter
+    // Define glow filter (simplified on mobile for performance)
     const defs = svg.append("defs");
     const filter = defs
       .append("filter")
@@ -104,7 +116,11 @@ export function D4Loader({
       .attr("width", "300%")
       .attr("height", "300%");
 
-    filter.append("feGaussianBlur").attr("stdDeviation", "8").attr("result", "coloredBlur");
+    // Use lighter blur on mobile
+    filter
+      .append("feGaussianBlur")
+      .attr("stdDeviation", isMobile ? "4" : "8")
+      .attr("result", "coloredBlur");
 
     const feMerge = filter.append("feMerge");
     feMerge.append("feMergeNode").attr("in", "coloredBlur");
@@ -273,25 +289,28 @@ export function D4Loader({
       .style("filter", "url(#glow)");
 
     // Create chromatic edge layers (cyan & purple) for subtle separation
-    chromaCyan
-      .selectAll("line")
-      .data(cubeEdges)
-      .enter()
-      .append("line")
-      .attr("stroke", colorCyan)
-      .attr("stroke-width", 2)
-      .attr("opacity", 0.35)
-      .style("mix-blend-mode", "screen");
+    // Skip on mobile for performance
+    if (!isMobile) {
+      chromaCyan
+        .selectAll("line")
+        .data(cubeEdges)
+        .enter()
+        .append("line")
+        .attr("stroke", colorCyan)
+        .attr("stroke-width", 2)
+        .attr("opacity", 0.35)
+        .style("mix-blend-mode", "screen");
 
-    chromaPurple
-      .selectAll("line")
-      .data(cubeEdges)
-      .enter()
-      .append("line")
-      .attr("stroke", colorPurple)
-      .attr("stroke-width", 2)
-      .attr("opacity", 0.35)
-      .style("mix-blend-mode", "screen");
+      chromaPurple
+        .selectAll("line")
+        .data(cubeEdges)
+        .enter()
+        .append("line")
+        .attr("stroke", colorPurple)
+        .attr("stroke-width", 2)
+        .attr("opacity", 0.35)
+        .style("mix-blend-mode", "screen");
+    }
 
     // Animation state
     let angleX = 0;
@@ -419,11 +438,11 @@ export function D4Loader({
 
       // Occasionally spawn sparks near vertices (cap total sparks to limit CPU)
       // Disable sparks when reduced motion is preferred
-      if (
-        !prefersReducedMotion &&
-        sparksEnabledRef.current &&
-        Math.random() < sparkFrequencyRef.current
-      ) {
+      // Reduce spark frequency and count on mobile
+      const maxSparks = isMobile ? 30 : 120;
+      const sparkChance = isMobile ? sparkFrequencyRef.current * 0.3 : sparkFrequencyRef.current;
+
+      if (!prefersReducedMotion && sparksEnabledRef.current && Math.random() < sparkChance) {
         const idx = Math.floor(Math.random() * outerProjected.length);
         const ox = outerProjected[idx][0];
         const oy = outerProjected[idx][1];
@@ -448,9 +467,9 @@ export function D4Loader({
           r: 1 + Math.random() * 3,
           color,
         });
-        // cap to 120 sparks to avoid runaway CPU/memory
-        if (sparks.length > 120) {
-          sparks.splice(0, sparks.length - 120);
+        // cap sparks based on device capability
+        if (sparks.length > maxSparks) {
+          sparks.splice(0, sparks.length - maxSparks);
         }
       }
 
@@ -505,24 +524,24 @@ export function D4Loader({
         .attr("opacity", 0.6 + outerScale * 0.4);
 
       // Update chroma layers with slight offsets for chromatic aberration
-      const chromaOffset = (2 + 3 * (1 - outerScale)) * chromaIntensityRef.current; // offset varies with scale and intensity
-      if (chromaEnabledRef.current) {
-        chromaCyan
-          .selectAll("line")
-          .attr("x1", (d: any) => outerProjected[d[0]][0] - chromaOffset)
-          .attr("y1", (d: any) => outerProjected[d[0]][1] - chromaOffset)
-          .attr("x2", (d: any) => outerProjected[d[1]][0] - chromaOffset)
-          .attr("y2", (d: any) => outerProjected[d[1]][1] - chromaOffset);
+      // Skip on mobile for performance
+      if (!isMobile) {
+        const chromaOffset = (2 + 3 * (1 - outerScale)) * chromaIntensityRef.current; // offset varies with scale and intensity
+        if (chromaEnabledRef.current) {
+          chromaCyan
+            .selectAll("line")
+            .attr("x1", (d: any) => outerProjected[d[0]][0] - chromaOffset)
+            .attr("y1", (d: any) => outerProjected[d[0]][1] - chromaOffset)
+            .attr("x2", (d: any) => outerProjected[d[1]][0] - chromaOffset)
+            .attr("y2", (d: any) => outerProjected[d[1]][1] - chromaOffset);
 
-        chromaPurple
-          .selectAll("line")
-          .attr("x1", (d: any) => outerProjected[d[0]][0] + chromaOffset)
-          .attr("y1", (d: any) => outerProjected[d[0]][1] + chromaOffset)
-          .attr("x2", (d: any) => outerProjected[d[1]][0] + chromaOffset)
-          .attr("y2", (d: any) => outerProjected[d[1]][1] + chromaOffset);
-      } else {
-        chromaCyan.selectAll("line").attr("x1", 0).attr("y1", 0).attr("x2", 0).attr("y2", 0);
-        chromaPurple.selectAll("line").attr("x1", 0).attr("y1", 0).attr("x2", 0).attr("y2", 0);
+          chromaPurple
+            .selectAll("line")
+            .attr("x1", (d: any) => outerProjected[d[0]][0] + chromaOffset)
+            .attr("y1", (d: any) => outerProjected[d[0]][1] + chromaOffset)
+            .attr("x2", (d: any) => outerProjected[d[1]][0] + chromaOffset)
+            .attr("y2", (d: any) => outerProjected[d[1]][1] + chromaOffset);
+        }
       }
 
       // Update outer cube vertices
@@ -558,17 +577,22 @@ export function D4Loader({
     };
 
     // Start animation
-    const interval = d3.interval(animate, 16); // ~60fps
+    // Use 30fps on mobile, 60fps on desktop for better performance
+    const fps = isMobile ? 33 : 16;
+    const interval = d3.interval(animate, fps);
 
     // Cleanup
     return () => {
       interval.stop();
     };
-  }, []);
+  }, [prefersReducedMotion]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
-      <svg ref={svgRef} className="drop-shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]" />
+    <div className="flex flex-col items-center justify-center w-full h-full min-h-[400px] gap-4">
+      <svg
+        ref={svgRef}
+        className={isMobileDevice ? "" : "drop-shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]"}
+      />
       <div className="text-sm text-muted-foreground animate-pulse">
         Loading dimensional matrix...
       </div>

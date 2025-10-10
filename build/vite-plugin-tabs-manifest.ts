@@ -112,20 +112,31 @@ export default function tabsManifestPlugin() {
           label = labelMatch[1];
         }
 
+        // Extract section (default to "catalyst" if not specified)
+        let section = "catalyst";
+        const sectionMatch = src.match(/export\s+const\s+TAB_SECTION\s*=\s*['"`]([^'"`]+)['"`]/);
+        if (sectionMatch) {
+          section = sectionMatch[1];
+        }
+
         const metaMatch = src.match(/export\s+const\s+TAB_META\s*=\s*{([\s\S]*?)}/m);
         if (metaMatch) {
           const body = metaMatch[1];
           const mOrder = body.match(/order\s*:\s*([0-9]+)/);
           const mLabel = body.match(/label\s*:\s*['"`]([^'"`]+)['"`]/);
+          const mSection = body.match(/section\s*:\s*['"`]([^'"`]+)['"`]/);
           if (mOrder) {
             order = Number(mOrder[1]);
           }
           if (mLabel) {
             label = mLabel[1];
           }
+          if (mSection) {
+            section = mSection[1];
+          }
         }
 
-        entries.push({ compKey, name, value, label, order });
+        entries.push({ compKey, name, value, label, order, section });
       }
 
       entries.sort((a, b) => a.order - b.order || a.name.localeCompare(b.name));

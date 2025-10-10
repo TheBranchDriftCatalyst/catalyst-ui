@@ -34,6 +34,7 @@ export const initialTabs = (
     value: string;
     label: string;
     order: number;
+    section: "catalyst" | "projects";
   }>
 ).slice();
 
@@ -54,6 +55,7 @@ export async function applyTabMeta() {
         value: parts.join("").toLowerCase(),
         label: parts.join(" "),
         order: filtered.length,
+        section: "catalyst" as const,
       });
     }
   }
