@@ -46,29 +46,29 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Extract coverage percentage
-        id: coverage
-        run: |
-          COVERAGE=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')
-          echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
-          if (( $(echo "$COVERAGE >= 80" | bc -l) )); then
-            echo "color=brightgreen" >> $GITHUB_OUTPUT
-          elif (( $(echo "$COVERAGE >= 60" | bc -l) )); then
-            echo "color=yellow" >> $GITHUB_OUTPUT
-          else
-            echo "color=red" >> $GITHUB_OUTPUT
-          fi
+      # - name: Extract coverage percentage
+      #   id: coverage
+      #   run: |
+      #     COVERAGE=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')
+      #     echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
+      #     if (( $(echo "$COVERAGE >= 80" | bc -l) )); then
+      #       echo "color=brightgreen" >> $GITHUB_OUTPUT
+      #     elif (( $(echo "$COVERAGE >= 60" | bc -l) )); then
+      #       echo "color=yellow" >> $GITHUB_OUTPUT
+      #     else
+      #       echo "color=red" >> $GITHUB_OUTPUT
+      #     fi
 
-      - name: Create coverage badge
-        uses: schneegans/dynamic-badges-action@v1.7.0
-        if: github.ref == 'refs/heads/main' && secrets.GIST_ID != ''
-        with:
-          auth: ${{ secrets.GIST_SECRET }}
-          gistID: ${{ secrets.GIST_ID }}
-          filename: catalyst-ui-coverage.json
-          label: Coverage
-          message: ${{ steps.coverage.outputs.coverage }}%
-          color: ${{ steps.coverage.outputs.color }}
+      # - name: Create coverage badge
+      #   uses: schneegans/dynamic-badges-action@v1.7.0
+      #   if: github.ref == 'refs/heads/main' && secrets.GIST_ID != ''
+      #   with:
+      #     auth: ${{ secrets.GIST_SECRET }}
+      #     gistID: ${{ secrets.GIST_ID }}
+      #     filename: catalyst-ui-coverage.json
+      #     label: Coverage
+      #     message: ${{ steps.coverage.outputs.coverage }}%
+      #     color: ${{ steps.coverage.outputs.color }}
 
       - name: Archive test results
         if: always()
