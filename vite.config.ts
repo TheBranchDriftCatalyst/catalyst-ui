@@ -8,6 +8,7 @@ import dts from "vite-plugin-dts";
 import tsconfigPaths from "vite-tsconfig-paths";
 import tabsManifestPlugin from "./build/vite-plugin-tabs-manifest";
 import concatDocsPlugin from "./build/vite-plugin-concat-docs";
+import preserveUseClient from "./build/vite-plugin-preserve-use-client";
 import { execSync } from "child_process";
 import { readFileSync } from "fs";
 
@@ -28,41 +29,6 @@ try {
   lastCommit = execSync("git log -1 --pretty=%B").toString().trim();
 } catch (error) {
   console.warn("Could not get last commit message");
-}
-
-// Plugin to preserve "use client" directives in build output
-// TODO lets move this with the other plugins
-function preserveUseClient() {
-  return {
-    name: "preserve-use-client",
-    enforce: "post" as const,
-    generateBundle(_options: any, bundle: any) {
-      for (const chunk of Object.values(bundle) as any[]) {
-        if (chunk.type === "chunk" && chunk.code) {
-          // Add "use client" to any chunk that imports from React
-          // This is necessary for Next.js App Router compatibility
-          const needsUseClient =
-            chunk.code.includes('from "react"') ||
-            chunk.code.includes("from 'react'") ||
-            (chunk.code.includes("import * as") && chunk.code.includes("react")) ||
-            chunk.code.includes("useState") ||
-            chunk.code.includes("useEffect") ||
-            chunk.code.includes("useContext") ||
-            chunk.code.includes("useRef");
-
-          if (needsUseClient) {
-            // Prepend "use client" if not already present
-            if (
-              !chunk.code.trimStart().startsWith('"use client"') &&
-              !chunk.code.trimStart().startsWith("'use client'")
-            ) {
-              chunk.code = '"use client";\n' + chunk.code;
-            }
-          }
-        }
-      }
-    },
-  };
 }
 
 /** @type {import('vite').UserConfig} */

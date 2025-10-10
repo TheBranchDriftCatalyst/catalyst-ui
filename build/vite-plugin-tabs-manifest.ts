@@ -1,29 +1,87 @@
+/**
+ * ╔═══════════════════════════════════════════════════════════════╗
+ * ║  🌆 VITE PLUGIN: TABS MANIFEST GENERATOR 🌆                  ║
+ * ║                                                               ║
+ * ║  ⚡ Dynamic Tab Registry System ⚡                            ║
+ * ║  Auto-discovers tab components and generates navigation      ║
+ * ║  metadata with cyberpunk-level precision                     ║
+ * ╚═══════════════════════════════════════════════════════════════╝
+ */
+
 import { promises as fs } from "fs";
 import path from "path";
+import { createPluginLogger } from "./plugin-logger";
 
-// track last generation times so we can ignore our own writes
+/**
+ * 🕐 Track last generation times per file
+ *
+ * Maps file paths to timestamps to differentiate between:
+ * - Changes we made (ignore these)
+ * - Changes the user made (regenerate on these)
+ *
+ * This prevents infinite regeneration loops 🔄
+ */
 const lastGeneratedAt = new Map<string, number>();
 
+/**
+ * 🌃 Tabs manifest generation plugin
+ *
+ * **Mission:**
+ * Automatically discover tab components in `app/tabs/` and generate
+ * a manifest file (.tabs.manifest.json) with metadata for navigation.
+ *
+ * **Discovery Pattern:**
+ * - Scans for files matching: `[Name]Tab.tsx`
+ * - Example: `ComponentsTab.tsx` → tab value "components", label "Components"
+ *
+ * **Metadata Extraction:**
+ * Parses each tab file for optional metadata exports:
+ * - `TAB_ORDER` - Sort position (number)
+ * - `TAB_LABEL` - Display label (string)
+ * - `TAB_SECTION` - Category grouping (string, default: "catalyst")
+ * - `TAB_META` - Unified metadata object (order, label, section)
+ *
+ * **Features:**
+ * - 🔄 Live reload during development
+ * - 🎯 Intelligent duplicate detection
+ * - ⚡ Debounced file watching (250ms)
+ * - 📊 Validation warnings for conflicts
+ *
+ * **Output:**
+ * Generates `app/.tabs.manifest.json` (hidden dotfile)
+ *
+ * @returns {Plugin} Vite plugin instance
+ */
 export default function tabsManifestPlugin() {
+  const logger = createPluginLogger("vite-plugin-tabs-manifest");
+
   return {
     name: "vite-plugin-tabs-manifest",
     enforce: "pre" as const,
+
+    /**
+     * 🚀 Build start hook - generate manifest at build time
+     */
     async buildStart() {
       await generateManifest();
     },
+
+    /**
+     * 🔥 Dev server hook - enable live manifest regeneration
+     */
     async configureServer(server) {
-      // generate at dev server start as well
+      // Generate at dev server start - power up the tabs! ⚡
       await generateManifest();
 
-      // Watch for changes under app/tabs and the manifest itself
+      // 📂 Setup file watching
       const tabsDir = path.resolve(process.cwd(), "app", "tabs");
-    const manifestPath = path.resolve(process.cwd(), "app", ".tabs.manifest.json");
+      const manifestPath = path.resolve(process.cwd(), "app", ".tabs.manifest.json");
 
       server.watcher.add(tabsDir);
-    server.watcher.add(manifestPath);
+      server.watcher.add(manifestPath);
 
-      // Debounce rapid file events so bulk edits only trigger a single regen.
-      // 250ms is a reasonable midpoint between 200-300ms.
+      // ⏱️ Debounce rapid file events (250ms cooldown)
+      // Bulk edits across multiple files only trigger ONE regeneration
       let debounceTimer: NodeJS.Timeout | null = null;
       const pending = new Set<string>();
       const DEBOUNCE_MS = 250;
@@ -33,6 +91,7 @@ export default function tabsManifestPlugin() {
           const normalized = path.resolve(file);
           pending.add(normalized);
 
+          // ⏸️ Reset the debounce timer
           if (debounceTimer) {
             clearTimeout(debounceTimer);
           }
@@ -43,88 +102,137 @@ export default function tabsManifestPlugin() {
             debounceTimer = null;
 
             try {
-              // If the manifest was changed manually (not by us), warn the user
+              // 🚫 Check if manifest was manually edited
               if (toProcess.some((p) => p === manifestPath)) {
                 const last = lastGeneratedAt.get(manifestPath) ?? 0;
                 const now = Date.now();
-                  if (now - last > 1000) {
-                    // eslint-disable-next-line no-console
-                    console.warn("[vite-plugin-tabs-manifest] Warning: .tabs.manifest.json was modified on disk. If you edited it manually, note it will be overwritten on next regen.");
+
+                if (now - last > 1000) {
+                  // User edited the manifest directly - warn them!
+                  logger.warn(
+                    ".tabs.manifest.json was modified manually. " +
+                    "Note: it will be overwritten on next regeneration."
+                  );
                 }
-                // don't regenerate when user edited manifest directly
+
+                // Don't regenerate when user edits manifest directly
                 return;
               }
 
-              // If any tab file changed, regenerate manifest once
+              // ♻️ Regenerate if any tab file changed
               if (toProcess.some((p) => p.startsWith(tabsDir))) {
+                logger.info("Detected tab file changes - regenerating manifest...");
                 await generateManifest();
               }
             } catch (err) {
-              // ignore errors from change handling
+              // Ignore errors from change handling
             }
           }, DEBOUNCE_MS);
         } catch (err) {
-          // ignore watcher errors
+          // Ignore watcher errors
         }
       });
     },
   };
 
+  /**
+   * 🎯 Core manifest generation function
+   *
+   * **Process:**
+   * 1. Scan `app/tabs/` for files matching `[Name]Tab.tsx`
+   * 2. Extract metadata from each file (order, label, section)
+   * 3. Generate manifest entries with computed values
+   * 4. Sort by priority (explicit order → alphabetical)
+   * 5. Validate for duplicates
+   * 6. Write to `app/.tabs.manifest.json`
+   *
+   * **Manifest Entry Structure:**
+   * ```json
+   * {
+   *   "compKey": "ComponentsTab",
+   *   "name": "Components",
+   *   "value": "components",
+   *   "label": "Components",
+   *   "order": 0,
+   *   "section": "catalyst"
+   * }
+   * ```
+   */
   async function generateManifest() {
     try {
       const repoRoot = process.cwd();
-  const tabsDir = path.resolve(repoRoot, "app", "tabs");
-  // Hidden dotfile to indicate generated artifact. Place alongside App.tsx.
-  const outFile = path.join(repoRoot, "app", ".tabs.manifest.json");
+      const tabsDir = path.resolve(repoRoot, "app", "tabs");
+      const outFile = path.join(repoRoot, "app", ".tabs.manifest.json");
 
+      // 🔍 Scan for tab files matching the pattern
       let files: string[];
       try {
         files = (await fs.readdir(tabsDir)).filter((f) => /^[A-Za-z0-9_]+Tab\.tsx$/.test(f));
       } catch (err) {
-        // no tabs dir
+        // No tabs directory - skip silently
         return;
       }
 
+      // 🎨 Label overrides for special cases (e.g., "Typography" → "Type")
       const labelOverride: Record<string, string> = { Typography: "Type" };
 
+      // 📊 Extract metadata from each tab file
       const entries: Array<any> = [];
       for (const file of files) {
         const filePath = path.join(tabsDir, file);
         const src = await fs.readFile(filePath, "utf8");
+
+        // 📝 Parse filename to extract component name
         const nameMatch = file.match(/^([A-Za-z0-9_]+)Tab\.tsx$/);
         if (!nameMatch) {
           continue;
         }
-        const name = nameMatch[1];
-        const compKey = `${name}Tab`;
+
+        const name = nameMatch[1]; // e.g., "Components"
+        const compKey = `${name}Tab`; // e.g., "ComponentsTab"
+
+        // 🔤 Split camelCase name into words (e.g., "ComponentsTab" → ["Components", "Tab"])
         const parts = name.split(/(?=[A-Z])/).filter(Boolean);
-        const value = parts.join("").toLowerCase();
+        const value = parts.join("").toLowerCase(); // e.g., "components"
+
+        // 🏷️ Determine display label (override or computed)
         let label = labelOverride[name] ?? parts.join(" ");
+
+        // 📍 Default order is file index (order discovered)
         let order = files.indexOf(file);
 
+        // 🔍 Extract metadata from file content
+
+        // Option 1: TAB_ORDER export (legacy single-value export)
         const orderMatch = src.match(/export\s+const\s+TAB_ORDER\s*=\s*([0-9]+)/);
         if (orderMatch) {
           order = Number(orderMatch[1]);
         }
 
+        // Option 2: TAB_LABEL export (legacy single-value export)
         const labelMatch = src.match(/export\s+const\s+TAB_LABEL\s*=\s*['"`]([^'"`]+)['"`]/);
         if (labelMatch) {
           label = labelMatch[1];
         }
 
-        // Extract section (default to "catalyst" if not specified)
-        let section = "catalyst";
+        // Option 3: TAB_SECTION export (determines grouping)
+        let section = "catalyst"; // Default section
         const sectionMatch = src.match(/export\s+const\s+TAB_SECTION\s*=\s*['"`]([^'"`]+)['"`]/);
         if (sectionMatch) {
           section = sectionMatch[1];
         }
 
+        // Option 4: TAB_META export (unified metadata object - preferred)
+        // Example: export const TAB_META = { order: 0, label: "Home", section: "catalyst" }
         const metaMatch = src.match(/export\s+const\s+TAB_META\s*=\s*{([\s\S]*?)}/m);
         if (metaMatch) {
           const body = metaMatch[1];
+
+          // Extract individual properties from the object
           const mOrder = body.match(/order\s*:\s*([0-9]+)/);
           const mLabel = body.match(/label\s*:\s*['"`]([^'"`]+)['"`]/);
           const mSection = body.match(/section\s*:\s*['"`]([^'"`]+)['"`]/);
+
           if (mOrder) {
             order = Number(mOrder[1]);
           }
@@ -136,33 +244,46 @@ export default function tabsManifestPlugin() {
           }
         }
 
+        // ✅ Add entry to manifest
         entries.push({ compKey, name, value, label, order, section });
       }
 
+      // 📊 Sort entries by priority
+      // Primary: order (ascending)
+      // Secondary: name (alphabetical)
       entries.sort((a, b) => a.order - b.order || a.name.localeCompare(b.name));
 
+      // 💾 Write manifest to file
       const jsonContent = JSON.stringify(entries, null, 2) + "\n";
-  await fs.writeFile(outFile, jsonContent, "utf8");
-  // record when we generated the manifest to ignore our own watcher events
-  lastGeneratedAt.set(outFile, Date.now());
-  // Log a concise summary for devs: how many files scanned and entries written
-  // eslint-disable-next-line no-console
-  console.info(`[vite-plugin-tabs-manifest] wrote ${outFile} — scanned ${files.length} files, wrote ${entries.length} entries`);
+      await fs.writeFile(outFile, jsonContent, "utf8");
 
-  // lightweight validation: detect duplicate values or compKeys
-  const dupValues = entries.map((e) => e.value).filter((v, i, a) => a.indexOf(v) !== i);
-  const dupCompKeys = entries.map((e) => e.compKey).filter((k, i, a) => a.indexOf(k) !== i);
-  if (dupValues.length || dupCompKeys.length) {
-    const uniqueDupValues = Array.from(new Set(dupValues));
-    const uniqueDupCompKeys = Array.from(new Set(dupCompKeys));
-    // eslint-disable-next-line no-console
-    console.warn(`[vite-plugin-tabs-manifest] validation: duplicate entries found. values: ${JSON.stringify(uniqueDupValues)}, compKeys: ${JSON.stringify(uniqueDupCompKeys)}`);
-  }
-      // console.log(`[vite-plugin-tabs-manifest] wrote ${outFile}`);
+      // 🕐 Record generation timestamp to ignore our own watcher events
+      lastGeneratedAt.set(outFile, Date.now());
+
+      // 📊 Report success with stats
+      logger.stats({
+        scanned: files.length,
+        entries: entries.length,
+      });
+
+      // 🔍 Validation: detect duplicates
+      const dupValues = entries.map((e) => e.value).filter((v, i, a) => a.indexOf(v) !== i);
+      const dupCompKeys = entries.map((e) => e.compKey).filter((k, i, a) => a.indexOf(k) !== i);
+
+      if (dupValues.length || dupCompKeys.length) {
+        const uniqueDupValues = Array.from(new Set(dupValues));
+        const uniqueDupCompKeys = Array.from(new Set(dupCompKeys));
+
+        // ⚠️ Warn about duplicates (this can break navigation!)
+        logger.warn(
+          `Validation failed: duplicate entries detected!\n` +
+          `  Duplicate values: ${JSON.stringify(uniqueDupValues)}\n` +
+          `  Duplicate compKeys: ${JSON.stringify(uniqueDupCompKeys)}`
+        );
+      }
     } catch (err) {
-      // don't crash the build on manifest generation errors
-      // eslint-disable-next-line no-console
-      console.warn("vite-plugin-tabs-manifest: failed to generate manifest", err);
+      // Don't crash the build on manifest generation errors
+      logger.error("Failed to generate manifest", err);
     }
   }
 }
