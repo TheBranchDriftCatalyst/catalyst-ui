@@ -1,0 +1,11 @@
+{
+  "heading_1": "Heading 1",
+  "heading_2": "Heading 2",
+  "heading_3": "Heading 3",
+  "heading_4": "Heading 4",
+  "this_is_a_paragraph_with_some_text_content_it_demo": "This is a paragraph with some text content. It demonstrates the default body text styling\n        with comfortable line height and spacing.",
+  "this_is_a_blockquote_element_for_emphasizing_quote": "This is a blockquote element for emphasizing quotes or callouts. Perfect for testimonials or\n        important statements.",
+  "const_code_inline_code": "const code = \"inline code\";",
+  "this_is_lead_text_for_emphasis_use_it_for_introduc": "This is lead text for emphasis. Use it for introduction paragraphs or to draw attention to\n        important information at the start of a section.",
+  "this_is_muted_text_for_secondary_information_capti": "This is muted text for secondary information, captions, or less important details."
+}

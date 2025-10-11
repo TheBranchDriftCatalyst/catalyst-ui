@@ -1,0 +1,15 @@
+{
+  "welcome_to_catalyst_ui": "Welcome to Catalyst UI",
+  "this_is_a_longer_paragraph_with_multiple_sentences": "This is a longer paragraph with multiple sentences.\n        It should be wrapped in EditableText automatically.",
+  "click_me": "Click Me",
+  "simple_card_content": "Simple Card Content",
+  "bold_text_here": "Bold Text Here",
+  "and_some_regular_text": "And some regular text",
+  "hello": "Hello",
+  "welcome_back": ", welcome back!",
+  "settings_preferences": "Settings & Preferences",
+  "save_cancel": "Save / Cancel",
+  "section_title": "Section Title",
+  "section_description_goes_here_with_meaningful_cont": "Section description goes here with meaningful content.",
+  "submit_form": "Submit Form"
+}

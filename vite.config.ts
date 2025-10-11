@@ -9,6 +9,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import tabsManifestPlugin from "./build/vite-plugin-tabs-manifest";
 import concatDocsPlugin from "./build/vite-plugin-concat-docs";
 import preserveUseClient from "./build/vite-plugin-preserve-use-client";
+import { i18nApiPlugin } from "./build/vite-plugin-i18n-api";
 import { execSync } from "child_process";
 import { readFileSync } from "fs";
 
@@ -44,6 +45,7 @@ export default defineConfig({
   plugins: [
     tabsManifestPlugin(),
     concatDocsPlugin(),
+    i18nApiPlugin(),
     react(),
     tailwindcss(),
     tsconfigPaths({

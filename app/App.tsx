@@ -1,5 +1,8 @@
 import "../lib/global.css";
 import { ThemeProvider } from "@/catalyst-ui/contexts/Theme/ThemeProvider";
+import { LocalizationProvider } from "@/catalyst-ui/contexts/Localization";
+import { I18nProvider, AnnotationProvider } from "@/catalyst-ui/dev/context";
+import { DevModeToggle } from "@/catalyst-ui/dev/components";
 import { CatalystHeader } from "@/catalyst-ui/components/CatalystHeader/CatalystHeader";
 import { HeaderProvider } from "@/catalyst-ui/components/CatalystHeader/HeaderProvider";
 import { Tabs, TabsContent } from "@/catalyst-ui/ui/tabs";
@@ -12,15 +15,16 @@ import { ProfileDropdown } from "./components/ProfileDropdown";
 import { PerformanceMonitor } from "./components/PerformanceMonitor";
 import { SidebarNav } from "./components/SidebarNav";
 import { SectionNavigation, type Section } from "./components/SectionNavigation";
+import { LocaleSwitcher } from "@/catalyst-ui/components/LocaleSwitcher";
 
 import { tabComponents, initialTabs } from "./tabs/loader";
 
 function KitchenSink() {
-  // Read initial section and tab from URL params
+  // Read initial section and tab from URL path
   const getInitialState = () => {
-    const params = new URLSearchParams(window.location.search);
-    const section = (params.get("section") as Section) || "catalyst";
-    const tab = params.get("tab") || "overview";
+    const pathSegments = window.location.pathname.split("/").filter(Boolean);
+    const section = (pathSegments[0] as Section) || "catalyst";
+    const tab = pathSegments[1] || "overview";
     return { section, tab };
   };
 
@@ -69,18 +73,17 @@ function KitchenSink() {
   // Update URL when section or tab changes
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    params.set("section", activeSection);
-    params.set("tab", activeTab);
-    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    const newPath = `/${activeSection}/${activeTab}`;
+    const newUrl = params.toString() ? `${newPath}?${params.toString()}` : newPath;
     window.history.replaceState({}, "", newUrl);
   }, [activeSection, activeTab]);
 
   // Handle browser back/forward
   useEffect(() => {
     const handlePopState = () => {
-      const params = new URLSearchParams(window.location.search);
-      const section = (params.get("section") as Section) || "catalyst";
-      const tab = params.get("tab") || "overview";
+      const pathSegments = window.location.pathname.split("/").filter(Boolean);
+      const section = (pathSegments[0] as Section) || "catalyst";
+      const tab = pathSegments[1] || "overview";
       setActiveSection(section);
       setActiveTab(tab);
     };
@@ -108,6 +111,8 @@ function KitchenSink() {
   const navigationItems = [
     // Performance Monitor (dev-only)
     <PerformanceMonitor key="performance" />,
+    <DevModeToggle key="devmode" variant="ghost" />,
+    <LocaleSwitcher key="locale" />,
     <SettingsDropdown key="settings" />,
     <a
       key="storybook"
@@ -175,12 +180,18 @@ function KitchenSink() {
 
 function App() {
   return (
-    <ThemeProvider>
-      <HeaderProvider>
-        <KitchenSink />
-        <Toaster />
-      </HeaderProvider>
-    </ThemeProvider>
+    <I18nProvider>
+      <LocalizationProvider>
+        <AnnotationProvider>
+          <ThemeProvider>
+            <HeaderProvider>
+              <KitchenSink />
+              <Toaster />
+            </HeaderProvider>
+          </ThemeProvider>
+        </AnnotationProvider>
+      </LocalizationProvider>
+    </I18nProvider>
   );
 }
 

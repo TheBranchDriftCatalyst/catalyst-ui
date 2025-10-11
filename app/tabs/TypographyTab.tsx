@@ -6,6 +6,8 @@ import { ScrollSnapItem } from "@/catalyst-ui/effects";
 import { TypographyDemo } from "../demos/TypographyDemo";
 import TypographyDemoSource from "../demos/TypographyDemo.tsx?raw";
 
+import { EditableText } from "@/catalyst-ui/components/EditableText";
+
 export function TypographyTab() {
   return (
     <div className="space-y-4 mt-0">
@@ -17,9 +19,18 @@ export function TypographyTab() {
         >
           <Card>
             <CardHeader>
-              <CardTitle>Typography</CardTitle>
+              <CardTitle>
+                <EditableText id="typography" namespace="TypographyTab">
+                  Typography
+                </EditableText>
+              </CardTitle>
               <CardDescription>
-                Various text styles, headings, and semantic elements • Click to view source
+                <EditableText
+                  id="various_text_styles_headings_and_semantic_elements"
+                  namespace="TypographyTab"
+                >
+                  Various text styles, headings, and semantic elements • Click to view source
+                </EditableText>
               </CardDescription>
             </CardHeader>
             <CardContent>

@@ -1,0 +1,14 @@
+{
+  "welcome_to_catalyst_ui": "Bienvenido a Catalyst UI 👋",
+  "hey_there_i_m_building_a_component_library_that_br": "¡Hola! Estoy construyendo una biblioteca de componentes que une patrones modernos de React con una estética cybersynthpunk. Este es mi espacio para experimentar con primitivos de UI, visualización de datos y experiencia de desarrollador.",
+  "what_you_ll_find_here": "Lo que encontrarás aquí:",
+  "accessible_components_built_on_radix_ui_styled_wit": "Componentes accesibles construidos sobre Radix UI, estilizados con Tailwind v4, completos con visualizaciones interactivas D3.js, múltiples variantes de temas (desde synthwave hasta paletas inspiradas en la naturaleza), y un flujo de trabajo de desarrollo robusto impulsado por Storybook y Vite. Todo es TypeScript-first con validación de formularios vía React Hook Form + Zod.",
+  "why_i_built_this": "Por qué construí esto:",
+  "i_wanted_a_reusable_component_system_that_doesn_t_": "Quería un sistema de componentes reutilizable que no comprometa la accesibilidad, el rendimiento o la estética. Esta biblioteca es parte de mi monorepo más grande catalyst-devspace donde exploro automatización de infraestructura, utilidades Python y patrones de desarrollo full-stack. Es de código abierto, en constante evolución y construido pensando en casos de uso del mundo real.",
+  "key_features": "🚀 Características Clave",
+  "what_makes_catalyst_ui_special": "Lo que hace especial a Catalyst UI",
+  "build_performance": "Construcción y Rendimiento",
+  "framework": "Framework",
+  "category": "Categoría",
+  "description": "Descripción"
+}
