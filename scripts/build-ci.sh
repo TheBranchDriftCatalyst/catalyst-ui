@@ -123,6 +123,7 @@ log_environment() {
     log_metric "BASE_PATH: ${BASE_PATH:-/catalyst-ui/}"
     log_metric "NODE_ENV: ${NODE_ENV:-production}"
     log_metric "CI: ${CI:-false}"
+    log_metric "VITE_CATALYST_DEV_UTILS_ENABLED: ${VITE_CATALYST_DEV_UTILS_ENABLED:-false}"
 
     log_substep "Disk Space:"
     df -h "${PROJECT_ROOT}" | tail -1 | awk '{print "  📊 Available: " $4 " / " $2 " (" $5 " used)"}'
@@ -168,6 +169,7 @@ build_app() {
 
     log_substep "Running: yarn build:app"
     log_metric "Base path: ${BASE_PATH:-/catalyst-ui/}"
+    log_metric "Dev utils: enabled (demo mode)"
 
     cd "${PROJECT_ROOT}"
     VITE_BASE_PATH="${BASE_PATH:-/catalyst-ui/}" yarn build:app
@@ -629,6 +631,9 @@ HEADER
 
     # Set BASE_PATH default if not provided
     export BASE_PATH="${BASE_PATH:-/catalyst-ui/}"
+
+    # Enable dev utilities in production demo (UI only, no backend sync)
+    export VITE_CATALYST_DEV_UTILS_ENABLED=true
 
     # Run build pipeline
     log_environment

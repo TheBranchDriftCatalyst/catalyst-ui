@@ -1,6 +1,6 @@
 {
   "welcome_to_catalyst_ui": "Welcome to Catalyst UI 👋",
-  "hey_there_i_m_building_a_component_library_that_br": "Hey there! I'm building a component library that brings together modern React patterns\n              with a cybersynthpunk aesthetic. This is my playground for experimenting with UI\n              primitives, data visualization, and developer experience.",
+  "hey_there_i_m_building_a_component_library_that_br": "Hey there! I'm building a component library that brings together modern React patterns with a cybersynthpunk aesthetic. This is my playground for experimenting with UI\n              primitives, data visualization, and developer experience.",
   "what_you_ll_find_here": "What you'll find here:",
   "accessible_components_built_on_radix_ui_styled_wit": "Accessible components built on Radix UI,\n              styled with Tailwind v4, complete with interactive D3.js visualizations, multiple\n              theme variants (from synthwave to nature-inspired palettes), and a robust development\n              workflow powered by Storybook and Vite. Everything is TypeScript-first with form\n              validation via React Hook Form + Zod.",
   "why_i_built_this": "Why I built this:",

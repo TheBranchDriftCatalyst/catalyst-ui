@@ -6,7 +6,7 @@ import { ScrollSnapItem } from "@/catalyst-ui/effects";
 import { TypographyDemo } from "../demos/TypographyDemo";
 import TypographyDemoSource from "../demos/TypographyDemo.tsx?raw";
 
-import { EditableText } from "@/catalyst-ui/components/EditableText";
+import { EditableText } from "@/catalyst-ui/dev/components/EditableText";
 
 export function TypographyTab() {
   return (

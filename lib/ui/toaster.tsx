@@ -1,3 +1,43 @@
+/**
+ * Toaster - Global toast container component.
+ *
+ * Renders all active toasts managed by the useToast hook.
+ * This component should be included once at the root of your application.
+ *
+ * @module toaster
+ *
+ * @example
+ * ```tsx
+ * // In your root layout or App component
+ * import { Toaster } from "@/catalyst-ui/ui/toaster";
+ *
+ * function App() {
+ *   return (
+ *     <>
+ *       <YourAppContent />
+ *       <Toaster />
+ *     </>
+ *   );
+ * }
+ * ```
+ *
+ * @example
+ * ```tsx
+ * // Then use toast anywhere in your app
+ * import { toast } from "@/catalyst-ui/ui/use-toast";
+ *
+ * function MyComponent() {
+ *   const handleClick = () => {
+ *     toast({
+ *       title: "Success!",
+ *       description: "Your action completed successfully.",
+ *     });
+ *   };
+ *
+ *   return <button onClick={handleClick}>Show Toast</button>;
+ * }
+ * ```
+ */
 import {
   ToastProvider,
   Toast,
@@ -8,6 +48,20 @@ import {
 } from "./toast";
 import { useToast } from "./use-toast";
 
+/**
+ * Toaster component that renders all active toasts.
+ *
+ * Subscribes to the global toast state and renders each toast
+ * with its configured properties. Handles toast lifecycle,
+ * animations, and portal rendering automatically.
+ *
+ * @returns The toast container with all active toasts
+ *
+ * @remarks
+ * This component uses Radix UI Portal for rendering toasts outside
+ * the normal DOM hierarchy, ensuring they appear above all other content.
+ * It should only be rendered once per application.
+ */
 export function Toaster() {
   const { toasts } = useToast();
 

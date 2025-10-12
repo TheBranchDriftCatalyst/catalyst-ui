@@ -1,5 +1,50 @@
 "use client";
 
+/**
+ * Sheet (Drawer) Components
+ *
+ * Sliding panel overlays that appear from screen edges. Built on Radix UI Dialog
+ * primitives with custom styling for drawer/sheet behavior.
+ *
+ * Sheets are useful for navigation menus, sidebars, filters, or forms that
+ * slide in from the side without navigating away from the current page.
+ *
+ * @module sheet
+ *
+ * @example
+ * ```tsx
+ * import {
+ *   Sheet,
+ *   SheetContent,
+ *   SheetDescription,
+ *   SheetHeader,
+ *   SheetTitle,
+ *   SheetTrigger,
+ * } from "@/catalyst-ui/ui/sheet";
+ *
+ * function NavigationDrawer() {
+ *   return (
+ *     <Sheet>
+ *       <SheetTrigger asChild>
+ *         <button>Open Menu</button>
+ *       </SheetTrigger>
+ *       <SheetContent side="left">
+ *         <SheetHeader>
+ *           <SheetTitle>Navigation</SheetTitle>
+ *           <SheetDescription>
+ *             Choose a section to navigate
+ *           </SheetDescription>
+ *         </SheetHeader>
+ *         <nav>
+ *           <a href="/home">Home</a>
+ *           <a href="/about">About</a>
+ *         </nav>
+ *       </SheetContent>
+ *     </Sheet>
+ *   );
+ * }
+ * ```
+ */
 import * as React from "react";
 import * as SheetPrimitive from "@radix-ui/react-dialog";
 import { cva, type VariantProps } from "class-variance-authority";
@@ -7,14 +52,77 @@ import { X } from "lucide-react";
 
 import { cn } from "@/catalyst-ui/utils";
 
+/**
+ * Sheet - Root sheet/drawer component.
+ *
+ * Manages open/close state and coordinates trigger/content.
+ * Re-exported from Radix UI Dialog primitives.
+ *
+ * @component
+ *
+ * @param open - Controlled open state
+ * @param defaultOpen - Initial open state (uncontrolled)
+ * @param onOpenChange - Callback when open state changes
+ * @param modal - Whether to render as modal (default: true)
+ */
 const Sheet = SheetPrimitive.Root;
 
+/**
+ * SheetTrigger - Element that opens the sheet.
+ *
+ * The button or element users click to open the sheet.
+ *
+ * @component
+ *
+ * @example
+ * ```tsx
+ * <Sheet>
+ *   <SheetTrigger asChild>
+ *     <button>Open Filters</button>
+ *   </SheetTrigger>
+ *   <SheetContent>...</SheetContent>
+ * </Sheet>
+ * ```
+ */
 const SheetTrigger = SheetPrimitive.Trigger;
 
+/**
+ * SheetClose - Element that closes the sheet.
+ *
+ * Can be used inside SheetContent to programmatically close the sheet.
+ *
+ * @component
+ *
+ * @example
+ * ```tsx
+ * <SheetContent>
+ *   <SheetClose asChild>
+ *     <button>Cancel</button>
+ *   </SheetClose>
+ * </SheetContent>
+ * ```
+ */
 const SheetClose = SheetPrimitive.Close;
 
+/**
+ * SheetPortal - Portal for rendering sheet outside normal DOM hierarchy.
+ *
+ * Ensures sheet renders at document body level. Usually not needed directly.
+ *
+ * @internal
+ */
 const SheetPortal = SheetPrimitive.Portal;
 
+/**
+ * SheetOverlay - Semi-transparent backdrop behind the sheet.
+ *
+ * Dims background content and closes sheet when clicked.
+ * Automatically included in SheetContent.
+ *
+ * @component
+ *
+ * @param className - Additional CSS classes
+ */
 const SheetOverlay = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Overlay>
@@ -33,6 +141,11 @@ const SheetOverlay = React.forwardRef<
 ));
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName;
 
+/**
+ * Sheet content positioning and animation variants.
+ *
+ * Defines slide animations from each screen edge with appropriate borders.
+ */
 const sheetVariants = cva(
   "fixed z-50 gap-4 bg-background p-6 shadow-lg data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:duration-400 data-[state=closed]:duration-300 data-[state=open]:ease-out data-[state=closed]:ease-in",
   {
@@ -52,10 +165,75 @@ const sheetVariants = cva(
   }
 );
 
+/**
+ * Props for SheetContent component.
+ * Combines Radix Dialog Content props with sheet variants.
+ */
 interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
     VariantProps<typeof sheetVariants> {}
 
+/**
+ * SheetContent - The main content panel of the sheet.
+ *
+ * Slides in from specified screen edge with backdrop overlay.
+ * Includes automatic close button and portal rendering.
+ *
+ * @component
+ *
+ * @param side - Edge to slide from: "top" | "right" | "bottom" | "left" (default: "right")
+ * @param className - Additional CSS classes
+ * @param children - Sheet content
+ *
+ * @example
+ * ```tsx
+ * // Right-side sheet (default)
+ * <Sheet>
+ *   <SheetTrigger>Open</SheetTrigger>
+ *   <SheetContent>
+ *     <SheetHeader>
+ *       <SheetTitle>Settings</SheetTitle>
+ *     </SheetHeader>
+ *     <div>Your content here</div>
+ *   </SheetContent>
+ * </Sheet>
+ * ```
+ *
+ * @example
+ * ```tsx
+ * // Left-side navigation drawer
+ * <Sheet>
+ *   <SheetTrigger>Menu</SheetTrigger>
+ *   <SheetContent side="left">
+ *     <nav>
+ *       <a href="/">Home</a>
+ *       <a href="/about">About</a>
+ *     </nav>
+ *   </SheetContent>
+ * </Sheet>
+ * ```
+ *
+ * @example
+ * ```tsx
+ * // Bottom sheet for mobile filters
+ * <Sheet>
+ *   <SheetTrigger>Filters</SheetTrigger>
+ *   <SheetContent side="bottom">
+ *     <SheetHeader>
+ *       <SheetTitle>Filter Options</SheetTitle>
+ *     </SheetHeader>
+ *     <FilterForm />
+ *   </SheetContent>
+ * </Sheet>
+ * ```
+ *
+ * @accessibility
+ * - Traps focus within sheet when open
+ * - Closes on Escape key
+ * - Restores focus to trigger on close
+ * - ARIA attributes managed by Radix UI
+ * - Backdrop click closes sheet
+ */
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
   SheetContentProps
@@ -73,11 +251,57 @@ const SheetContent = React.forwardRef<
 ));
 SheetContent.displayName = SheetPrimitive.Content.displayName;
 
+/**
+ * SheetHeader - Header container for sheet title and description.
+ *
+ * Provides consistent spacing and layout for sheet headers.
+ * Typically contains SheetTitle and SheetDescription.
+ *
+ * @component
+ *
+ * @param className - Additional CSS classes
+ *
+ * @example
+ * ```tsx
+ * <SheetContent>
+ *   <SheetHeader>
+ *     <SheetTitle>Edit Profile</SheetTitle>
+ *     <SheetDescription>
+ *       Make changes to your profile information
+ *     </SheetDescription>
+ *   </SheetHeader>
+ * </SheetContent>
+ * ```
+ */
 const SheetHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div className={cn("flex flex-col space-y-2 text-center sm:text-left", className)} {...props} />
 );
 SheetHeader.displayName = "SheetHeader";
 
+/**
+ * SheetFooter - Footer container for action buttons.
+ *
+ * Provides consistent spacing and layout for sheet footer actions.
+ * Typically contains submit/cancel buttons or other actions.
+ *
+ * @component
+ *
+ * @param className - Additional CSS classes
+ *
+ * @example
+ * ```tsx
+ * <SheetContent>
+ *   <SheetHeader>...</SheetHeader>
+ *   <div>Form content</div>
+ *   <SheetFooter>
+ *     <SheetClose asChild>
+ *       <button>Cancel</button>
+ *     </SheetClose>
+ *     <button type="submit">Save</button>
+ *   </SheetFooter>
+ * </SheetContent>
+ * ```
+ */
 const SheetFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2", className)}
@@ -86,6 +310,24 @@ const SheetFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElemen
 );
 SheetFooter.displayName = "SheetFooter";
 
+/**
+ * SheetTitle - Title heading for the sheet.
+ *
+ * Main heading text for the sheet. Required for accessibility.
+ *
+ * @component
+ *
+ * @param className - Additional CSS classes
+ *
+ * @example
+ * ```tsx
+ * <SheetContent>
+ *   <SheetHeader>
+ *     <SheetTitle>Edit Profile</SheetTitle>
+ *   </SheetHeader>
+ * </SheetContent>
+ * ```
+ */
 const SheetTitle = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Title>
@@ -98,6 +340,28 @@ const SheetTitle = React.forwardRef<
 ));
 SheetTitle.displayName = SheetPrimitive.Title.displayName;
 
+/**
+ * SheetDescription - Description text for the sheet.
+ *
+ * Provides additional context about the sheet's purpose.
+ * Important for accessibility.
+ *
+ * @component
+ *
+ * @param className - Additional CSS classes
+ *
+ * @example
+ * ```tsx
+ * <SheetContent>
+ *   <SheetHeader>
+ *     <SheetTitle>Delete Account</SheetTitle>
+ *     <SheetDescription>
+ *       This action cannot be undone. All your data will be permanently removed.
+ *     </SheetDescription>
+ *   </SheetHeader>
+ * </SheetContent>
+ * ```
+ */
 const SheetDescription = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof SheetPrimitive.Description>

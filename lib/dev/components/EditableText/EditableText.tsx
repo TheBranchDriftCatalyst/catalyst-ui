@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Pencil } from "lucide-react";
 import { TextEditDialog } from "./TextEditDialog";
-import { useLocalizationContext } from "@/catalyst-ui/contexts/Localization";
+import { useLocalizationContext } from "../../context/LocalizationContext";
 
 interface EditableTextProps {
   /**

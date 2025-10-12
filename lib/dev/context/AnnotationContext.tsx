@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import { isDevUtilsEnabled, isBackendSyncEnabled } from "../utils/devMode";
 
 /**
  * Annotation type - represents a user-created annotation
@@ -159,7 +160,7 @@ export function AnnotationProvider({ children }: { children: React.ReactNode }) 
 
       setAnnotations(prev => [...prev, newAnnotation]);
 
-      if (import.meta.env.DEV) {
+      if (isDevUtilsEnabled()) {
         console.log("[AnnotationProvider] Added annotation:", newAnnotation);
       }
     },
@@ -169,7 +170,7 @@ export function AnnotationProvider({ children }: { children: React.ReactNode }) 
   const removeAnnotation = useCallback((id: string) => {
     setAnnotations(prev => prev.filter(a => a.id !== id));
 
-    if (import.meta.env.DEV) {
+    if (isDevUtilsEnabled()) {
       console.log(`[AnnotationProvider] Removed annotation: ${id}`);
     }
   }, []);
@@ -178,7 +179,7 @@ export function AnnotationProvider({ children }: { children: React.ReactNode }) 
     (id: string, updates: Partial<Omit<Annotation, "id" | "timestamp">>) => {
       setAnnotations(prev => prev.map(a => (a.id === id ? { ...a, ...updates } : a)));
 
-      if (import.meta.env.DEV) {
+      if (isDevUtilsEnabled()) {
         console.log(`[AnnotationProvider] Updated annotation ${id}:`, updates);
       }
     },
@@ -186,8 +187,16 @@ export function AnnotationProvider({ children }: { children: React.ReactNode }) 
   );
 
   const syncToBackend = useCallback(async () => {
+    // Only sync in true dev mode, not when using production flag
+    if (!isBackendSyncEnabled()) {
+      if (isDevUtilsEnabled()) {
+        console.log("[AnnotationProvider] Backend sync disabled (production mode)");
+      }
+      return;
+    }
+
     if (annotations.length === 0) {
-      if (import.meta.env.DEV) {
+      if (isDevUtilsEnabled()) {
         console.log("[AnnotationProvider] No annotations to sync");
       }
       return;
@@ -213,7 +222,7 @@ export function AnnotationProvider({ children }: { children: React.ReactNode }) 
       setSyncStatus("synced");
       setLastSyncedAt(Date.now());
 
-      if (import.meta.env.DEV) {
+      if (isDevUtilsEnabled()) {
         console.log(
           `[AnnotationProvider] Successfully synced ${result.count} annotations to ${result.file}`
         );
@@ -234,7 +243,7 @@ export function AnnotationProvider({ children }: { children: React.ReactNode }) 
       localStorage.removeItem(STORAGE_KEY);
     }
 
-    if (import.meta.env.DEV) {
+    if (isDevUtilsEnabled()) {
       console.log("[AnnotationProvider] Cleared all annotations");
     }
   }, []);
@@ -243,12 +252,17 @@ export function AnnotationProvider({ children }: { children: React.ReactNode }) 
   useEffect(() => {
     if (typeof window === "undefined") return;
 
+    // Only set up periodic sync if backend sync is enabled (true dev mode only)
+    if (!isBackendSyncEnabled()) {
+      return;
+    }
+
     // Only set up interval if there are annotations
     if (annotations.length === 0) {
       return;
     }
 
-    if (import.meta.env.DEV) {
+    if (isDevUtilsEnabled()) {
       console.log(
         `[AnnotationProvider] Setting up periodic sync (${SYNC_INTERVAL_MS}ms) for ${annotations.length} annotations`
       );
@@ -260,7 +274,7 @@ export function AnnotationProvider({ children }: { children: React.ReactNode }) 
 
     return () => {
       clearInterval(intervalId);
-      if (import.meta.env.DEV) {
+      if (isDevUtilsEnabled()) {
         console.log("[AnnotationProvider] Cleared periodic sync interval");
       }
     };

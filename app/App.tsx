@@ -1,8 +1,7 @@
 import "../lib/global.css";
 import { ThemeProvider } from "@/catalyst-ui/contexts/Theme/ThemeProvider";
-import { LocalizationProvider } from "@/catalyst-ui/contexts/Localization";
-import { I18nProvider, AnnotationProvider } from "@/catalyst-ui/dev/context";
-import { DevModeToggle } from "@/catalyst-ui/dev/components";
+import { I18nProvider } from "@/catalyst-ui/contexts/i18n";
+import { DevProviders, DevModeToggle } from "@/catalyst-ui/dev/components";
 import { CatalystHeader } from "@/catalyst-ui/components/CatalystHeader/CatalystHeader";
 import { HeaderProvider } from "@/catalyst-ui/components/CatalystHeader/HeaderProvider";
 import { Tabs, TabsContent } from "@/catalyst-ui/ui/tabs";
@@ -181,16 +180,14 @@ function KitchenSink() {
 function App() {
   return (
     <I18nProvider>
-      <LocalizationProvider>
-        <AnnotationProvider>
-          <ThemeProvider>
-            <HeaderProvider>
-              <KitchenSink />
-              <Toaster />
-            </HeaderProvider>
-          </ThemeProvider>
-        </AnnotationProvider>
-      </LocalizationProvider>
+      <DevProviders>
+        <ThemeProvider>
+          <HeaderProvider>
+            <KitchenSink />
+            <Toaster />
+          </HeaderProvider>
+        </ThemeProvider>
+      </DevProviders>
     </I18nProvider>
   );
 }

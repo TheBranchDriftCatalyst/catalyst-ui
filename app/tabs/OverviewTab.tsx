@@ -10,7 +10,7 @@ import {
 } from "@/catalyst-ui/ui/table";
 import { ScrollSnapItem } from "@/catalyst-ui/effects";
 
-import { EditableText } from "@/catalyst-ui/components/EditableText";
+import { EditableText } from "@/catalyst-ui/dev/components/EditableText";
 
 export const TAB_ORDER = 0;
 

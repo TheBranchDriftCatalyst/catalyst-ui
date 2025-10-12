@@ -19,7 +19,7 @@ import {
   FormMessage,
 } from "@/catalyst-ui/ui/form";
 import { useToast } from "@/catalyst-ui/ui/use-toast";
-import { useLocalizationContext } from "@/catalyst-ui/contexts/Localization";
+import { useLocalizationContext } from "../../context/LocalizationContext";
 
 const textEditSchema = z.object({
   value: z.string().min(1, "Text cannot be empty"),

@@ -64,9 +64,10 @@ export default function concatDocsPlugin() {
       server.watcher.add(docsDir);
       server.watcher.add(path.resolve(repoRoot, "*.md"));
 
-      // ⏱️ Debounce rapid file events (500ms cooldown)
+      // ⏱️ Debounce rapid file events (1000ms cooldown)
+      // Increased from 500ms to 1000ms to reduce excessive HMR reloads
       let debounceTimer: NodeJS.Timeout | null = null;
-      const DEBOUNCE_MS = 500;
+      const DEBOUNCE_MS = 1000;
 
       server.watcher.on("change", (file) => {
         try {
@@ -218,8 +219,25 @@ export default function concatDocsPlugin() {
       // 🕐 Record generation timestamp
       lastGeneratedAt = Date.now();
 
-      // 📊 Report success with stats
-      logger.success(`Combined ${markdownFiles.length} markdown files into docs-combined.md`);
+      // 📊 Calculate metrics
+      const sizeBytes = Buffer.byteLength(combinedContent, "utf-8");
+      const sizeKB = (sizeBytes / 1024).toFixed(2);
+      const sizeMB = (sizeBytes / (1024 * 1024)).toFixed(2);
+
+      // Estimate token count (~4 chars per token for English text)
+      // This is a rough approximation - actual tokenization varies by model
+      const estimatedTokens = Math.ceil(combinedContent.length / 4);
+      const tokensFormatted = estimatedTokens.toLocaleString();
+
+      // 📊 Report success with detailed stats
+      const sizeDisplay = sizeBytes < 1024 * 1024
+        ? `${sizeKB} KB`
+        : `${sizeMB} MB`;
+
+      logger.success(
+        `Combined ${markdownFiles.length} markdown files into docs-combined.md | ` +
+        `${sizeDisplay} | ~${tokensFormatted} tokens`
+      );
     } catch (err) {
       logger.error("Failed to generate combined docs", err);
     }

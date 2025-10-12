@@ -80,11 +80,12 @@ export default function tabsManifestPlugin() {
       server.watcher.add(tabsDir);
       server.watcher.add(manifestPath);
 
-      // ⏱️ Debounce rapid file events (250ms cooldown)
+      // ⏱️ Debounce rapid file events (500ms cooldown)
       // Bulk edits across multiple files only trigger ONE regeneration
+      // Increased from 250ms to 500ms to reduce excessive HMR reloads
       let debounceTimer: NodeJS.Timeout | null = null;
       const pending = new Set<string>();
-      const DEBOUNCE_MS = 250;
+      const DEBOUNCE_MS = 500;
 
       server.watcher.on("change", (file) => {
         try {

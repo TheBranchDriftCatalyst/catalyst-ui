@@ -15,6 +15,7 @@
     "**/*.spec.tsx",
     "**/*.stories.tsx",
     "**/test/**",
-    "**/tests/**"
+    "**/tests/**",
+    "lib/dev/**"
   ]
 }

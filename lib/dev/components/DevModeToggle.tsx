@@ -13,6 +13,7 @@ import type { ComponentInfo } from "../annotation/ComponentInspector";
 import { ComponentInspector } from "../annotation/ComponentInspector";
 import { AnnotationListSheet } from "../annotation/AnnotationListSheet";
 import { AnnotationFormSheet } from "../annotation/AnnotationFormSheet";
+import { isDevUtilsEnabled } from "../utils/devMode";
 
 interface DevModeToggleProps {
   /**
@@ -61,8 +62,8 @@ export function DevModeToggle({ variant = "outline", size = "icon" }: DevModeTog
     setI18nListOpen(true);
   };
 
-  if (!import.meta.env.DEV) {
-    return null; // Only show in dev mode
+  if (!isDevUtilsEnabled()) {
+    return null; // Only show when dev utils are enabled
   }
 
   return (

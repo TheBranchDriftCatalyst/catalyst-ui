@@ -1,6 +1,6 @@
 import { Typography } from "@/catalyst-ui/ui/typography";
 
-import { EditableText as T } from "@/catalyst-ui/components/EditableText";
+import { EditableText as T } from "@/catalyst-ui/dev/components/EditableText";
 
 export function TypographyDemo() {
   return (

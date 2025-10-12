@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
-import i18n from "@/catalyst-ui/dev/context/i18n";
+import { i18n } from "@/catalyst-ui/contexts/i18n";
+import { isDevUtilsEnabled, isBackendSyncEnabled } from "../utils/devMode";
 
 /**
  * Type representing translation changes organized by namespace and key
@@ -87,6 +88,11 @@ interface LocalizationContextValue {
    * Manually trigger backend sync
    */
   syncToBackend: () => Promise<void>;
+
+  /**
+   * Whether i18n is ready and translations are loaded
+   */
+  isReady: boolean;
 }
 
 const LocalizationContext = createContext<LocalizationContextValue | null>(null);
@@ -119,43 +125,60 @@ const SYNC_INTERVAL_MS = 5000; // Sync every 5 seconds if there are unsaved chan
  * ```
  */
 export function LocalizationProvider({ children }: { children: React.ReactNode }) {
-  // Store original translations before any edits (capture on first render)
-  const [originalTranslations] = useState<TranslationChanges>(() => {
-    if (typeof window === "undefined") return {};
+  // Store original translations before any edits
+  // NOTE: Using useState with empty object to avoid accessing i18n before it's ready
+  // We'll populate this in useEffect after i18n finishes loading
+  const [originalTranslations, setOriginalTranslations] = useState<TranslationChanges>({});
+  const [isI18nReady, setIsI18nReady] = useState(false);
 
-    const originals: TranslationChanges = {};
+  // Wait for i18n to be ready and capture original translations
+  useEffect(() => {
+    if (typeof window === "undefined") return;
 
-    // Load ALL namespaces from i18next (not just hardcoded ones)
-    // This includes global namespaces (common, components, errors)
-    // AND co-located component namespaces (TypographyDemo, etc.)
-    const languages = i18n.languages || ["en"];
+    // Check if i18n is ready
+    const checkI18nReady = () => {
+      if (i18n.isInitialized && i18n.languages && i18n.languages.length > 0) {
+        const originals: TranslationChanges = {};
 
-    // Get all loaded namespaces
-    const loadedNamespaces = new Set<string>();
-    languages.forEach(lang => {
-      const store = i18n.services.resourceStore.data[lang];
-      if (store) {
-        Object.keys(store).forEach(ns => loadedNamespaces.add(ns));
+        // Load ALL namespaces from i18next (not just hardcoded ones)
+        // This includes global namespaces (common, components, errors)
+        // AND co-located component namespaces (TypographyDemo, etc.)
+        const languages = i18n.languages || ["en"];
+
+        // Get all loaded namespaces
+        const loadedNamespaces = new Set<string>();
+        languages.forEach(lang => {
+          const store = i18n.services?.resourceStore?.data?.[lang];
+          if (store) {
+            Object.keys(store).forEach(ns => loadedNamespaces.add(ns));
+          }
+        });
+
+        // Capture original values for all namespaces
+        loadedNamespaces.forEach(namespace => {
+          const bundle = i18n.getResourceBundle("en", namespace);
+          if (bundle) {
+            originals[namespace] = { ...bundle };
+          }
+        });
+
+        if (isDevUtilsEnabled()) {
+          console.log(
+            `[LocalizationProvider] Loaded ${loadedNamespaces.size} namespaces:`,
+            Array.from(loadedNamespaces)
+          );
+        }
+
+        setOriginalTranslations(originals);
+        setIsI18nReady(true);
+      } else {
+        // i18n not ready yet, check again in 100ms
+        setTimeout(checkI18nReady, 100);
       }
-    });
+    };
 
-    // Capture original values for all namespaces
-    loadedNamespaces.forEach(namespace => {
-      const bundle = i18n.getResourceBundle("en", namespace);
-      if (bundle) {
-        originals[namespace] = { ...bundle };
-      }
-    });
-
-    if (import.meta.env.DEV) {
-      console.log(
-        `[LocalizationProvider] Loaded ${loadedNamespaces.size} namespaces:`,
-        Array.from(loadedNamespaces)
-      );
-    }
-
-    return originals;
-  });
+    checkI18nReady();
+  }, []);
 
   // Load initial changes from localStorage
   const [changes, setChanges] = useState<TranslationChanges>(() => {
@@ -180,25 +203,10 @@ export function LocalizationProvider({ children }: { children: React.ReactNode }
 
   // Track dirty keys (keys that have been modified but not saved to backend)
   // Format: Set of "namespace:key" strings
-  const [dirtyKeys, setDirtyKeys] = useState<Set<string>>(() => {
-    if (typeof window === "undefined") return new Set();
-
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (!stored) return new Set();
-
-      const storedChanges: TranslationChanges = JSON.parse(stored);
-      const keys = new Set<string>();
-      Object.entries(storedChanges).forEach(([namespace, translations]) => {
-        Object.keys(translations).forEach(key => {
-          keys.add(`${namespace}:${key}`);
-        });
-      });
-      return keys;
-    } catch (error) {
-      return new Set();
-    }
-  });
+  // NOTE: We start with an empty set on load, not reconstructed from localStorage.
+  // This is because changes in localStorage represent the current state of translations,
+  // not necessarily unsaved changes. If a key was synced before reload, it shouldn't be dirty.
+  const [dirtyKeys, setDirtyKeys] = useState<Set<string>>(new Set());
 
   // Backend sync state
   const [syncStatus, setSyncStatus] = useState<"idle" | "syncing" | "synced" | "error">("idle");
@@ -245,7 +253,7 @@ export function LocalizationProvider({ children }: { children: React.ReactNode }
       // Increment revision to trigger re-renders
       setRevision(prev => prev + 1);
 
-      if (import.meta.env.DEV) {
+      if (isDevUtilsEnabled()) {
         console.log(`[LocalizationProvider] Updated ${namespace}:${key} = "${value}"`);
       }
     },
@@ -297,7 +305,7 @@ export function LocalizationProvider({ children }: { children: React.ReactNode }
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
 
-        if (import.meta.env.DEV) {
+        if (isDevUtilsEnabled()) {
           console.log(`[LocalizationProvider] Dumped ${filename}`);
         }
       } catch (error) {
@@ -329,7 +337,7 @@ export function LocalizationProvider({ children }: { children: React.ReactNode }
       // Increment revision to trigger re-renders
       setRevision(prev => prev + 1);
 
-      if (import.meta.env.DEV) {
+      if (isDevUtilsEnabled()) {
         console.log(`[LocalizationProvider] Undo to history index ${prevIndex}`, prevChanges);
       }
     }
@@ -355,7 +363,7 @@ export function LocalizationProvider({ children }: { children: React.ReactNode }
       // Increment revision to trigger re-renders
       setRevision(prev => prev + 1);
 
-      if (import.meta.env.DEV) {
+      if (isDevUtilsEnabled()) {
         console.log(`[LocalizationProvider] Redo to history index ${nextIndex}`, nextChanges);
       }
     }
@@ -408,8 +416,16 @@ export function LocalizationProvider({ children }: { children: React.ReactNode }
   );
 
   const syncToBackend = useCallback(async () => {
+    // Only sync in true dev mode, not when using production flag
+    if (!isBackendSyncEnabled()) {
+      if (isDevUtilsEnabled()) {
+        console.log("[LocalizationProvider] Backend sync disabled (production mode)");
+      }
+      return;
+    }
+
     if (dirtyKeys.size === 0) {
-      if (import.meta.env.DEV) {
+      if (isDevUtilsEnabled()) {
         console.log("[LocalizationProvider] No dirty keys to sync");
       }
       return;
@@ -445,7 +461,7 @@ export function LocalizationProvider({ children }: { children: React.ReactNode }
           throw new Error(`Failed to sync ${namespace}:${key}: ${errorText}`);
         }
 
-        if (import.meta.env.DEV) {
+        if (isDevUtilsEnabled()) {
           const result = await response.json();
           console.log(`[LocalizationProvider] Synced ${namespace}:${key} to ${result.file}`);
         }
@@ -453,14 +469,24 @@ export function LocalizationProvider({ children }: { children: React.ReactNode }
 
       await Promise.all(syncPromises);
 
-      // Clear dirty keys on success
+      // Clear dirty keys and localStorage on success
+      // Once synced to backend, the translations are now in the actual .i18n.json files
+      // and will be loaded from there on next page load, so we don't need localStorage anymore
       setDirtyKeys(new Set());
+      setChanges({});
+      setHistory([{}]);
+      setHistoryIndex(0);
+
+      if (typeof window !== "undefined") {
+        localStorage.removeItem(STORAGE_KEY);
+      }
+
       setSyncStatus("synced");
       setLastSyncedAt(Date.now());
 
-      if (import.meta.env.DEV) {
+      if (isDevUtilsEnabled()) {
         console.log(
-          `[LocalizationProvider] Successfully synced ${syncPromises.length} translations to backend`
+          `[LocalizationProvider] Successfully synced ${syncPromises.length} translations to backend and cleared localStorage`
         );
       }
     } catch (error) {
@@ -482,7 +508,7 @@ export function LocalizationProvider({ children }: { children: React.ReactNode }
       localStorage.removeItem(STORAGE_KEY);
     }
 
-    if (import.meta.env.DEV) {
+    if (isDevUtilsEnabled()) {
       console.log("[LocalizationProvider] Cleared all changes");
     }
   }, []);
@@ -514,7 +540,10 @@ export function LocalizationProvider({ children }: { children: React.ReactNode }
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [undo, redo]);
 
-  // Periodic backend sync - syncs dirty translations every 5 seconds
+  // DISABLED: Periodic backend sync causes HMR reload loops
+  // Users should manually call syncToBackend() or use a button in the UI
+  // Keeping this code commented for reference:
+  /*
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -540,6 +569,7 @@ export function LocalizationProvider({ children }: { children: React.ReactNode }
       }
     };
   }, [dirtyKeys.size, syncToBackend]);
+  */
 
   return (
     <LocalizationContext.Provider
@@ -558,6 +588,7 @@ export function LocalizationProvider({ children }: { children: React.ReactNode }
         syncStatus,
         syncError,
         syncToBackend,
+        isReady: isI18nReady,
       }}
     >
       {children}

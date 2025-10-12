@@ -1,3 +1,25 @@
+/**
+ * Toast UI Components
+ *
+ * React components for displaying toast notifications built on Radix UI Toast primitives.
+ * Includes visual variants, animation styles, and an integrated progress indicator.
+ *
+ * @module toast
+ *
+ * @example
+ * ```tsx
+ * import { Toaster } from "@/catalyst-ui/ui/toaster";
+ *
+ * function App() {
+ *   return (
+ *     <>
+ *       {/* Your app content *\/}
+ *       <Toaster />
+ *     </>
+ *   );
+ * }
+ * ```
+ */
 import * as ToastPrimitives from "@radix-ui/react-toast";
 import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
@@ -7,8 +29,28 @@ import { Progress } from "@/catalyst-ui/ui/progress";
 import { cn } from "@/catalyst-ui/utils";
 import type { ToastAnimation } from "./use-toast";
 
+/**
+ * Toast provider component that manages toast lifecycle and portal rendering.
+ * This is re-exported from Radix UI Toast primitives.
+ */
 const ToastProvider = ToastPrimitives.Provider;
 
+/**
+ * ToastViewport - Portal container for rendering toasts.
+ *
+ * Defines the fixed viewport where toast notifications appear.
+ * By default, toasts render in the top-right corner of the screen.
+ *
+ * @component
+ *
+ * @example
+ * ```tsx
+ * <ToastProvider>
+ *   <Toast>...</Toast>
+ *   <ToastViewport />
+ * </ToastProvider>
+ * ```
+ */
 const ToastViewport = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Viewport>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Viewport>
@@ -24,6 +66,13 @@ const ToastViewport = React.forwardRef<
 ));
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName;
 
+/**
+ * Toast visual style variants using class-variance-authority.
+ *
+ * Defines styling for different toast types and animations:
+ * - Variants: default (primary), secondary, destructive (error)
+ * - Animations: slide, fade, bounce, scale, slide-up, slide-down
+ */
 const toastVariants = cva(
   "group pointer-events-auto relative flex w-full items-center justify-between space-x-4 overflow-hidden rounded-lg border-2 p-5 pr-8 shadow-lg backdrop-blur-sm transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none",
   {
@@ -57,6 +106,42 @@ const toastVariants = cva(
   }
 );
 
+/**
+ * Toast - Main toast notification component.
+ *
+ * Displays a toast notification with configurable styling, animation,
+ * and optional auto-dismiss with progress indicator. Supports swipe-to-dismiss
+ * gesture on mobile devices.
+ *
+ * @component
+ *
+ * @param variant - Visual style: "default" | "secondary" | "destructive"
+ * @param animation - Entrance/exit animation: "slide" | "fade" | "bounce" | "scale" | "slide-up" | "slide-down"
+ * @param duration - Auto-dismiss duration in milliseconds (shows progress bar)
+ * @param className - Additional CSS classes
+ *
+ * @example
+ * ```tsx
+ * <Toast variant="default" animation="slide" duration={5000}>
+ *   <ToastTitle>Success</ToastTitle>
+ *   <ToastDescription>Your changes have been saved.</ToastDescription>
+ *   <ToastClose />
+ * </Toast>
+ * ```
+ *
+ * @example
+ * ```tsx
+ * // Error toast with action
+ * <Toast variant="destructive">
+ *   <div className="grid gap-1">
+ *     <ToastTitle>Error</ToastTitle>
+ *     <ToastDescription>Failed to delete item.</ToastDescription>
+ *   </div>
+ *   <ToastAction altText="Retry">Retry</ToastAction>
+ *   <ToastClose />
+ * </Toast>
+ * ```
+ */
 const Toast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
@@ -93,6 +178,29 @@ const Toast = React.forwardRef<
 });
 Toast.displayName = ToastPrimitives.Root.displayName;
 
+/**
+ * ToastAction - Action button within a toast.
+ *
+ * Provides a clickable action button for toasts, typically used
+ * for actions like "Undo", "Retry", or "View". Automatically styled
+ * to match the toast variant.
+ *
+ * @component
+ *
+ * @param altText - Accessible alternative text (required for screen readers)
+ * @param className - Additional CSS classes
+ *
+ * @example
+ * ```tsx
+ * <Toast>
+ *   <ToastTitle>File deleted</ToastTitle>
+ *   <ToastDescription>Your file has been moved to trash.</ToastDescription>
+ *   <ToastAction altText="Undo deletion" onClick={handleUndo}>
+ *     Undo
+ *   </ToastAction>
+ * </Toast>
+ * ```
+ */
 const ToastAction = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Action>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action>
@@ -108,6 +216,31 @@ const ToastAction = React.forwardRef<
 ));
 ToastAction.displayName = ToastPrimitives.Action.displayName;
 
+/**
+ * ToastClose - Close button for dismissing toasts.
+ *
+ * Renders an X icon button in the top-right corner of the toast.
+ * Hidden by default, appears on hover with smooth transitions.
+ * Clicking triggers the toast dismissal animation.
+ *
+ * @component
+ *
+ * @param className - Additional CSS classes
+ *
+ * @example
+ * ```tsx
+ * <Toast>
+ *   <ToastTitle>Notification</ToastTitle>
+ *   <ToastDescription>This is a message.</ToastDescription>
+ *   <ToastClose />
+ * </Toast>
+ * ```
+ *
+ * @accessibility
+ * - Keyboard accessible (focusable and can be activated with Enter/Space)
+ * - Shows on focus for keyboard navigation
+ * - Proper ARIA labels from Radix UI primitives
+ */
 const ToastClose = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Close>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Close>
@@ -126,6 +259,24 @@ const ToastClose = React.forwardRef<
 ));
 ToastClose.displayName = ToastPrimitives.Close.displayName;
 
+/**
+ * ToastTitle - Title/heading for toast notifications.
+ *
+ * Displays the main heading text for a toast. Styled with bold,
+ * uppercase, and display font for emphasis.
+ *
+ * @component
+ *
+ * @param className - Additional CSS classes
+ *
+ * @example
+ * ```tsx
+ * <Toast>
+ *   <ToastTitle>Success</ToastTitle>
+ *   <ToastDescription>Operation completed.</ToastDescription>
+ * </Toast>
+ * ```
+ */
 const ToastTitle = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Title>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Title>
@@ -138,6 +289,26 @@ const ToastTitle = React.forwardRef<
 ));
 ToastTitle.displayName = ToastPrimitives.Title.displayName;
 
+/**
+ * ToastDescription - Body text for toast notifications.
+ *
+ * Displays detailed message text below the title. Styled with
+ * slightly reduced opacity for visual hierarchy.
+ *
+ * @component
+ *
+ * @param className - Additional CSS classes
+ *
+ * @example
+ * ```tsx
+ * <Toast>
+ *   <ToastTitle>File Uploaded</ToastTitle>
+ *   <ToastDescription>
+ *     Your document has been uploaded successfully and is now available.
+ *   </ToastDescription>
+ * </Toast>
+ * ```
+ */
 const ToastDescription = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Description>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Description>
@@ -150,8 +321,16 @@ const ToastDescription = React.forwardRef<
 ));
 ToastDescription.displayName = ToastPrimitives.Description.displayName;
 
+/**
+ * Type for Toast component props.
+ * Includes all Radix Toast props plus variant and animation options.
+ */
 type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>;
 
+/**
+ * Type for ToastAction element.
+ * Used in the toast() function for action buttons.
+ */
 type ToastActionElement = React.ReactElement<typeof ToastAction>;
 
 export {

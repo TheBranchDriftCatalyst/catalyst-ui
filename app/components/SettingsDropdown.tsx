@@ -19,7 +19,7 @@ import { Checkbox } from "@/catalyst-ui/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/catalyst-ui/ui/tabs";
 import { MoonIcon, SunIcon, Settings, Download, Trash2, Undo2, Redo2 } from "lucide-react";
 import { LoggerControl } from "@/catalyst-ui/components/LoggerControl";
-import { useLocalizationContext } from "@/catalyst-ui/contexts/Localization";
+import { useLocalizationContext } from "@/catalyst-ui/dev/context";
 import { useToast } from "@/catalyst-ui/ui/use-toast";
 
 /**

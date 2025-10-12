@@ -5,22 +5,40 @@ import * as React from "react";
 
 import { cn } from "@/catalyst-ui/utils";
 
+/**
+ * Thumb shape variants for the slider
+ */
 type ThumbShape = "circle" | "rectangle" | "rounded-rectangle";
+
+/**
+ * Label position variants for value display
+ */
 type LabelPosition = "inside" | "outside";
 
+/**
+ * Props for the Slider component
+ *
+ * Extends Radix UI Slider props with custom value display options.
+ */
 interface SliderProps extends React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> {
   /** Show value label on thumb */
   showValue?: boolean;
   /** Format function for value display */
   formatValue?: (value: number) => string;
-  /** Label mapping for discrete values (e.g., {1: "Novice", 2: "Beginner"}) */
+  /** Label mapping for discrete values (e.g., {1: "Novice", 2: "Beginner", 3: "Expert"}) */
   labels?: Record<number, string>;
-  /** Thumb shape variant */
+  /** Thumb shape variant (default: "circle") */
   thumbShape?: ThumbShape;
-  /** Label position - inside the thumb or outside as tooltip */
+  /** Label position - inside the thumb or outside as tooltip (default: "outside") */
   labelPosition?: LabelPosition;
 }
 
+/**
+ * Thumb shape styling configuration
+ *
+ * Defines size and border-radius for each thumb shape variant,
+ * with different sizes for default and label-inside modes.
+ */
 const thumbShapeClasses: Record<ThumbShape, { default: string; withLabel: string }> = {
   circle: {
     default: "h-5 w-5 rounded-full",
@@ -36,6 +54,111 @@ const thumbShapeClasses: Record<ThumbShape, { default: string; withLabel: string
   },
 };
 
+/**
+ * Slider - Range input component with customizable value display
+ *
+ * A fully accessible range slider built on Radix UI primitives with optional
+ * value labels, custom thumb shapes, and formatted value display. Perfect for
+ * settings, filters, and value selection.
+ *
+ * **Features:**
+ * - Keyboard navigation (Arrow keys, Home, End, Page Up/Down)
+ * - Optional value display (inside thumb or tooltip)
+ * - Custom thumb shapes (circle, rectangle, rounded-rectangle)
+ * - Label mapping for discrete values
+ * - Custom value formatting
+ * - Smooth animations and hover effects
+ * - Disabled state support
+ *
+ * **Accessibility:**
+ * - Full keyboard control
+ * - ARIA attributes for screen readers
+ * - Focus indicators
+ * - Disabled state styling
+ *
+ * **Value Display Options:**
+ * - `showValue={false}` - No label (default)
+ * - `labelPosition="outside"` - Tooltip that appears on hover
+ * - `labelPosition="inside"` - Value shown inside enlarged thumb
+ *
+ * **React Hook Form Integration:**
+ * Use `value` with `field.value` and `onValueChange` with `field.onChange`
+ *
+ * @example
+ * ```tsx
+ * // Basic slider
+ * <Slider
+ *   defaultValue={[50]}
+ *   max={100}
+ *   step={1}
+ * />
+ *
+ * // With value display (tooltip on hover)
+ * <Slider
+ *   defaultValue={[75]}
+ *   max={100}
+ *   showValue
+ * />
+ *
+ * // Value inside thumb
+ * <Slider
+ *   defaultValue={[50]}
+ *   max={100}
+ *   showValue
+ *   labelPosition="inside"
+ *   thumbShape="rounded-rectangle"
+ * />
+ *
+ * // Custom formatting (percentage)
+ * <Slider
+ *   defaultValue={[0.5]}
+ *   max={1}
+ *   step={0.01}
+ *   showValue
+ *   formatValue={(val) => `${Math.round(val * 100)}%`}
+ * />
+ *
+ * // Discrete labels (skill level)
+ * <Slider
+ *   defaultValue={[2]}
+ *   min={1}
+ *   max={5}
+ *   step={1}
+ *   showValue
+ *   labelPosition="inside"
+ *   thumbShape="rounded-rectangle"
+ *   labels={{
+ *     1: "Novice",
+ *     2: "Beginner",
+ *     3: "Intermediate",
+ *     4: "Advanced",
+ *     5: "Expert"
+ *   }}
+ * />
+ *
+ * // React Hook Form
+ * <FormField
+ *   control={form.control}
+ *   name="volume"
+ *   render={({ field }) => (
+ *     <FormItem>
+ *       <FormLabel>Volume: {field.value}%</FormLabel>
+ *       <FormControl>
+ *         <Slider
+ *           value={[field.value]}
+ *           onValueChange={(vals) => field.onChange(vals[0])}
+ *           max={100}
+ *           step={1}
+ *         />
+ *       </FormControl>
+ *     </FormItem>
+ *   )}
+ * />
+ *
+ * // Disabled state
+ * <Slider defaultValue={[50]} disabled />
+ * ```
+ */
 const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.Root>, SliderProps>(
   (
     {

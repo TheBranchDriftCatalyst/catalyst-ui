@@ -36,13 +36,31 @@ export default defineConfig({
     __LAST_COMMIT__: JSON.stringify(lastCommit),
   },
   plugins: [
-    concatDocsPlugin(),
+    // Only run concatDocsPlugin during build, not in dev mode
+    // This prevents unnecessary HMR triggers from markdown file changes
+    ...(process.env.NODE_ENV === "production" ? [concatDocsPlugin()] : []),
     react(),
     tailwindcss(),
     tsconfigPaths({
       projects: [resolve(__dirname, "tsconfig.json")],
     }),
   ],
+  server: {
+    watch: {
+      // Ignore generated files and annotation syncs to prevent excessive HMR
+      ignored: [
+        "**/annotations.json",
+        "**/docs-combined.md",
+        "**/.tabs.manifest.json",
+        "**/.locale/*.i18n.json", // Ignore i18n translation files - loaded eagerly at startup
+      ],
+      // Stabilize file watching to ignore transient file system events (like atime updates)
+      awaitWriteFinish: {
+        stabilityThreshold: 100,
+        pollInterval: 50,
+      },
+    },
+  },
   optimizeDeps: {
     // shiki is dynamically imported, no need to exclude anymore
   },

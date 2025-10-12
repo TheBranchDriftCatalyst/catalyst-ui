@@ -1,5 +1,15 @@
 /// <reference types="vite/client" />
 
+interface ImportMetaEnv {
+  readonly VITE_CATALYST_DEV_UTILS_ENABLED?: string;
+  readonly DEV: boolean;
+  readonly PROD: boolean;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
+
 // Support for ?raw imports
 declare module "*?raw" {
   const content: string;

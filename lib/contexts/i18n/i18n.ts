@@ -3,6 +3,7 @@ import { initReactI18next } from "react-i18next";
 
 // Dynamically import all co-located translation files from .locale folders
 // Pattern: directory/.locale/ComponentName.en.i18n.json, directory/.locale/ComponentName.es.i18n.json
+// NOTE: Using eager: true but HMR is prevented via Vite watcher exclusions
 const translationModules = import.meta.glob<{ default: Record<string, string> }>(
   [
     "../../../../app/**/.locale/*.*.i18n.json", // app/tabs/.locale/ComponentName.en.i18n.json
@@ -34,10 +35,10 @@ for (const [path, module] of Object.entries(translationModules)) {
 
 // Get initial language using standard i18n detection practices
 // Priority: URL param → localStorage → browser language → default
-const getInitialLanguage = (): string => {
+function getInitialLanguage(availableLangs: string[]): string {
   if (typeof window === "undefined") return "en";
 
-  const supportedLanguages = Object.keys(resources);
+  const supportedLanguages = availableLangs;
 
   // 1. Check URL parameter (highest priority - explicit user action)
   const params = new URLSearchParams(window.location.search);
@@ -70,13 +71,13 @@ const getInitialLanguage = (): string => {
 
   // 4. Default to English
   return "en";
-};
+}
 
 // Only initialize if not already initialized (prevents HMR double-init warning)
 if (!i18n.isInitialized) {
   i18n.use(initReactI18next).init({
     resources,
-    lng: getInitialLanguage(),
+    lng: getInitialLanguage(Object.keys(resources)),
     fallbackLng: "en",
     defaultNS: "common",
     interpolation: {
@@ -94,7 +95,7 @@ if (!i18n.isInitialized) {
 
   // Log loaded namespaces in dev mode
   if (import.meta.env.DEV) {
-    const namespaces = Object.keys(resources.en);
+    const namespaces = resources.en ? Object.keys(resources.en) : [];
     console.log(`[i18n] Loaded ${namespaces.length} namespaces:`, namespaces);
   }
 }
