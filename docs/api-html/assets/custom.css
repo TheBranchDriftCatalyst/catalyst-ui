@@ -1,0 +1,356 @@
+/* Catalyst Core Theme - CSS Variables Only */
+
+.theme-catalyst.light {
+  /**
+   * @tokens Colors
+   * @presenter Color
+   */
+
+  /* Opulent synthwave sunset palette - easier on the eyes */
+
+  /**
+   * @tokens Background Colors
+   * @presenter Color
+   */
+  --background: hsl(
+    30 30% 82%
+  ); /* @token { "name": "Background", "category": "Colors/Background" } */
+  --foreground: hsl(
+    270 50% 12%
+  ); /* @token { "name": "Foreground", "category": "Colors/Background" } */
+
+  /**
+   * @tokens Card Colors
+   * @presenter Color
+   */
+  --card: hsl(330 35% 88%); /* @token { "name": "Card", "category": "Colors/Card" } */
+  --card-foreground: hsl(
+    270 50% 12%
+  ); /* @token { "name": "Card Foreground", "category": "Colors/Card" } */
+
+  /**
+   * @tokens Popover Colors
+   * @presenter Color
+   */
+  --popover: hsl(330 35% 88%); /* @token { "name": "Popover", "category": "Colors/Popover" } */
+  --popover-foreground: hsl(
+    270 50% 12%
+  ); /* @token { "name": "Popover Foreground", "category": "Colors/Popover" } */
+
+  /**
+   * @tokens Primary Colors
+   * @presenter Color
+   */
+  --primary: hsl(180, 70%, 32%); /* @token { "name": "Primary", "category": "Colors/Primary" } */
+  --primary-foreground: hsl(
+    0 0% 100%
+  ); /* @token { "name": "Primary Foreground", "category": "Colors/Primary" } */
+
+  /**
+   * @tokens Secondary Colors
+   * @presenter Color
+   */
+  --secondary: hsl(
+    290,
+    70%,
+    45%
+  ); /* @token { "name": "Secondary", "category": "Colors/Secondary" } */
+  --secondary-foreground: hsl(
+    0 0% 100%
+  ); /* @token { "name": "Secondary Foreground", "category": "Colors/Secondary" } */
+
+  /**
+   * @tokens Muted Colors
+   * @presenter Color
+   */
+  --muted: hsl(30 25% 75%); /* @token { "name": "Muted", "category": "Colors/Muted" } */
+  --muted-foreground: hsl(
+    270 35% 30%
+  ); /* @token { "name": "Muted Foreground", "category": "Colors/Muted" } */
+
+  /**
+   * @tokens Accent Colors
+   * @presenter Color
+   */
+  --accent: hsl(320 50% 82%); /* @token { "name": "Accent", "category": "Colors/Accent" } */
+  --accent-foreground: hsl(
+    270 55% 20%
+  ); /* @token { "name": "Accent Foreground", "category": "Colors/Accent" } */
+
+  /**
+   * @tokens Destructive Colors
+   * @presenter Color
+   */
+  --destructive: hsl(
+    340 75% 50%
+  ); /* @token { "name": "Destructive", "category": "Colors/Destructive" } */
+  --destructive-foreground: hsl(
+    0 0% 100%
+  ); /* @token { "name": "Destructive Foreground", "category": "Colors/Destructive" } */
+
+  /**
+   * @tokens Form Colors
+   * @presenter Color
+   */
+  --border: hsl(320 30% 70%); /* @token { "name": "Border", "category": "Colors/Forms" } */
+  --input: hsl(30 25% 80%); /* @token { "name": "Input", "category": "Colors/Forms" } */
+  --ring: hsl(290, 70%, 45%); /* @token { "name": "Ring", "category": "Colors/Forms" } */
+
+  /**
+   * @tokens Border Radius
+   * @presenter Spacing
+   */
+  --radius: 0.25rem; /* @token { "name": "Base Radius", "category": "Spacing/Radius" } */
+
+  /**
+   * @tokens Typography
+   * @presenter FontFamily
+   */
+  /* Cyberpunk fonts */
+  --font-heading:
+    "Orbitron", "Arial Black", sans-serif; /* @token { "name": "Heading Font", "category": "Typography/Fonts" } */
+  --font-body:
+    "Rajdhani", "Inter", "Arial", sans-serif; /* @token { "name": "Body Font", "category": "Typography/Fonts" } */
+  --font-mono:
+    "Space Mono", "Courier New", monospace; /* @token { "name": "Monospace Font", "category": "Typography/Fonts" } */
+
+  /**
+   * @tokens Neon Colors
+   * @presenter Color
+   */
+  /* Extended opulent palette */
+  --neon-cyan: hsl(180, 85%, 45%); /* @token { "name": "Neon Cyan", "category": "Colors/Neon" } */
+  --neon-pink: hsl(330, 100%, 70%); /* @token { "name": "Neon Pink", "category": "Colors/Neon" } */
+  --neon-purple: hsl(
+    290,
+    80%,
+    55%
+  ); /* @token { "name": "Neon Purple", "category": "Colors/Neon" } */
+  --neon-blue: hsl(200, 100%, 55%); /* @token { "name": "Neon Blue", "category": "Colors/Neon" } */
+  --neon-red: hsl(340, 90%, 60%); /* @token { "name": "Neon Red", "category": "Colors/Neon" } */
+  --neon-yellow: hsl(
+    45,
+    95%,
+    60%
+  ); /* @token { "name": "Neon Yellow", "category": "Colors/Neon" } */
+  --neon-gold: hsl(38, 90%, 55%); /* @token { "name": "Neon Gold", "category": "Colors/Neon" } */
+
+  /**
+   * @tokens Glow Effects
+   * @presenter Shadow
+   */
+  /* Opulent synthwave glows - vibrant even in light */
+  --glow-primary:
+    0 0 20px rgba(0, 180, 180, 0.35), 0 0 40px rgba(0, 180, 180, 0.15); /* @token { "name": "Primary Glow", "category": "Effects/Glow" } */
+  --glow-secondary:
+    0 0 20px rgba(192, 38, 211, 0.4), 0 0 40px rgba(192, 38, 211, 0.2); /* @token { "name": "Secondary Glow", "category": "Effects/Glow" } */
+  --glow-accent: 0 0 15px rgba(255, 110, 199, 0.3); /* @token { "name": "Accent Glow", "category": "Effects/Glow" } */
+  --glow-hover:
+    0 0 25px rgba(192, 38, 211, 0.5), 0 0 50px rgba(192, 38, 211, 0.25); /* @token { "name": "Hover Glow", "category": "Effects/Glow" } */
+
+  /**
+   * @tokens Neon Shadows
+   * @presenter Shadow
+   */
+  /* Luxurious shadows with color */
+  --shadow-neon-sm:
+    0 2px 8px rgba(192, 38, 211, 0.15), 0 4px 16px rgba(0, 180, 180, 0.1); /* @token { "name": "Small Neon Shadow", "category": "Effects/Shadows" } */
+  --shadow-neon-md:
+    0 4px 16px rgba(192, 38, 211, 0.2), 0 8px 32px rgba(0, 180, 180, 0.12); /* @token { "name": "Medium Neon Shadow", "category": "Effects/Shadows" } */
+  --shadow-neon-lg:
+    0 8px 24px rgba(192, 38, 211, 0.25), 0 16px 48px rgba(0, 180, 180, 0.15); /* @token { "name": "Large Neon Shadow", "category": "Effects/Shadows" } */
+}
+
+.theme-catalyst.dark {
+  /**
+   * @tokens Dark Mode Colors
+   * @presenter Color
+   */
+
+  /* Cyberpunk color palette - sleek and professional */
+
+  /**
+   * @tokens Dark Background Colors
+   * @presenter Color
+   */
+  --background: #0a0a0f; /* @token { "name": "Dark Background", "category": "Dark/Colors/Background" } */
+  --foreground: #e4e4e7; /* @token { "name": "Dark Foreground", "category": "Dark/Colors/Background" } */
+
+  /**
+   * @tokens Dark Card Colors
+   * @presenter Color
+   */
+  --card: #16161d; /* @token { "name": "Dark Card", "category": "Dark/Colors/Card" } */
+  --card-foreground: #e4e4e7; /* @token { "name": "Dark Card Foreground", "category": "Dark/Colors/Card" } */
+
+  /**
+   * @tokens Dark Popover Colors
+   * @presenter Color
+   */
+  --popover: #0a0a0f; /* @token { "name": "Dark Popover", "category": "Dark/Colors/Popover" } */
+  --popover-foreground: #e4e4e7; /* @token { "name": "Dark Popover Foreground", "category": "Dark/Colors/Popover" } */
+
+  /**
+   * @tokens Dark Primary Colors
+   * @presenter Color
+   */
+  --primary: #00fcd6; /* @token { "name": "Dark Primary", "category": "Dark/Colors/Primary" } */
+  --primary-foreground: #0a0a0f; /* @token { "name": "Dark Primary Foreground", "category": "Dark/Colors/Primary" } */
+
+  /**
+   * @tokens Dark Secondary Colors
+   * @presenter Color
+   */
+  --secondary: #c026d3; /* @token { "name": "Dark Secondary", "category": "Dark/Colors/Secondary" } */
+  --secondary-foreground: #fafafa; /* @token { "name": "Dark Secondary Foreground", "category": "Dark/Colors/Secondary" } */
+
+  /**
+   * @tokens Dark Muted Colors
+   * @presenter Color
+   */
+  --muted: #27272a; /* @token { "name": "Dark Muted", "category": "Dark/Colors/Muted" } */
+  --muted-foreground: #a1a1aa; /* @token { "name": "Dark Muted Foreground", "category": "Dark/Colors/Muted" } */
+
+  /**
+   * @tokens Dark Accent Colors
+   * @presenter Color
+   */
+  --accent: #1e1e24; /* @token { "name": "Dark Accent", "category": "Dark/Colors/Accent" } */
+  --accent-foreground: #fafafa; /* @token { "name": "Dark Accent Foreground", "category": "Dark/Colors/Accent" } */
+
+  /**
+   * @tokens Dark Destructive Colors
+   * @presenter Color
+   */
+  --destructive: #ff2975; /* @token { "name": "Dark Destructive", "category": "Dark/Colors/Destructive" } */
+  --destructive-foreground: #fafafa; /* @token { "name": "Dark Destructive Foreground", "category": "Dark/Colors/Destructive" } */
+
+  /**
+   * @tokens Dark Form Colors
+   * @presenter Color
+   */
+  --border: #27272a; /* @token { "name": "Dark Border", "category": "Dark/Colors/Forms" } */
+  --input: #1e1e24; /* @token { "name": "Dark Input", "category": "Dark/Colors/Forms" } */
+  --ring: #00fcd6; /* @token { "name": "Dark Ring", "category": "Dark/Colors/Forms" } */
+
+  /**
+   * @tokens Dark Neon Colors
+   * @presenter Color
+   */
+  /* Extended cyberpunk palette */
+  --neon-cyan: #00fcd6; /* @token { "name": "Dark Neon Cyan", "category": "Dark/Colors/Neon" } */
+  --neon-pink: #ff6ec7; /* @token { "name": "Dark Neon Pink", "category": "Dark/Colors/Neon" } */
+  --neon-purple: #c026d3; /* @token { "name": "Dark Neon Purple", "category": "Dark/Colors/Neon" } */
+  --neon-blue: #00d4ff; /* @token { "name": "Dark Neon Blue", "category": "Dark/Colors/Neon" } */
+  --neon-red: #ff2975; /* @token { "name": "Dark Neon Red", "category": "Dark/Colors/Neon" } */
+  --neon-yellow: #fbbf24; /* @token { "name": "Dark Neon Yellow", "category": "Dark/Colors/Neon" } */
+
+  /**
+   * @tokens Dark Glow Effects
+   * @presenter Shadow
+   */
+  /* Professional cyberpunk glow effects - subtle but noticeable */
+  --glow-primary:
+    0 0 15px rgba(0, 252, 214, 0.4), 0 0 30px rgba(0, 252, 214, 0.2); /* @token { "name": "Dark Primary Glow", "category": "Dark/Effects/Glow" } */
+  --glow-secondary:
+    0 0 15px rgba(192, 38, 211, 0.35), 0 0 30px rgba(192, 38, 211, 0.15); /* @token { "name": "Dark Secondary Glow", "category": "Dark/Effects/Glow" } */
+  --glow-accent: 0 0 10px rgba(0, 252, 214, 0.25); /* @token { "name": "Dark Accent Glow", "category": "Dark/Effects/Glow" } */
+  --glow-hover:
+    0 0 20px rgba(0, 252, 214, 0.5), 0 0 40px rgba(0, 252, 214, 0.25); /* @token { "name": "Dark Hover Glow", "category": "Dark/Effects/Glow" } */
+
+  /**
+   * @tokens Dark Neon Shadows
+   * @presenter Shadow
+   */
+  /* Neon shadows for depth */
+  --shadow-neon-sm:
+    0 2px 10px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 252, 214, 0.15); /* @token { "name": "Dark Small Neon Shadow", "category": "Dark/Effects/Shadows" } */
+  --shadow-neon-md:
+    0 4px 20px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 252, 214, 0.2), 0 0 40px rgba(192, 38, 211, 0.1); /* @token { "name": "Dark Medium Neon Shadow", "category": "Dark/Effects/Shadows" } */
+  --shadow-neon-lg:
+    0 8px 30px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 252, 214, 0.3),
+    0 0 60px rgba(192, 38, 211, 0.15); /* @token { "name": "Dark Large Neon Shadow", "category": "Dark/Effects/Shadows" } */
+
+  /**
+   * @tokens Dark Effects
+   * @presenter Opacity
+   */
+  /* Scanline subtlety */
+  --scanline-opacity: 0.02; /* @token { "name": "Scanline Opacity", "category": "Dark/Effects/Scanline" } */
+  --scanline-color: rgba(
+    0,
+    252,
+    214,
+    var(--scanline-opacity)
+  ); /* @token { "name": "Scanline Color", "category": "Dark/Effects/Scanline" } */
+
+  /**
+   * @tokens Dark Grid
+   * @presenter Opacity
+   */
+  /* Grid pattern */
+  --grid-opacity: 0.04; /* @token { "name": "Grid Opacity", "category": "Dark/Effects/Grid" } */
+  --grid-color: rgba(
+    0,
+    252,
+    214,
+    var(--grid-opacity)
+  ); /* @token { "name": "Grid Color", "category": "Dark/Effects/Grid" } */
+
+  /**
+   * @tokens Typography
+   * @presenter FontFamily
+   */
+  /* Cyberpunk fonts */
+  --font-heading:
+    "Orbitron", "Arial Black", sans-serif; /* @token { "name": "Heading Font", "category": "Typography/Fonts" } */
+  --font-body:
+    "Rajdhani", "Inter", "Arial", sans-serif; /* @token { "name": "Body Font", "category": "Typography/Fonts" } */
+  --font-mono:
+    "Space Mono", "Courier New", monospace; /* @token { "name": "Monospace Font", "category": "Typography/Fonts" } */
+}
+
+/* Catalyst-specific gradient heading styles */
+/* Light mode headings - gradient text (no animation by default) */
+.theme-catalyst.light h1,
+.theme-catalyst.light h2,
+.theme-catalyst.light h3,
+.theme-catalyst.light h4,
+.theme-catalyst.light h5,
+.theme-catalyst.light h6 {
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--neon-purple), var(--neon-gold), var(--neon-purple));
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+  position: relative;
+  filter: drop-shadow(var(--glow-secondary));
+}
+
+/* Dark mode headings - gradient text (no animation by default) */
+.theme-catalyst.dark h1,
+.theme-catalyst.dark h2,
+.theme-catalyst.dark h3,
+.theme-catalyst.dark h4,
+.theme-catalyst.dark h5,
+.theme-catalyst.dark h6 {
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    var(--neon-cyan) 0%,
+    var(--neon-purple) 50%,
+    var(--neon-cyan) 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(var(--glow-primary));
+}
