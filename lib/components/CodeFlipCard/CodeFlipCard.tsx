@@ -11,43 +11,175 @@ import { CardProvider } from "@/catalyst-ui/contexts/Card";
 import { CardWithContext } from "@/catalyst-ui/components/Card";
 import { AnimatedFlip } from "@/catalyst-ui/effects";
 
+/**
+ * Props for the CodeFlipCard component
+ *
+ * Extends CodeBlockProps but omits `code` and `language` since they're provided differently
+ *
+ * @interface CodeFlipCardProps
+ */
 export interface CodeFlipCardProps extends Omit<CodeBlockProps, "code" | "language"> {
-  /** The rendered component to display on the front */
+  /** The rendered component to display on the front face of the card */
   children: React.ReactNode;
-  /** Raw source code string (use ?raw import) */
+
+  /**
+   * Raw source code string to display on the back face
+   *
+   * Use Vite's `?raw` import to load source files:
+   * @example
+   * ```tsx
+   * import sourceCode from './MyComponent.tsx?raw';
+   * <CodeFlipCard sourceCode={sourceCode}>
+   *   <MyComponent />
+   * </CodeFlipCard>
+   * ```
+   */
   sourceCode: string;
-  /** Programming language for syntax highlighting */
+
+  /** Programming language for syntax highlighting (default: "tsx") */
   language?: string;
-  /** File name to display in CodeBlock header */
+
+  /** File name to display in the CodeBlock header */
   fileName?: string;
 
   // Line range options
-  /** Extract specific line range from source code */
+  /**
+   * Extract specific line range from source code
+   *
+   * Can be a tuple [start, end] or an object with start/end properties
+   *
+   * @example
+   * ```tsx
+   * // Tuple format
+   * <CodeFlipCard lineRange={[10, 25]} sourceCode={code}>
+   *
+   * // Object format
+   * <CodeFlipCard lineRange={{ start: 10, end: 25 }} sourceCode={code}>
+   * ```
+   */
   lineRange?: LineRangeTuple | LineRange;
 
   // Code transformations
-  /** Remove import statements from source */
+  /** Remove import statements from source code display */
   stripImports?: boolean;
-  /** Remove comments from source */
+
+  /** Remove comments from source code display */
   stripComments?: boolean;
-  /** Extract only a specific function/component */
+
+  /**
+   * Extract only a specific function or component from the source code
+   *
+   * @example
+   * ```tsx
+   * <CodeFlipCard extractFunction="MyButton" sourceCode={code}>
+   * ```
+   */
   extractFunction?: string;
 
   // Flip animation configuration
-  /** How to trigger the flip animation */
+  /**
+   * How to trigger the flip animation
+   *
+   * - "click": User must click the code icon button to flip
+   * - "hover": Flips when hovering over the card (not recommended for mobile)
+   *
+   * @default "click"
+   */
   flipTrigger?: "click" | "hover";
-  /** Direction of flip animation */
+
+  /**
+   * Direction of flip animation
+   *
+   * - "horizontal": Flips left-to-right (Y-axis rotation)
+   * - "vertical": Flips top-to-bottom (X-axis rotation)
+   *
+   * @default "horizontal"
+   */
   flipDirection?: "horizontal" | "vertical";
-  /** Animation duration in milliseconds */
+
+  /**
+   * Animation duration in milliseconds
+   *
+   * @default 600
+   */
   flipDuration?: number;
 
   // Container customization
   /** Additional class names for the flip card container */
   className?: string;
-  /** Minimum height for the card container */
+
+  /**
+   * Minimum height for the card container
+   *
+   * Can be a number (pixels) or a CSS string value
+   *
+   * @default 400
+   */
   minHeight?: number | string;
 }
 
+/**
+ * CodeFlipCard - Interactive component showcase with flippable source code view
+ *
+ * A specialized card component that displays a rendered React component on the front
+ * and its source code on the back, with a smooth 3D flip animation. Perfect for
+ * component libraries, documentation, and interactive demos.
+ *
+ * Uses the AnimatedFlip HOC for the flip animation and integrates with the CodeBlock
+ * component for syntax-highlighted code display.
+ *
+ * Features:
+ * - Front: Rendered component with optional flip trigger button
+ * - Back: Syntax-highlighted source code with CodeBlock
+ * - Auto-unflip when mouse leaves (500ms delay)
+ * - Code transformations: strip imports, comments, extract functions
+ * - Line range extraction with automatic line number adjustment
+ * - Click or hover trigger modes
+ * - Horizontal or vertical flip directions
+ *
+ * @param props - Component props
+ * @param ref - Forwarded ref to the container div
+ * @returns Rendered flip card component
+ *
+ * @example
+ * Basic usage:
+ * ```tsx
+ * import sourceCode from './MyButton.tsx?raw';
+ *
+ * <CodeFlipCard sourceCode={sourceCode} fileName="MyButton.tsx">
+ *   <MyButton>Click me</MyButton>
+ * </CodeFlipCard>
+ * ```
+ *
+ * @example
+ * With code transformations:
+ * ```tsx
+ * <CodeFlipCard
+ *   sourceCode={sourceCode}
+ *   fileName="MyComponent.tsx"
+ *   stripImports={true}
+ *   stripComments={true}
+ *   extractFunction="MyComponent"
+ *   lineRange={[10, 30]}
+ * >
+ *   <MyComponent />
+ * </CodeFlipCard>
+ * ```
+ *
+ * @example
+ * Custom animation:
+ * ```tsx
+ * <CodeFlipCard
+ *   sourceCode={sourceCode}
+ *   flipTrigger="hover"
+ *   flipDirection="vertical"
+ *   flipDuration={800}
+ *   minHeight={500}
+ * >
+ *   <MyComponent />
+ * </CodeFlipCard>
+ * ```
+ */
 export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
   (
     {

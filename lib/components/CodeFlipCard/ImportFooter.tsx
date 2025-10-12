@@ -3,24 +3,117 @@ import { Copy, Check } from "lucide-react";
 import { useState } from "react";
 import { getMainImport } from "./utils";
 
+/**
+ * Props for the ImportFooter component
+ *
+ * @interface ImportFooterProps
+ */
 interface ImportFooterProps {
-  /** The component or components to import, e.g., "Button" or "Button, Input" */
+  /**
+   * The component or components to import (manual mode)
+   *
+   * @example
+   * ```tsx
+   * imports="Button" // Single import
+   * imports="Button, Input, Card" // Multiple imports
+   * ```
+   */
   imports?: string;
-  /** The import path, e.g., "@/catalyst-ui/ui/button" */
+
+  /**
+   * The import path (manual mode)
+   *
+   * @example
+   * ```tsx
+   * from="@/catalyst-ui/ui/button"
+   * ```
+   */
   from?: string;
-  /** Raw source code to automatically extract imports from */
+
+  /**
+   * Raw source code to automatically extract imports from (automatic mode)
+   *
+   * When provided, the component will parse the source code and extract
+   * the main import statement matching the filter criteria
+   *
+   * @example
+   * ```tsx
+   * import sourceCode from './MyComponent.tsx?raw';
+   * <ImportFooter sourceCode={sourceCode} />
+   * ```
+   */
   sourceCode?: string;
-  /** Filter to only show imports from specific paths (default: "@/catalyst-ui") */
+
+  /**
+   * Filter to only show imports from specific paths (automatic mode)
+   *
+   * Only import statements that include this string in their path will be displayed
+   *
+   * @default "@/catalyst-ui"
+   *
+   * @example
+   * ```tsx
+   * <ImportFooter sourceCode={code} filter="@/catalyst-ui/ui" />
+   * // Only shows: import { Button } from "@/catalyst-ui/ui/button"
+   * // Ignores: import React from "react"
+   * ```
+   */
   filter?: string;
 }
 
 /**
- * Reusable footer component that displays import statements
- * Used across all demo sections to show how to import components
+ * ImportFooter - Interactive footer displaying import statements with copy functionality
+ *
+ * A reusable footer component that displays import statements with one-click copying.
+ * Used across component demos to show developers how to import and use components.
  *
  * Supports two modes:
- * 1. Manual: Pass `imports` and `from` props
- * 2. Automatic: Pass `sourceCode` to auto-extract imports
+ * 1. **Manual Mode**: Explicitly provide `imports` and `from` props
+ * 2. **Automatic Mode**: Pass `sourceCode` to auto-extract imports (recommended)
+ *
+ * Features:
+ * - One-click copy to clipboard
+ * - Visual feedback on copy (checkmark animation)
+ * - Hover effects with smooth transitions
+ * - Automatic import extraction from source code
+ * - Configurable path filtering
+ *
+ * @param props - Component props
+ * @returns Rendered footer with import statement, or null if no valid imports
+ *
+ * @example
+ * Manual mode:
+ * ```tsx
+ * <Card>
+ *   <CardContent>...</CardContent>
+ *   <ImportFooter
+ *     imports="Button, Input"
+ *     from="@/catalyst-ui/ui/button"
+ *   />
+ * </Card>
+ * ```
+ *
+ * @example
+ * Automatic mode (recommended):
+ * ```tsx
+ * import sourceCode from './MyComponent.tsx?raw';
+ *
+ * <Card>
+ *   <CardContent>...</CardContent>
+ *   <ImportFooter sourceCode={sourceCode} />
+ * </Card>
+ * // Automatically extracts: import { Button } from "@/catalyst-ui/ui/button";
+ * ```
+ *
+ * @example
+ * Custom filter:
+ * ```tsx
+ * <ImportFooter
+ *   sourceCode={sourceCode}
+ *   filter="@/catalyst-ui/effects"
+ * />
+ * // Only shows imports from the effects directory
+ * ```
  */
 export function ImportFooter({
   imports,
