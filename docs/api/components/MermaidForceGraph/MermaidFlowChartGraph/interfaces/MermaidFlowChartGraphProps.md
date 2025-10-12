@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../README.md)
 
 ---
 
@@ -35,7 +35,7 @@ Raw Mermaid flowchart text
 
 ### configuratorOptions?
 
-> `optional` **configuratorOptions**: [`ConfiguratorOptions`](../../../../utils/mermaid/flowchartToGraphConfig/interfaces/ConfiguratorOptions.md)
+> `optional` **configuratorOptions**: [`ConfiguratorOptions`](../../../../mermaid/flowchartToGraphConfig/interfaces/ConfiguratorOptions.md)
 
 Defined in: [workspace/catalyst-ui/lib/components/MermaidForceGraph/MermaidFlowChartGraph.tsx:25](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/MermaidForceGraph/MermaidFlowChartGraph.tsx#L25)
 
@@ -45,7 +45,7 @@ Configurator options for customization
 
 ### forceGraphProps?
 
-> `optional` **forceGraphProps**: `Partial`\<`Omit`\<[`ForceGraphProps`](../../../ForceGraph/types/interfaces/ForceGraphProps.md), `"data"` \| `"config"`\>\>
+> `optional` **forceGraphProps**: `Partial`\<`Omit`\<[`ForceGraphProps`](../../../../ForceGraph/types/interfaces/ForceGraphProps.md), `"data"` \| `"config"`\>\>
 
 Defined in: [workspace/catalyst-ui/lib/components/MermaidForceGraph/MermaidFlowChartGraph.tsx:28](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/MermaidForceGraph/MermaidFlowChartGraph.tsx#L28)
 

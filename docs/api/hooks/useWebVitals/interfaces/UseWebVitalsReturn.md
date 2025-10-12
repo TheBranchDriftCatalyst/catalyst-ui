@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../README.md)
 
 ---
 
@@ -6,7 +6,9 @@
 
 # Interface: UseWebVitalsReturn
 
-Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:20](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L20)
+Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:44](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L44)
+
+UseWebVitalsReturn - Return value from the useWebVitals hook
 
 ## Properties
 
@@ -14,7 +16,9 @@ Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:20](https://github.
 
 > **metrics**: `Map`\<`string`, [`WebVitalMetric`](WebVitalMetric.md)\>
 
-Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:21](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L21)
+Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:45](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L45)
+
+Map of all collected metrics, keyed by metric name
 
 ---
 
@@ -22,7 +26,9 @@ Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:21](https://github.
 
 > **latestMetric**: `null` \| [`WebVitalMetric`](WebVitalMetric.md)
 
-Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:22](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L22)
+Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:46](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L46)
+
+Most recently collected metric (null if none yet)
 
 ---
 
@@ -30,7 +36,9 @@ Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:22](https://github.
 
 > **aggregateRating**: `"good"` \| `"needs-improvement"` \| `"poor"`
 
-Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:23](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L23)
+Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:47](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L47)
+
+Overall performance rating (worst metric wins)
 
 ---
 
@@ -38,7 +46,9 @@ Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:23](https://github.
 
 > **clear**: () => `void`
 
-Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:24](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L24)
+Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:48](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L48)
+
+Function to reset all collected metrics
 
 #### Returns
 

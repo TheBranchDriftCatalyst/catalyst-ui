@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../README.md)
 
 ---
 
@@ -6,7 +6,24 @@
 
 # Interface: ThemeContextType
 
-Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:27](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L27)
+Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:114](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L114)
+
+Theme context shape for catalyst-ui theming system
+
+## Remarks
+
+Provides complete control over visual theming including:
+
+- Theme selection (catalyst, dracula, nord, etc.)
+- Variant (light/dark mode)
+- Visual effects (glow, scanlines, borders, gradients)
+- LocalStorage persistence for all settings
+
+Theme state is persisted to localStorage:
+
+- `theme:name` - Current theme name
+- `theme:variant` - Current variant (light/dark)
+- `theme:effects` - Effect toggles
 
 ## Properties
 
@@ -14,7 +31,9 @@ Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:27](https
 
 > **theme**: `string`
 
-Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:28](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L28)
+Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:118](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L118)
+
+Current theme name (e.g., "catalyst", "dracula", "nord")
 
 ---
 
@@ -22,13 +41,17 @@ Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:28](https
 
 > **setTheme**: (`theme`) => `void`
 
-Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:29](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L29)
+Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:124](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L124)
+
+Change the active theme
 
 #### Parameters
 
 ##### theme
 
 `string`
+
+Theme name from THEMES array
 
 #### Returns
 
@@ -40,7 +63,9 @@ Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:29](https
 
 > **variant**: [`ThemeVariant`](../type-aliases/ThemeVariant.md)
 
-Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:30](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L30)
+Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:129](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L129)
+
+Current theme variant (light or dark)
 
 ---
 
@@ -48,13 +73,17 @@ Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:30](https
 
 > **setVariant**: (`variant`) => `void`
 
-Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:31](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L31)
+Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:135](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L135)
+
+Change the theme variant
 
 #### Parameters
 
 ##### variant
 
 [`ThemeVariant`](../type-aliases/ThemeVariant.md)
+
+"light" or "dark"
 
 #### Returns
 
@@ -66,7 +95,9 @@ Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:31](https
 
 > **effects**: [`ThemeEffects`](ThemeEffects.md)
 
-Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:32](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L32)
+Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:140](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L140)
+
+Current visual effects configuration
 
 ---
 
@@ -74,13 +105,17 @@ Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:32](https
 
 > **setEffects**: (`effects`) => `void`
 
-Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:33](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L33)
+Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:146](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L146)
+
+Replace all effect settings
 
 #### Parameters
 
 ##### effects
 
 [`ThemeEffects`](ThemeEffects.md)
+
+Complete ThemeEffects object
 
 #### Returns
 
@@ -92,7 +127,9 @@ Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:33](https
 
 > **updateEffect**: (`key`, `value`) => `void`
 
-Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:34](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L34)
+Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:153](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L153)
+
+Update a single effect setting
 
 #### Parameters
 
@@ -100,9 +137,13 @@ Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:34](https
 
 keyof [`ThemeEffects`](ThemeEffects.md)
 
+Effect name to update
+
 ##### value
 
 `boolean`
+
+New boolean value
 
 #### Returns
 
@@ -114,4 +155,6 @@ keyof [`ThemeEffects`](ThemeEffects.md)
 
 > **allThemes**: (`null` \| `string`)[]
 
-Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:35](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L35)
+Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:158](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L158)
+
+List of all available theme names

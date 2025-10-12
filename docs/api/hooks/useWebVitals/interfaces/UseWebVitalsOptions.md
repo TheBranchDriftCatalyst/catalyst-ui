@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../README.md)
 
 ---
 
@@ -6,7 +6,9 @@
 
 # Interface: UseWebVitalsOptions
 
-Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:14](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L14)
+Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:30](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L30)
+
+UseWebVitalsOptions - Configuration for the useWebVitals hook
 
 ## Properties
 
@@ -14,7 +16,9 @@ Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:14](https://github.
 
 > `optional` **enableConsoleLog**: `boolean`
 
-Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:15](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L15)
+Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:31](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L31)
+
+Log metrics to console (default: false)
 
 ---
 
@@ -22,7 +26,9 @@ Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:15](https://github.
 
 > `optional` **enableDetailedLog**: `boolean`
 
-Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:16](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L16)
+Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:32](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L32)
+
+Show detailed metric breakdown in logs (default: false)
 
 ---
 
@@ -30,7 +36,9 @@ Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:16](https://github.
 
 > `optional` **onMetric**: (`metric`) => `void`
 
-Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:17](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L17)
+Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:33](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L33)
+
+Callback invoked when each metric is collected
 
 #### Parameters
 

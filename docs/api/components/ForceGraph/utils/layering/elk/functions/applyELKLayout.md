@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../../../README.md)
 
 ---
 
@@ -6,7 +6,7 @@
 
 # Function: applyELKLayout()
 
-> **applyELKLayout**(`nodes`, `edges`, `dimensions`, `options`): `Promise`\<[`NodeData`](../../../../types/interfaces/NodeData.md)[]\>
+> **applyELKLayout**(`nodes`, `edges`, `dimensions`, `options`): `Promise`\<[`NodeData`](../../../../../../ForceGraph/types/interfaces/NodeData.md)[]\>
 
 Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/utils/layering/elk.ts:114](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/ForceGraph/utils/layering/elk.ts#L114)
 
@@ -17,15 +17,15 @@ Returns nodes with fixed positions (static layout)
 
 ### nodes
 
-[`NodeData`](../../../../types/interfaces/NodeData.md)[]
+[`NodeData`](../../../../../../ForceGraph/types/interfaces/NodeData.md)[]
 
 ### edges
 
-[`EdgeData`](../../../../types/interfaces/EdgeData.md)[]
+[`EdgeData`](../../../../../../ForceGraph/types/interfaces/EdgeData.md)[]
 
 ### dimensions
 
-[`LayoutDimensions`](../../../layouts/interfaces/LayoutDimensions.md)
+[`LayoutDimensions`](../../../../../../ForceGraph/utils/layouts/interfaces/LayoutDimensions.md)
 
 ### options
 
@@ -33,4 +33,4 @@ Returns nodes with fixed positions (static layout)
 
 ## Returns
 
-`Promise`\<[`NodeData`](../../../../types/interfaces/NodeData.md)[]\>
+`Promise`\<[`NodeData`](../../../../../../ForceGraph/types/interfaces/NodeData.md)[]\>

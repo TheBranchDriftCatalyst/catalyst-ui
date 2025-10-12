@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../README.md)
 
 ---
 
@@ -8,7 +8,16 @@
 
 > `const` **Form**: \<`TFieldValues`, `TContext`, `TTransformedValues`\>(`props`) => `Element` = `FormProvider`
 
-Defined in: [workspace/catalyst-ui/lib/ui/form.tsx:16](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/ui/form.tsx#L16)
+Defined in: [workspace/catalyst-ui/lib/ui/form.tsx:65](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/ui/form.tsx#L65)
+
+Form - Root form component for React Hook Form integration
+
+A re-export of React Hook Form's FormProvider that enables form context
+throughout the component tree. Use this as the root wrapper for all forms.
+
+**React Hook Form Integration:**
+Pass the form methods from `useForm()` hook to this component to provide
+context to all form fields, validation, and error handling.
 
 A provider component that propagates the `useForm` methods to all children components via [React Context](https://reactjs.org/docs/context.html) API. To be used with useFormContext.
 
@@ -62,5 +71,45 @@ function App() {
 function NestedInput() {
   const { register } = useFormContext(); // retrieve all hook methods
   return <input {...register("test")} />;
+}
+```
+
+## Example
+
+```tsx
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const formSchema = z.object({
+  username: z.string().min(2, "Username must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+});
+
+function MyForm() {
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: { username: "", email: "" },
+  });
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Username</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </form>
+    </Form>
+  );
 }
 ```

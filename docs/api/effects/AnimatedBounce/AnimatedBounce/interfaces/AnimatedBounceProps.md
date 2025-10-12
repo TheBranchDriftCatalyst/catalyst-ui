@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../README.md)
 
 ---
 
@@ -6,7 +6,9 @@
 
 # Interface: AnimatedBounceProps
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedBounce/AnimatedBounce.tsx:9](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedBounce/AnimatedBounce.tsx#L9)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedBounce/AnimatedBounce.tsx:20](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedBounce/AnimatedBounce.tsx#L20)
+
+Props for AnimatedBounce component
 
 ## Extends
 
@@ -18,9 +20,9 @@ Defined in: [workspace/catalyst-ui/lib/effects/AnimatedBounce/AnimatedBounce.tsx
 
 > **children**: `ReactNode`
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedBounce/AnimatedBounce.tsx:11](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedBounce/AnimatedBounce.tsx#L11)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedBounce/AnimatedBounce.tsx:22](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedBounce/AnimatedBounce.tsx#L22)
 
-Content to animate
+Content to animate (any React nodes)
 
 #### Overrides
 
@@ -32,9 +34,9 @@ Content to animate
 
 > `optional` **trigger**: [`AnimationTrigger`](../../../types/type-aliases/AnimationTrigger.md)
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedBounce/AnimatedBounce.tsx:13](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedBounce/AnimatedBounce.tsx#L13)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedBounce/AnimatedBounce.tsx:24](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedBounce/AnimatedBounce.tsx#L24)
 
-How to trigger the bounce animation
+How to trigger the bounce animation (default: "hover")
 
 ---
 
@@ -42,9 +44,9 @@ How to trigger the bounce animation
 
 > `optional` **duration**: `number`
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedBounce/AnimatedBounce.tsx:15](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedBounce/AnimatedBounce.tsx#L15)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedBounce/AnimatedBounce.tsx:26](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedBounce/AnimatedBounce.tsx#L26)
 
-Animation duration in milliseconds
+Animation duration in milliseconds (default: 500)
 
 ---
 
@@ -52,9 +54,9 @@ Animation duration in milliseconds
 
 > `optional` **intensity**: `number`
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedBounce/AnimatedBounce.tsx:17](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedBounce/AnimatedBounce.tsx#L17)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedBounce/AnimatedBounce.tsx:28](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedBounce/AnimatedBounce.tsx#L28)
 
-Bounce intensity (scale multiplier)
+Bounce intensity as scale multiplier (default: 1.1)
 
 ---
 
@@ -62,9 +64,9 @@ Bounce intensity (scale multiplier)
 
 > `optional` **className**: `string`
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedBounce/AnimatedBounce.tsx:19](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedBounce/AnimatedBounce.tsx#L19)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedBounce/AnimatedBounce.tsx:30](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedBounce/AnimatedBounce.tsx#L30)
 
-Additional class names for the container
+Additional CSS classes for the container
 
 #### Overrides
 
@@ -76,9 +78,9 @@ Additional class names for the container
 
 > `optional` **isBouncing**: `boolean`
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedBounce/AnimatedBounce.tsx:21](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedBounce/AnimatedBounce.tsx#L21)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedBounce/AnimatedBounce.tsx:32](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedBounce/AnimatedBounce.tsx#L32)
 
-Controlled bounce state
+Controlled bounce state (makes component controlled)
 
 ---
 
@@ -86,9 +88,9 @@ Controlled bounce state
 
 > `optional` **onBounceChange**: (`isBouncing`) => `void`
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedBounce/AnimatedBounce.tsx:23](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedBounce/AnimatedBounce.tsx#L23)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedBounce/AnimatedBounce.tsx:34](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedBounce/AnimatedBounce.tsx#L34)
 
-Callback when bounce state should change
+Callback fired when bounce state changes
 
 #### Parameters
 

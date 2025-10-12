@@ -1,10 +1,14 @@
-[**Catalyst UI API Documentation v1.3.0**](../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../README.md)
 
 ---
 
 [Catalyst UI API Documentation](../README.md) / catalyst
 
 # catalyst
+
+## Variables
+
+- [AnimatedSlide](variables/AnimatedSlide.md)
 
 ## Functions
 
@@ -120,6 +124,12 @@ Re-exports [ThemeProvider](../contexts/Theme/ThemeProvider/functions/ThemeProvid
 
 ---
 
+### I18nProvider
+
+Re-exports [I18nProvider](../contexts/i18n/I18nProvider/functions/I18nProvider.md)
+
+---
+
 ### AnimatedBounce
 
 Re-exports [AnimatedBounce](../effects/AnimatedBounce/AnimatedBounce/variables/AnimatedBounce.md)
@@ -153,12 +163,6 @@ Re-exports [AnimatedFlip](../effects/AnimatedFlip/AnimatedFlip/variables/Animate
 ### AnimatedFlipProps
 
 Re-exports [AnimatedFlipProps](../effects/AnimatedFlip/AnimatedFlip/interfaces/AnimatedFlipProps.md)
-
----
-
-### AnimatedSlide
-
-Re-exports [AnimatedSlide](../effects/AnimatedSlide/AnimatedSlide/variables/AnimatedSlide.md)
 
 ---
 
@@ -836,7 +840,7 @@ Re-exports [navigationMenuTriggerStyle](../ui/navigation-menu/variables/navigati
 
 ### Progress
 
-Re-exports [Progress](../ui/progress/variables/Progress.md)
+Re-exports [Progress](../progress/variables/Progress.md)
 
 ---
 
@@ -1028,61 +1032,61 @@ Re-exports [TabsContent](../ui/tabs/variables/TabsContent.md)
 
 ### Toast
 
-Re-exports [Toast](../ui/toast/variables/Toast.md)
+Re-exports [Toast](../toast/variables/Toast.md)
 
 ---
 
 ### ToastAction
 
-Re-exports [ToastAction](../ui/toast/variables/ToastAction.md)
+Re-exports [ToastAction](../toast/variables/ToastAction.md)
 
 ---
 
 ### ToastClose
 
-Re-exports [ToastClose](../ui/toast/variables/ToastClose.md)
+Re-exports [ToastClose](../toast/variables/ToastClose.md)
 
 ---
 
 ### ToastDescription
 
-Re-exports [ToastDescription](../ui/toast/variables/ToastDescription.md)
+Re-exports [ToastDescription](../toast/variables/ToastDescription.md)
 
 ---
 
 ### ToastProvider
 
-Re-exports [ToastProvider](../ui/toast/variables/ToastProvider.md)
+Re-exports [ToastProvider](../toast/variables/ToastProvider.md)
 
 ---
 
 ### ToastTitle
 
-Re-exports [ToastTitle](../ui/toast/variables/ToastTitle.md)
+Re-exports [ToastTitle](../toast/variables/ToastTitle.md)
 
 ---
 
 ### ToastViewport
 
-Re-exports [ToastViewport](../ui/toast/variables/ToastViewport.md)
+Re-exports [ToastViewport](../toast/variables/ToastViewport.md)
 
 ---
 
 ### ToastActionElement
 
-Re-exports [ToastActionElement](../ui/toast/type-aliases/ToastActionElement.md)
+Re-exports [ToastActionElement](../toast/type-aliases/ToastActionElement.md)
 
 ---
 
 ### ToastProps
 
-Re-exports [ToastProps](../ui/toast/type-aliases/ToastProps.md)
+Re-exports [ToastProps](../toast/type-aliases/ToastProps.md)
 
 ---
 
 ### Toaster
 
-Re-exports [Toaster](../ui/toaster/functions/Toaster.md)
+Re-exports [Toaster](../toaster/functions/Toaster.md)
 
 ---
 
@@ -1142,16 +1146,16 @@ Re-exports [typographyVariants](../ui/typography/variables/typographyVariants.md
 
 ### ToastAnimation
 
-Re-exports [ToastAnimation](../ui/use-toast/type-aliases/ToastAnimation.md)
+Re-exports [ToastAnimation](../use-toast/type-aliases/ToastAnimation.md)
 
 ---
 
 ### reducer
 
-Re-exports [reducer](../ui/use-toast/functions/reducer.md)
+Re-exports [reducer](../use-toast/functions/reducer.md)
 
 ---
 
 ### useToast
 
-Re-exports [useToast](../ui/use-toast/functions/useToast.md)
+Re-exports [useToast](../use-toast/functions/useToast.md)

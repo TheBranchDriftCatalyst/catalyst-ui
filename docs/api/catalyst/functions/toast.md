@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../README.md)
 
 ---
 
@@ -6,19 +6,29 @@
 
 # Function: toast()
 
-> **toast**(`__namedParameters`): `object`
+> **toast**(`props`): `object`
 
-Defined in: [workspace/catalyst-ui/lib/ui/use-toast.ts:141](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/ui/use-toast.ts#L141)
+Defined in: [workspace/catalyst-ui/lib/ui/use-toast.ts:332](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/ui/use-toast.ts#L332)
+
+Imperatively displays a toast notification.
+
+This function can be called from anywhere in your application,
+even outside React components. Returns methods to update or dismiss
+the specific toast instance.
 
 ## Parameters
 
-### \_\_namedParameters
+### props
 
 `Toast`
+
+Toast configuration options
 
 ## Returns
 
 `object`
+
+Object with methods to control the toast
 
 ### id
 
@@ -45,3 +55,43 @@ Defined in: [workspace/catalyst-ui/lib/ui/use-toast.ts:141](https://github.com/T
 #### Returns
 
 `void`
+
+## Example
+
+```tsx
+// Simple success toast
+toast({
+  title: "Success",
+  description: "Your changes have been saved.",
+  variant: "default",
+});
+
+// Error toast with custom duration
+toast({
+  title: "Error",
+  description: "Failed to save changes.",
+  variant: "destructive",
+  duration: 5000,
+});
+
+// Toast with action button
+toast({
+  title: "File uploaded",
+  description: "Your file has been uploaded successfully.",
+  action: <ToastAction altText="View">View</ToastAction>,
+});
+
+// Update toast dynamically
+const { id, update } = toast({
+  title: "Processing...",
+  description: "Please wait",
+});
+
+setTimeout(() => {
+  update({
+    id,
+    title: "Complete!",
+    description: "Processing finished",
+  });
+}, 2000);
+```

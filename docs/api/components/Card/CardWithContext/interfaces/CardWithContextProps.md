@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../README.md)
 
 ---
 
@@ -7,6 +7,10 @@
 # Interface: CardWithContextProps
 
 Defined in: [workspace/catalyst-ui/lib/components/Card/CardWithContext.tsx:7](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/Card/CardWithContext.tsx#L7)
+
+Props for the Card component
+
+Extends standard HTML div attributes with card-specific styling options.
 
 ## Extends
 
@@ -68,7 +72,7 @@ Additional class names for the footer section
 
 > `optional` **interactive**: `null` \| `boolean`
 
-Defined in: [workspace/catalyst-ui/lib/ui/card.tsx:8](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/ui/card.tsx#L8)
+Defined in: [workspace/catalyst-ui/lib/ui/card.tsx:13](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/ui/card.tsx#L13)
 
 #### Inherited from
 

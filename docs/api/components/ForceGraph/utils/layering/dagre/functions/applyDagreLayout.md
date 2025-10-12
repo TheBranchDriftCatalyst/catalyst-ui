@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../../../README.md)
 
 ---
 
@@ -6,7 +6,7 @@
 
 # Function: applyDagreLayout()
 
-> **applyDagreLayout**(`nodes`, `edges`, `_dimensions`, `options`): [`NodeData`](../../../../types/interfaces/NodeData.md)[]
+> **applyDagreLayout**(`nodes`, `edges`, `_dimensions`, `options`): [`NodeData`](../../../../../../ForceGraph/types/interfaces/NodeData.md)[]
 
 Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/utils/layering/dagre.ts:91](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/ForceGraph/utils/layering/dagre.ts#L91)
 
@@ -17,15 +17,15 @@ Returns nodes with fixed positions (static layout)
 
 ### nodes
 
-[`NodeData`](../../../../types/interfaces/NodeData.md)[]
+[`NodeData`](../../../../../../ForceGraph/types/interfaces/NodeData.md)[]
 
 ### edges
 
-[`EdgeData`](../../../../types/interfaces/EdgeData.md)[]
+[`EdgeData`](../../../../../../ForceGraph/types/interfaces/EdgeData.md)[]
 
 ### \_dimensions
 
-[`LayoutDimensions`](../../../layouts/interfaces/LayoutDimensions.md)
+[`LayoutDimensions`](../../../../../../ForceGraph/utils/layouts/interfaces/LayoutDimensions.md)
 
 ### options
 
@@ -33,4 +33,4 @@ Returns nodes with fixed positions (static layout)
 
 ## Returns
 
-[`NodeData`](../../../../types/interfaces/NodeData.md)[]
+[`NodeData`](../../../../../../ForceGraph/types/interfaces/NodeData.md)[]

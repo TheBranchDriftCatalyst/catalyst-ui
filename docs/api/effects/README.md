@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../README.md)
 
 ---
 
@@ -46,7 +46,7 @@ Re-exports [AnimatedFlipProps](AnimatedFlip/AnimatedFlip/interfaces/AnimatedFlip
 
 ### AnimatedSlide
 
-Re-exports [AnimatedSlide](AnimatedSlide/AnimatedSlide/variables/AnimatedSlide.md)
+Re-exports [AnimatedSlide](../catalyst/variables/AnimatedSlide.md)
 
 ---
 

@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../../README.md)
 
 ---
 
@@ -25,7 +25,7 @@ Optional localStorage key prefix (from ForceGraph prop)
 
 ### layout?
 
-[`LayoutKind`](../../../utils/layouts/type-aliases/LayoutKind.md) = `"force"`
+[`LayoutKind`](../../../../../ForceGraph/utils/layouts/type-aliases/LayoutKind.md) = `"force"`
 
 Current layout type (force, dagre, elk, etc.)
 
@@ -55,7 +55,7 @@ Only saves nodes that have been positioned (have x, y coordinates)
 
 ##### nodes
 
-[`NodeData`](../../../types/interfaces/NodeData.md)[]
+[`NodeData`](../../../../../ForceGraph/types/interfaces/NodeData.md)[]
 
 Array of nodes to save positions for
 
@@ -80,7 +80,7 @@ Mutates the nodes in-place to restore their positions
 
 ##### nodes
 
-[`NodeData`](../../../types/interfaces/NodeData.md)[]
+[`NodeData`](../../../../../ForceGraph/types/interfaces/NodeData.md)[]
 
 Array of nodes to apply positions to
 

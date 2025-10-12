@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../README.md)
 
 ---
 
@@ -8,7 +8,12 @@
 
 > `const` **buttonVariants**: (`props?`) => `string`
 
-Defined in: [workspace/catalyst-ui/lib/ui/button.tsx:6](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/ui/button.tsx#L6)
+Defined in: [workspace/catalyst-ui/lib/ui/button.tsx:12](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/ui/button.tsx#L12)
+
+Button variants configuration using class-variance-authority
+
+Defines all visual styles for button variants and sizes with smooth transitions.
+Includes hover effects, focus states, and accessibility features.
 
 ## Parameters
 

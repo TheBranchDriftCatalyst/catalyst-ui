@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../../README.md)
 
 ---
 
@@ -14,7 +14,7 @@ Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/hooks/useGraphFilte
 
 ### config?
 
-[`GraphConfig`](../../../config/types/interfaces/GraphConfig.md)\<`any`, `any`\>
+[`GraphConfig`](../../../../../ForceGraph/config/types/interfaces/GraphConfig.md)\<`any`, `any`\>
 
 ## Returns
 
@@ -22,11 +22,11 @@ Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/hooks/useGraphFilte
 
 ### filters
 
-> **filters**: [`GraphFilters`](../../../types/filterTypes/interfaces/GraphFilters.md) = `state.filters`
+> **filters**: [`GraphFilters`](../../../../../ForceGraph/types/filterTypes/interfaces/GraphFilters.md) = `state.filters`
 
 ### filteredData
 
-> **filteredData**: `null` \| [`GraphData`](../../../types/interfaces/GraphData.md) = `state.filteredData`
+> **filteredData**: `null` \| [`GraphData`](../../../../../ForceGraph/types/interfaces/GraphData.md) = `state.filteredData`
 
 ### updateFilters()
 
@@ -36,7 +36,7 @@ Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/hooks/useGraphFilte
 
 ##### newFilters
 
-`Partial`\<[`GraphFilters`](../../../types/filterTypes/interfaces/GraphFilters.md)\>
+`Partial`\<[`GraphFilters`](../../../../../ForceGraph/types/filterTypes/interfaces/GraphFilters.md)\>
 
 #### Returns
 
@@ -50,7 +50,7 @@ Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/hooks/useGraphFilte
 
 ##### nodeKind
 
-[`NodeKind`](../../../types/type-aliases/NodeKind.md)
+[`NodeKind`](../../../../../ForceGraph/types/type-aliases/NodeKind.md)
 
 #### Returns
 
@@ -64,7 +64,7 @@ Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/hooks/useGraphFilte
 
 ##### edgeKind
 
-[`EdgeKind`](../../../types/type-aliases/EdgeKind.md)
+[`EdgeKind`](../../../../../ForceGraph/types/type-aliases/EdgeKind.md)
 
 #### Returns
 
@@ -100,7 +100,7 @@ Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/hooks/useGraphFilte
 
 ##### filter
 
-[`GraphConnectionFilter`](../../../types/filterTypes/type-aliases/GraphConnectionFilter.md)
+[`GraphConnectionFilter`](../../../../../ForceGraph/types/filterTypes/type-aliases/GraphConnectionFilter.md)
 
 #### Returns
 

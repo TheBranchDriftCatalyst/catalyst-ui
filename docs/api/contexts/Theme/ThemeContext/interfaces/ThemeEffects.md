@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../README.md)
 
 ---
 
@@ -6,7 +6,21 @@
 
 # Interface: ThemeEffects
 
-Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:19](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L19)
+Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:54](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L54)
+
+Visual effect toggles for themes
+
+## Remarks
+
+Effects are controlled via data attributes on `<html>` element:
+
+- `data-effect-glow="true"`
+- `data-effect-scanlines="true"`
+- `data-effect-border-animations="true"`
+- `data-effect-gradient-shift="true"`
+- `data-effect-debug="true"`
+
+Effect CSS is loaded from `./styles/effects/*.css`
 
 ## Properties
 
@@ -14,7 +28,13 @@ Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:19](https
 
 > **glow**: `boolean`
 
-Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:20](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L20)
+Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:61](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L61)
+
+Enable glow/shadow effects on interactive elements
+
+- Adds neon-style box-shadow to buttons
+- Adds subtle glow to inputs and cards
+- Powered by `effects/glow.css`
 
 ---
 
@@ -22,7 +42,13 @@ Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:20](https
 
 > **scanlines**: `boolean`
 
-Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:21](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L21)
+Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:69](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L69)
+
+Enable CRT scanline overlays on the page
+
+- Adds subtle grid/scanline texture to body
+- Creates retro terminal aesthetic
+- Powered by `effects/scanlines.css`
 
 ---
 
@@ -30,7 +56,14 @@ Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:21](https
 
 > **borderAnimations**: `boolean`
 
-Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:22](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L22)
+Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:78](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L78)
+
+Enable animated border effects
+
+- Border shimmer on cards
+- Scan line animations on panels
+- Pulse effects on focused elements
+- Powered by `effects/borders.css`
 
 ---
 
@@ -38,7 +71,13 @@ Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:22](https
 
 > **gradientShift**: `boolean`
 
-Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:23](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L23)
+Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:86](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L86)
+
+Enable animated gradient backgrounds
+
+- Gradient shift on headings
+- Color-changing backgrounds on hero sections
+- Powered by `effects/gradients.css`
 
 ---
 
@@ -46,4 +85,10 @@ Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:23](https
 
 > **debug**: `boolean`
 
-Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:24](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L24)
+Defined in: [workspace/catalyst-ui/lib/contexts/Theme/ThemeContext.tsx:94](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Theme/ThemeContext.tsx#L94)
+
+Enable debug mode (development only)
+
+- Adds red outlines to all elements
+- Helps visualize layout and spacing
+- Powered by `effects/debug.css`

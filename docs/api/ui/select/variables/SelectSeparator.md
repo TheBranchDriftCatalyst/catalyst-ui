@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../README.md)
 
 ---
 
@@ -8,4 +8,18 @@
 
 > `const` **SelectSeparator**: `ForwardRefExoticComponent`\<`Omit`\<`SelectSeparatorProps` & `RefAttributes`\<`HTMLDivElement`\>, `"ref"`\> & `RefAttributes`\<`HTMLDivElement`\>\>
 
-Defined in: [workspace/catalyst-ui/lib/ui/select.tsx:130](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/ui/select.tsx#L130)
+Defined in: [workspace/catalyst-ui/lib/ui/select.tsx:325](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/ui/select.tsx#L325)
+
+SelectSeparator - Visual divider between select options or groups
+
+Horizontal line to separate sections of options for better visual organization.
+
+## Example
+
+```tsx
+<SelectContent>
+  <SelectItem value="edit">Edit</SelectItem>
+  <SelectSeparator />
+  <SelectItem value="delete">Delete</SelectItem>
+</SelectContent>
+```

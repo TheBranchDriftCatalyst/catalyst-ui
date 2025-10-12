@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../README.md)
 
 ---
 
@@ -6,7 +6,11 @@
 
 # Interface: NavigationItemChildrenProps
 
-Defined in: [workspace/catalyst-ui/lib/components/NavigationHeader/NavigationItem.tsx:39](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/NavigationHeader/NavigationItem.tsx#L39)
+Defined in: [workspace/catalyst-ui/lib/components/NavigationHeader/NavigationItem.tsx:76](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/NavigationHeader/NavigationItem.tsx#L76)
+
+Props for NavigationItem with custom children content
+
+NavigationItemChildrenProps
 
 ## Extends
 
@@ -18,7 +22,9 @@ Defined in: [workspace/catalyst-ui/lib/components/NavigationHeader/NavigationIte
 
 > **title**: `string`
 
-Defined in: [workspace/catalyst-ui/lib/components/NavigationHeader/NavigationItem.tsx:36](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/NavigationHeader/NavigationItem.tsx#L36)
+Defined in: [workspace/catalyst-ui/lib/components/NavigationHeader/NavigationItem.tsx:68](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/NavigationHeader/NavigationItem.tsx#L68)
+
+Display text for the navigation trigger button
 
 #### Inherited from
 
@@ -30,4 +36,6 @@ Defined in: [workspace/catalyst-ui/lib/components/NavigationHeader/NavigationIte
 
 > `optional` **children**: `any`
 
-Defined in: [workspace/catalyst-ui/lib/components/NavigationHeader/NavigationItem.tsx:40](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/NavigationHeader/NavigationItem.tsx#L40)
+Defined in: [workspace/catalyst-ui/lib/components/NavigationHeader/NavigationItem.tsx:78](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/NavigationHeader/NavigationItem.tsx#L78)
+
+Custom React content to display in the dropdown (use instead of links)

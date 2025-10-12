@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../README.md)
 
 ---
 
@@ -6,7 +6,9 @@
 
 # Interface: AnimatedSlideProps
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedSlide/AnimatedSlide.tsx:9](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedSlide/AnimatedSlide.tsx#L9)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedSlide/AnimatedSlide.tsx:21](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedSlide/AnimatedSlide.tsx#L21)
+
+Props for AnimatedSlide component
 
 ## Extends
 
@@ -18,9 +20,9 @@ Defined in: [workspace/catalyst-ui/lib/effects/AnimatedSlide/AnimatedSlide.tsx:9
 
 > **children**: `ReactNode`
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedSlide/AnimatedSlide.tsx:11](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedSlide/AnimatedSlide.tsx#L11)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedSlide/AnimatedSlide.tsx:23](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedSlide/AnimatedSlide.tsx#L23)
 
-Content to animate
+Content to animate (any React nodes)
 
 #### Overrides
 
@@ -32,9 +34,9 @@ Content to animate
 
 > `optional` **direction**: [`SlideDirection`](../../../types/type-aliases/SlideDirection.md)
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedSlide/AnimatedSlide.tsx:13](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedSlide/AnimatedSlide.tsx#L13)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedSlide/AnimatedSlide.tsx:25](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedSlide/AnimatedSlide.tsx#L25)
 
-Direction to slide from
+Direction to slide from (default: "bottom")
 
 ---
 
@@ -42,9 +44,9 @@ Direction to slide from
 
 > `optional` **trigger**: [`AnimationTrigger`](../../../types/type-aliases/AnimationTrigger.md)
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedSlide/AnimatedSlide.tsx:15](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedSlide/AnimatedSlide.tsx#L15)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedSlide/AnimatedSlide.tsx:27](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedSlide/AnimatedSlide.tsx#L27)
 
-How to trigger the slide animation
+How to trigger the slide animation (default: "click")
 
 ---
 
@@ -52,9 +54,9 @@ How to trigger the slide animation
 
 > `optional` **duration**: `number`
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedSlide/AnimatedSlide.tsx:17](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedSlide/AnimatedSlide.tsx#L17)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedSlide/AnimatedSlide.tsx:29](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedSlide/AnimatedSlide.tsx#L29)
 
-Animation duration in milliseconds
+Animation duration in milliseconds (default: 400)
 
 ---
 
@@ -62,9 +64,9 @@ Animation duration in milliseconds
 
 > `optional` **distance**: `number`
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedSlide/AnimatedSlide.tsx:19](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedSlide/AnimatedSlide.tsx#L19)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedSlide/AnimatedSlide.tsx:31](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedSlide/AnimatedSlide.tsx#L31)
 
-Distance to slide in pixels
+Distance to slide in pixels (default: 50)
 
 ---
 
@@ -72,9 +74,9 @@ Distance to slide in pixels
 
 > `optional` **className**: `string`
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedSlide/AnimatedSlide.tsx:21](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedSlide/AnimatedSlide.tsx#L21)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedSlide/AnimatedSlide.tsx:33](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedSlide/AnimatedSlide.tsx#L33)
 
-Additional class names for the container
+Additional CSS classes for the container
 
 #### Overrides
 
@@ -86,9 +88,9 @@ Additional class names for the container
 
 > `optional` **isVisible**: `boolean`
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedSlide/AnimatedSlide.tsx:23](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedSlide/AnimatedSlide.tsx#L23)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedSlide/AnimatedSlide.tsx:35](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedSlide/AnimatedSlide.tsx#L35)
 
-Controlled visibility state
+Controlled visibility state (makes component controlled)
 
 ---
 
@@ -96,9 +98,9 @@ Controlled visibility state
 
 > `optional` **onVisibilityChange**: (`isVisible`) => `void`
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedSlide/AnimatedSlide.tsx:25](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedSlide/AnimatedSlide.tsx#L25)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedSlide/AnimatedSlide.tsx:37](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedSlide/AnimatedSlide.tsx#L37)
 
-Callback when visibility should change
+Callback fired when visibility state changes
 
 #### Parameters
 

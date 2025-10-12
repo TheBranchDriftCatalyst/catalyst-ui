@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../README.md)
 
 ---
 
@@ -8,4 +8,4 @@
 
 > `const` **default**: `string`
 
-Defined in: [workspace/catalyst-ui/lib/vite-env.d.ts:23](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/vite-env.d.ts#L23)
+Defined in: [workspace/catalyst-ui/lib/vite-env.d.ts:33](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/vite-env.d.ts#L33)

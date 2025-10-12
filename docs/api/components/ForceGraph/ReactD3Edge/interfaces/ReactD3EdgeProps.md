@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../README.md)
 
 ---
 
@@ -12,7 +12,7 @@ Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/ReactD3Edge.tsx:9](
 
 ### data
 
-> **data**: [`EdgeData`](../../types/interfaces/EdgeData.md)
+> **data**: [`EdgeData`](../../../../ForceGraph/types/interfaces/EdgeData.md)
 
 Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/ReactD3Edge.tsx:10](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/ForceGraph/ReactD3Edge.tsx#L10)
 

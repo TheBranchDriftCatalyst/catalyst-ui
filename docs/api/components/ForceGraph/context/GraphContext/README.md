@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../README.md)
 
 ---
 
@@ -19,13 +19,13 @@
 
 ### GraphConnectionFilter
 
-Re-exports [GraphConnectionFilter](../../types/filterTypes/type-aliases/GraphConnectionFilter.md)
+Re-exports [GraphConnectionFilter](../../../../ForceGraph/types/filterTypes/type-aliases/GraphConnectionFilter.md)
 
 ---
 
 ### GraphFilters
 
-Re-exports [GraphFilters](../../types/filterTypes/interfaces/GraphFilters.md)
+Re-exports [GraphFilters](../../../../ForceGraph/types/filterTypes/interfaces/GraphFilters.md)
 
 ---
 

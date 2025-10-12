@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../../../README.md)
 
 ---
 
@@ -17,15 +17,15 @@ Returns simulation for compatibility (nodes are already positioned)
 
 ### nodes
 
-[`NodeData`](../../../../types/interfaces/NodeData.md)[]
+[`NodeData`](../../../../../../ForceGraph/types/interfaces/NodeData.md)[]
 
 ### edges
 
-[`EdgeData`](../../../../types/interfaces/EdgeData.md)[]
+[`EdgeData`](../../../../../../ForceGraph/types/interfaces/EdgeData.md)[]
 
 ### dimensions
 
-[`LayoutDimensions`](../../../layouts/interfaces/LayoutDimensions.md)
+[`LayoutDimensions`](../../../../../../ForceGraph/utils/layouts/interfaces/LayoutDimensions.md)
 
 ### options
 

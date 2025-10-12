@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../README.md)
 
 ---
 
@@ -6,7 +6,11 @@
 
 # Interface: BreadcrumbsProps
 
-Defined in: [workspace/catalyst-ui/lib/components/Breadcrumbs.tsx:24](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/Breadcrumbs.tsx#L24)
+Defined in: [workspace/catalyst-ui/lib/components/Breadcrumbs.tsx:54](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/Breadcrumbs.tsx#L54)
+
+Props for the BreadCrumbs component
+
+BreadcrumbsProps
 
 ## Properties
 
@@ -14,4 +18,6 @@ Defined in: [workspace/catalyst-ui/lib/components/Breadcrumbs.tsx:24](https://gi
 
 > **crumbs**: `CrumbShape`[]
 
-Defined in: [workspace/catalyst-ui/lib/components/Breadcrumbs.tsx:25](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/Breadcrumbs.tsx#L25)
+Defined in: [workspace/catalyst-ui/lib/components/Breadcrumbs.tsx:56](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/Breadcrumbs.tsx#L56)
+
+Array of breadcrumb items to display in the navigation trail

@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../README.md)
 
 ---
 
@@ -10,64 +10,40 @@
 
 ### ChangelogEntry
 
-Re-exports [ChangelogEntry](changelog-parser/interfaces/ChangelogEntry.md)
+Re-exports [ChangelogEntry](../../markdown/changelog-parser/interfaces/ChangelogEntry.md)
 
 ---
 
 ### ChangelogCategory
 
-Re-exports [ChangelogCategory](changelog-parser/interfaces/ChangelogCategory.md)
+Re-exports [ChangelogCategory](../../markdown/changelog-parser/interfaces/ChangelogCategory.md)
 
 ---
 
 ### parseChangelog
 
-Re-exports [parseChangelog](changelog-parser/functions/parseChangelog.md)
+Re-exports [parseChangelog](../../markdown/changelog-parser/functions/parseChangelog.md)
 
 ---
 
 ### changelogEntryToTimelineData
 
-Re-exports [changelogEntryToTimelineData](changelog-parser/functions/changelogEntryToTimelineData.md)
+Re-exports [changelogEntryToTimelineData](../../markdown/changelog-parser/functions/changelogEntryToTimelineData.md)
 
 ---
 
 ### renderMarkdown
 
-Re-exports [renderMarkdown](mapper/functions/renderMarkdown.md)
+Re-exports [renderMarkdown](../../markdown/mapper/functions/renderMarkdown.md)
 
 ---
 
 ### MARKDOWN_COMPONENT_MAP
 
-Re-exports [MARKDOWN_COMPONENT_MAP](mapper/variables/MARKDOWN_COMPONENT_MAP.md)
+Re-exports [MARKDOWN_COMPONENT_MAP](../../markdown/mapper/variables/MARKDOWN_COMPONENT_MAP.md)
 
 ---
 
 ### parseMarkdown
 
-Re-exports [parseMarkdown](parser/functions/parseMarkdown.md)
-
----
-
-### MarkdownSection
-
-Re-exports [MarkdownSection](types/interfaces/MarkdownSection.md)
-
----
-
-### ExtractedCodeBlock
-
-Re-exports [ExtractedCodeBlock](types/interfaces/ExtractedCodeBlock.md)
-
----
-
-### ExtractedTable
-
-Re-exports [ExtractedTable](types/interfaces/ExtractedTable.md)
-
----
-
-### CatalystRepoMetadata
-
-Re-exports [CatalystRepoMetadata](types/interfaces/CatalystRepoMetadata.md)
+Re-exports [parseMarkdown](../../markdown/parser/functions/parseMarkdown.md)

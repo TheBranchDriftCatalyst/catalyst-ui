@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../../README.md)
 
 ---
 
@@ -6,7 +6,7 @@
 
 # Variable: GraphProvider
 
-> `const` **GraphProvider**: `React.FC`\<\{ `children`: `ReactNode`; `config?`: [`GraphConfig`](../../../config/types/interfaces/GraphConfig.md)\<`any`, `any`\>; `storageKey?`: `string`; \}\>
+> `const` **GraphProvider**: `React.FC`\<\{ `children`: `ReactNode`; `config?`: [`GraphConfig`](../../../../../ForceGraph/config/types/interfaces/GraphConfig.md)\<`any`, `any`\>; `storageKey?`: `string`; \}\>
 
 Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/context/GraphContext.tsx:30](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/ForceGraph/context/GraphContext.tsx#L30)
 

@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../README.md)
 
 ---
 
@@ -10,88 +10,88 @@
 
 ### NodeRendererProps
 
-Re-exports [NodeRendererProps](types/interfaces/NodeRendererProps.md)
+Re-exports [NodeRendererProps](../../../ForceGraph/config/types/interfaces/NodeRendererProps.md)
 
 ---
 
 ### NodeRenderer
 
-Re-exports [NodeRenderer](types/type-aliases/NodeRenderer.md)
+Re-exports [NodeRenderer](../../../ForceGraph/config/types/type-aliases/NodeRenderer.md)
 
 ---
 
 ### NodeTypeConfig
 
-Re-exports [NodeTypeConfig](types/interfaces/NodeTypeConfig.md)
+Re-exports [NodeTypeConfig](../../../ForceGraph/config/types/interfaces/NodeTypeConfig.md)
 
 ---
 
 ### EdgeTypeConfig
 
-Re-exports [EdgeTypeConfig](types/interfaces/EdgeTypeConfig.md)
+Re-exports [EdgeTypeConfig](../../../ForceGraph/config/types/interfaces/EdgeTypeConfig.md)
 
 ---
 
 ### AttributeFilter
 
-Re-exports [AttributeFilter](types/interfaces/AttributeFilter.md)
+Re-exports [AttributeFilter](../../../ForceGraph/config/types/interfaces/AttributeFilter.md)
 
 ---
 
 ### AttributeFilterPredicate
 
-Re-exports [AttributeFilterPredicate](types/type-aliases/AttributeFilterPredicate.md)
+Re-exports [AttributeFilterPredicate](../../../ForceGraph/config/types/type-aliases/AttributeFilterPredicate.md)
 
 ---
 
 ### GraphConfig
 
-Re-exports [GraphConfig](types/interfaces/GraphConfig.md)
+Re-exports [GraphConfig](../../../ForceGraph/config/types/interfaces/GraphConfig.md)
 
 ---
 
 ### ExtractNodeKind
 
-Re-exports [ExtractNodeKind](types/type-aliases/ExtractNodeKind.md)
+Re-exports [ExtractNodeKind](../../../ForceGraph/config/types/type-aliases/ExtractNodeKind.md)
 
 ---
 
 ### ExtractEdgeKind
 
-Re-exports [ExtractEdgeKind](types/type-aliases/ExtractEdgeKind.md)
+Re-exports [ExtractEdgeKind](../../../ForceGraph/config/types/type-aliases/ExtractEdgeKind.md)
 
 ---
 
 ### FilterOption
 
-Re-exports [FilterOption](types/interfaces/FilterOption.md)
+Re-exports [FilterOption](../../../ForceGraph/config/types/interfaces/FilterOption.md)
 
 ---
 
 ### DockerGraphConfig
 
-Re-exports [DockerGraphConfig](DockerGraphConfig/variables/DockerGraphConfig.md)
+Re-exports [DockerGraphConfig](../../../ForceGraph/config/DockerGraphConfig/variables/DockerGraphConfig.md)
 
 ---
 
 ### getDockerNodeConfig
 
-Re-exports [getDockerNodeConfig](DockerGraphConfig/functions/getDockerNodeConfig.md)
+Re-exports [getDockerNodeConfig](../../../ForceGraph/config/DockerGraphConfig/functions/getDockerNodeConfig.md)
 
 ---
 
 ### getDockerEdgeConfig
 
-Re-exports [getDockerEdgeConfig](DockerGraphConfig/functions/getDockerEdgeConfig.md)
+Re-exports [getDockerEdgeConfig](../../../ForceGraph/config/DockerGraphConfig/functions/getDockerEdgeConfig.md)
 
 ---
 
 ### DockerNodeKind
 
-Re-exports [DockerNodeKind](DockerGraphConfig/type-aliases/DockerNodeKind.md)
+Re-exports [DockerNodeKind](../../../ForceGraph/config/DockerGraphConfig/type-aliases/DockerNodeKind.md)
 
 ---
 
 ### DockerEdgeKind
 
-Re-exports [DockerEdgeKind](DockerGraphConfig/type-aliases/DockerEdgeKind.md)
+Re-exports [DockerEdgeKind](../../../ForceGraph/config/DockerGraphConfig/type-aliases/DockerEdgeKind.md)

@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../../README.md)
 
 ---
 
@@ -16,11 +16,11 @@ Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/hooks/useGraphState
 
 ### rawData
 
-> **rawData**: `null` \| [`GraphData`](../../../types/interfaces/GraphData.md) = `state.rawData`
+> **rawData**: `null` \| [`GraphData`](../../../../../ForceGraph/types/interfaces/GraphData.md) = `state.rawData`
 
 ### filteredData
 
-> **filteredData**: `null` \| [`GraphData`](../../../types/interfaces/GraphData.md) = `state.filteredData`
+> **filteredData**: `null` \| [`GraphData`](../../../../../ForceGraph/types/interfaces/GraphData.md) = `state.filteredData`
 
 ### hoveredNode
 
@@ -44,7 +44,7 @@ Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/hooks/useGraphState
 
 ### layout
 
-> **layout**: [`LayoutKind`](../../../utils/layouts/type-aliases/LayoutKind.md) = `state.layout`
+> **layout**: [`LayoutKind`](../../../../../ForceGraph/utils/layouts/type-aliases/LayoutKind.md) = `state.layout`
 
 ### layoutOptions
 
@@ -56,7 +56,7 @@ Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/hooks/useGraphState
 
 ### filters
 
-> **filters**: [`GraphFilters`](../../../types/filterTypes/interfaces/GraphFilters.md) = `state.filters`
+> **filters**: [`GraphFilters`](../../../../../ForceGraph/types/filterTypes/interfaces/GraphFilters.md) = `state.filters`
 
 ### setRawData()
 
@@ -66,7 +66,7 @@ Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/hooks/useGraphState
 
 ##### data
 
-[`GraphData`](../../../types/interfaces/GraphData.md)
+[`GraphData`](../../../../../ForceGraph/types/interfaces/GraphData.md)
 
 #### Returns
 
@@ -128,7 +128,7 @@ Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/hooks/useGraphState
 
 ##### layout
 
-[`LayoutKind`](../../../utils/layouts/type-aliases/LayoutKind.md)
+[`LayoutKind`](../../../../../ForceGraph/utils/layouts/type-aliases/LayoutKind.md)
 
 #### Returns
 
@@ -158,7 +158,7 @@ Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/hooks/useGraphState
 
 ### getNodeInfo()
 
-> **getNodeInfo**: (`nodeId`) => `undefined` \| [`NodeData`](../../../types/interfaces/NodeData.md)
+> **getNodeInfo**: (`nodeId`) => `undefined` \| [`NodeData`](../../../../../ForceGraph/types/interfaces/NodeData.md)
 
 #### Parameters
 
@@ -168,4 +168,4 @@ Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/hooks/useGraphState
 
 #### Returns
 
-`undefined` \| [`NodeData`](../../../types/interfaces/NodeData.md)
+`undefined` \| [`NodeData`](../../../../../ForceGraph/types/interfaces/NodeData.md)

@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../../README.md)
 
 ---
 
@@ -16,7 +16,7 @@ Create initial graph state
 
 ### config
 
-[`GraphConfig`](../../../config/types/interfaces/GraphConfig.md)\<`any`, `any`\>
+[`GraphConfig`](../../../../../ForceGraph/config/types/interfaces/GraphConfig.md)\<`any`, `any`\>
 
 ## Returns
 

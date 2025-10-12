@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../README.md)
 
 ---
 
@@ -250,7 +250,7 @@ Re-exports [useGraphFilters](ForceGraph/hooks/useGraphFilters/functions/useGraph
 
 ### enrichGraph
 
-Re-exports [enrichGraph](ForceGraph/utils/GraphNavigator/functions/enrichGraph.md)
+Re-exports [enrichGraph](../ForceGraph/utils/GraphNavigator/functions/enrichGraph.md)
 
 ---
 
@@ -262,121 +262,121 @@ Re-exports [applyStructuredLayout](ForceGraph/utils/layering/structured/function
 
 ### LayoutKind
 
-Re-exports [LayoutKind](ForceGraph/utils/layouts/type-aliases/LayoutKind.md)
+Re-exports [LayoutKind](../ForceGraph/utils/layouts/type-aliases/LayoutKind.md)
 
 ---
 
 ### NodeKind
 
-Re-exports [NodeKind](ForceGraph/types/type-aliases/NodeKind.md)
+Re-exports [NodeKind](../ForceGraph/types/type-aliases/NodeKind.md)
 
 ---
 
 ### EdgeKind
 
-Re-exports [EdgeKind](ForceGraph/types/type-aliases/EdgeKind.md)
+Re-exports [EdgeKind](../ForceGraph/types/type-aliases/EdgeKind.md)
 
 ---
 
 ### NodeData
 
-Re-exports [NodeData](ForceGraph/types/interfaces/NodeData.md)
+Re-exports [NodeData](../ForceGraph/types/interfaces/NodeData.md)
 
 ---
 
 ### EdgeData
 
-Re-exports [EdgeData](ForceGraph/types/interfaces/EdgeData.md)
+Re-exports [EdgeData](../ForceGraph/types/interfaces/EdgeData.md)
 
 ---
 
 ### GraphData
 
-Re-exports [GraphData](ForceGraph/types/interfaces/GraphData.md)
+Re-exports [GraphData](../ForceGraph/types/interfaces/GraphData.md)
 
 ---
 
 ### GraphDimensions
 
-Re-exports [GraphDimensions](ForceGraph/types/interfaces/GraphDimensions.md)
+Re-exports [GraphDimensions](../ForceGraph/types/interfaces/GraphDimensions.md)
 
 ---
 
 ### VisibilityState
 
-Re-exports [VisibilityState](ForceGraph/types/interfaces/VisibilityState.md)
+Re-exports [VisibilityState](../ForceGraph/types/interfaces/VisibilityState.md)
 
 ---
 
 ### GraphEventHandlers
 
-Re-exports [GraphEventHandlers](ForceGraph/types/interfaces/GraphEventHandlers.md)
+Re-exports [GraphEventHandlers](../ForceGraph/types/interfaces/GraphEventHandlers.md)
 
 ---
 
 ### ReactD3GraphProps
 
-Re-exports [ReactD3GraphProps](ForceGraph/types/interfaces/ReactD3GraphProps.md)
+Re-exports [ReactD3GraphProps](../ForceGraph/types/interfaces/ReactD3GraphProps.md)
 
 ---
 
 ### ForceGraphProps
 
-Re-exports [ForceGraphProps](ForceGraph/types/interfaces/ForceGraphProps.md)
+Re-exports [ForceGraphProps](../ForceGraph/types/interfaces/ForceGraphProps.md)
 
 ---
 
 ### GraphFilters
 
-Re-exports [GraphFilters](ForceGraph/types/filterTypes/interfaces/GraphFilters.md)
+Re-exports [GraphFilters](../ForceGraph/types/filterTypes/interfaces/GraphFilters.md)
 
 ---
 
 ### GraphConnectionFilter
 
-Re-exports [GraphConnectionFilter](ForceGraph/types/filterTypes/type-aliases/GraphConnectionFilter.md)
+Re-exports [GraphConnectionFilter](../ForceGraph/types/filterTypes/type-aliases/GraphConnectionFilter.md)
 
 ---
 
 ### NodeWithHelpers
 
-Re-exports [NodeWithHelpers](ForceGraph/utils/GraphNavigator/type-aliases/NodeWithHelpers.md)
+Re-exports [NodeWithHelpers](../ForceGraph/utils/GraphNavigator/type-aliases/NodeWithHelpers.md)
 
 ---
 
 ### EdgeWithHelpers
 
-Re-exports [EdgeWithHelpers](ForceGraph/utils/GraphNavigator/type-aliases/EdgeWithHelpers.md)
+Re-exports [EdgeWithHelpers](../ForceGraph/utils/GraphNavigator/type-aliases/EdgeWithHelpers.md)
 
 ---
 
 ### EnrichedGraph
 
-Re-exports [EnrichedGraph](ForceGraph/utils/GraphNavigator/type-aliases/EnrichedGraph.md)
+Re-exports [EnrichedGraph](../ForceGraph/utils/GraphNavigator/type-aliases/EnrichedGraph.md)
 
 ---
 
 ### DockerGraphConfig
 
-Re-exports [DockerGraphConfig](ForceGraph/config/DockerGraphConfig/variables/DockerGraphConfig.md)
+Re-exports [DockerGraphConfig](../ForceGraph/config/DockerGraphConfig/variables/DockerGraphConfig.md)
 
 ---
 
 ### DockerNodeKind
 
-Re-exports [DockerNodeKind](ForceGraph/config/DockerGraphConfig/type-aliases/DockerNodeKind.md)
+Re-exports [DockerNodeKind](../ForceGraph/config/DockerGraphConfig/type-aliases/DockerNodeKind.md)
 
 ---
 
 ### DockerEdgeKind
 
-Re-exports [DockerEdgeKind](ForceGraph/config/DockerGraphConfig/type-aliases/DockerEdgeKind.md)
+Re-exports [DockerEdgeKind](../ForceGraph/config/DockerGraphConfig/type-aliases/DockerEdgeKind.md)
 
 ---
 
 ### DockerStatusFilter
 
-Re-exports [DockerStatusFilter](ForceGraph/config/DockerGraphConfig/type-aliases/DockerStatusFilter.md)
+Re-exports [DockerStatusFilter](../ForceGraph/config/DockerGraphConfig/type-aliases/DockerStatusFilter.md)
 
 ---
 

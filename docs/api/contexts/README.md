@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../README.md)
 
 ---
 
@@ -95,3 +95,9 @@ Re-exports [useTheme](Theme/ThemeContext/functions/useTheme.md)
 ### ThemeProvider
 
 Re-exports [ThemeProvider](Theme/ThemeProvider/functions/ThemeProvider.md)
+
+---
+
+### I18nProvider
+
+Re-exports [I18nProvider](i18n/I18nProvider/functions/I18nProvider.md)

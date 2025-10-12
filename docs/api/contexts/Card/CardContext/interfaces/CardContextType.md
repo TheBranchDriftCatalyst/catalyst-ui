@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../README.md)
 
 ---
 
@@ -6,7 +6,22 @@
 
 # Interface: CardContextType
 
-Defined in: [workspace/catalyst-ui/lib/contexts/Card/CardContext.tsx:5](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Card/CardContext.tsx#L5)
+Defined in: [workspace/catalyst-ui/lib/contexts/Card/CardContext.tsx:26](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Card/CardContext.tsx#L26)
+
+Card context shape for dynamic card content management
+
+## Remarks
+
+Provides a registry system for components to dynamically inject
+content into card headers and footers. Useful for:
+
+- Breadcrumbs in card headers
+- Action buttons in card footers
+- Status indicators in headers
+- Pagination controls in footers
+
+Components register themselves on mount and automatically
+unregister on unmount via cleanup functions.
 
 ## Properties
 
@@ -14,7 +29,10 @@ Defined in: [workspace/catalyst-ui/lib/contexts/Card/CardContext.tsx:5](https://
 
 > **headerComponents**: `ReactNode`[]
 
-Defined in: [workspace/catalyst-ui/lib/contexts/Card/CardContext.tsx:6](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Card/CardContext.tsx#L6)
+Defined in: [workspace/catalyst-ui/lib/contexts/Card/CardContext.tsx:31](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Card/CardContext.tsx#L31)
+
+Array of components registered for the card header
+Rendered in registration order
 
 ---
 
@@ -22,7 +40,10 @@ Defined in: [workspace/catalyst-ui/lib/contexts/Card/CardContext.tsx:6](https://
 
 > **footerComponents**: `ReactNode`[]
 
-Defined in: [workspace/catalyst-ui/lib/contexts/Card/CardContext.tsx:7](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Card/CardContext.tsx#L7)
+Defined in: [workspace/catalyst-ui/lib/contexts/Card/CardContext.tsx:37](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Card/CardContext.tsx#L37)
+
+Array of components registered for the card footer
+Rendered in registration order
 
 ---
 
@@ -30,7 +51,9 @@ Defined in: [workspace/catalyst-ui/lib/contexts/Card/CardContext.tsx:7](https://
 
 > **registerHeaderComponent**: (`component`) => () => `void`
 
-Defined in: [workspace/catalyst-ui/lib/contexts/Card/CardContext.tsx:8](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Card/CardContext.tsx#L8)
+Defined in: [workspace/catalyst-ui/lib/contexts/Card/CardContext.tsx:44](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Card/CardContext.tsx#L44)
+
+Register a component to appear in the card header
 
 #### Parameters
 
@@ -38,7 +61,11 @@ Defined in: [workspace/catalyst-ui/lib/contexts/Card/CardContext.tsx:8](https://
 
 `ReactNode`
 
+React component or node to render
+
 #### Returns
+
+Cleanup function to unregister (called on unmount)
 
 > (): `void`
 
@@ -52,7 +79,9 @@ Defined in: [workspace/catalyst-ui/lib/contexts/Card/CardContext.tsx:8](https://
 
 > **registerFooterComponent**: (`component`) => () => `void`
 
-Defined in: [workspace/catalyst-ui/lib/contexts/Card/CardContext.tsx:9](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Card/CardContext.tsx#L9)
+Defined in: [workspace/catalyst-ui/lib/contexts/Card/CardContext.tsx:51](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/contexts/Card/CardContext.tsx#L51)
+
+Register a component to appear in the card footer
 
 #### Parameters
 
@@ -60,7 +89,11 @@ Defined in: [workspace/catalyst-ui/lib/contexts/Card/CardContext.tsx:9](https://
 
 `ReactNode`
 
+React component or node to render
+
 #### Returns
+
+Cleanup function to unregister (called on unmount)
 
 > (): `void`
 

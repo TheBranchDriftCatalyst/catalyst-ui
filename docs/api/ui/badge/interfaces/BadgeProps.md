@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../README.md)
 
 ---
 
@@ -6,7 +6,11 @@
 
 # Interface: BadgeProps
 
-Defined in: [workspace/catalyst-ui/lib/ui/badge.tsx:25](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/ui/badge.tsx#L25)
+Defined in: [workspace/catalyst-ui/lib/ui/badge.tsx:36](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/ui/badge.tsx#L36)
+
+Props for the Badge component
+
+Extends standard HTML div attributes with badge-specific styling variants.
 
 ## Extends
 
@@ -18,7 +22,7 @@ Defined in: [workspace/catalyst-ui/lib/ui/badge.tsx:25](https://github.com/TheBr
 
 > `optional` **variant**: `null` \| `"default"` \| `"secondary"` \| `"destructive"` \| `"outline"`
 
-Defined in: [workspace/catalyst-ui/lib/ui/badge.tsx:10](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/ui/badge.tsx#L10)
+Defined in: [workspace/catalyst-ui/lib/ui/badge.tsx:16](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/ui/badge.tsx#L16)
 
 #### Inherited from
 

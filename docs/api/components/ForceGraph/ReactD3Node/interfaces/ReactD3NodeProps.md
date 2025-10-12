@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../README.md)
 
 ---
 
@@ -12,7 +12,7 @@ Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/ReactD3Node.tsx:8](
 
 ### data
 
-> **data**: [`NodeData`](../../types/interfaces/NodeData.md)
+> **data**: [`NodeData`](../../../../ForceGraph/types/interfaces/NodeData.md)
 
 Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/ReactD3Node.tsx:9](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/ForceGraph/ReactD3Node.tsx#L9)
 
@@ -76,7 +76,7 @@ Defined in: [workspace/catalyst-ui/lib/components/ForceGraph/ReactD3Node.tsx:16]
 
 ##### node
 
-[`NodeData`](../../types/interfaces/NodeData.md)
+[`NodeData`](../../../../ForceGraph/types/interfaces/NodeData.md)
 
 #### Returns
 

@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../README.md)
 
 ---
 
@@ -6,7 +6,9 @@
 
 # Interface: AnimatedFadeProps
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedFade/AnimatedFade.tsx:9](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedFade/AnimatedFade.tsx#L9)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedFade/AnimatedFade.tsx:19](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedFade/AnimatedFade.tsx#L19)
+
+Props for AnimatedFade component
 
 ## Extends
 
@@ -18,9 +20,9 @@ Defined in: [workspace/catalyst-ui/lib/effects/AnimatedFade/AnimatedFade.tsx:9](
 
 > **children**: `ReactNode`
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedFade/AnimatedFade.tsx:11](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedFade/AnimatedFade.tsx#L11)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedFade/AnimatedFade.tsx:21](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedFade/AnimatedFade.tsx#L21)
 
-Content to animate
+Content to animate (any React nodes)
 
 #### Overrides
 
@@ -32,9 +34,9 @@ Content to animate
 
 > `optional` **trigger**: [`AnimationTrigger`](../../../types/type-aliases/AnimationTrigger.md)
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedFade/AnimatedFade.tsx:13](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedFade/AnimatedFade.tsx#L13)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedFade/AnimatedFade.tsx:23](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedFade/AnimatedFade.tsx#L23)
 
-How to trigger the fade animation
+How to trigger the fade animation (default: "click")
 
 ---
 
@@ -42,9 +44,9 @@ How to trigger the fade animation
 
 > `optional` **duration**: `number`
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedFade/AnimatedFade.tsx:15](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedFade/AnimatedFade.tsx#L15)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedFade/AnimatedFade.tsx:25](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedFade/AnimatedFade.tsx#L25)
 
-Animation duration in milliseconds
+Animation duration in milliseconds (default: 300)
 
 ---
 
@@ -52,9 +54,9 @@ Animation duration in milliseconds
 
 > `optional` **className**: `string`
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedFade/AnimatedFade.tsx:17](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedFade/AnimatedFade.tsx#L17)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedFade/AnimatedFade.tsx:27](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedFade/AnimatedFade.tsx#L27)
 
-Additional class names for the container
+Additional CSS classes for the container
 
 #### Overrides
 
@@ -66,9 +68,9 @@ Additional class names for the container
 
 > `optional` **isVisible**: `boolean`
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedFade/AnimatedFade.tsx:19](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedFade/AnimatedFade.tsx#L19)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedFade/AnimatedFade.tsx:29](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedFade/AnimatedFade.tsx#L29)
 
-Controlled visibility state
+Controlled visibility state (makes component controlled)
 
 ---
 
@@ -76,9 +78,9 @@ Controlled visibility state
 
 > `optional` **onVisibilityChange**: (`isVisible`) => `void`
 
-Defined in: [workspace/catalyst-ui/lib/effects/AnimatedFade/AnimatedFade.tsx:21](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedFade/AnimatedFade.tsx#L21)
+Defined in: [workspace/catalyst-ui/lib/effects/AnimatedFade/AnimatedFade.tsx:31](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/effects/AnimatedFade/AnimatedFade.tsx#L31)
 
-Callback when visibility should change
+Callback fired when visibility state changes
 
 #### Parameters
 

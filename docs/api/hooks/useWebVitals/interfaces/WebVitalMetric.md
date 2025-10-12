@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../README.md)
 
 ---
 
@@ -6,7 +6,9 @@
 
 # Interface: WebVitalMetric
 
-Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:6](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L6)
+Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:15](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L15)
+
+WebVitalMetric - Individual Core Web Vital measurement
 
 ## Properties
 
@@ -14,7 +16,9 @@ Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:6](https://github.c
 
 > **name**: `"LCP"` \| `"INP"` \| `"CLS"` \| `"FCP"` \| `"TTFB"`
 
-Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:7](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L7)
+Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:16](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L16)
+
+The metric type (LCP, INP, CLS, FCP, or TTFB)
 
 ---
 
@@ -22,7 +26,9 @@ Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:7](https://github.c
 
 > **value**: `number`
 
-Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:8](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L8)
+Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:17](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L17)
+
+The measured value in milliseconds (or unitless for CLS)
 
 ---
 
@@ -30,7 +36,9 @@ Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:8](https://github.c
 
 > **rating**: `"good"` \| `"needs-improvement"` \| `"poor"`
 
-Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:9](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L9)
+Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:18](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L18)
+
+Performance classification based on Google's thresholds
 
 ---
 
@@ -38,7 +46,9 @@ Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:9](https://github.c
 
 > **delta**: `number`
 
-Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:10](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L10)
+Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:19](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L19)
+
+Change since last measurement
 
 ---
 
@@ -46,4 +56,6 @@ Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:10](https://github.
 
 > **id**: `string`
 
-Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:11](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L11)
+Defined in: [workspace/catalyst-ui/lib/hooks/useWebVitals.ts:20](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/hooks/useWebVitals.ts#L20)
+
+Unique identifier for this measurement instance

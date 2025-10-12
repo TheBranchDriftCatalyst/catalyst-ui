@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../README.md)
 
 ---
 
@@ -10,82 +10,82 @@
 
 ### parseFlowchart
 
-Re-exports [parseFlowchart](flowchartParser/functions/parseFlowchart.md)
+Re-exports [parseFlowchart](../../mermaid/flowchartParser/functions/parseFlowchart.md)
 
 ---
 
 ### ColorStrategy
 
-Re-exports [ColorStrategy](flowchartToGraphConfig/type-aliases/ColorStrategy.md)
+Re-exports [ColorStrategy](../../mermaid/flowchartToGraphConfig/type-aliases/ColorStrategy.md)
 
 ---
 
 ### ConfiguratorOptions
 
-Re-exports [ConfiguratorOptions](flowchartToGraphConfig/interfaces/ConfiguratorOptions.md)
+Re-exports [ConfiguratorOptions](../../mermaid/flowchartToGraphConfig/interfaces/ConfiguratorOptions.md)
 
 ---
 
 ### MermaidFlowChartGraphConfigurator
 
-Re-exports [MermaidFlowChartGraphConfigurator](flowchartToGraphConfig/classes/MermaidFlowChartGraphConfigurator.md)
+Re-exports [MermaidFlowChartGraphConfigurator](../../mermaid/flowchartToGraphConfig/classes/MermaidFlowChartGraphConfigurator.md)
 
 ---
 
 ### NodeShape
 
-Re-exports [NodeShape](types/type-aliases/NodeShape.md)
+Re-exports [NodeShape](../../mermaid/types/type-aliases/NodeShape.md)
 
 ---
 
 ### EdgeType
 
-Re-exports [EdgeType](types/type-aliases/EdgeType.md)
+Re-exports [EdgeType](../../mermaid/types/type-aliases/EdgeType.md)
 
 ---
 
 ### FlowDirection
 
-Re-exports [FlowDirection](types/type-aliases/FlowDirection.md)
+Re-exports [FlowDirection](../../mermaid/types/type-aliases/FlowDirection.md)
 
 ---
 
 ### ParsedNode
 
-Re-exports [ParsedNode](types/interfaces/ParsedNode.md)
+Re-exports [ParsedNode](../../mermaid/types/interfaces/ParsedNode.md)
 
 ---
 
 ### ParsedEdge
 
-Re-exports [ParsedEdge](types/interfaces/ParsedEdge.md)
+Re-exports [ParsedEdge](../../mermaid/types/interfaces/ParsedEdge.md)
 
 ---
 
 ### ParsedSubgraph
 
-Re-exports [ParsedSubgraph](types/interfaces/ParsedSubgraph.md)
+Re-exports [ParsedSubgraph](../../mermaid/types/interfaces/ParsedSubgraph.md)
 
 ---
 
 ### ParsedClass
 
-Re-exports [ParsedClass](types/interfaces/ParsedClass.md)
+Re-exports [ParsedClass](../../mermaid/types/interfaces/ParsedClass.md)
 
 ---
 
 ### ParsedMermaid
 
-Re-exports [ParsedMermaid](types/interfaces/ParsedMermaid.md)
+Re-exports [ParsedMermaid](../../mermaid/types/interfaces/ParsedMermaid.md)
 
 ---
 
 ### SHAPE_PATTERNS
 
-Re-exports [SHAPE_PATTERNS](types/variables/SHAPE_PATTERNS.md)
+Re-exports [SHAPE_PATTERNS](../../mermaid/types/variables/SHAPE_PATTERNS.md)
 
 ---
 
 ### EDGE_PATTERNS
 
-Re-exports [EDGE_PATTERNS](types/variables/EDGE_PATTERNS.md)
+Re-exports [EDGE_PATTERNS](../../mermaid/types/variables/EDGE_PATTERNS.md)

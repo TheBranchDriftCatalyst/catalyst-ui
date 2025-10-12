@@ -1,4 +1,4 @@
-[**Catalyst UI API Documentation v1.3.0**](../../../../README.md)
+[**Catalyst UI API Documentation v1.4.0**](../../../../README.md)
 
 ---
 
@@ -6,7 +6,13 @@
 
 # Interface: CodeFlipCardProps
 
-Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:14](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L14)
+Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:21](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L21)
+
+Props for the CodeFlipCard component
+
+Extends CodeBlockProps but omits `code` and `language` since they're provided differently
+
+CodeFlipCardProps
 
 ## Extends
 
@@ -170,9 +176,9 @@ Whether to use CardContext for header registration (default: true)
 
 > **children**: `ReactNode`
 
-Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:16](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L16)
+Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:23](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L23)
 
-The rendered component to display on the front
+The rendered component to display on the front face of the card
 
 #### Overrides
 
@@ -184,9 +190,20 @@ The rendered component to display on the front
 
 > **sourceCode**: `string`
 
-Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:18](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L18)
+Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:37](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L37)
 
-Raw source code string (use ?raw import)
+Raw source code string to display on the back face
+
+Use Vite's `?raw` import to load source files:
+
+#### Example
+
+```tsx
+import sourceCode from "./MyComponent.tsx?raw";
+<CodeFlipCard sourceCode={sourceCode}>
+  <MyComponent />
+</CodeFlipCard>;
+```
 
 ---
 
@@ -194,9 +211,9 @@ Raw source code string (use ?raw import)
 
 > `optional` **language**: `string`
 
-Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:20](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L20)
+Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:40](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L40)
 
-Programming language for syntax highlighting
+Programming language for syntax highlighting (default: "tsx")
 
 ---
 
@@ -204,9 +221,9 @@ Programming language for syntax highlighting
 
 > `optional` **fileName**: `string`
 
-Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:22](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L22)
+Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:43](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L43)
 
-File name to display in CodeBlock header
+File name to display in the CodeBlock header
 
 #### Overrides
 
@@ -218,9 +235,21 @@ File name to display in CodeBlock header
 
 > `optional` **lineRange**: [`LineRangeTuple`](../../utils/type-aliases/LineRangeTuple.md) \| [`LineRange`](../../utils/interfaces/LineRange.md)
 
-Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:26](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L26)
+Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:60](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L60)
 
 Extract specific line range from source code
+
+Can be a tuple [start, end] or an object with start/end properties
+
+#### Example
+
+```tsx
+// Tuple format
+<CodeFlipCard lineRange={[10, 25]} sourceCode={code}>
+
+// Object format
+<CodeFlipCard lineRange={{ start: 10, end: 25 }} sourceCode={code}>
+```
 
 ---
 
@@ -228,9 +257,9 @@ Extract specific line range from source code
 
 > `optional` **stripImports**: `boolean`
 
-Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:30](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L30)
+Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:64](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L64)
 
-Remove import statements from source
+Remove import statements from source code display
 
 ---
 
@@ -238,9 +267,9 @@ Remove import statements from source
 
 > `optional` **stripComments**: `boolean`
 
-Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:32](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L32)
+Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:67](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L67)
 
-Remove comments from source
+Remove comments from source code display
 
 ---
 
@@ -248,9 +277,15 @@ Remove comments from source
 
 > `optional` **extractFunction**: `string`
 
-Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:34](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L34)
+Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:77](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L77)
 
-Extract only a specific function/component
+Extract only a specific function or component from the source code
+
+#### Example
+
+```tsx
+<CodeFlipCard extractFunction="MyButton" sourceCode={code}>
+```
 
 ---
 
@@ -258,9 +293,18 @@ Extract only a specific function/component
 
 > `optional` **flipTrigger**: `"click"` \| `"hover"`
 
-Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:38](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L38)
+Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:88](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L88)
 
 How to trigger the flip animation
+
+- "click": User must click the code icon button to flip
+- "hover": Flips when hovering over the card (not recommended for mobile)
+
+#### Default
+
+```ts
+"click";
+```
 
 ---
 
@@ -268,9 +312,18 @@ How to trigger the flip animation
 
 > `optional` **flipDirection**: `"horizontal"` \| `"vertical"`
 
-Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:40](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L40)
+Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:98](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L98)
 
 Direction of flip animation
+
+- "horizontal": Flips left-to-right (Y-axis rotation)
+- "vertical": Flips top-to-bottom (X-axis rotation)
+
+#### Default
+
+```ts
+"horizontal";
+```
 
 ---
 
@@ -278,9 +331,15 @@ Direction of flip animation
 
 > `optional` **flipDuration**: `number`
 
-Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:42](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L42)
+Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:105](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L105)
 
 Animation duration in milliseconds
+
+#### Default
+
+```ts
+600;
+```
 
 ---
 
@@ -288,7 +347,7 @@ Animation duration in milliseconds
 
 > `optional` **className**: `string`
 
-Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:46](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L46)
+Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:109](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L109)
 
 Additional class names for the flip card container
 
@@ -302,6 +361,14 @@ Additional class names for the flip card container
 
 > `optional` **minHeight**: `string` \| `number`
 
-Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:48](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L48)
+Defined in: [workspace/catalyst-ui/lib/components/CodeFlipCard/CodeFlipCard.tsx:118](https://github.com/TheBranchDriftCatalyst/catalyst-ui/blob/main/lib/components/CodeFlipCard/CodeFlipCard.tsx#L118)
 
 Minimum height for the card container
+
+Can be a number (pixels) or a CSS string value
+
+#### Default
+
+```ts
+400;
+```
