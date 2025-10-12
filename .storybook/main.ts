@@ -4,7 +4,16 @@ import type { StorybookConfig } from "@storybook/react-vite";
 const config: StorybookConfig = {
   stories: ["../lib/**/*.mdx", "../lib/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
 
-  addons: ["@storybook/addon-a11y", "@storybook/addon-docs", "storybook-design-token"],
+  addons: [
+    "@storybook/addon-a11y",
+    "@storybook/addon-docs",
+    "@storybook/addon-interactions",
+    "@storybook/addon-links",
+    "@storybook/addon-measure",
+    "@storybook/addon-coverage",
+    "storybook-addon-pseudo-states",
+    "storybook-design-token",
+  ],
 
   async viteFinal(config) {
     const { mergeConfig } = await import("vite");
