@@ -1,19 +1,87 @@
 /**
- * Force-Directed Layout
- * Standard D3 force simulation with customizable parameters
+ * Force-Directed Layout using D3 force simulation
+ *
+ * Implements a physics-based layout algorithm that simulates attractive and
+ * repulsive forces between nodes to achieve natural, aesthetically pleasing
+ * graph arrangements.
+ *
+ * **Algorithm Overview:**
+ * - Nodes repel each other (charge force)
+ * - Edges pull connected nodes together (link force)
+ * - Nodes avoid overlapping (collision force)
+ * - Graph is centered in viewport (center force)
+ *
+ * **Performance Characteristics:**
+ * - Time Complexity: O(n²) per iteration (can be optimized with Barnes-Hut to O(n log n))
+ * - Space Complexity: O(n + e) where n = nodes, e = edges
+ * - Typical iterations: 100-300 depending on alphaDecay
+ * - Best for: General graphs with <500 nodes
+ *
+ * @module ForceGraph/utils/layering/force
+ * @see {@link https://github.com/d3/d3-force|D3 Force Documentation}
  */
 
 import * as d3 from "d3";
 import { NodeData, EdgeData } from "../../types";
 import { LayoutDimensions } from "../layouts";
 
+/**
+ * Configuration options for force-directed layout
+ *
+ * All forces can be tuned to achieve different visual effects:
+ * - Tighter clusters: Increase linkStrength, decrease chargeStrength
+ * - More spread out: Decrease linkStrength, increase chargeStrength magnitude
+ * - Faster convergence: Increase alphaDecay
+ * - Slower, smoother animation: Decrease alphaDecay
+ */
 export interface ForceLayoutOptions {
+  /**
+   * Target distance between connected nodes
+   * Can be a constant or a function for per-edge distances
+   * @default 250
+   */
   linkDistance?: number | ((edge: EdgeData) => number);
+
+  /**
+   * Strength of link attraction (0-1)
+   * Higher values pull connected nodes closer together
+   * @default 0.1
+   */
   linkStrength?: number;
+
+  /**
+   * Strength of node repulsion (negative value)
+   * More negative = stronger repulsion = more spread out
+   * @default -150
+   */
   chargeStrength?: number;
+
+  /**
+   * Collision detection radius (prevents node overlap)
+   * Should be >= visual node radius
+   * @default 65
+   */
   collisionRadius?: number;
+
+  /**
+   * Strength of centering force (0-1)
+   * Pulls all nodes toward viewport center
+   * @default 0.05
+   */
   centerStrength?: number;
+
+  /**
+   * Rate at which simulation energy decreases (0-1)
+   * Higher values = faster convergence but less stable
+   * @default 0.05
+   */
   alphaDecay?: number;
+
+  /**
+   * Initial simulation energy (0-1)
+   * Higher values = more initial movement
+   * @default 0.3
+   */
   initialAlpha?: number;
 }
 
@@ -75,8 +143,44 @@ export const ForceLayoutConfig = {
 };
 
 /**
- * Create D3 force simulation
- * Returns simulation object (dynamic layout)
+ * Create and configure a D3 force simulation
+ *
+ * This function creates a dynamic layout where node positions are continuously
+ * updated by the simulation. The returned simulation object should be managed
+ * by the caller (e.g., stopped when component unmounts).
+ *
+ * **Usage:**
+ * ```typescript
+ * const simulation = applyForceLayout(nodes, edges, { width: 800, height: 600 }, {
+ *   chargeStrength: -200,  // Stronger repulsion
+ *   linkStrength: 0.2,     // Stronger attraction
+ *   collisionRadius: 80    // Larger collision radius
+ * });
+ *
+ * // The simulation will automatically update node.x and node.y
+ * simulation.on('tick', () => {
+ *   // Re-render graph with updated positions
+ *   updateVisualization();
+ * });
+ *
+ * // Stop simulation when done
+ * simulation.stop();
+ * ```
+ *
+ * **Behavior:**
+ * - Releases any fixed positions (node.fx, node.fy)
+ * - Creates forces: link, charge, collision, center
+ * - Returns live simulation object that updates node positions
+ * - Simulation runs until alpha (energy) decays to alphaMin
+ *
+ * @param nodes - Array of nodes to layout (will be mutated with x, y coordinates)
+ * @param edges - Array of edges defining graph connectivity
+ * @param dimensions - Viewport dimensions for centering
+ * @param options - Optional force parameters to customize behavior
+ * @returns D3 simulation object (can be stopped, restarted, or configured further)
+ *
+ * @see {@link ForceLayoutOptions} for configuration details
+ * @see {@link https://github.com/d3/d3-force#simulation|D3 Simulation API}
  */
 export function applyForceLayout(
   nodes: NodeData[],

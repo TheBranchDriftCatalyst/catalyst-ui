@@ -1,18 +1,82 @@
 /**
- * Community Detection using Louvain Algorithm
- * Groups nodes into communities based on connection density
+ * Community Detection using simplified Louvain Algorithm
+ *
+ * Identifies densely connected groups of nodes within a graph, which is useful
+ * for understanding graph structure and organizing layouts.
+ *
+ * **Algorithm: Simplified Louvain Method**
+ *
+ * The Louvain method is a greedy optimization algorithm that maximizes modularity
+ * (a measure of how well-separated communities are). This implementation uses a
+ * simplified version that's fast and works well for visualization purposes.
+ *
+ * **Process:**
+ * 1. Initialize: Each node starts in its own community
+ * 2. Iterate: For each node, try moving it to neighbor communities
+ * 3. Evaluate: Choose the community with the most connections
+ * 4. Repeat: Continue until no improvements are made
+ * 5. Renumber: Assign sequential community IDs
+ *
+ * **Performance Characteristics:**
+ * - Time Complexity: O(k × (n + e)) where k = iterations (typically 5-20)
+ * - Space Complexity: O(n + e) for adjacency lists and community maps
+ * - Best for: Graphs with 10-10,000 nodes
+ * - Quality: Good approximation of true Louvain, optimized for speed
+ *
+ * **Limitations:**
+ * - Simplified version (doesn't use full modularity calculation)
+ * - May not find optimal communities on highly complex graphs
+ * - Randomized (different runs may produce different results)
+ *
+ * @module ForceGraph/utils/community
+ * @see {@link https://en.wikipedia.org/wiki/Louvain_method|Louvain Method}
  */
 
 import { NodeData, EdgeData } from "../types";
 
+/**
+ * Represents a detected community of nodes
+ */
 export interface Community {
+  /** Unique identifier for this community */
   id: number;
+  /** Array of node IDs belonging to this community */
   nodes: string[];
 }
 
 /**
  * Detect communities using simplified Louvain algorithm
- * Returns map of nodeId -> communityId
+ *
+ * This function analyzes graph connectivity to identify groups of nodes that are
+ * more densely connected to each other than to the rest of the graph.
+ *
+ * **Usage:**
+ * ```typescript
+ * const nodeToCommunity = detectCommunities(nodes, edges);
+ *
+ * // Check which community a node belongs to
+ * const community = nodeToCommunity.get(nodeId);
+ *
+ * // Count communities
+ * const numCommunities = new Set(nodeToCommunity.values()).size;
+ *
+ * // Get all nodes in a specific community
+ * const communityNodes = nodes.filter(n =>
+ *   nodeToCommunity.get(n.id) === targetCommunityId
+ * );
+ * ```
+ *
+ * **Algorithm Details:**
+ * - Uses greedy optimization to maximize intra-community connections
+ * - Randomizes node order each iteration for better convergence
+ * - Runs up to 20 iterations or until convergence
+ * - Communities are renumbered sequentially (0, 1, 2, ...)
+ *
+ * @param nodes - Array of nodes to analyze
+ * @param edges - Array of edges defining connectivity
+ * @returns Map from node ID to community ID (sequential integers starting at 0)
+ *
+ * @see {@link getCommunityGroups} to convert map to Community objects
  */
 export function detectCommunities(nodes: NodeData[], edges: EdgeData[]): Map<string, number> {
   // Build adjacency list
@@ -102,7 +166,36 @@ export function detectCommunities(nodes: NodeData[], edges: EdgeData[]): Map<str
 }
 
 /**
- * Get communities as groups of nodes
+ * Convert community map to structured Community objects
+ *
+ * Transforms the flat node-to-community map returned by {@link detectCommunities}
+ * into an array of Community objects, each containing its member nodes.
+ *
+ * **Usage:**
+ * ```typescript
+ * const nodeToCommunity = detectCommunities(nodes, edges);
+ * const communities = getCommunityGroups(nodes, nodeToCommunity);
+ *
+ * // Iterate through communities
+ * communities.forEach(community => {
+ *   console.log(`Community ${community.id} has ${community.nodes.length} nodes`);
+ *   community.nodes.forEach(nodeId => {
+ *     // Access node data
+ *     const node = nodes.find(n => n.id === nodeId);
+ *   });
+ * });
+ *
+ * // Find largest community
+ * const largest = communities.reduce((max, c) =>
+ *   c.nodes.length > max.nodes.length ? c : max
+ * );
+ * ```
+ *
+ * @param _nodes - Original node array (currently unused, kept for API compatibility)
+ * @param nodeToCommunity - Map from node ID to community ID
+ * @returns Array of Community objects, each containing an ID and member node IDs
+ *
+ * @see {@link detectCommunities} for generating the node-to-community map
  */
 export function getCommunityGroups(
   _nodes: NodeData[],

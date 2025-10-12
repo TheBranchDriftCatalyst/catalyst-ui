@@ -1,13 +1,88 @@
+/**
+ * Edge path calculation utilities
+ *
+ * Pure functions for calculating smart edge routing in graph visualizations.
+ * Handles node-to-node connections with collision avoidance, orthogonal routing,
+ * and proper anchor point selection.
+ *
+ * **Features:**
+ * - 4-handle anchor system (top, bottom, left, right) for natural connections
+ * - Orthogonal (right-angle) path routing with collision avoidance
+ * - Multiple routing strategies with automatic selection
+ * - Support for parallel edges with automatic spacing
+ * - Path midpoint calculation for label placement
+ *
+ * @module ForceGraph/utils/edgePathCalculations
+ */
+
 import { getNodeDimensions } from "./nodeDimensions";
 
 /**
- * Edge path calculation utilities
- * Pure functions for calculating edge endpoints, paths, and midpoints
+ * Result of edge endpoint calculation
  */
+interface EdgeEndpoints {
+  /** X coordinate of source anchor point */
+  x1: number;
+  /** Y coordinate of source anchor point */
+  y1: number;
+  /** X coordinate of target anchor point */
+  x2: number;
+  /** Y coordinate of target anchor point */
+  y2: number;
+}
 
 /**
- * Calculate edge endpoints using 4-handle system (top, bottom, left, right)
- * Finds the closest handle on each node to connect to the other node
+ * Calculate optimal edge endpoints using 4-handle anchor system
+ *
+ * Each node has 4 potential connection points (handles) at its edges:
+ * top, bottom, left, and right. This function selects the pair of handles
+ * that minimizes the distance between source and target nodes, creating
+ * more natural-looking connections.
+ *
+ * **Algorithm:**
+ * 1. Calculate all 4 handle positions for both nodes (based on dimensions)
+ * 2. For source node: find handle closest to target node center
+ * 3. For target node: find handle closest to source node center
+ * 4. Return selected handle coordinates
+ *
+ * **Benefits:**
+ * - Edges connect at node edges (not centers)
+ * - Connections adapt to node orientation
+ * - Reduces edge crossing visual clutter
+ * - Works with dynamic node dimensions
+ *
+ * **Usage:**
+ * ```typescript
+ * const endpoints = calculateEdgeEndpoints(
+ *   sourceNode.x, sourceNode.y,
+ *   targetNode.x, targetNode.y,
+ *   sourceNode, targetNode
+ * );
+ *
+ * // Use endpoints for straight line
+ * const path = `M ${endpoints.x1} ${endpoints.y1} L ${endpoints.x2} ${endpoints.y2}`;
+ *
+ * // Or pass to orthogonal router
+ * const orthoPath = calculateOrthogonalPath(
+ *   endpoints.x1, endpoints.y1, endpoints.x2, endpoints.y2,
+ *   sourceNode, targetNode, allNodes
+ * );
+ * ```
+ *
+ * **Performance:**
+ * - Time Complexity: O(1) - constant time calculations
+ * - Called once per edge per render frame
+ *
+ * @param sourceX - X coordinate of source node center
+ * @param sourceY - Y coordinate of source node center
+ * @param targetX - X coordinate of target node center
+ * @param targetY - Y coordinate of target node center
+ * @param sourceNode - Source node data (for dimension calculation)
+ * @param targetNode - Target node data (for dimension calculation)
+ * @returns Object with x1, y1 (source anchor) and x2, y2 (target anchor)
+ *
+ * @see {@link getNodeDimensions} for node dimension calculation
+ * @see {@link calculateOrthogonalPath} for routing between endpoints
  */
 export const calculateEdgeEndpoints = (
   sourceX: number,
@@ -74,8 +149,77 @@ export const calculateEdgeEndpoints = (
 };
 
 /**
- * Calculate orthogonal path with collision avoidance
- * Tries multiple routing strategies and picks the best one based on priority
+ * Calculate orthogonal (right-angle) path with intelligent collision avoidance
+ *
+ * Creates aesthetically pleasing paths that route around obstacles using only
+ * horizontal and vertical line segments. Tests multiple routing strategies and
+ * selects the best collision-free path.
+ *
+ * **Routing Strategies (in priority order):**
+ * 1. **Horizontal-first**: Go horizontal, then vertical, then horizontal
+ *    - Priority 1 if horizontal distance > vertical distance
+ * 2. **Vertical-first**: Go vertical, then horizontal, then vertical
+ *    - Priority 1 if vertical distance > horizontal distance
+ * 3. **Compact detours**: 4-segment paths with small offsets
+ *    - Priority 3 (fallback)
+ * 4. **Tight detours**: Guaranteed fallback with fixed offsets
+ *    - Priority 4 (always works)
+ *
+ * **Collision Detection:**
+ * - Samples 15 points along each line segment
+ * - Checks if any point intersects node bounding boxes
+ * - Adds 8px padding around nodes for visual clearance
+ * - Only checks nodes other than source/target
+ *
+ * **Parallel Edge Handling:**
+ * - Uses edgeIndex to offset paths when multiple edges exist
+ * - Alternates offset direction (even indices right/up, odd left/down)
+ * - Spacing: 15px per parallel edge
+ * - Prevents overlapping parallel connections
+ *
+ * **Usage:**
+ * ```typescript
+ * // Simple usage
+ * const path = calculateOrthogonalPath(x1, y1, x2, y2, source, target, allNodes);
+ *
+ * // With parallel edge support
+ * const path = calculateOrthogonalPath(
+ *   x1, y1, x2, y2,
+ *   source, target, allNodes,
+ *   edgeIndex  // 0 for first edge, 1 for second, etc.
+ * );
+ *
+ * // Render path
+ * <path d={path} stroke="black" fill="none" />
+ * ```
+ *
+ * **Performance:**
+ * - Time Complexity: O(r × s × n) where:
+ *   - r = routing strategies tested (typically 4-6)
+ *   - s = sample points per segment (15)
+ *   - n = number of nodes
+ * - Typical: ~360-540 point checks per edge
+ * - Consider simplifying for graphs with >1000 nodes
+ *
+ * **Visual Quality:**
+ * - Smooth 90-degree turns (no diagonal segments)
+ * - Avoids overlapping nodes
+ * - Minimal path length when possible
+ * - Consistent parallel edge spacing
+ *
+ * @param x1 - X coordinate of path start (source anchor)
+ * @param y1 - Y coordinate of path start
+ * @param x2 - X coordinate of path end (target anchor)
+ * @param y2 - Y coordinate of path end
+ * @param sourceNode - Source node (excluded from collision detection)
+ * @param targetNode - Target node (excluded from collision detection)
+ * @param allNodes - All nodes in graph (for collision detection)
+ * @param edgeIndex - Index for parallel edge offset (0 for first edge)
+ * @param _totalEdgesBetweenNodes - Reserved for future use
+ * @returns SVG path string (e.g., "M 10 20 L 30 20 L 30 50 L 60 50")
+ *
+ * @see {@link calculateEdgeEndpoints} for generating x1, y1, x2, y2
+ * @see {@link getOrthogonalPathMidpoint} for finding path center for labels
  */
 export const calculateOrthogonalPath = (
   x1: number,
@@ -220,8 +364,52 @@ export const calculateOrthogonalPath = (
 };
 
 /**
- * Get midpoint of orthogonal path for label positioning
- * Calculates the true midpoint along the path length
+ * Calculate true midpoint of orthogonal path for label positioning
+ *
+ * Finds the point that is exactly halfway along the path's total length,
+ * accounting for all segments. This is more accurate than simple (x1+x2)/2
+ * for multi-segment orthogonal paths.
+ *
+ * **Algorithm:**
+ * 1. Parse SVG path commands (M, L) into coordinate points
+ * 2. Calculate length of each segment
+ * 3. Find segment containing the 50% length mark
+ * 4. Interpolate exact position within that segment
+ *
+ * **Why This Matters:**
+ * - Orthogonal paths have multiple segments
+ * - Simple midpoint doesn't account for path shape
+ * - This ensures labels appear centered on the actual path
+ * - Works correctly for all routing strategies
+ *
+ * **Usage:**
+ * ```typescript
+ * const path = calculateOrthogonalPath(x1, y1, x2, y2, source, target, nodes);
+ * const midpoint = getOrthogonalPathMidpoint(path);
+ *
+ * // Position label at midpoint
+ * <text x={midpoint.x} y={midpoint.y} textAnchor="middle">
+ *   Edge Label
+ * </text>
+ *
+ * // Or position marker/icon
+ * <circle cx={midpoint.x} cy={midpoint.y} r={4} />
+ * ```
+ *
+ * **Edge Cases:**
+ * - Empty path: Returns {x: 0, y: 0}
+ * - Single segment: Returns geometric midpoint
+ * - Zero-length segments: Skipped in calculation
+ *
+ * **Performance:**
+ * - Time Complexity: O(s) where s = number of segments
+ * - Typical: 3-5 segments, very fast
+ * - No heavy calculations, just parsing and arithmetic
+ *
+ * @param pathString - SVG path string from {@link calculateOrthogonalPath}
+ * @returns Object with x, y coordinates of the path's true midpoint
+ *
+ * @see {@link calculateOrthogonalPath} generates the paths this function analyzes
  */
 export const getOrthogonalPathMidpoint = (pathString: string) => {
   const commands = pathString.match(/[MLZ][^MLZ]*/g) || [];
