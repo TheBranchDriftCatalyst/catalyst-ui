@@ -57,7 +57,7 @@
     "dev:test": "test-storybook --coverage",
     "docs:api": "typedoc",
     "docs:api:watch": "typedoc --watch",
-    "docs:api:preview": "vite preview --outDir docs/api-html --port 5174",
+    "docs:api:preview": "python3 -m http.server 5174 --directory docs/api-html",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
