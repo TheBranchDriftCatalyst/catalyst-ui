@@ -121,6 +121,7 @@ log_environment() {
 
     log_substep "Environment Variables:"
     log_metric "BASE_PATH: ${BASE_PATH:-/catalyst-ui/}"
+    log_metric "VITE_BASE_URL: ${VITE_BASE_URL:-https://thebranchdriftcatalyst.github.io/catalyst-ui}"
     log_metric "NODE_ENV: ${NODE_ENV:-production}"
     log_metric "CI: ${CI:-false}"
     log_metric "VITE_CATALYST_DEV_UTILS_ENABLED: ${VITE_CATALYST_DEV_UTILS_ENABLED:-false}"
@@ -169,10 +170,13 @@ build_app() {
 
     log_substep "Running: yarn build:app"
     log_metric "Base path: ${BASE_PATH:-/catalyst-ui/}"
+    log_metric "Base URL: ${VITE_BASE_URL:-https://thebranchdriftcatalyst.github.io/catalyst-ui}"
     log_metric "Dev utils: enabled (demo mode)"
 
     cd "${PROJECT_ROOT}"
-    VITE_BASE_PATH="${BASE_PATH:-/catalyst-ui/}" yarn build:app
+    VITE_BASE_PATH="${BASE_PATH:-/catalyst-ui/}" \
+    VITE_BASE_URL="${VITE_BASE_URL:-https://thebranchdriftcatalyst.github.io/catalyst-ui}" \
+    yarn build:app
 
     local build_end=$(date +%s)
     local duration=$((build_end - build_start))

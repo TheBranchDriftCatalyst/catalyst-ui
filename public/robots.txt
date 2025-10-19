@@ -1,0 +1,15 @@
+# Catalyst UI - robots.txt
+# https://catalyst-ui.dev/robots.txt
+
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://catalyst-ui.dev/sitemap.xml
+
+# Crawl delay (optional - helps avoid overwhelming the server)
+# Crawl-delay: 1
+
+# Disallow development/testing paths (if any)
+# Disallow: /api/
+# Disallow: /__test__/

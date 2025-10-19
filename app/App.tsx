@@ -1,6 +1,12 @@
 import "../lib/global.css";
 import { ThemeProvider } from "@/catalyst-ui/contexts/Theme/ThemeProvider";
 import { I18nProvider } from "@/catalyst-ui/contexts/i18n";
+import {
+  AnalyticsProvider,
+  AnalyticsErrorBoundary,
+  useAnalytics,
+} from "@/catalyst-ui/contexts/Analytics";
+import { SEOProvider, useSEO } from "@/catalyst-ui/contexts/SEO";
 import { DevProviders, DevModeToggle } from "@/catalyst-ui/dev/components";
 import { CatalystHeader } from "@/catalyst-ui/components/CatalystHeader/CatalystHeader";
 import { HeaderProvider } from "@/catalyst-ui/components/CatalystHeader/HeaderProvider";
@@ -17,8 +23,12 @@ import { SectionNavigation, type Section } from "./components/SectionNavigation"
 import { LocaleSwitcher } from "@/catalyst-ui/components/LocaleSwitcher";
 
 import { tabComponents, initialTabs } from "./tabs/loader";
+import { DEFAULT_SEO, getSEOForTab } from "./seo-config";
 
 function KitchenSink() {
+  const analytics = useAnalytics();
+  const seo = useSEO();
+
   // Read initial section and tab from URL path
   const getInitialState = () => {
     const pathSegments = window.location.pathname.split("/").filter(Boolean);
@@ -59,15 +69,18 @@ function KitchenSink() {
           value: parts.join("").toLowerCase(),
           label: parts.join(" "),
           order: filtered.length,
-          section: "catalyst" as const,
+          section: "catalyst" as const, // Default section (no nesting)
         });
       }
     }
     return filtered.sort((a, b) => a.order - b.order || a.name.localeCompare(b.name));
   });
 
-  // Filter tabs by active section
-  const sectionTabs = TABS.filter(t => t.section === activeSection);
+  // Filter tabs by active section (matches first part before dot)
+  const sectionTabs = TABS.filter(t => {
+    const topLevelSection = t.section.split(".")[0];
+    return topLevelSection === activeSection;
+  });
 
   // Update URL when section or tab changes
   useEffect(() => {
@@ -75,7 +88,20 @@ function KitchenSink() {
     const newPath = `/${activeSection}/${activeTab}`;
     const newUrl = params.toString() ? `${newPath}?${params.toString()}` : newPath;
     window.history.replaceState({}, "", newUrl);
-  }, [activeSection, activeTab]);
+
+    // Track page view in analytics
+    if (analytics.isInitialized) {
+      const currentTab = TABS.find(t => t.value === activeTab && t.section === activeSection);
+      const pageTitle = currentTab
+        ? `${currentTab.label} - ${activeSection}`
+        : `${activeTab} - ${activeSection}`;
+      analytics.trackPageView(newPath, pageTitle);
+    }
+
+    // Update SEO metadata for current tab
+    const seoConfig = getSEOForTab(activeTab, activeSection);
+    seo.updateSEO(seoConfig);
+  }, [activeSection, activeTab, analytics, TABS]);
 
   // Handle browser back/forward
   useEffect(() => {
@@ -85,11 +111,23 @@ function KitchenSink() {
       const tab = pathSegments[1] || "overview";
       setActiveSection(section);
       setActiveTab(tab);
+
+      // Track page view when using browser back/forward
+      if (analytics.isInitialized) {
+        const currentTab = TABS.find(t => t.value === tab && t.section === section);
+        const pageTitle = currentTab ? `${currentTab.label} - ${section}` : `${tab} - ${section}`;
+        const path = `/${section}/${tab}`;
+        analytics.trackPageView(path, pageTitle);
+      }
+
+      // Update SEO metadata when navigating
+      const seoConfig = getSEOForTab(tab, section);
+      seo.updateSEO(seoConfig);
     };
 
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
-  }, []);
+  }, [analytics, TABS]);
 
   // Handle section change - switch to first tab in new section
   const handleSectionChange = (newSection: Section) => {
@@ -146,6 +184,7 @@ function KitchenSink() {
             items={sectionTabs.map(t => ({
               label: t.label,
               value: t.value,
+              section: t.section, // Section with dot notation for nested grouping
             }))}
             activeValue={activeTab}
             onValueChange={setActiveTab}
@@ -180,14 +219,36 @@ function KitchenSink() {
 function App() {
   return (
     <I18nProvider>
-      <DevProviders>
-        <ThemeProvider>
-          <HeaderProvider>
-            <KitchenSink />
-            <Toaster />
-          </HeaderProvider>
-        </ThemeProvider>
-      </DevProviders>
+      <SEOProvider
+        config={{
+          defaultSEO: DEFAULT_SEO,
+          baseUrl: "https://catalyst-ui.dev",
+          siteName: "Catalyst UI",
+          twitterHandle: "@catalyst_ui",
+        }}
+      >
+        <AnalyticsProvider
+          config={{
+            // To enable Google Analytics 4, set your measurement ID here:
+            // measurementId: "G-XXXXXXXXXX",
+            debug: import.meta.env.DEV, // Enable debug logging in development
+            enablePerformance: true,
+            enableErrorTracking: true,
+            enableUserJourney: true,
+          }}
+        >
+          <AnalyticsErrorBoundary>
+            <DevProviders>
+              <ThemeProvider>
+                <HeaderProvider>
+                  <KitchenSink />
+                  <Toaster />
+                </HeaderProvider>
+              </ThemeProvider>
+            </DevProviders>
+          </AnalyticsErrorBoundary>
+        </AnalyticsProvider>
+      </SEOProvider>
     </I18nProvider>
   );
 }

@@ -10,6 +10,7 @@
 
 import { promises as fs } from "fs";
 import path from "path";
+import { createCanvas, SKRSContext2D } from "@napi-rs/canvas";
 import { createPluginLogger } from "./plugin-logger";
 
 /**
@@ -24,11 +25,156 @@ import { createPluginLogger } from "./plugin-logger";
 const lastGeneratedAt = new Map<string, number>();
 
 /**
+ * Theme-based gradient colors for OG images
+ */
+const THEME_GRADIENTS: Record<string, [string, string]> = {
+  catalyst: ["#00ffff", "#ff00ff"], // Cyan to magenta
+  dracula: ["#bd93f9", "#ff79c6"], // Purple to pink
+  gold: ["#ffd700", "#ff8c00"], // Gold to dark orange
+  laracon: ["#ff2d20", "#ff6b6b"], // Red gradient
+  nature: ["#22c55e", "#86efac"], // Green gradient
+  netflix: ["#e50914", "#b20710"], // Netflix red
+  nord: ["#88c0d0", "#5e81ac"], // Nordic blue
+};
+
+/**
+ * Icon/emoji mapping for different tab types
+ */
+const TAB_ICONS: Record<string, string> = {
+  overview: "🏠",
+  cards: "🃏",
+  components: "🎨",
+  animations: "✨",
+  forcegraph: "🕸️",
+  forms: "📝",
+  observability: "📊",
+  githubprofile: "👤",
+  resume: "📄",
+  rbmkreactor: "⚛️",
+  changelog: "📋",
+  tokens: "🎭",
+  typography: "🔤",
+  display: "🖼️",
+};
+
+/**
+ * Get icon for a tab value
+ */
+function getTabIcon(tabValue: string): string {
+  return TAB_ICONS[tabValue] || "⚡";
+}
+
+/**
+ * Generate OG image using Node.js Canvas API
+ */
+async function generateOGImage(
+  title: string,
+  subtitle: string,
+  theme: keyof typeof THEME_GRADIENTS,
+  icon: string
+): Promise<Buffer> {
+  // Create canvas (1200x630 - recommended OG image size)
+  const canvas = createCanvas(1200, 630);
+  const ctx = canvas.getContext("2d") as SKRSContext2D;
+
+  // Get gradient colors
+  const [color1, color2] = THEME_GRADIENTS[theme];
+
+  // Background gradient
+  const bgGradient = ctx.createLinearGradient(0, 0, 1200, 630);
+  bgGradient.addColorStop(0, color1);
+  bgGradient.addColorStop(1, color2);
+  ctx.fillStyle = bgGradient;
+  ctx.fillRect(0, 0, 1200, 630);
+
+  // Dark overlay for better text contrast
+  ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+  ctx.fillRect(0, 0, 1200, 630);
+
+  // Grid pattern overlay (cyberpunk aesthetic)
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.05)";
+  ctx.lineWidth = 1;
+  const gridSize = 40;
+  for (let x = 0; x < 1200; x += gridSize) {
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, 630);
+    ctx.stroke();
+  }
+  for (let y = 0; y < 630; y += gridSize) {
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(1200, y);
+    ctx.stroke();
+  }
+
+  // Icon/Emoji at top
+  ctx.font = "120px Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = "#ffffff";
+  ctx.fillText(icon, 600, 180);
+
+  // Title
+  ctx.font = "bold 72px sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = "#ffffff";
+  ctx.shadowColor = "rgba(0, 0, 0, 0.5)";
+  ctx.shadowBlur = 20;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 4;
+
+  // Word wrap title if too long
+  const maxWidth = 1000;
+  const words = title.split(" ");
+  let line = "";
+  const lines: string[] = [];
+
+  for (const word of words) {
+    const testLine = line + word + " ";
+    const metrics = ctx.measureText(testLine);
+    if (metrics.width > maxWidth && line.length > 0) {
+      lines.push(line.trim());
+      line = word + " ";
+    } else {
+      line = testLine;
+    }
+  }
+  lines.push(line.trim());
+
+  // Draw title lines
+  const lineHeight = 80;
+  const startY = 340 - ((lines.length - 1) * lineHeight) / 2;
+  lines.forEach((line, index) => {
+    ctx.fillText(line, 600, startY + index * lineHeight);
+  });
+
+  // Subtitle
+  ctx.font = "32px sans-serif";
+  ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+  ctx.shadowBlur = 10;
+  ctx.fillText(subtitle, 600, startY + lines.length * lineHeight + 40);
+
+  // Decorative line
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(300, 530);
+  ctx.lineTo(900, 530);
+  ctx.stroke();
+
+  // Convert to PNG buffer
+  return canvas.toBuffer("image/png");
+}
+
+/**
  * 🌃 Tabs manifest generation plugin
  *
  * **Mission:**
  * Automatically discover tab components in `app/tabs/` and generate
  * a manifest file (.tabs.manifest.json) with metadata for navigation.
+ * Also generates Open Graph images for each tab.
  *
  * **Discovery Pattern:**
  * - Scans for files matching: `[Name]Tab.tsx`
@@ -44,11 +190,13 @@ const lastGeneratedAt = new Map<string, number>();
  * **Features:**
  * - 🔄 Live reload during development
  * - 🎯 Intelligent duplicate detection
- * - ⚡ Debounced file watching (250ms)
+ * - ⚡ Debounced file watching (500ms)
  * - 📊 Validation warnings for conflicts
+ * - 🖼️ Auto-generates OG images (1200x630)
  *
  * **Output:**
- * Generates `app/.tabs.manifest.json` (hidden dotfile)
+ * - Generates `app/.tabs.manifest.json` (hidden dotfile)
+ * - Generates `public/og/{tab-value}.png` for each tab
  *
  * @returns {Plugin} Vite plugin instance
  */
@@ -216,15 +364,17 @@ export default function tabsManifestPlugin() {
           label = labelMatch[1];
         }
 
-        // Option 3: TAB_SECTION export (determines grouping)
+        // Option 3: TAB_SECTION export (determines grouping - supports dot notation for nesting)
+        // Examples: "catalyst", "projects", "projects.misc"
         let section = "catalyst"; // Default section
         const sectionMatch = src.match(/export\s+const\s+TAB_SECTION\s*=\s*['"`]([^'"`]+)['"`]/);
         if (sectionMatch) {
-          section = sectionMatch[1];
+          section = sectionMatch[1]; // Can be "projects.misc" for nested sections
         }
 
         // Option 4: TAB_META export (unified metadata object - preferred)
         // Example: export const TAB_META = { order: 0, label: "Home", section: "catalyst" }
+        // Supports nested sections: section: "projects.misc"
         const metaMatch = src.match(/export\s+const\s+TAB_META\s*=\s*{([\s\S]*?)}/m);
         if (metaMatch) {
           const body = metaMatch[1];
@@ -241,11 +391,11 @@ export default function tabsManifestPlugin() {
             label = mLabel[1];
           }
           if (mSection) {
-            section = mSection[1];
+            section = mSection[1]; // Can be "projects.misc" for nested sections
           }
         }
 
-        // ✅ Add entry to manifest
+        // ✅ Add entry to manifest with dot notation for nested sections
         entries.push({ compKey, name, value, label, order, section });
       }
 
@@ -281,6 +431,36 @@ export default function tabsManifestPlugin() {
           `  Duplicate values: ${JSON.stringify(uniqueDupValues)}\n` +
           `  Duplicate compKeys: ${JSON.stringify(uniqueDupCompKeys)}`
         );
+      }
+
+      // 🖼️ Generate OG images for all tabs
+      try {
+        const ogDir = path.join(repoRoot, "public", "og");
+        await fs.mkdir(ogDir, { recursive: true });
+
+        let ogGenerated = 0;
+        for (const entry of entries) {
+          const topSection = entry.section.split(".")[0];
+          const theme = topSection === "projects" ? "laracon" : "catalyst";
+          const icon = getTabIcon(entry.value);
+
+          // Generate OG image
+          const imageBuffer = await generateOGImage(
+            entry.label,
+            "Catalyst UI Component Library",
+            theme as keyof typeof THEME_GRADIENTS,
+            icon
+          );
+
+          // Save to public/og/{tab-value}.png
+          const outputPath = path.join(ogDir, `${entry.value}.png`);
+          await fs.writeFile(outputPath, imageBuffer);
+          ogGenerated++;
+        }
+
+        logger.info(`Generated ${ogGenerated} OG images`);
+      } catch (ogErr) {
+        logger.error("Failed to generate OG images", ogErr);
       }
     } catch (err) {
       // Don't crash the build on manifest generation errors

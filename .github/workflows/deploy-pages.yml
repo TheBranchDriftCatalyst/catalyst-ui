@@ -39,6 +39,7 @@ jobs:
         run: ./scripts/build-ci.sh
         env:
           BASE_PATH: /catalyst-ui/
+          VITE_BASE_URL: https://thebranchdriftcatalyst.github.io/catalyst-ui
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

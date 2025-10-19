@@ -10,6 +10,7 @@ import tabsManifestPlugin from "./build/vite-plugin-tabs-manifest";
 import concatDocsPlugin from "./build/vite-plugin-concat-docs";
 import preserveUseClient from "./build/vite-plugin-preserve-use-client";
 import { i18nApiPlugin } from "./build/vite-plugin-i18n-api";
+import sitemapPlugin from "./build/vite-plugin-sitemap";
 import { execSync } from "child_process";
 import { readFileSync } from "fs";
 
@@ -43,7 +44,13 @@ export default defineConfig({
     __LAST_COMMIT__: JSON.stringify(lastCommit),
   },
   plugins: [
-    tabsManifestPlugin(),
+    tabsManifestPlugin(), // Generates manifest + OG images
+    sitemapPlugin({
+      // Use env variable from CI, fallback to GitHub Pages URL for dev
+      baseUrl: process.env.VITE_BASE_URL || "https://thebranchdriftcatalyst.github.io/catalyst-ui",
+      defaultChangefreq: "weekly",
+      defaultPriority: 0.8,
+    }),
     concatDocsPlugin(),
     i18nApiPlugin(),
     react(),

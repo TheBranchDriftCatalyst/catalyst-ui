@@ -2,13 +2,15 @@ import { cn } from "@/catalyst-ui/utils";
 import { Sheet, SheetContent } from "@/catalyst-ui/ui/sheet";
 import { ScrollArea } from "@/catalyst-ui/ui/scroll-area";
 import { Button } from "@/catalyst-ui/ui/button";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/catalyst-ui/ui/collapsible";
 import { useEffect, useState } from "react";
-import { ChevronRight, ChevronLeft } from "lucide-react";
+import { ChevronRight, ChevronLeft, ChevronDown } from "lucide-react";
 
 export interface SidebarNavItem {
   label: string;
   value: string;
   icon?: React.ReactNode;
+  section?: string; // Section with dot notation for nesting (e.g., "projects.misc")
 }
 
 export interface SidebarNavProps {
@@ -68,45 +70,89 @@ export function SidebarNav({
     }
   };
 
+  // Group items by their subsection (second part after dot in section)
+  const grouped = items.reduce(
+    (acc, item) => {
+      const sectionParts = item.section?.split(".") || [];
+      const subsection = sectionParts[1]; // e.g., "misc" from "projects.misc"
+
+      if (!subsection) {
+        // No nesting - add to ungrouped
+        if (!acc.ungrouped) acc.ungrouped = [];
+        acc.ungrouped.push(item);
+      } else {
+        // Has subsection - group by it
+        if (!acc[subsection]) acc[subsection] = [];
+        acc[subsection].push(item);
+      }
+
+      return acc;
+    },
+    {} as Record<string, SidebarNavItem[]>
+  );
+
+  const renderNavItem = (item: SidebarNavItem, index: number) => {
+    const isActive = item.value === activeValue;
+
+    return (
+      <button
+        key={item.value}
+        onClick={() => handleItemClick(item.value)}
+        style={{ animationDelay: `${index * 30}ms` }}
+        className={cn(
+          "group relative w-full text-left px-3 py-2.5 text-sm font-medium rounded-md overflow-hidden",
+          "transition-all duration-300 ease-out",
+          "hover:translate-x-0.5",
+          isActive
+            ? "text-foreground bg-gradient-to-r from-primary/20 to-primary/5"
+            : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
+        )}
+      >
+        {/* Active indicator with glow */}
+        {isActive && (
+          <>
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-r-full shadow-[0_0_8px_rgba(var(--primary-rgb),0.6)]" />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-50" />
+          </>
+        )}
+
+        <span className="relative flex items-center gap-2.5 z-10">
+          {item.icon && <span className="shrink-0">{item.icon}</span>}
+          <span className="truncate">{item.label}</span>
+        </span>
+
+        {/* Hover glow effect */}
+        <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      </button>
+    );
+  };
+
   const navContent = (
     <div className="h-full flex flex-col backdrop-blur-sm">
       <ScrollArea className="flex-1">
         <nav className="flex flex-col gap-0.5 p-3">
-          {items.map((item, index) => {
-            const isActive = item.value === activeValue;
+          {/* Render ungrouped items first */}
+          {grouped.ungrouped?.map((item, index) => renderNavItem(item, index))}
 
-            return (
-              <button
-                key={item.value}
-                onClick={() => handleItemClick(item.value)}
-                style={{ animationDelay: `${index * 30}ms` }}
-                className={cn(
-                  "group relative w-full text-left px-3 py-2.5 text-sm font-medium rounded-md overflow-hidden",
-                  "transition-all duration-300 ease-out",
-                  "hover:translate-x-0.5",
-                  isActive
-                    ? "text-foreground bg-gradient-to-r from-primary/20 to-primary/5"
-                    : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
-                )}
-              >
-                {/* Active indicator with glow */}
-                {isActive && (
-                  <>
-                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-r-full shadow-[0_0_8px_rgba(var(--primary-rgb),0.6)]" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-50" />
-                  </>
-                )}
+          {/* Render grouped sections */}
+          {Object.entries(grouped)
+            .filter(([key]) => key !== "ungrouped")
+            .map(([subsection, groupItems], groupIndex) => {
+              // Capitalize subsection name for display
+              const displayName = subsection.charAt(0).toUpperCase() + subsection.slice(1);
 
-                <span className="relative flex items-center gap-2.5 z-10">
-                  {item.icon && <span className="shrink-0">{item.icon}</span>}
-                  <span className="truncate">{item.label}</span>
-                </span>
-
-                {/* Hover glow effect */}
-                <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </button>
-            );
-          })}
+              return (
+                <Collapsible key={subsection} defaultOpen>
+                  <CollapsibleTrigger className="group w-full flex items-center gap-2 px-2 py-2 text-xs font-semibold text-muted-foreground/70 hover:text-muted-foreground transition-colors">
+                    <ChevronDown className="h-3.5 w-3.5 transition-transform duration-200 group-data-[state=closed]:-rotate-90" />
+                    <span className="uppercase tracking-wider">{displayName}</span>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="space-y-0.5 pl-2 mt-0.5">
+                    {groupItems.map((item, index) => renderNavItem(item, index + groupIndex * 10))}
+                  </CollapsibleContent>
+                </Collapsible>
+              );
+            })}
         </nav>
       </ScrollArea>
     </div>
