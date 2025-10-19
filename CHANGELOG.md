@@ -3,6 +3,43 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+## [1.5.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v1.4.0...v1.5.0) (2025-10-19)
+
+
+### 🤖 CI/CD PIPELINE
+
+- disable coverage badge generation ([062cc76](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/062cc7614fe31edd13fa08afbf92b09cb715681b))
+
+
+### 🔧 BUG FIXES
+
+- **ci:** correct coverage badge workflow step order ([06bc1c3](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/06bc1c3c279d9ceaf53f5cbec340a63685c99317))
+- **docs:** use Python HTTP server for docs preview ([2ec5ee0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/2ec5ee081235df054f9b63f2cc76d9b3858206c6))
+- **storybook:** remove Storybook 9 incompatible addons ([f9ed645](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/f9ed645c0aac3115ac8d8310dd69f705a9515ed1))
+
+
+### 📚 DOCUMENTATION
+
+- **api:** generate HTML documentation with plugin ecosystem ([43357b9](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/43357b99f6cdd60b77b3d3dcf4fa7e5d219a8f00))
+- **api:** regenerate TypeDoc documentation ([6527b06](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/6527b066462484d36b811ee9f12e99ca24a72d28))
+- **api:** remove old markdown documentation ([f1a1ca2](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/f1a1ca23f3e2af6d78cf779c2d458913fa10f0d8))
+- **components:** add comprehensive TSDoc to main components ([219a777](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/219a77771495c2507acccb61ead5e92a1423a065))
+- **effects:** add comprehensive TSDoc to animation HOCs ([399c256](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/399c256f0b212862299948e2e99c1fbaeb9e2705))
+- **hooks:** add comprehensive TSDoc to custom hooks ([842cca8](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/842cca87c841f2dccc7120bae95186b95e3455ee))
+- **markdown,mermaid,contexts,ForceGraph:** add comprehensive TSDoc ([baf25d7](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/baf25d78ac427229cda3e991329887fad2607f95))
+- **ui:** add comprehensive TSDoc to UI primitives ([13954fc](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/13954fca8a069d3af02b89bec207b8b8637c99ac))
+- **utils:** add comprehensive TSDoc to core utilities ([98cec5b](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/98cec5bcfbc3f9dd21319eda581f15cb2693f030))
+
+
+### ⚡ NEW FEATURES
+
+- **docs,storybook:** add comprehensive plugin ecosystem ([faf46b0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/faf46b0e7ac1493ed7d846454173fe805bd1c68f))
+- **docs,ui:** add RBMK reactor component + update SEO documentation ([9e35870](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/9e358708ac2dc44d91ce5d565b2d02f4a34a0fc3))
+- **docs:** add docs:api:preview command for HTML documentation ([b2df12d](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/b2df12d95e4254c4b5ded99c41b837c022f94c32))
+- implement annotation system and i18n editing + update docs ([033aff3](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/033aff3b5462a5e3caf49932260bfee9bd56cf1c))
+- **seo,build:** add comprehensive SEO/analytics + build automation ([6c31209](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/6c31209c4867a918252cad8964fb457caf413c59))
+- **vite:** extract vite plugins and sexify them ([6c78c38](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/6c78c382b3f4e059384dd81eabe654e33096e574))
+
 ## [1.4.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v1.3.0...v1.4.0) (2025-10-10)
 
 
