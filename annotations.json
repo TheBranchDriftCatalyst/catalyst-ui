@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "componentName": "ComponentsTab",
+    "note": "sup dawg this is kinda cool",
+    "type": "note",
+    "priority": "medium",
+    "instanceId": "qwn0rh",
+    "treePath": "App > KitchenSink > Tabs > Primitive.div > ScrollSnapContainer > TabsContent > TabsContent > Presence > Primitive.div > ComponentsTab",
+    "id": "744232eb-9e80-4ce1-aded-f60e7dba362f",
+    "timestamp": 1760315444263
+  }
+]

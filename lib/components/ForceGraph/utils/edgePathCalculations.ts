@@ -18,20 +18,6 @@
 import { getNodeDimensions } from "./nodeDimensions";
 
 /**
- * Result of edge endpoint calculation
- */
-interface EdgeEndpoints {
-  /** X coordinate of source anchor point */
-  x1: number;
-  /** Y coordinate of source anchor point */
-  y1: number;
-  /** X coordinate of target anchor point */
-  x2: number;
-  /** Y coordinate of target anchor point */
-  y2: number;
-}
-
-/**
  * Calculate optimal edge endpoints using 4-handle anchor system
  *
  * Each node has 4 potential connection points (handles) at its edges:
