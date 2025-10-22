@@ -1,0 +1,2 @@
+- [ ] split files up into singular components
+- [ ] move this folder to apps/RBMKReactor
