@@ -76,7 +76,7 @@
     "name": "Resume",
     "value": "resume",
     "label": "Character Sheet",
-    "order": 11,
+    "order": 12,
     "section": "projects"
   },
   {
@@ -84,7 +84,7 @@
     "name": "Tokens",
     "value": "tokens",
     "label": "Tokens",
-    "order": 12,
+    "order": 13,
     "section": "catalyst"
   },
   {
@@ -92,8 +92,16 @@
     "name": "Typography",
     "value": "typography",
     "label": "Type",
-    "order": 13,
+    "order": 14,
     "section": "catalyst"
+  },
+  {
+    "compKey": "WelcomeTab",
+    "name": "Welcome",
+    "value": "welcome",
+    "label": "Welcome",
+    "order": 15,
+    "section": "home"
   },
   {
     "compKey": "RBMKReactorTab",
@@ -101,6 +109,14 @@
     "value": "rbmkreactor",
     "label": "R B M K Reactor",
     "order": 100,
+    "section": "projects.misc"
+  },
+  {
+    "compKey": "PaperTradarrTab",
+    "name": "PaperTradarr",
+    "value": "papertradarr",
+    "label": "Paper Tradarr",
+    "order": 101,
     "section": "projects.misc"
   },
   {

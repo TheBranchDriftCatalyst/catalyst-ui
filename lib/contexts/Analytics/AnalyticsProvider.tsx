@@ -279,9 +279,13 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({ children, 
       const id = target.id;
       const className = target.className;
 
+      // Handle className which can be a string, DOMTokenList, or SVGAnimatedString
+      const classNameStr = typeof className === "string" ? className : "";
+      const firstClass = classNameStr ? `.${classNameStr.split(" ")[0]}` : "";
+
       trackJourneyStep({
         type: "click",
-        target: `${tagName}${id ? `#${id}` : ""}${className ? `.${className.split(" ")[0]}` : ""}`,
+        target: `${tagName}${id ? `#${id}` : ""}${firstClass}`,
         data: {
           x: e.clientX,
           y: e.clientY,

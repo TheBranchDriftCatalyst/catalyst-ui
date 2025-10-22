@@ -5,7 +5,16 @@
  * Uses requestAnimationFrame for smooth 60fps animation.
  */
 
-import { Atom, ControlRod, Neutron, Position, Velocity, ReactorConfig, HeatGrid } from "./types";
+import {
+  Atom,
+  ControlRod,
+  Neutron,
+  Position,
+  Velocity,
+  ReactorConfig,
+  HeatGrid,
+  WaterGrid,
+} from "./types";
 
 /**
  * Generate a random ID for particles
@@ -45,8 +54,14 @@ export function randomVelocity(speed: number): Velocity {
 
 /**
  * Create a new neutron at given position with random direction
+ * @param parentAtomId - Optional ID of the atom that emitted this neutron (prevents immediate re-absorption)
  */
-export function createNeutron(position: Position, config: ReactorConfig, speed?: number): Neutron {
+export function createNeutron(
+  position: Position,
+  config: ReactorConfig,
+  speed?: number,
+  parentAtomId?: string
+): Neutron {
   const variance = config.neutron.speedVariation;
   const baseSpeed = speed ?? config.neutron.baseSpeed;
   const actualSpeed = baseSpeed * (1 + (Math.random() - 0.5) * variance * 2);
@@ -61,6 +76,7 @@ export function createNeutron(position: Position, config: ReactorConfig, speed?:
     isNew: true,
     trail: [{ ...position }],
     wallBounces: 0,
+    parentAtomId,
   };
 }
 
@@ -86,8 +102,18 @@ export function updateNeutronPosition(neutron: Neutron, deltaTime: number): void
 
 /**
  * Check collision between neutron and atom
+ * Prevents immediate re-absorption by parent atom during first 50ms of neutron lifetime
  */
 export function checkAtomCollision(neutron: Neutron, atom: Atom, config: ReactorConfig): boolean {
+  // Parent atom exclusion: newly-emitted neutrons can't collide with their source atom
+  // This prevents the common issue where neutrons spawn and immediately get re-absorbed
+  // Grace period: 50ms (roughly 3 frames at 60fps)
+  const PARENT_EXCLUSION_TIME = 50; // milliseconds
+
+  if (neutron.parentAtomId === atom.id && neutron.age < PARENT_EXCLUSION_TIME) {
+    return false; // Skip collision with parent atom during grace period
+  }
+
   const dist = distance(neutron.position, atom.position);
   const threshold = neutron.radius + atom.radius + config.physics.collisionThreshold;
   return dist <= threshold;
@@ -153,14 +179,20 @@ export function handleRodCollision(
   config: ReactorConfig,
   currentTime: number
 ): boolean {
-  // Check if absorbed based on B-10 absorption probability
-  if (Math.random() < config.controlRod.absorptionProbability) {
+  // Absorption probability scales with rod health
+  // Damaged rods (health < 1.0) have reduced absorption efficiency
+  // health = 1.0 → 98% absorption
+  // health = 0.5 → 49% absorption
+  // health = 0.0 → 0% absorption (rod completely destroyed)
+  const effectiveAbsorption = config.controlRod.absorptionProbability * rod.health;
+
+  if (Math.random() < effectiveAbsorption) {
     rod.absorbedCount += 1;
     rod.isAbsorbing = true;
     rod.lastAbsorptionTime = currentTime;
     return true; // neutron absorbed
   }
-  return false; // neutron passed through (rare)
+  return false; // neutron passed through (rod damaged or 2% random chance)
 }
 
 /**
@@ -168,6 +200,9 @@ export function handleRodCollision(
  */
 export function updateAtom(
   atom: Atom,
+  waterGrid: WaterGrid,
+  vesselLeft: number,
+  vesselTop: number,
   config: ReactorConfig,
   deltaTime: number,
   _currentTime: number
@@ -180,12 +215,28 @@ export function updateAtom(
   // Update emission timer
   atom.timeSinceEmission += deltaTime;
 
+  // POSITIVE VOID COEFFICIENT: Calculate reactivity boost from steam voids
+  // Get local water density at atom position
+  const waterDensity = getWaterDensityAtPosition(
+    waterGrid,
+    atom.position.x,
+    atom.position.y,
+    vesselLeft,
+    vesselTop
+  );
+  const localVoidFraction = 1 - waterDensity; // 0 = all water, 1 = all steam
+
+  // Apply void coefficient reactivity boost
+  // More steam → higher reactivity → more neutron emission
+  // voidCoefficient from config (default: 4.5 β = pre-Chernobyl dangerous level)
+  const reactivityBoost = 1.0 + localVoidFraction * config.water.voidCoefficient;
+
   // Check for neutron emission
   // Emission rate scales with energy level (higher energy = faster emission)
   // At minimum threshold energy (0.3): baseEmissionRate
   // At maximum energy (1.0): baseEmissionRate * 3.33 (scale factor)
   const energyScaleFactor = atom.energy / config.atom.emissionThreshold;
-  const scaledEmissionRate = config.atom.baseEmissionRate * energyScaleFactor;
+  const scaledEmissionRate = config.atom.baseEmissionRate * energyScaleFactor * reactivityBoost;
   const emissionInterval = 1000 / scaledEmissionRate; // ms between emissions
 
   const shouldEmit =
@@ -196,10 +247,15 @@ export function updateAtom(
     const numNeutrons = Math.round(config.atom.neutronsPerFission + (Math.random() - 0.5) * 0.5);
 
     for (let i = 0; i < numNeutrons; i++) {
-      // Add small random offset from atom center
+      // Spawn neutron OUTSIDE collision radius to prevent immediate re-absorption
+      // Safe distance = atom.radius + neutron.radius + collisionThreshold + buffer
+      const safeDistance =
+        atom.radius + config.neutron.radius + config.physics.collisionThreshold + 2;
+      const angle = (Math.PI * 2 * i) / numNeutrons + Math.random() * 0.3; // Spread evenly with small randomness
+
       const offset = {
-        x: (Math.random() - 0.5) * atom.radius,
-        y: (Math.random() - 0.5) * atom.radius,
+        x: Math.cos(angle) * safeDistance,
+        y: Math.sin(angle) * safeDistance,
       };
 
       newNeutrons.push(
@@ -208,7 +264,9 @@ export function updateAtom(
             x: atom.position.x + offset.x,
             y: atom.position.y + offset.y,
           },
-          config
+          config,
+          undefined, // use default speed
+          atom.id // parentAtomId - prevents immediate re-absorption
         )
       );
     }
@@ -311,21 +369,39 @@ export function processCollisions(
   neutrons: Neutron[],
   atoms: Atom[],
   controlRods: ControlRod[],
+  waterGrid: WaterGrid,
+  vesselLeft: number,
+  vesselTop: number,
   config: ReactorConfig,
-  currentTime: number
+  currentTime: number,
+  debugLog: boolean = false
 ): {
   remainingNeutrons: Neutron[];
   fissionCount: number;
   absorptionCount: number;
+  waterAbsorptionCount: number;
 } {
   const remainingNeutrons: Neutron[] = [];
   let fissionCount = 0;
   let absorptionCount = 0;
+  let waterAbsorptionCount = 0;
 
   // Create spatial grid for atoms (grid size = 2x spacing for efficiency)
   const spatialGrid = createSpatialGrid(atoms, config.grid.spacing * 2);
   const searchRadius =
     config.atom.radius + config.neutron.radius + config.physics.collisionThreshold;
+
+  // Debug: Check rod insertion levels
+  if (debugLog) {
+    const avgInsertion = controlRods.reduce((sum, r) => sum + r.insertion, 0) / controlRods.length;
+    const avgHealth = controlRods.reduce((sum, r) => sum + r.health, 0) / controlRods.length;
+    console.log(`[RBMK Collision Debug]`, {
+      neutronCount: neutrons.length,
+      avgRodInsertion: avgInsertion.toFixed(2),
+      avgRodHealth: avgHealth.toFixed(2),
+      rodsFullyInserted: controlRods.filter(r => r.insertion >= 0.99).length,
+    });
+  }
 
   for (const n of neutrons) {
     let absorbed = false;
@@ -359,13 +435,38 @@ export function processCollisions(
       }
     }
 
+    // WATER ABSORPTION: Spatially-varying based on local water density
+    // CRITICAL TUNING: This must be low enough that neutrons survive to cause fissions
+    // Water absorbs neutrons more where density is higher (liquid water)
+    // Steam voids (low density) allow neutrons to pass = positive void coefficient
+    if (!absorbed) {
+      const waterDensity = getWaterDensityAtPosition(
+        waterGrid,
+        n.position.x,
+        n.position.y,
+        vesselLeft,
+        vesselTop
+      );
+
+      // Absorption probability scales with water density
+      // Base probability is LOW (0.02 from config) to allow neutron survival
+      // Full water (density = 1.0) → 2% absorption per frame
+      // Steam (density = 0.0) → 0% absorption (neutrons pass through freely)
+      const waterAbsorptionProb = config.water.absorptionProbability * waterDensity;
+
+      if (Math.random() < waterAbsorptionProb) {
+        absorbed = true;
+        waterAbsorptionCount += 1;
+      }
+    }
+
     // Keep neutron if not absorbed
     if (!absorbed) {
       remainingNeutrons.push(n);
     }
   }
 
-  return { remainingNeutrons, fissionCount, absorptionCount };
+  return { remainingNeutrons, fissionCount, absorptionCount, waterAbsorptionCount };
 }
 
 /**
@@ -384,10 +485,13 @@ export function createHeatGrid(width: number, height: number, cellSize: number):
   const gridWidth = Math.ceil(width / cellSize);
   const gridHeight = Math.ceil(height / cellSize);
 
-  // Initialize 2D array with zeros (ambient temperature)
+  // Initialize 2D arrays with zeros (ambient temperature)
+  // Double-buffering: eliminates expensive array copies during diffusion
   const temperatures: number[][] = [];
+  const backBuffer: number[][] = [];
   for (let y = 0; y < gridHeight; y++) {
     temperatures[y] = new Array(gridWidth).fill(0);
+    backBuffer[y] = new Array(gridWidth).fill(0);
   }
 
   return {
@@ -395,6 +499,8 @@ export function createHeatGrid(width: number, height: number, cellSize: number):
     height: gridHeight,
     cellSize,
     temperatures,
+    backBuffer,
+    activeBuffer: 0, // Start with temperatures as active buffer
   };
 }
 
@@ -435,8 +541,9 @@ export function updateHeatGrid(
       const heatGeneration = atom.energy * 0.05 * (deltaTime / 16.67); // Normalize to ~60fps
       temperatures[gridY]![gridX]! += heatGeneration;
 
-      // Spread heat to immediate neighbors (atoms radiate heat)
-      const spreadRadius = 1;
+      // Spread heat to nearby cells (atoms radiate heat)
+      // Increased radius for smoother gradients (less "atom splitting" visual)
+      const spreadRadius = 2;
       for (let dy = -spreadRadius; dy <= spreadRadius; dy++) {
         for (let dx = -spreadRadius; dx <= spreadRadius; dx++) {
           const nx = gridX + dx;
@@ -444,7 +551,7 @@ export function updateHeatGrid(
           if (nx >= 0 && nx < width && ny >= 0 && ny < height && (dx !== 0 || dy !== 0)) {
             const distance = Math.sqrt(dx * dx + dy * dy);
             const falloff = 1 / (distance + 1); // Inverse distance falloff
-            temperatures[ny]![nx]! += heatGeneration * falloff * 0.5;
+            temperatures[ny]![nx]! += heatGeneration * falloff * 0.4;
           }
         }
       }
@@ -453,7 +560,7 @@ export function updateHeatGrid(
 
   // 2. Heat diffusion (thermal conduction between cells)
   // Use simple averaging with neighbors to simulate heat spreading
-  const diffusionRate = 0.15; // How fast heat spreads (0-1)
+  const diffusionRate = 0.35; // How fast heat spreads (0-1) - increased for smoother gradients
   const newTemperatures = temperatures.map(row => [...row]); // Copy for concurrent update
 
   for (let y = 0; y < height; y++) {
@@ -540,4 +647,259 @@ export function calculateAverageTemperature(heatGrid: HeatGrid): number {
   }
 
   return count > 0 ? sum / count : 0;
+}
+
+// =============================================================================
+// WATER COOLANT SYSTEM (Positive Void Coefficient)
+// =============================================================================
+
+/**
+ * Create a water density grid
+ *
+ * Initializes a 2D grid matching the heat grid dimensions.
+ * All cells start at 1.0 (full liquid water, no steam).
+ */
+export function createWaterGrid(width: number, height: number, cellSize: number): WaterGrid {
+  const gridWidth = Math.ceil(width / cellSize);
+  const gridHeight = Math.ceil(height / cellSize);
+
+  // Initialize all cells to 1.0 (full water density)
+  const waterDensity: number[][] = [];
+  for (let y = 0; y < gridHeight; y++) {
+    waterDensity[y] = [];
+    for (let x = 0; x < gridWidth; x++) {
+      waterDensity[y]![x] = 1.0; // Start with full water
+    }
+  }
+
+  return {
+    width: gridWidth,
+    height: gridHeight,
+    cellSize,
+    waterDensity,
+  };
+}
+
+/**
+ * Get water density at a specific position
+ *
+ * Used by neutron collision detection to apply spatially-varying absorption.
+ */
+export function getWaterDensityAtPosition(
+  waterGrid: WaterGrid,
+  x: number,
+  y: number,
+  vesselLeft: number,
+  vesselTop: number
+): number {
+  const gridX = Math.floor((x - vesselLeft) / waterGrid.cellSize);
+  const gridY = Math.floor((y - vesselTop) / waterGrid.cellSize);
+
+  if (gridX >= 0 && gridX < waterGrid.width && gridY >= 0 && gridY < waterGrid.height) {
+    return waterGrid.waterDensity[gridY]![gridX]!;
+  }
+
+  return 1.0; // Outside bounds = assume full water density
+}
+
+/**
+ * Calculate average void fraction (steam percentage) across the reactor
+ *
+ * @returns Void fraction 0-1, where 0 = all water, 1 = all steam
+ */
+export function calculateVoidFraction(waterGrid: WaterGrid): number {
+  const { waterDensity, width, height } = waterGrid;
+  let voidSum = 0;
+  let count = 0;
+
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const water = waterDensity[y]![x]!;
+      const voidFrac = 1 - water; // Steam = 1 - water
+      voidSum += voidFrac;
+      count++;
+    }
+  }
+
+  return count > 0 ? voidSum / count : 0;
+}
+
+/**
+ * Calculate reactor pressure based on temperature and void fraction
+ *
+ * Uses ideal gas law approximation: P = basePressure + T×tempCoeff + void×voidCoeff
+ *
+ * @param temperature Average reactor temperature (0-1)
+ * @param voidFraction Average void fraction (0-1)
+ * @param config Reactor configuration
+ * @returns Pressure (0-1 scale, where 0.7 = normal, 1.0 = critical)
+ */
+export function calculatePressure(
+  temperature: number,
+  voidFraction: number,
+  config: ReactorConfig
+): number {
+  const { basePressure, temperatureCoefficient, voidCoefficient } = config.pressure;
+
+  // P = base + T×Ct + void×Cv
+  const pressure =
+    basePressure + temperature * temperatureCoefficient + voidFraction * voidCoefficient;
+
+  // Clamp to [0, 1] range
+  return Math.max(0, Math.min(1, pressure));
+}
+
+/**
+ * Update heat cooling and water state (evaporation/condensation)
+ *
+ * This function implements two coupled processes in a single pass:
+ * 1. Water-cooled heat dissipation (less water = less cooling = positive feedback)
+ * 2. Water phase change (hot water → steam, cool steam → water)
+ *
+ * RBMK Positive Void Coefficient:
+ * - High temperature → water boils → steam voids form
+ * - Steam has lower density → less neutron absorption
+ * - More neutrons → more fissions → higher temperature
+ * - THIS IS THE RUNAWAY FEEDBACK THAT CAUSED CHERNOBYL
+ *
+ * @param heatGrid Heat grid to cool
+ * @param waterGrid Water grid to update
+ * @param config Reactor configuration
+ */
+export function updateCoolingAndWater(
+  heatGrid: HeatGrid,
+  waterGrid: WaterGrid,
+  config: ReactorConfig
+): void {
+  const { width, height } = heatGrid;
+  const { boilingPoint, evaporationRate, condensationRate, baseCoolingRate } = config.water;
+  const { baseRate, temperatureScaling } = config.regeneration.water;
+
+  // Use active buffer for reading temperatures
+  const temperatures = heatGrid.activeBuffer === 0 ? heatGrid.temperatures : heatGrid.backBuffer;
+
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const temp = temperatures[y]![x]!;
+      const water = waterGrid.waterDensity[y]![x]!;
+
+      // 1. Water-based cooling (scales with water density)
+      // Less water = less cooling = heat stays higher = positive feedback
+      const coolingFactor = baseCoolingRate + (1 - baseCoolingRate) * (1 - water);
+      temperatures[y]![x] = temp * coolingFactor;
+
+      // 2. Water phase change (evaporation/condensation)
+      let newWaterDensity = water;
+      if (temp > boilingPoint) {
+        // Above boiling point: water → steam (water density decreases)
+        newWaterDensity = Math.max(0, water - evaporationRate);
+      } else {
+        // Below boiling point: steam → water (water density increases)
+        newWaterDensity = Math.min(1, water + condensationRate);
+      }
+
+      // 3. Water regeneration (coolant circulation)
+      // Simulates continuous coolant pump flow replenishing water
+      // Lower regeneration at high temps (steam blocks coolant flow)
+      if (newWaterDensity < 1.0) {
+        const regenRate = temperatureScaling
+          ? baseRate * (1.0 - temp) // Less regen at high temps
+          : baseRate;
+        newWaterDensity = Math.min(1.0, newWaterDensity + regenRate);
+      }
+
+      waterGrid.waterDensity[y]![x] = newWaterDensity;
+    }
+  }
+}
+
+// =============================================================================
+// DAMAGE AND SAFETY SYSTEMS
+// =============================================================================
+
+/**
+ * Update fuel integrity based on temperature
+ *
+ * Fuel damage occurs when temperature exceeds meltdown threshold (~1,200°C).
+ * Damaged fuel generates decay heat even without fission (makes shutdown harder).
+ *
+ * @param atom Fuel atom to update
+ * @param temperature Current temperature at atom position (0-1)
+ * @param config Reactor configuration
+ * @returns Decay heat contribution from damaged fuel
+ */
+export function updateFuelIntegrity(
+  atom: Atom,
+  temperature: number,
+  config: ReactorConfig
+): number {
+  const { meltdownTemp, meltdownRate, decayHeatFraction } = config.damage.fuel;
+  const { healingRate, healingThreshold } = config.regeneration.fuel;
+
+  // Store temperature for tracking
+  atom.lastTemperature = temperature;
+
+  // Damage fuel if temperature exceeds meltdown threshold
+  if (temperature > meltdownTemp) {
+    atom.integrity = Math.max(0, atom.integrity - meltdownRate);
+  }
+
+  // Heal damaged fuel when temperature is LOW (simulates operational maintenance)
+  // Only heal when T < healingThreshold × meltdownTemp (safe operating range)
+  const healingTempThreshold = meltdownTemp * healingThreshold;
+  if (temperature < healingTempThreshold && atom.integrity < 1.0) {
+    // Very slow healing (10× slower than damage)
+    atom.integrity = Math.min(1.0, atom.integrity + healingRate);
+  }
+
+  // Damaged fuel generates decay heat
+  const damageLevel = 1 - atom.integrity; // 0 = intact, 1 = fully damaged
+  const decayHeat = damageLevel * atom.energy * decayHeatFraction;
+
+  return decayHeat;
+}
+
+/**
+ * Update control rod health based on temperature and neutron absorption
+ *
+ * Control rods degrade from:
+ * 1. High temperature (heat damage)
+ * 2. Neutron bombardment (absorption damage)
+ *
+ * Damaged rods have reduced absorption efficiency.
+ *
+ * @param rod Control rod to update
+ * @param temperature Current temperature at rod position (0-1)
+ * @param config Reactor configuration
+ */
+export function updateControlRodHealth(
+  rod: ControlRod,
+  temperature: number,
+  config: ReactorConfig
+): void {
+  const { heatDamageRate, heatDamageThreshold, absorptionDamageRate } = config.damage.rod;
+  const { healingRate, healingThreshold } = config.regeneration.rod;
+
+  // Heat damage when temperature exceeds threshold
+  if (temperature > heatDamageThreshold) {
+    rod.health = Math.max(0, rod.health - heatDamageRate);
+  }
+
+  // Heal damaged rods when temperature is SAFE (simulates rod replacement during maintenance)
+  // Only heal when T < healingThreshold (below damage threshold)
+  if (temperature < healingThreshold && rod.health < 1.0) {
+    // Slow healing (represents gradual rod replacement)
+    rod.health = Math.min(1.0, rod.health + healingRate);
+  }
+
+  // Absorption damage (neutron bombardment causes gradual rod degradation)
+  // Track absorptions since last health update to avoid double-counting
+  if (!rod.lastAbsorbedCount) {
+    rod.lastAbsorbedCount = 0;
+  }
+  const newAbsorptions = rod.absorbedCount - rod.lastAbsorbedCount;
+  if (newAbsorptions > 0) {
+    rod.health = Math.max(0, rod.health - newAbsorptions * absorptionDamageRate);
+    rod.lastAbsorbedCount = rod.absorbedCount;
+  }
 }

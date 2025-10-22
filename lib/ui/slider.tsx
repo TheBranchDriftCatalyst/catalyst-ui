@@ -192,14 +192,27 @@ const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.Root>, S
       ? thumbShapeClasses[thumbShape].withLabel
       : thumbShapeClasses[thumbShape].default;
 
+    const isVertical = props.orientation === "vertical";
+
     return (
       <SliderPrimitive.Root
         ref={ref}
-        className={cn("relative flex w-full touch-none select-none items-center group", className)}
+        className={cn(
+          "relative flex touch-none select-none group",
+          isVertical ? "flex-col h-full w-fit items-center" : "w-full items-center",
+          className
+        )}
         {...props}
       >
-        <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-secondary">
-          <SliderPrimitive.Range className="absolute h-full bg-primary" />
+        <SliderPrimitive.Track
+          className={cn(
+            "relative grow overflow-hidden rounded-full bg-secondary",
+            isVertical ? "w-2 h-full" : "h-2 w-full"
+          )}
+        >
+          <SliderPrimitive.Range
+            className={cn("absolute bg-primary", isVertical ? "w-full" : "h-full")}
+          />
         </SliderPrimitive.Track>
         <SliderPrimitive.Thumb
           className={cn(
@@ -228,13 +241,15 @@ const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.Root>, S
           {showOutsideLabel && (
             <span
               className={cn(
-                "absolute -top-10 left-1/2 -translate-x-1/2",
-                "px-3 py-1.5 rounded-md text-xs font-semibold",
+                "absolute px-3 py-1.5 rounded-md text-xs font-semibold",
                 "bg-primary text-primary-foreground shadow-lg",
                 "whitespace-nowrap pointer-events-none",
                 "opacity-0 transition-opacity duration-200",
                 "group-hover:opacity-100",
-                "border border-primary/20"
+                "border border-primary/20",
+                isVertical
+                  ? "-left-16 top-1/2 -translate-y-1/2"
+                  : "-top-10 left-1/2 -translate-x-1/2"
               )}
             >
               {formattedValue}

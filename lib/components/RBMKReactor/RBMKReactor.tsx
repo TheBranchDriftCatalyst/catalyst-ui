@@ -21,8 +21,15 @@ import {
   processCollisions,
   calculateReactionRate,
   createHeatGrid,
+  createWaterGrid,
   updateHeatGrid,
+  updateCoolingAndWater,
+  getHeatAtPosition,
   calculateAverageTemperature,
+  calculateVoidFraction,
+  calculatePressure,
+  updateFuelIntegrity,
+  updateControlRodHealth,
 } from "./physics";
 
 export interface RBMKReactorProps {
@@ -72,6 +79,21 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
     primary: string;
     accent: string;
   } | null>(null);
+
+  // Cache config and dimensions to avoid recreating animate callback
+  const configRef = useRef(config);
+  const dimensionsRef = useRef({ width, height });
+
+  // Cache D3 color scales to avoid recreation every frame
+  const colorScalesRef = useRef<{
+    heat: d3.ScaleLinear<string, string, never>;
+    atom: d3.ScaleLinear<string, string, never>;
+  } | null>(null);
+
+  // FPS monitoring for performance debugging
+  const frameTimesRef = useRef<number[]>([]);
+  const lastFpsLogRef = useRef<number>(0);
+  const frameCountRef = useRef<number>(0);
 
   // Simulation state stored in ref (not React state) to avoid triggering renders during animation
   const stateRef = useRef<SimulationState>(initializeSimulation(config, width, height));
@@ -225,6 +247,10 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
     const heatCellSize = 25; // pixels per cell (smaller = finer detail, more computation)
     const heatGrid = createHeatGrid(vesselWidth, vesselHeight, heatCellSize);
 
+    // Create water coolant grid (matches heat grid dimensions)
+    // Water density: 1.0 = full water, 0.0 = all steam
+    const waterGrid = createWaterGrid(vesselWidth, vesselHeight, heatCellSize);
+
     // Calculate grid centering within the vessel
     const gridWidth = (cfg.grid.columns - 1) * cfg.grid.spacing;
     const gridHeight = (cfg.grid.rows - 1) * cfg.grid.spacing;
@@ -242,17 +268,19 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
           },
           gridX: col,
           gridY: row,
-          energy: 0.4 + Math.random() * 0.5, // Start at 0.4-0.9 energy (above emission threshold)
+          energy: 0.1 + Math.random() * 0.15, // Start at 0.1-0.25 energy (mostly below emission threshold)
           timeSinceEmission: Math.random() * 1000,
           radius: cfg.atom.radius,
           emittedCount: 0,
+          integrity: 1.0, // Start with intact fuel
+          lastTemperature: 0, // Cold startup
         });
       }
     }
 
     // Create initial "neutron source" - like californium-252 in real reactors
     // Seed the reaction with some neutrons at random positions
-    const numSeedNeutrons = 50; // Increased for more immediate activity
+    const numSeedNeutrons = 15; // Reduced for slower, more controlled startup
     for (let i = 0; i < numSeedNeutrons; i++) {
       const randomAtomIndex = Math.floor(Math.random() * atoms.length);
       const randomAtom = atoms[randomAtomIndex];
@@ -279,10 +307,16 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
     // Create control rods centered in gaps between atom columns
     // For 10 rods with 20 columns, place them in gaps between every 2 columns
     // Gaps are at: 0-1, 2-3, 4-5, 6-7, 8-9, 10-11, 12-13, 14-15, 16-17, 18-19
+    // Use staggered insertion pattern for better flux distribution and stability
     for (let i = 0; i < cfg.controlRod.count; i++) {
       // Rod i is centered between columns (2*i) and (2*i + 1)
       // Gap center = column_position + (spacing / 2)
       const gapCenterX = (i * 2 + 0.5) * cfg.grid.spacing;
+
+      // Staggered insertion pattern: alternating between 65% and 45% insertion
+      // This creates checkerboard absorption pattern for better flux distribution
+      // Even rods (0,2,4,6,8) more inserted, odd rods (1,3,5,7,9) less inserted
+      const insertion = i % 2 === 0 ? 0.65 : 0.45;
 
       controlRods.push({
         id: `rod-${i}`,
@@ -290,11 +324,12 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
         y: outerVesselTop, // Start at outer vessel top for full visual extent
         width: cfg.controlRod.width,
         maxHeight: outerVesselHeight + 5, // Extend 5px beyond outer vessel bottom for full insertion
-        insertion: 0.5, // Start at 50% insertion
-        targetInsertion: 0.5,
+        insertion, // Staggered pattern for stability
+        targetInsertion: insertion,
         absorbedCount: 0,
         isAbsorbing: false,
         lastAbsorptionTime: 0,
+        health: 1.0, // Perfect condition at startup
       });
     }
 
@@ -303,20 +338,26 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
       controlRods,
       neutrons: initialNeutrons, // Start with seed neutrons
       heatGrid,
-      isRunning: true,
+      waterGrid,
+      isRunning: false, // Start paused to prevent immediate criticality
       speed: cfg.simulation.defaultSpeed,
       totalEmitted: 0,
       totalAbsorbed: 0,
       totalFissions: 0,
+      totalWaterAbsorbed: 0,
+      totalLeaked: 0, // Neutrons that escaped through containment
       reactionRate: 0,
       reactorTemp: 0, // Average reactor temperature (0-1)
+      voidFraction: 0, // Average void fraction (0-1, steam percentage)
+      reactorPressure: cfg.pressure.basePressure, // Start at atmospheric pressure (cold shutdown)
       lastFrameTime: performance.now(),
       animationFrameId: null,
     };
   }
 
   /**
-   * Read theme colors from CSS custom properties (only called once on mount)
+   * Read theme colors from CSS custom properties and create D3 color scales
+   * (only called once on mount)
    */
   const readThemeColors = useCallback(() => {
     const root = document.documentElement;
@@ -333,7 +374,7 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
       return hslValue;
     };
 
-    themeColorsRef.current = {
+    const colors = {
       chart1: getCSSColor("--chart-1"),
       chart2: getCSSColor("--chart-2"),
       chart3: getCSSColor("--chart-3"),
@@ -341,6 +382,24 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
       mutedForeground: getCSSColor("--muted-foreground"),
       primary: getCSSColor("--primary"),
       accent: getCSSColor("--accent"),
+    };
+
+    themeColorsRef.current = colors;
+
+    // Create D3 color scales once (cached for entire lifecycle)
+    colorScalesRef.current = {
+      heat: d3.scaleLinear<string>().domain([0, 0.3, 0.6, 1.0]).range([
+        colors.chart1, // cold - chart blue
+        colors.chart2, // warming - chart green/teal
+        colors.chart3, // hot - chart orange
+        colors.destructive, // very hot - destructive red
+      ]),
+      atom: d3.scaleLinear<string>().domain([0, 0.3, 0.6, 1.0]).range([
+        colors.mutedForeground, // low energy - muted
+        colors.primary, // medium energy - primary blue
+        colors.accent, // high energy - accent yellow
+        colors.destructive, // very high energy - destructive red
+      ]),
     };
   }, []);
 
@@ -355,68 +414,155 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
       !rodLayerRef.current
     )
       return;
-    if (!themeColorsRef.current) return; // Wait for colors to be loaded
+    if (!themeColorsRef.current || !colorScalesRef.current) return; // Wait for colors to be loaded
 
     const state = stateRef.current;
     const colors = themeColorsRef.current;
+    const { width: w, height: h } = dimensionsRef.current;
 
-    // Render heat grid with D3
+    // COMBINED HEAT + WATER VISUALIZATION
+    // Shows temperature as color, water density as saturation/steam overlay
     const vesselPadding = 0.08;
-    const vesselLeft = width * vesselPadding;
-    const vesselTop = height * vesselPadding;
+    const vesselLeft = w * vesselPadding;
+    const vesselTop = h * vesselPadding;
     const heatLayer = d3.select(heatLayerRef.current);
 
-    // Create color scale for temperature visualization using design tokens
-    // 0 = dark blue (cold), 0.5 = orange, 1.0 = bright yellow (hot)
-    const heatColor = d3.scaleLinear<string>().domain([0, 0.3, 0.6, 1.0]).range([
-      colors.chart1, // cold - chart blue
-      colors.chart2, // warming - chart green/teal
-      colors.chart3, // hot - chart orange
-      colors.destructive, // very hot - destructive red
-    ]);
+    // Use cached color scale (created once on mount)
+    const heatColor = colorScalesRef.current.heat;
 
-    // Flatten heat grid into array of cells for D3 data binding
-    const heatCells: Array<{ x: number; y: number; temp: number }> = [];
-    const { temperatures, cellSize } = state.heatGrid;
-    for (let y = 0; y < state.heatGrid.height; y++) {
-      for (let x = 0; x < state.heatGrid.width; x++) {
-        const temp = temperatures[y]![x]!;
-        if (temp > 0.01) {
-          // Only render cells with significant heat (performance)
-          heatCells.push({
+    // Flatten heat + water grids into combined cells for D3 data binding
+    const combinedCells: Array<{
+      x: number;
+      y: number;
+      temp: number;
+      waterDensity: number;
+      voidFraction: number; // 1 - waterDensity (steam percentage)
+    }> = [];
+
+    // FIX: Use active buffer instead of direct access to temperatures array
+    // Heat grid uses double-buffering (swaps between temperatures/backBuffer)
+    const activeTemperatures =
+      state.heatGrid.activeBuffer === 0 ? state.heatGrid.temperatures : state.heatGrid.backBuffer;
+    const { cellSize } = state.heatGrid;
+    const { waterDensity } = state.waterGrid;
+
+    // Safety check: ensure both grids are initialized
+    if (!activeTemperatures || activeTemperatures.length === 0) {
+      console.error("[RBMK] Heat grid temperatures not initialized!", {
+        activeBuffer: state.heatGrid.activeBuffer,
+        temperaturesLength: state.heatGrid.temperatures?.length,
+        backBufferLength: state.heatGrid.backBuffer?.length,
+        heatGridDims: { width: state.heatGrid.width, height: state.heatGrid.height },
+      });
+      return; // Skip rendering if heat grid not ready
+    }
+
+    if (!waterDensity || waterDensity.length === 0) {
+      console.error("[RBMK] waterDensity array not initialized!", {
+        waterGrid: state.waterGrid,
+        heatGridHeight: state.heatGrid.height,
+        heatGridWidth: state.heatGrid.width,
+      });
+      return; // Skip rendering if water grid not ready
+    }
+
+    // Use minimum dimensions to avoid out-of-bounds access
+    const maxY = Math.min(activeTemperatures.length, waterDensity.length);
+    const maxX =
+      maxY > 0 ? Math.min(activeTemperatures[0]?.length ?? 0, waterDensity[0]?.length ?? 0) : 0;
+
+    if (maxY === 0 || maxX === 0) {
+      console.warn("[RBMK] Grid dimensions are zero, skipping render", {
+        maxY,
+        maxX,
+        heatRows: activeTemperatures.length,
+        heatCols: activeTemperatures[0]?.length,
+        waterRows: waterDensity.length,
+        waterCols: waterDensity[0]?.length,
+      });
+      return;
+    }
+
+    for (let y = 0; y < maxY; y++) {
+      for (let x = 0; x < maxX; x++) {
+        const temp = activeTemperatures[y]?.[x] ?? 0;
+        const water = waterDensity[y]?.[x] ?? 1.0;
+        const voidFrac = 1 - water; // Steam percentage
+
+        // Render cells with heat OR steam voids (makes steam visible even when cooling)
+        if (temp > 0.01 || voidFrac > 0.1) {
+          combinedCells.push({
             x: vesselLeft + x * cellSize,
             y: vesselTop + y * cellSize,
             temp,
+            waterDensity: water,
+            voidFraction: voidFrac,
           });
         }
       }
     }
 
-    const heatRects = heatLayer
-      .selectAll<SVGRectElement, (typeof heatCells)[0]>("rect.heat-cell")
-      .data(heatCells, (d, i) => `${d.x}-${d.y}-${i}`);
+    const cellRects = heatLayer
+      .selectAll<SVGRectElement, (typeof combinedCells)[0]>("rect.thermal-cell")
+      .data(combinedCells, d => `${d.x}-${d.y}`);
 
     // Enter + update
-    heatRects
+    cellRects
       .enter()
       .append("rect")
-      .attr("class", "heat-cell")
-      .merge(heatRects)
+      .attr("class", "thermal-cell")
+      .merge(cellRects)
       .attr("x", d => d.x)
       .attr("y", d => d.y)
       .attr("width", state.heatGrid.cellSize)
       .attr("height", state.heatGrid.cellSize)
-      .attr("fill", d => heatColor(d.temp))
-      .attr("opacity", d => Math.min(d.temp * 0.6, 0.6)); // Max 60% opacity for visibility
+      .attr("fill", d => {
+        // Base temperature color
+        const baseColor = heatColor(d.temp);
+
+        // Steam voids appear WHITE (shows dangerous positive void coefficient!)
+        // Blend between base heat color and white based on void fraction
+        if (d.voidFraction > 0.3) {
+          // High steam content: blend toward white/yellow (visible steam)
+          const steamColor = "#FFFFFF";
+          const blendFactor = Math.min(d.voidFraction * 0.7, 0.7); // Max 70% white
+          return d3.interpolateRgb(baseColor, steamColor)(blendFactor);
+        }
+
+        return baseColor;
+      })
+      .attr("opacity", d => {
+        // Base opacity from temperature
+        let opacity = Math.min(d.temp * 0.6, 0.6);
+
+        // Steam voids are MORE visible (positive void coefficient warning!)
+        if (d.voidFraction > 0.3) {
+          opacity = Math.max(opacity, d.voidFraction * 0.5); // Steam always visible
+        }
+
+        return Math.min(opacity, 0.7); // Max 70% opacity
+      });
 
     // Remove old cells
-    heatRects.exit().remove();
+    cellRects.exit().remove();
 
     // Render neutrons with D3
     const neutronLayer = d3.select(neutronLayerRef.current);
     const neutronGroups = neutronLayer
       .selectAll<SVGGElement, Neutron>("g.neutron")
       .data(state.neutrons, d => d.id);
+
+    // DEBUG: Log D3 neutron rendering (EVERY frame for first 120 frames)
+    const shouldDebugLog = frameCountRef.current <= 120;
+    if (shouldDebugLog) {
+      console.log(`[RBMK D3 Render] Frame ${frameCountRef.current}:`, {
+        neutronsToRender: state.neutrons.length,
+        enterSelection: neutronGroups.enter().size(),
+        updateSelection: neutronGroups.size(),
+        exitSelection: neutronGroups.exit().size(),
+        firstNeutronPos: state.neutrons[0]?.position,
+      });
+    }
 
     // Enter new neutrons
     const neutronEnter = neutronGroups.enter().append("g").attr("class", "neutron");
@@ -443,14 +589,8 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
     // Render atoms with D3
     const atomLayer = d3.select(atomLayerRef.current);
 
-    // Color scale for atom energy visualization using design tokens
-    // Low energy (0.0-0.3): Muted → Medium energy (0.3-0.6): Accent → High energy (0.6-1.0): Destructive
-    const atomColor = d3.scaleLinear<string>().domain([0, 0.3, 0.6, 1.0]).range([
-      colors.mutedForeground, // low energy - muted
-      colors.primary, // medium energy - primary blue
-      colors.accent, // high energy - accent yellow
-      colors.destructive, // very high energy - destructive red
-    ]);
+    // Use cached atom color scale (created once on mount)
+    const atomColor = colorScalesRef.current.atom;
 
     const atoms = atomLayer
       .selectAll<SVGCircleElement, Atom>("circle.atom")
@@ -501,65 +641,172 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
 
   /**
    * Animation loop using RAF - updates refs and calls D3 directly (no React state updates)
+   * NOTE: Don't check isRunning here - the useEffect controls loop start/stop
    */
   const animate = useCallback(() => {
-    if (!isRunning) return;
-
     const frameStart = performance.now();
     const currentTime = frameStart;
     const deltaTime = (currentTime - lastFrameTimeRef.current) * speed;
     lastFrameTimeRef.current = currentTime;
 
+    // DEBUG: Enable logging for first 120 frames
+    const shouldDebugLog = frameCountRef.current <= 120;
+
+    // FPS monitoring (track frame times for debugging)
+    frameTimesRef.current.push(deltaTime);
+    if (frameTimesRef.current.length > 60) {
+      // Calculate average FPS over last 60 frames
+      const totalTime = frameTimesRef.current.reduce((a, b) => a + b, 0);
+      const avgFrameTime = totalTime / frameTimesRef.current.length;
+      const fps = 1000 / avgFrameTime;
+
+      // Log warning if FPS drops below 30 (every 5 seconds max)
+      if (fps < 30 && currentTime - lastFpsLogRef.current > 5000) {
+        console.warn(
+          `[RBMK] Low FPS detected: ${fps.toFixed(1)} fps (avg frame time: ${avgFrameTime.toFixed(2)}ms)`
+        );
+        lastFpsLogRef.current = currentTime;
+      }
+
+      // Reset for next measurement window
+      frameTimesRef.current = [];
+    }
+
     const state = stateRef.current;
+    const cfg = configRef.current;
+    const { width: w, height: h } = dimensionsRef.current;
 
     // Vessel bounds (used throughout animate loop)
     const vesselPadding = 0.08;
-    const vesselLeft = width * vesselPadding;
-    const vesselTop = height * vesselPadding;
+    const vesselLeft = w * vesselPadding;
+    const vesselTop = h * vesselPadding;
     const vesselBounds = {
       left: vesselLeft,
       top: vesselTop,
-      right: width * (1 - vesselPadding),
-      bottom: height * (1 - vesselPadding),
+      right: w * (1 - vesselPadding),
+      bottom: h * (1 - vesselPadding),
     };
 
     // Update atoms and collect emitted neutrons
     const emittedNeutrons: Neutron[] = [];
     for (const atom of state.atoms) {
-      const newNeutrons = updateAtom(atom, config, deltaTime, currentTime);
+      const newNeutrons = updateAtom(
+        atom,
+        state.waterGrid,
+        vesselLeft,
+        vesselTop,
+        cfg,
+        deltaTime,
+        currentTime
+      );
       emittedNeutrons.push(...newNeutrons);
+
+      // Get temperature at atom position for fuel damage calculation
+      const temperature = getHeatAtPosition(
+        state.heatGrid,
+        atom.position.x,
+        atom.position.y,
+        vesselLeft,
+        vesselTop
+      );
+
+      // Update fuel integrity and get decay heat contribution
+      const decayHeat = updateFuelIntegrity(atom, temperature, cfg);
+      // Add decay heat to atom energy so it spreads in updateHeatGeneration
+      atom.energy += decayHeat;
     }
 
     // Update control rods
     for (const rod of state.controlRods) {
-      updateControlRod(rod, config, deltaTime, currentTime);
+      updateControlRod(rod, cfg, deltaTime, currentTime);
+
+      // Get temperature at rod position for heat damage calculation
+      const temperature = getHeatAtPosition(state.heatGrid, rod.x, rod.y, vesselLeft, vesselTop);
+
+      updateControlRodHealth(rod, temperature, cfg);
     }
 
-    // Update heat grid based on atom energy
+    // OPTIMIZED: Update heat and water in two steps for better performance
+    // Step 1: Heat generation and diffusion (atom energy -> heat spreading)
     updateHeatGrid(state.heatGrid, state.atoms, deltaTime, vesselLeft, vesselTop);
 
-    // Update neutron positions
+    // Step 2: Coupled cooling + water updates in single pass
+    // - Cooling rate depends on water density (less water = less cooling)
+    // - Water boils/condenses based on temperature
+    // This drives the positive void coefficient feedback loop
+    updateCoolingAndWater(state.heatGrid, state.waterGrid, cfg);
+
+    // Update neutron positions and ages
     for (const neutron of state.neutrons) {
       updateNeutronPosition(neutron, deltaTime);
       neutron.age += deltaTime;
     }
 
-    // Remove old neutrons
-    const activeNeutrons = state.neutrons.filter(n => n.age < config.neutron.maxAge);
+    // OPTIMIZATION: In-place filtering to remove old neutrons (eliminates array allocation)
+    // Use a write index to compact the array in-place
+    let writeIndex = 0;
+    for (let i = 0; i < state.neutrons.length; i++) {
+      if (state.neutrons[i]!.age < cfg.neutron.maxAge) {
+        if (writeIndex !== i) {
+          state.neutrons[writeIndex] = state.neutrons[i]!;
+        }
+        writeIndex++;
+      }
+    }
+
+    // DEBUG: Log age filtering results
+    const removedByAge = state.neutrons.length - writeIndex;
+    if (shouldDebugLog && removedByAge > 0) {
+      console.log(`[RBMK Age Filter] Frame ${frameCountRef.current}:`, {
+        before: state.neutrons.length,
+        after: writeIndex,
+        removedByAge,
+        deltaTime,
+      });
+    }
+
+    // Truncate array to new length (no allocation, just updates length property)
+    state.neutrons.length = writeIndex;
+
+    // DEBUG: Log BEFORE collision processing
+    if (shouldDebugLog) {
+      console.log(`[RBMK Before Collisions] Frame ${frameCountRef.current}:`, {
+        neutronsToProcess: state.neutrons.length,
+      });
+    }
 
     const collisionResults = processCollisions(
-      activeNeutrons,
+      state.neutrons, // Use compacted array directly
       state.atoms,
       state.controlRods,
-      config,
-      currentTime
+      state.waterGrid,
+      vesselLeft,
+      vesselTop,
+      cfg,
+      currentTime,
+      shouldDebugLog // Enable debug logging for first 120 frames
     );
 
-    // Combine remaining and emitted neutrons
-    let allNeutrons = [...collisionResults.remainingNeutrons, ...emittedNeutrons];
+    // DEBUG: Log AFTER collision processing
+    if (shouldDebugLog) {
+      console.log(`[RBMK After Collisions] Frame ${frameCountRef.current}:`, {
+        remaining: collisionResults.remainingNeutrons.length,
+        emitted: emittedNeutrons.length,
+        rodAbsorbed: collisionResults.absorptionCount,
+        fissions: collisionResults.fissionCount,
+      });
+    }
+
+    // OPTIMIZATION: Append emitted neutrons in-place (no spread operator allocation)
+    // Start by replacing state.neutrons with remainingNeutrons (already an array)
+    state.neutrons = collisionResults.remainingNeutrons;
+    // Append emitted neutrons using push (in-place, no allocation)
+    for (const neutron of emittedNeutrons) {
+      state.neutrons.push(neutron);
+    }
 
     // Check vessel boundary collisions and reflect neutrons off containment walls
-    for (const neutron of allNeutrons) {
+    for (const neutron of state.neutrons) {
       // Left wall
       if (neutron.position.x - neutron.radius <= vesselBounds.left) {
         neutron.position.x = vesselBounds.left + neutron.radius;
@@ -586,22 +833,44 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
       }
     }
 
-    // Remove neutrons that have bounced too many times (absorbed by concrete vessel walls)
-    // Real concrete containment absorbs neutrons after many collisions
-    const maxWallBounces = 15; // ~15 bounces before absorption
-    allNeutrons = allNeutrons.filter(n => n.wallBounces < maxWallBounces);
+    // Note: Neutron leakage (wall bounce limit) is now handled in processCollisions
+    // which filters out neutrons that exceed config.neutron.maxWallBounces
 
-    // Enforce max neutron count
-    if (allNeutrons.length > config.neutron.maxCount) {
-      allNeutrons = allNeutrons.slice(0, config.neutron.maxCount);
+    // OPTIMIZATION: In-place truncation to max count (eliminates slice allocation)
+    if (state.neutrons.length > cfg.neutron.maxCount) {
+      state.neutrons.length = cfg.neutron.maxCount;
     }
 
-    // Update state ref (no React setState!)
-    state.neutrons = allNeutrons;
+    // Calculate reactor metrics
+    const reactorTemp = calculateAverageTemperature(state.heatGrid);
+    const voidFraction = calculateVoidFraction(state.waterGrid);
+    const reactorPressure = calculatePressure(reactorTemp, voidFraction, cfg);
+
+    // DEBUG: Log neutron lifecycle (detailed logging for first 120 frames)
+    if (shouldDebugLog) {
+      console.log(`[RBMK Collisions] Frame ${frameCountRef.current}:`, {
+        neutronCount: state.neutrons.length,
+        emitted: emittedNeutrons.length,
+        fissions: collisionResults.fissionCount,
+        rodAbsorbed: collisionResults.absorptionCount,
+        waterAbsorbed: collisionResults.waterAbsorptionCount,
+        remainingAfterCollisions: collisionResults.remainingNeutrons.length,
+        maxEnergy: Math.max(...state.atoms.map(a => a.energy)).toFixed(2),
+        avgEnergy: (state.atoms.reduce((sum, a) => sum + a.energy, 0) / state.atoms.length).toFixed(
+          2
+        ),
+      });
+    }
+
+    // Update state metrics (state.neutrons already updated in-place above)
     state.totalEmitted += emittedNeutrons.length;
     state.totalAbsorbed += collisionResults.absorptionCount;
     state.totalFissions += collisionResults.fissionCount;
-    state.reactionRate = calculateReactionRate(allNeutrons.length, deltaTime);
+    state.totalWaterAbsorbed += collisionResults.waterAbsorptionCount;
+    state.reactionRate = calculateReactionRate(state.neutrons.length, deltaTime);
+    state.reactorTemp = reactorTemp;
+    state.voidFraction = voidFraction;
+    state.reactorPressure = reactorPressure;
     state.lastFrameTime = currentTime;
 
     // Render with D3 (direct DOM manipulation, no React)
@@ -609,20 +878,19 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
 
     // Throttled stats update for UI (only every 200ms to avoid thrashing)
     if (currentTime - lastStatsUpdateRef.current > 200) {
-      const reactorTemp = calculateAverageTemperature(state.heatGrid);
       setStats({
-        neutronCount: allNeutrons.length,
+        neutronCount: state.neutrons.length,
         totalFissions: state.totalFissions,
         totalAbsorbed: state.totalAbsorbed,
         reactionRate: state.reactionRate,
-        reactorTemp,
+        reactorTemp, // Use already-calculated value
       });
       lastStatsUpdateRef.current = currentTime;
     }
 
     // Request next frame
     animationFrameRef.current = requestAnimationFrame(animate);
-  }, [isRunning, speed, config, width, height, renderWithD3]);
+  }, [speed, renderWithD3]); // Reduced dependencies - config/dimensions read from refs, isRunning controlled by useEffect
 
   /**
    * Start/stop animation loop
@@ -656,18 +924,31 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
         controlRods: stateRef.current.controlRods,
         neutrons: stateRef.current.neutrons, // Send neutrons for length calculation
         heatGrid: stateRef.current.heatGrid,
+        waterGrid: stateRef.current.waterGrid,
         isRunning: stateRef.current.isRunning,
         speed: stateRef.current.speed,
         totalEmitted: stats.totalFissions, // Use stats values
         totalAbsorbed: stats.totalAbsorbed,
         totalFissions: stats.totalFissions,
+        totalWaterAbsorbed: stateRef.current.totalWaterAbsorbed,
+        totalLeaked: stateRef.current.totalLeaked, // Neutrons leaked through containment
         reactionRate: stats.reactionRate,
         reactorTemp: stats.reactorTemp, // Average reactor temperature
+        voidFraction: stateRef.current.voidFraction,
+        reactorPressure: stateRef.current.reactorPressure, // Reactor pressure (0-1)
         lastFrameTime: stateRef.current.lastFrameTime,
         animationFrameId: stateRef.current.animationFrameId,
       });
     }
   }, [stats, onStateChange]);
+
+  /**
+   * Update cached refs when config or dimensions change
+   */
+  useEffect(() => {
+    configRef.current = config;
+    dimensionsRef.current = { width, height };
+  }, [config, width, height]);
 
   /**
    * Initialize theme colors on mount

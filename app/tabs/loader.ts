@@ -12,6 +12,11 @@ import manifest from "../.tabs.manifest.json";
 // replicate the same glob discovery used in App.tsx (for lazy components)
 const tabModules = import.meta.glob("./*Tab.tsx", { eager: false });
 
+// NOTE: Tab export validation happens at BUILD TIME via the vite-plugin-validate-tab-exports plugin
+// All tab components MUST use named exports matching their filename:
+//   ✓ Correct: export function WelcomeTab() { ... }
+//   ✗ Wrong:   export default function WelcomeTab() { ... }
+
 export const tabComponents = Object.keys(tabModules).reduce(
   (acc, path) => {
     const tabName = path.match(/\.\/([A-Za-z0-9_]+)Tab\.tsx$/)?.[1];

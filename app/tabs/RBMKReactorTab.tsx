@@ -10,7 +10,7 @@
  * Based on RBMK-1000 reactor specifications (Chernobyl Unit 4 type).
  */
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { RBMKReactor } from "@/catalyst-ui/components/RBMKReactor";
 import { SimulationState, REACTOR_PRESETS } from "@/catalyst-ui/components/RBMKReactor";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/catalyst-ui/ui/card";
@@ -19,15 +19,17 @@ import { Label } from "@/catalyst-ui/ui/label";
 import { Slider } from "@/catalyst-ui/ui/slider";
 import { Badge } from "@/catalyst-ui/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/catalyst-ui/ui/collapsible";
-import { Play, Pause, RotateCcw, Settings2, ChevronDown } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/catalyst-ui/ui/tabs";
+import { CircularGauge } from "@/catalyst-ui/ui/circular-gauge";
+import { Play, Pause, RotateCcw, Settings2, ChevronDown, X } from "lucide-react";
 import { ScrollSnapItem } from "@/catalyst-ui/effects";
 
 export const TAB_ORDER = 100;
 export const TAB_SECTION = "projects.misc";
 
 export function RBMKReactorTab() {
-  const [isRunning, setIsRunning] = useState(true);
-  const [speed, setSpeed] = useState(1.0);
+  const [isRunning, setIsRunning] = useState(false); // Start paused to prevent immediate criticality
+  const [speed, setSpeed] = useState(0.5); // Start at half speed to observe void coefficient effects
   const [controlRodInsertions, setControlRodInsertions] = useState<number[]>(
     Array(10).fill(0.5) // 10 rods, all at 50% insertion
   );
@@ -40,6 +42,38 @@ export function RBMKReactorTab() {
   const [masterControlValue, setMasterControlValue] = useState(0.5); // Master control slider value
   const [isMasterControlEngaged, setIsMasterControlEngaged] = useState(true); // Whether master control is active
 
+  // Delta tracking for rate-of-change indicators
+  const previousValuesRef = useRef<{
+    neutrons: number;
+    reactionRate: number;
+    reactorTemp: number;
+    voidFraction: number;
+    reactorPressure: number;
+    fuelIntegrity: number;
+    leakage: number;
+    rodHealths: number[];
+  } | null>(null);
+
+  const [deltas, setDeltas] = useState<{
+    neutrons: number;
+    reactionRate: number;
+    reactorTemp: number;
+    voidFraction: number;
+    reactorPressure: number;
+    fuelIntegrity: number;
+    leakage: number;
+    rodHealths: number[];
+  }>({
+    neutrons: 0,
+    reactionRate: 0,
+    reactorTemp: 0,
+    voidFraction: 0,
+    reactorPressure: 0,
+    fuelIntegrity: 0,
+    leakage: 0,
+    rodHealths: Array(10).fill(0),
+  });
+
   // Detect catastrophic state (MELTDOWN)
   const isCritical =
     simulationState &&
@@ -48,6 +82,40 @@ export function RBMKReactorTab() {
 
   const handleStateChange = useCallback((state: SimulationState) => {
     setSimulationState(state);
+
+    // Calculate current values
+    const fuelIntegrity =
+      (state.atoms.reduce((sum, atom) => sum + atom.integrity, 0) / state.atoms.length) * 100;
+    const rodHealths = state.controlRods.map(rod => (rod.health || 1.0) * 100);
+
+    // Calculate deltas if we have previous values
+    if (previousValuesRef.current) {
+      setDeltas({
+        neutrons: state.neutrons.length - previousValuesRef.current.neutrons,
+        reactionRate: state.reactionRate - previousValuesRef.current.reactionRate,
+        reactorTemp: (state.reactorTemp || 0) * 100 - previousValuesRef.current.reactorTemp,
+        voidFraction: (state.voidFraction || 0) * 100 - previousValuesRef.current.voidFraction,
+        reactorPressure:
+          (state.reactorPressure || 0) * 100 - previousValuesRef.current.reactorPressure,
+        fuelIntegrity: fuelIntegrity - previousValuesRef.current.fuelIntegrity,
+        leakage: (state.totalLeaked || 0) - previousValuesRef.current.leakage,
+        rodHealths: rodHealths.map(
+          (health, idx) => health - (previousValuesRef.current?.rodHealths[idx] || 100)
+        ),
+      });
+    }
+
+    // Store current values for next delta calculation
+    previousValuesRef.current = {
+      neutrons: state.neutrons.length,
+      reactionRate: state.reactionRate,
+      reactorTemp: (state.reactorTemp || 0) * 100,
+      voidFraction: (state.voidFraction || 0) * 100,
+      reactorPressure: (state.reactorPressure || 0) * 100,
+      fuelIntegrity,
+      leakage: state.totalLeaked || 0,
+      rodHealths,
+    };
   }, []);
 
   const handleRodChange = (index: number, value: number[]) => {
@@ -70,6 +138,16 @@ export function RBMKReactorTab() {
     setIsMasterControlEngaged(true);
     setIsRunning(false);
     setTimeout(() => setIsRunning(true), 100);
+  };
+
+  const handleResetStats = () => {
+    // Reset simulation by toggling running state
+    const wasRunning = isRunning;
+    setIsRunning(false);
+    setResetKey(prev => prev + 1); // Force remount to reset all stats
+    if (wasRunning) {
+      setTimeout(() => setIsRunning(true), 100);
+    }
   };
 
   const handleScram = () => {
@@ -104,10 +182,29 @@ export function RBMKReactorTab() {
 
   const config = REACTOR_PRESETS[selectedPreset];
 
+  // Delta indicator component for showing rate of change
+  const DeltaIndicator = ({ value, decimals = 0 }: { value: number; decimals?: number }) => {
+    if (Math.abs(value) < 0.01) return null; // Don't show very small changes
+
+    const isPositive = value > 0;
+    const color = isPositive ? "text-green-500" : "text-red-500";
+    const bgColor = isPositive ? "bg-green-500/10" : "bg-red-500/10";
+    const sign = isPositive ? "+" : "";
+
+    return (
+      <span
+        className={`absolute -top-1 -right-1 text-[9px] font-mono font-bold ${color} ${bgColor} px-1 py-0.5 rounded border border-current/20 shadow-sm`}
+      >
+        {sign}
+        {value.toFixed(decimals)}
+      </span>
+    );
+  };
+
   return (
     <div className="space-y-6 mt-0 relative">
       {/* Overview Card */}
-      <ScrollSnapItem align="start">
+      {/* <ScrollSnapItem align="start">
         <Card>
           <CardHeader>
             <CardTitle>RBMK-1000 Reactor Simulation</CardTitle>
@@ -148,7 +245,7 @@ export function RBMKReactorTab() {
             </div>
           </CardContent>
         </Card>
-      </ScrollSnapItem>
+      </ScrollSnapItem> */}
 
       {/* Simulation Card - side by side with control panel */}
       <ScrollSnapItem align="start">
@@ -163,96 +260,107 @@ export function RBMKReactorTab() {
           <CardContent className="p-0">
             <div className="flex flex-col lg:flex-row gap-0">
               {/* Left side: Simulation */}
-              <div className="flex-1 p-4 border-r">
-                {/* Statistics Bar with Bullet Graphs */}
+              <div className="flex-1 p-4 border-r relative">
+                {/* Reset Stats Button (top right corner) */}
                 {simulationState && (
-                  <div className="space-y-3 mb-4 p-3 bg-accent/10 border border-primary/20 rounded">
-                    {/* Active Neutrons - Bullet Graph */}
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <Label className="text-xs text-muted-foreground">Active Neutrons</Label>
-                        <span className="text-sm font-bold">{simulationState.neutrons.length}</span>
-                      </div>
-                      <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                        <div
-                          className="h-full transition-all duration-300"
-                          style={{
-                            width: `${Math.min((simulationState.neutrons.length / 1000) * 100, 100)}%`,
-                            backgroundColor: "#60a5fa", // blue-400 for neutrons
-                          }}
-                        />
-                      </div>
-                      <div className="flex justify-between text-xs text-muted-foreground mt-0.5">
-                        <span>0</span>
-                        <span>1000</span>
-                      </div>
-                    </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleResetStats}
+                    className="absolute top-2 right-2 z-10 h-8 w-8 p-0 hover:bg-destructive/10"
+                    title="Reset Statistics"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                )}
 
-                    {/* Reaction Rate - Bullet Graph */}
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <Label className="text-xs text-muted-foreground">Reaction Rate</Label>
-                        <span className="text-sm font-bold">
-                          {simulationState.reactionRate.toFixed(0)}/s
-                        </span>
-                      </div>
-                      <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                        <div
-                          className="h-full transition-all duration-300"
-                          style={{
-                            width: `${Math.min((simulationState.reactionRate / 5000) * 100, 100)}%`,
-                            backgroundColor: "#ef4444", // red-500 for reaction rate/danger
-                          }}
-                        />
-                      </div>
-                      <div className="flex justify-between text-xs text-muted-foreground mt-0.5">
-                        <span>0</span>
-                        <span>5000/s</span>
-                      </div>
-                    </div>
+                {/* Compact Gauge Metrics */}
+                {simulationState && (
+                  <div className="space-y-4 mb-4">
+                    {/* Reactor State + Coolant/Pressure Combined Row */}
+                    <div className="p-3 bg-accent/10 border border-primary/20 rounded">
+                      <h4 className="text-xs font-semibold mb-3 text-muted-foreground">
+                        Reactor Metrics
+                      </h4>
+                      <div className="flex justify-between items-center gap-4">
+                        {/* Gauges */}
+                        <div className="flex justify-around items-start gap-3 flex-1">
+                          <div className="relative flex flex-col items-center">
+                            <CircularGauge
+                              value={simulationState.neutrons.length}
+                              max={1000}
+                              label="Neutrons"
+                              variant="info"
+                              size={60}
+                            />
+                            <DeltaIndicator value={deltas.neutrons} decimals={0} />
+                          </div>
+                          <div className="relative flex flex-col items-center">
+                            <CircularGauge
+                              value={simulationState.reactionRate}
+                              max={5000}
+                              label="Rate/s"
+                              variant={simulationState.reactionRate > 3000 ? "danger" : "default"}
+                              size={60}
+                            />
+                            <DeltaIndicator value={deltas.reactionRate} decimals={0} />
+                          </div>
+                          <div className="relative flex flex-col items-center">
+                            <CircularGauge
+                              value={(simulationState.reactorTemp || 0) * 100}
+                              label="Temp"
+                              variant={
+                                (simulationState.reactorTemp || 0) > 0.8
+                                  ? "danger"
+                                  : (simulationState.reactorTemp || 0) > 0.6
+                                    ? "warning"
+                                    : "default"
+                              }
+                              size={60}
+                            />
+                            <DeltaIndicator value={deltas.reactorTemp} decimals={1} />
+                          </div>
+                          <div className="relative flex flex-col items-center">
+                            <CircularGauge
+                              value={(simulationState.voidFraction || 0) * 100}
+                              label="Void %"
+                              variant={
+                                (simulationState.voidFraction || 0) > 0.5 ? "warning" : "success"
+                              }
+                              size={60}
+                            />
+                            <DeltaIndicator value={deltas.voidFraction} decimals={1} />
+                          </div>
+                          <div className="relative flex flex-col items-center">
+                            <CircularGauge
+                              value={(simulationState.reactorPressure || 0) * 100}
+                              label="Pressure"
+                              variant={
+                                (simulationState.reactorPressure || 0) >= 0.9
+                                  ? "danger"
+                                  : (simulationState.reactorPressure || 0) >= 0.7
+                                    ? "warning"
+                                    : "success"
+                              }
+                              size={60}
+                            />
+                            <DeltaIndicator value={deltas.reactorPressure} decimals={1} />
+                          </div>
+                        </div>
 
-                    {/* Reactor Temperature - Bullet Graph */}
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <Label className="text-xs text-muted-foreground">Reactor Temp</Label>
-                        <span className="text-sm font-bold">
-                          {((simulationState.reactorTemp || 0) * 100).toFixed(1)}%
-                        </span>
-                      </div>
-                      <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
-                        <div
-                          className="h-full transition-all duration-300"
-                          style={{
-                            width: `${Math.min((simulationState.reactorTemp || 0) * 100, 100)}%`,
-                            backgroundColor: "#f97316", // orange-500 for heat
-                          }}
-                        />
-                      </div>
-                      <div className="flex justify-between text-xs text-muted-foreground mt-0.5">
-                        <span>Cold</span>
-                        <span>Hot</span>
-                      </div>
-                    </div>
-
-                    {/* Total Stats Grid with Pie Chart */}
-                    <div className="pt-2 border-t border-border/50">
-                      <div className="flex items-center justify-between gap-4">
                         {/* Pie Chart */}
-                        <div className="flex-shrink-0">
+                        <div className="flex-shrink-0 pl-4 border-l">
                           {(() => {
                             const total =
                               simulationState.totalFissions + simulationState.totalAbsorbed;
                             const fissionPercent =
                               total > 0 ? (simulationState.totalFissions / total) * 100 : 50;
-                            const absorbedPercent =
-                              total > 0 ? (simulationState.totalAbsorbed / total) * 100 : 50;
 
-                            // SVG pie chart using two arcs
-                            const size = 80;
-                            const radius = 30;
+                            // SVG pie chart
+                            const size = 70;
+                            const radius = 26;
                             const center = size / 2;
 
-                            // Calculate arc path for fissions (starts at top, goes clockwise)
                             const fissionAngle = (fissionPercent / 100) * 360;
                             const fissionRadians = (fissionAngle * Math.PI) / 180;
                             const fissionX = center + radius * Math.sin(fissionRadians);
@@ -260,58 +368,159 @@ export function RBMKReactorTab() {
                             const fissionLargeArc = fissionAngle > 180 ? 1 : 0;
 
                             return (
-                              <svg width={size} height={size} className="drop-shadow-sm">
-                                {/* Fissions slice (vibrant amber) */}
-                                <path
-                                  d={`M ${center},${center} L ${center},${center - radius} A ${radius},${radius} 0 ${fissionLargeArc},1 ${fissionX},${fissionY} Z`}
-                                  fill="#fbbf24"
-                                  stroke="#18181b"
-                                  strokeWidth="2"
-                                />
-                                {/* Absorbed slice (vibrant blue) */}
-                                <path
-                                  d={`M ${center},${center} L ${fissionX},${fissionY} A ${radius},${radius} 0 ${1 - fissionLargeArc},1 ${center},${center - radius} Z`}
-                                  fill="#60a5fa"
-                                  stroke="#18181b"
-                                  strokeWidth="2"
-                                />
-                                {/* Center circle for donut effect */}
-                                <circle cx={center} cy={center} r={radius * 0.5} fill="#18181b" />
-                                {/* Center text */}
-                                <text
-                                  x={center}
-                                  y={center}
-                                  textAnchor="middle"
-                                  dominantBaseline="middle"
-                                  fill="#fafafa"
-                                  fontSize="12"
-                                  fontWeight="bold"
-                                >
-                                  {total}
-                                </text>
-                              </svg>
+                              <div className="flex flex-col items-center gap-1">
+                                <svg width={size} height={size} className="drop-shadow-sm">
+                                  <path
+                                    d={`M ${center},${center} L ${center},${center - radius} A ${radius},${radius} 0 ${fissionLargeArc},1 ${fissionX},${fissionY} Z`}
+                                    fill="#fbbf24"
+                                    stroke="#18181b"
+                                    strokeWidth="2"
+                                  />
+                                  <path
+                                    d={`M ${center},${center} L ${fissionX},${fissionY} A ${radius},${radius} 0 ${1 - fissionLargeArc},1 ${center},${center - radius} Z`}
+                                    fill="#60a5fa"
+                                    stroke="#18181b"
+                                    strokeWidth="2"
+                                  />
+                                  <circle cx={center} cy={center} r={radius * 0.5} fill="#18181b" />
+                                  <text
+                                    x={center}
+                                    y={center}
+                                    textAnchor="middle"
+                                    dominantBaseline="middle"
+                                    fill="#fafafa"
+                                    fontSize="11"
+                                    fontWeight="bold"
+                                  >
+                                    {total}
+                                  </text>
+                                </svg>
+                                <span className="text-[10px] text-muted-foreground">Events</span>
+                              </div>
                             );
                           })()}
                         </div>
+                      </div>
+                    </div>
 
-                        {/* Stats */}
-                        <div className="flex-1 space-y-2">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 rounded-full bg-accent"></div>
-                              <Label className="text-xs text-muted-foreground">Fissions</Label>
-                            </div>
-                            <span className="text-sm font-bold">
-                              {simulationState.totalFissions}
-                            </span>
+                    {/* Control Rods & Safety */}
+                    <div className="p-3 bg-accent/10 border border-primary/20 rounded">
+                      <h4 className="text-xs font-semibold mb-3 text-muted-foreground">
+                        Control Rods & Safety
+                      </h4>
+                      <Label className="text-xs text-muted-foreground mb-3 block">
+                        Control Rods (0% = Raised • 100% = Lowered)
+                      </Label>
+                      <div className="flex items-end gap-3 justify-center">
+                        {/* Fuel & Leakage Stacked (Far Left) */}
+                        <div className="flex flex-col items-center gap-3 pr-3 border-r-2 border-primary/20">
+                          <div className="relative flex flex-col items-center">
+                            <CircularGauge
+                              value={
+                                (simulationState.atoms.reduce(
+                                  (sum, atom) => sum + atom.integrity,
+                                  0
+                                ) /
+                                  simulationState.atoms.length) *
+                                  100 || 100
+                              }
+                              label="Fuel"
+                              variant={
+                                (simulationState.atoms.reduce(
+                                  (sum, atom) => sum + atom.integrity,
+                                  0
+                                ) / simulationState.atoms.length || 1.0) < 0.7
+                                  ? "danger"
+                                  : (simulationState.atoms.reduce(
+                                        (sum, atom) => sum + atom.integrity,
+                                        0
+                                      ) / simulationState.atoms.length || 1.0) < 0.9
+                                    ? "warning"
+                                    : "success"
+                              }
+                              size={48}
+                            />
+                            <DeltaIndicator value={deltas.fuelIntegrity} decimals={2} />
                           </div>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <div className="w-3 h-3 rounded-full bg-muted"></div>
-                              <Label className="text-xs text-muted-foreground">Absorbed</Label>
+                          <div className="relative flex flex-col items-center">
+                            <CircularGauge
+                              value={simulationState.totalLeaked || 0}
+                              max={100}
+                              label="Leakage"
+                              variant={
+                                (simulationState.totalLeaked || 0) > 50
+                                  ? "danger"
+                                  : (simulationState.totalLeaked || 0) > 20
+                                    ? "warning"
+                                    : "default"
+                              }
+                              size={48}
+                              showPercent={false}
+                            />
+                            <DeltaIndicator value={deltas.leakage} decimals={0} />
+                          </div>
+                        </div>
+
+                        {/* Individual Rods */}
+                        {simulationState.controlRods.map((rod, idx) => (
+                          <div key={rod.id} className="flex flex-col items-center gap-2">
+                            {/* Health Gauge */}
+                            <div className="relative flex flex-col items-center">
+                              <CircularGauge
+                                value={(rod.health || 1.0) * 100}
+                                label={`R${idx + 1}`}
+                                variant={
+                                  (rod.health || 1.0) < 0.5
+                                    ? "danger"
+                                    : (rod.health || 1.0) < 0.8
+                                      ? "warning"
+                                      : "success"
+                                }
+                                size={48}
+                              />
+                              <DeltaIndicator value={deltas.rodHealths[idx] || 0} decimals={2} />
                             </div>
-                            <span className="text-sm font-bold">
-                              {simulationState.totalAbsorbed}
+                            {/* Vertical Slider */}
+                            <div className="flex flex-col items-center gap-1">
+                              <Slider
+                                value={[controlRodInsertions[idx] ?? 0.5]}
+                                min={0}
+                                max={1}
+                                step={0.01}
+                                onValueChange={vals => handleRodChange(idx, vals)}
+                                orientation="vertical"
+                                className="h-24"
+                              />
+                              <span className="text-[10px] text-muted-foreground font-mono">
+                                {((controlRodInsertions[idx] ?? 0.5) * 100).toFixed(0)}%
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+
+                        {/* Master Control (Far Right) */}
+                        <div className="flex flex-col items-center gap-2 pl-3 border-l-2 border-primary/20">
+                          <div className="flex flex-col items-center">
+                            <Label className="text-xs font-semibold mb-1">Master</Label>
+                            <Badge
+                              variant={isMasterControlEngaged ? "default" : "outline"}
+                              className="text-[10px] px-1.5 py-0"
+                            >
+                              {isMasterControlEngaged ? "ON" : "OFF"}
+                            </Badge>
+                          </div>
+                          <div className="flex flex-col items-center gap-1">
+                            <Slider
+                              value={[masterControlValue]}
+                              min={0}
+                              max={1}
+                              step={0.01}
+                              onValueChange={handleMasterControlChange}
+                              orientation="vertical"
+                              className={`h-24 ${isMasterControlEngaged ? "" : "opacity-50"}`}
+                            />
+                            <span className="text-[10px] text-muted-foreground font-mono">
+                              {(masterControlValue * 100).toFixed(0)}%
                             </span>
                           </div>
                         </div>
@@ -391,8 +600,8 @@ export function RBMKReactorTab() {
               </div>
 
               {/* Right side: Control Panel (always visible) */}
-              <div className="w-full lg:w-96 p-4 bg-accent/5 overflow-y-auto max-h-[700px]">
-                <div className="space-y-4">
+              <div className="w-full lg:w-96 p-4 bg-accent/5 flex flex-col">
+                <div className="space-y-4 flex flex-col flex-1">
                   <div>
                     <h3 className="text-lg font-semibold mb-2">Reactor Control Panel</h3>
                     <p className="text-xs text-muted-foreground">
@@ -400,168 +609,118 @@ export function RBMKReactorTab() {
                     </p>
                   </div>
 
-                  {/* Preset Selection */}
-                  <div className="space-y-2">
-                    <Label className="text-sm">Reactor Preset</Label>
-                    <div className="grid grid-cols-2 gap-2">
-                      <Button
-                        variant={selectedPreset === "normal" ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => handlePresetChange("normal")}
-                      >
-                        Normal
-                      </Button>
-                      <Button
-                        variant={selectedPreset === "lowPowerTest" ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => handlePresetChange("lowPowerTest")}
-                      >
-                        Low Power
-                      </Button>
-                      <Button
-                        variant={selectedPreset === "highReactivity" ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => handlePresetChange("highReactivity")}
-                      >
-                        High
-                      </Button>
-                      <Button
-                        variant={selectedPreset === "scrammed" ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => handlePresetChange("scrammed")}
-                      >
-                        Scrammed
-                      </Button>
-                    </div>
-                  </div>
+                  {/* Multi-tab interface: Controls vs Physics Config */}
+                  <Tabs defaultValue="controls" className="flex-1 flex flex-col">
+                    <TabsList className="grid w-full grid-cols-2">
+                      <TabsTrigger value="controls">Controls</TabsTrigger>
+                      <TabsTrigger value="physics">Physics Config</TabsTrigger>
+                    </TabsList>
 
-                  {/* Simulation Speed */}
-                  <div className="space-y-2">
-                    <Label className="text-sm">Simulation Speed: {speed.toFixed(1)}x</Label>
-                    <Slider
-                      value={[speed]}
-                      min={0.1}
-                      max={3.0}
-                      step={0.1}
-                      onValueChange={vals => setSpeed(vals[0] ?? 1.0)}
-                    />
-                  </div>
-
-                  {/* Master Control Rod */}
-                  <div className="space-y-2 p-3 border rounded bg-accent/10">
-                    <div className="flex items-center justify-between">
-                      <Label className="text-sm font-semibold">Master Control</Label>
-                      <Badge
-                        variant={isMasterControlEngaged ? "default" : "outline"}
-                        className="text-xs"
-                      >
-                        {isMasterControlEngaged ? "Engaged" : "Disengaged"}
-                      </Badge>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-muted-foreground font-mono whitespace-nowrap">
-                        {(masterControlValue * 100).toFixed(0)}%
-                      </span>
-                      <Slider
-                        value={[masterControlValue]}
-                        min={0}
-                        max={1}
-                        step={0.01}
-                        onValueChange={handleMasterControlChange}
-                        disabled={!isMasterControlEngaged}
-                        className={isMasterControlEngaged ? "" : "opacity-50"}
-                      />
-                    </div>
-                    <p className="text-xs text-muted-foreground italic">
-                      Controls all rods simultaneously • Disengages when individual rods are moved
-                    </p>
-                  </div>
-
-                  {/* Control Rods */}
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <Label className="text-sm">Individual Control Rods (10)</Label>
-                      <Badge variant="outline" className="text-xs">
-                        0% = Raised • 100% = Lowered
-                      </Badge>
-                    </div>
-
-                    {controlRodInsertions.map((insertion, index) => (
-                      <div key={index} className="space-y-1">
-                        <div className="flex items-center justify-between">
-                          <Label className="text-xs">Rod {index + 1}</Label>
-                          <span className="text-xs text-muted-foreground font-mono">
-                            {(insertion * 100).toFixed(0)}%
-                          </span>
+                    {/* Controls Tab */}
+                    <TabsContent value="controls" className="flex-1 space-y-4 overflow-y-auto">
+                      {/* Preset Selection */}
+                      <div className="space-y-2">
+                        <Label className="text-sm">Reactor Preset</Label>
+                        <div className="grid grid-cols-2 gap-2">
+                          <Button
+                            variant={selectedPreset === "normal" ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => handlePresetChange("normal")}
+                          >
+                            Normal
+                          </Button>
+                          <Button
+                            variant={selectedPreset === "lowPowerTest" ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => handlePresetChange("lowPowerTest")}
+                          >
+                            Low Power
+                          </Button>
+                          <Button
+                            variant={selectedPreset === "highReactivity" ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => handlePresetChange("highReactivity")}
+                          >
+                            High
+                          </Button>
+                          <Button
+                            variant={selectedPreset === "scrammed" ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => handlePresetChange("scrammed")}
+                          >
+                            Scrammed
+                          </Button>
                         </div>
+                      </div>
+
+                      {/* Simulation Speed */}
+                      <div className="space-y-2">
+                        <Label className="text-sm">Simulation Speed: {speed.toFixed(1)}x</Label>
                         <Slider
-                          value={[insertion]}
-                          min={0}
-                          max={1}
-                          step={0.01}
-                          onValueChange={vals => handleRodChange(index, vals)}
+                          value={[speed]}
+                          min={0.1}
+                          max={3.0}
+                          step={0.1}
+                          onValueChange={vals => setSpeed(vals[0] ?? 1.0)}
                         />
                       </div>
-                    ))}
-                  </div>
 
-                  {/* Quick Actions */}
-                  <div className="space-y-2">
-                    <Label className="text-sm">Quick Actions</Label>
-                    <div className="grid grid-cols-2 gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          setControlRodInsertions(Array(10).fill(0.0));
-                          setMasterControlValue(0.0);
-                          setIsMasterControlEngaged(true);
-                        }}
-                      >
-                        Raise All
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          setControlRodInsertions(Array(10).fill(0.5));
-                          setMasterControlValue(0.5);
-                          setIsMasterControlEngaged(true);
-                        }}
-                      >
-                        50% All
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          setControlRodInsertions(Array(10).fill(1.0));
-                          setMasterControlValue(1.0);
-                          setIsMasterControlEngaged(true);
-                        }}
-                      >
-                        Lower All
-                      </Button>
-                      <Button variant="destructive" size="sm" onClick={handleScram}>
-                        SCRAM
-                      </Button>
-                    </div>
-                  </div>
+                      {/* Quick Actions */}
+                      <div className="space-y-2">
+                        <Label className="text-sm">Quick Actions</Label>
+                        <div className="grid grid-cols-2 gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              setControlRodInsertions(Array(10).fill(0.0));
+                              setMasterControlValue(0.0);
+                              setIsMasterControlEngaged(true);
+                            }}
+                          >
+                            Raise All
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              setControlRodInsertions(Array(10).fill(0.5));
+                              setMasterControlValue(0.5);
+                              setIsMasterControlEngaged(true);
+                            }}
+                          >
+                            50% All
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              setControlRodInsertions(Array(10).fill(1.0));
+                              setMasterControlValue(1.0);
+                              setIsMasterControlEngaged(true);
+                            }}
+                          >
+                            Lower All
+                          </Button>
+                          <Button variant="destructive" size="sm" onClick={handleScram}>
+                            SCRAM
+                          </Button>
+                        </div>
+                      </div>
 
-                  {/* Physics Configuration Panel */}
-                  <Collapsible open={isPhysicsOpen} onOpenChange={setIsPhysicsOpen}>
-                    <CollapsibleTrigger asChild>
-                      <Button variant="outline" size="sm" className="w-full justify-between">
-                        <span className="flex items-center gap-2">
-                          <Settings2 className="h-4 w-4" />
-                          Physics Configuration
-                        </span>
-                        <ChevronDown
-                          className={`h-4 w-4 transition-transform ${isPhysicsOpen ? "rotate-180" : ""}`}
-                        />
-                      </Button>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent className="mt-2 space-y-3">
+                      {/* Warning Notice */}
+                      <div className="p-3 bg-destructive/10 border border-destructive/20 rounded text-xs text-muted-foreground">
+                        <p className="font-semibold mb-1">⚠️ Historical Note</p>
+                        <p>
+                          RBMK reactors had a critically slow control rod insertion time (18-21
+                          seconds) which contributed to the Chernobyl disaster. This simulation
+                          models that behavior.
+                        </p>
+                      </div>
+                    </TabsContent>
+
+                    {/* Physics Config Tab */}
+                    <TabsContent value="physics" className="flex-1 space-y-4 overflow-y-auto">
                       <div className="p-3 bg-muted/50 border rounded space-y-2">
                         {/* Fuel Properties */}
                         <div>
@@ -652,18 +811,8 @@ export function RBMKReactorTab() {
                           absorption: 3,840 barns)
                         </div>
                       </div>
-                    </CollapsibleContent>
-                  </Collapsible>
-
-                  {/* Warning Notice */}
-                  <div className="p-3 bg-destructive/10 border border-destructive/20 rounded text-xs text-muted-foreground">
-                    <p className="font-semibold mb-1">⚠️ Historical Note</p>
-                    <p>
-                      RBMK reactors had a critically slow control rod insertion time (18-21 seconds)
-                      which contributed to the Chernobyl disaster. This simulation models that
-                      behavior.
-                    </p>
-                  </div>
+                    </TabsContent>
+                  </Tabs>
                 </div>
               </div>
             </div>

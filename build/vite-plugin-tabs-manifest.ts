@@ -327,6 +327,8 @@ export default function tabsManifestPlugin() {
 
       // 📊 Extract metadata from each tab file
       const entries: Array<any> = [];
+      const validationErrors: string[] = [];
+
       for (const file of files) {
         const filePath = path.join(tabsDir, file);
         const src = await fs.readFile(filePath, "utf8");
@@ -339,6 +341,20 @@ export default function tabsManifestPlugin() {
 
         const name = nameMatch[1]; // e.g., "Components"
         const compKey = `${name}Tab`; // e.g., "ComponentsTab"
+
+        // ✅ VALIDATE: Check for required named export
+        const hasNamedExport = new RegExp(`export\\s+(function|const)\\s+${compKey}`).test(src);
+        const hasNamedReExport = new RegExp(`export\\s*{[^}]*${compKey}[^}]*}\\s*from`).test(src);
+
+        if (!hasNamedExport && !hasNamedReExport) {
+          const hasDefaultExport = /export\s+default/.test(src);
+          validationErrors.push(
+            `\n❌ ${file}\n` +
+            `   Expected: export function ${compKey}() { ... }\n` +
+            `   Or: export { ${compKey} } from "..."\n` +
+            `   ${hasDefaultExport ? 'Found: export default (change to named export)' : 'Missing named export'}`
+          );
+        }
 
         // 🔤 Split camelCase name into words (e.g., "ComponentsTab" → ["Components", "Tab"])
         const parts = name.split(/(?=[A-Z])/).filter(Boolean);
@@ -397,6 +413,25 @@ export default function tabsManifestPlugin() {
 
         // ✅ Add entry to manifest with dot notation for nested sections
         entries.push({ compKey, name, value, label, order, section });
+      }
+
+      // ❌ FAIL FAST: If validation errors found, throw immediately
+      if (validationErrors.length > 0) {
+        const errorMessage =
+          `\n${"=".repeat(80)}\n` +
+          `❌ TAB EXPORT VALIDATION FAILED (Build Time)\n` +
+          `${"=".repeat(80)}\n` +
+          `\n` +
+          `All tab components must use NAMED exports, not default exports.\n` +
+          `\n` +
+          `Failed components:${validationErrors.join('')}\n` +
+          `\n` +
+          `Fix: Change "export default function" to "export function"\n` +
+          `     Or use: export { ComponentName } from "./path"\n` +
+          `${"=".repeat(80)}\n`;
+
+        logger.error(errorMessage);
+        throw new Error(errorMessage);
       }
 
       // 📊 Sort entries by priority

@@ -34,7 +34,7 @@ try {
 }
 
 /** @type {import('vite').UserConfig} */
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   root: "./app",
   publicDir: "../public",
   define: {
@@ -42,9 +42,13 @@ export default defineConfig({
     __APP_VERSION__: JSON.stringify(pkg.version),
     __GIT_HASH__: JSON.stringify(gitHash),
     __LAST_COMMIT__: JSON.stringify(lastCommit),
+    // Map non-prefixed env vars to VITE_ prefixed ones for PaperTradarr
+    "import.meta.env.VITE_POLYGON_API_KEY": JSON.stringify(
+      process.env.VITE_POLYGON_API_KEY || process.env.POLYGON_API_KEY || ""
+    ),
   },
   plugins: [
-    tabsManifestPlugin(), // Generates manifest + OG images
+    tabsManifestPlugin(), // Generates manifest + OG images (includes export validation)
     sitemapPlugin({
       // Use env variable from CI, fallback to GitHub Pages URL for dev
       baseUrl: process.env.VITE_BASE_URL || "https://thebranchdriftcatalyst.github.io/catalyst-ui",
@@ -155,4 +159,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));
