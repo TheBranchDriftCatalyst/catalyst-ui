@@ -32,8 +32,8 @@ function KitchenSink() {
   // Read initial section and tab from URL path
   const getInitialState = () => {
     const pathSegments = window.location.pathname.split("/").filter(Boolean);
-    const section = (pathSegments[0] as Section) || "catalyst";
-    const tab = pathSegments[1] || "overview";
+    const section = (pathSegments[0] as Section) || "home";
+    const tab = pathSegments[1] || "welcome";
     return { section, tab };
   };
 
@@ -107,8 +107,8 @@ function KitchenSink() {
   useEffect(() => {
     const handlePopState = () => {
       const pathSegments = window.location.pathname.split("/").filter(Boolean);
-      const section = (pathSegments[0] as Section) || "catalyst";
-      const tab = pathSegments[1] || "overview";
+      const section = (pathSegments[0] as Section) || "home";
+      const tab = pathSegments[1] || "welcome";
       setActiveSection(section);
       setActiveTab(tab);
 

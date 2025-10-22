@@ -1,6 +1,6 @@
 import { cn } from "@/catalyst-ui/utils";
 
-export type Section = "catalyst" | "projects";
+export type Section = "home" | "catalyst" | "projects";
 
 export interface SectionNavigationProps {
   activeSection: Section;
@@ -11,7 +11,7 @@ export interface SectionNavigationProps {
 /**
  * SectionNavigation - Top-level section switcher with subtle underline style
  *
- * Renders two text buttons: "Catalyst UI" and "Projects"
+ * Renders section buttons: "Home", "Catalyst UI", and "Projects"
  * Active section is indicated by a sharp underline
  */
 export function SectionNavigation({
@@ -21,6 +21,18 @@ export function SectionNavigation({
 }: SectionNavigationProps) {
   return (
     <nav className={cn("flex gap-6", className)}>
+      <button
+        onClick={() => onSectionChange("home")}
+        className={cn(
+          "relative px-1 py-2 text-sm font-medium transition-colors",
+          "hover:text-foreground",
+          activeSection === "home"
+            ? "text-foreground after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-primary"
+            : "text-muted-foreground"
+        )}
+      >
+        Home
+      </button>
       <button
         onClick={() => onSectionChange("catalyst")}
         className={cn(
