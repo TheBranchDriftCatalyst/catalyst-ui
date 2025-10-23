@@ -10,16 +10,22 @@ import { Label } from "@/catalyst-ui/ui/label";
 import { Button } from "@/catalyst-ui/ui/button";
 import { Typography } from "@/catalyst-ui/ui/typography";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/catalyst-ui/ui/tabs";
+import { Badge } from "@/catalyst-ui/ui/badge";
 import { AnimatedFlipDemo } from "../demos/AnimatedFlipDemo";
 import { AnimatedFadeDemo } from "../demos/AnimatedFadeDemo";
 import { AnimatedSlideDemo } from "../demos/AnimatedSlideDemo";
 import { AnimatedBounceDemo } from "../demos/AnimatedBounceDemo";
-import { ScrollSnapItem } from "@/catalyst-ui/effects";
+import { StaggerAnimationDemo } from "../demos/StaggerAnimationDemo";
+import StaggerAnimationDemoSource from "../demos/StaggerAnimationDemo.tsx?raw";
+import { ScrollSnapItem, Animate, staggerContainer, fadeInStagger } from "@/catalyst-ui/effects";
+import { CodeFlipCard } from "@/catalyst-ui/components/CodeFlipCard";
+import { ImportFooter } from "@/catalyst-ui/components/CodeFlipCard/ImportFooter";
 import { D4Loader } from "../components/D4Loader";
 import { Toggle } from "@/catalyst-ui/ui/toggle";
 import { Slider } from "@/catalyst-ui/ui/slider";
 import { useState } from "react";
 import { useTheme } from "@/catalyst-ui/contexts/Theme/ThemeContext";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const TAB_ORDER = 10;
 
@@ -31,6 +37,16 @@ export function AnimationsTab() {
   const [chromaEnabled, setChromaEnabled] = useState(true);
   const [sparkFrequency, setSparkFrequency] = useState(0.06);
 
+  // Stagger animation states
+  const [showVerticalStagger, setShowVerticalStagger] = useState(true);
+  const [showHorizontalStagger, setShowHorizontalStagger] = useState(true);
+
+  // Stagger animation controls
+  const [verticalStaggerDelay, setVerticalStaggerDelay] = useState(0.1);
+  const [verticalDistance, setVerticalDistance] = useState(20);
+  const [horizontalStaggerDelay, setHorizontalStaggerDelay] = useState(0.1);
+  const [horizontalDistance, setHorizontalDistance] = useState(20);
+
   return (
     <div className="space-y-6 mt-0">
       {/* Overview Card */}
@@ -39,12 +55,28 @@ export function AnimationsTab() {
           <CardHeader>
             <CardTitle>Animation System</CardTitle>
             <CardDescription>
-              Two approaches to animations: React HOCs for interactive components • CSS keyframes
-              for theme effects
+              Unified interface with CSS + Framer Motion • Auto-selects best implementation • Theme
+              effect layers
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-3 gap-4">
+              <div className="space-y-2">
+                <Typography variant="h4" className="text-sm font-semibold">
+                  Unified Animate Component
+                </Typography>
+                <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+                  <li>One API - auto-selects CSS or Motion</li>
+                  <li>Smart defaults for all use cases</li>
+                  <li>Force implementation when needed</li>
+                  <li>Stagger containers for lists/grids</li>
+                </ul>
+                <p className="text-xs text-muted-foreground italic pt-2">
+                  🎯 Recommended: Use{" "}
+                  <code className="text-primary text-[10px]">{"<Animate />"}</code> for 90% of
+                  animations
+                </p>
+              </div>
               <div className="space-y-2">
                 <Typography variant="h4" className="text-sm font-semibold">
                   React Animation HOCs
@@ -54,10 +86,10 @@ export function AnimationsTab() {
                   <li>AnimatedFade - Opacity transitions</li>
                   <li>AnimatedSlide - Directional sliding</li>
                   <li>AnimatedBounce - Spring-like scaling</li>
+                  <li>MotionFade/MotionScale - Framer Motion HOCs</li>
                 </ul>
                 <p className="text-xs text-muted-foreground italic pt-2">
-                  ✅ Best for: Custom components, state-driven animations, CodeFlipCard-style
-                  interactions
+                  ✅ Best for: Explicit control, performance-critical lists, custom patterns
                 </p>
               </div>
               <div className="space-y-2">
@@ -351,6 +383,268 @@ export function AnimationsTab() {
                   import {"{ AnimatedBounce }"} from '@/catalyst-ui/effects';
                 </code>
               </CardFooter>
+            </Card>
+          </ScrollSnapItem>
+
+          {/* Unified Animate Component */}
+          <ScrollSnapItem align="start">
+            <Card>
+              <CardHeader>
+                <CardTitle>Unified Animate Component</CardTitle>
+                <CardDescription>
+                  One interface, auto-selects CSS or Framer Motion • Smart defaults for all use
+                  cases
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Typography variant="p" className="text-sm text-muted-foreground">
+                  The <code className="text-primary">Animate</code> component provides a single API
+                  that automatically chooses between CSS-based and Framer Motion implementations
+                  based on your animation needs.
+                </Typography>
+
+                {/* Auto-selection demo */}
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label className="text-sm font-semibold">CSS (auto-selected)</Label>
+                    <Typography variant="small" className="text-muted-foreground">
+                      Simple hover interactions automatically use CSS for better performance:
+                    </Typography>
+                    <Animate variant="bounce" trigger="hover" duration={300}>
+                      <Button variant="outline" className="w-full">
+                        Hover me - CSS bounce
+                      </Button>
+                    </Animate>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-sm font-semibold">Motion (auto-selected)</Label>
+                    <Typography variant="small" className="text-muted-foreground">
+                      Directional effects automatically use Framer Motion:
+                    </Typography>
+                    <Animate variant="fade" direction="up" duration={600}>
+                      <Card className="p-4">
+                        <Typography variant="small">Directional fade - Motion</Typography>
+                      </Card>
+                    </Animate>
+                  </div>
+                </div>
+
+                <div className="p-3 bg-accent/10 border border-primary/20 rounded">
+                  <Typography variant="small" className="text-xs">
+                    <strong>Auto-selection logic:</strong> Uses CSS for simple hover/click
+                    interactions. Uses Motion for exit animations, directional effects, scale
+                    variants, or controlled reveals.
+                  </Typography>
+                </div>
+
+                {/* Force implementation examples */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-semibold">Force Implementation</Label>
+                  <div className="flex gap-2">
+                    <Animate variant="fade" implementation="css" trigger="hover" duration={300}>
+                      <Badge>CSS forced</Badge>
+                    </Animate>
+                    <Animate variant="fade" implementation="motion" direction="up" duration={600}>
+                      <Badge variant="outline">Motion forced</Badge>
+                    </Animate>
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter className="border-t pt-4">
+                <code className="text-xs text-muted-foreground">
+                  import {"{ Animate }"} from '@/catalyst-ui/effects';
+                </code>
+              </CardFooter>
+            </Card>
+          </ScrollSnapItem>
+
+          {/* Stagger Container Examples */}
+          <ScrollSnapItem align="start">
+            <Card>
+              <CardHeader>
+                <CardTitle>Stagger Containers</CardTitle>
+                <CardDescription>
+                  Sequential animation delays for lists and grids • Framer Motion orchestration
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <Typography variant="p" className="text-sm text-muted-foreground">
+                  Stagger animations create a wave effect by animating child elements sequentially.
+                  Perfect for card grids, lists, and feature showcases.
+                </Typography>
+
+                {/* Vertical Stagger Example */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <Label className="text-sm font-semibold">Vertical Stagger</Label>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        setShowVerticalStagger(false);
+                        setTimeout(() => setShowVerticalStagger(true), 50);
+                      }}
+                    >
+                      Play Animation
+                    </Button>
+                  </div>
+
+                  {/* Controls */}
+                  <div className="grid grid-cols-2 gap-3 p-3 bg-muted/50 rounded-lg border border-border">
+                    <div className="space-y-2">
+                      <Label className="text-xs">
+                        Stagger Delay: {verticalStaggerDelay.toFixed(2)}s
+                      </Label>
+                      <Slider
+                        value={[verticalStaggerDelay]}
+                        min={0.01}
+                        max={0.5}
+                        step={0.01}
+                        onValueChange={vals => setVerticalStaggerDelay(vals[0] ?? 0.1)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-xs">Distance: {verticalDistance}px</Label>
+                      <Slider
+                        value={[verticalDistance]}
+                        min={10}
+                        max={100}
+                        step={5}
+                        onValueChange={vals => setVerticalDistance(vals[0] ?? 20)}
+                      />
+                    </div>
+                  </div>
+
+                  <AnimatePresence mode="wait">
+                    {showVerticalStagger && (
+                      <motion.div
+                        key="vertical-stagger"
+                        variants={staggerContainer(verticalStaggerDelay)}
+                        initial="hidden"
+                        animate="show"
+                        className="space-y-3"
+                      >
+                        {[
+                          { title: "Step 1", desc: "Initialize project" },
+                          { title: "Step 2", desc: "Configure settings" },
+                          { title: "Step 3", desc: "Deploy to production" },
+                        ].map((step, i) => (
+                          <motion.div key={i} variants={fadeInStagger("up", verticalDistance)}>
+                            <Card className="p-4">
+                              <Typography variant="h4" className="text-sm font-semibold">
+                                {step.title}
+                              </Typography>
+                              <Typography variant="small" className="text-muted-foreground">
+                                {step.desc}
+                              </Typography>
+                            </Card>
+                          </motion.div>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Horizontal Stagger Example */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <Label className="text-sm font-semibold">Horizontal Stagger</Label>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => {
+                        setShowHorizontalStagger(false);
+                        setTimeout(() => setShowHorizontalStagger(true), 50);
+                      }}
+                    >
+                      Play Animation
+                    </Button>
+                  </div>
+
+                  {/* Controls */}
+                  <div className="grid grid-cols-2 gap-3 p-3 bg-muted/50 rounded-lg border border-border">
+                    <div className="space-y-2">
+                      <Label className="text-xs">
+                        Stagger Delay: {horizontalStaggerDelay.toFixed(2)}s
+                      </Label>
+                      <Slider
+                        value={[horizontalStaggerDelay]}
+                        min={0.01}
+                        max={0.5}
+                        step={0.01}
+                        onValueChange={vals => setHorizontalStaggerDelay(vals[0] ?? 0.1)}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-xs">Distance: {horizontalDistance}px</Label>
+                      <Slider
+                        value={[horizontalDistance]}
+                        min={10}
+                        max={100}
+                        step={5}
+                        onValueChange={vals => setHorizontalDistance(vals[0] ?? 20)}
+                      />
+                    </div>
+                  </div>
+
+                  <AnimatePresence mode="wait">
+                    {showHorizontalStagger && (
+                      <motion.div
+                        key="horizontal-stagger"
+                        variants={staggerContainer(horizontalStaggerDelay)}
+                        initial="hidden"
+                        animate="show"
+                        className="grid grid-cols-3 gap-3"
+                      >
+                        {["Card 1", "Card 2", "Card 3", "Card 4", "Card 5", "Card 6"].map(
+                          (label, i) => (
+                            <motion.div
+                              key={i}
+                              variants={fadeInStagger("left", horizontalDistance)}
+                            >
+                              <Card className="p-4 text-center">
+                                <Typography variant="small">{label}</Typography>
+                              </Card>
+                            </motion.div>
+                          )
+                        )}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                {/* Interactive Code Example */}
+                <CodeFlipCard
+                  sourceCode={StaggerAnimationDemoSource}
+                  fileName="StaggerAnimationDemo.tsx"
+                  language="tsx"
+                >
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-base">Stagger Animation Example</CardTitle>
+                      <CardDescription>
+                        Click card to view source code • Sequential animation with parent
+                        orchestration
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex items-center justify-center p-6">
+                      <StaggerAnimationDemo />
+                    </CardContent>
+                    <ImportFooter sourceCode={StaggerAnimationDemoSource} />
+                  </Card>
+                </CodeFlipCard>
+
+                <div className="p-3 bg-accent/10 border border-primary/20 rounded">
+                  <Typography variant="small" className="text-xs">
+                    <strong>How it works:</strong> The parent container controls the orchestration
+                    via <code className="text-primary">staggerContainer()</code>, while children use{" "}
+                    <code className="text-primary">fadeInStagger()</code> to define their entrance
+                    animation WITHOUT transition timing. The parent's staggerChildren applies the
+                    delay.
+                  </Typography>
+                </div>
+              </CardContent>
             </Card>
           </ScrollSnapItem>
 
