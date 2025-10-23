@@ -1,5 +1,6 @@
 import "../lib/global.css";
 import { ThemeProvider } from "@/catalyst-ui/contexts/Theme/ThemeProvider";
+import { MotionProvider } from "@/catalyst-ui/contexts/Motion";
 import { I18nProvider } from "@/catalyst-ui/contexts/i18n";
 import {
   AnalyticsProvider,
@@ -136,6 +137,15 @@ function KitchenSink() {
     if (firstTab) {
       setActiveTab(firstTab.value);
     }
+
+    // Auto-expand sidebar if new section has multiple tabs
+    const newSectionTabs = TABS.filter(t => {
+      const topLevelSection = t.section.split(".")[0];
+      return topLevelSection === newSection;
+    });
+    if (newSectionTabs.length > 1 && !sidebarOpen) {
+      setSidebarOpen(true);
+    }
   };
 
   // No async metadata effect — manifest is trusted and loaded at build/dev start.
@@ -179,21 +189,25 @@ function KitchenSink() {
 
         {/* Main layout with sidebar */}
         <div className="flex">
-          {/* Sidebar Navigation */}
-          <SidebarNav
-            items={sectionTabs.map(t => ({
-              label: t.label,
-              value: t.value,
-              section: t.section, // Section with dot notation for nested grouping
-            }))}
-            activeValue={activeTab}
-            onValueChange={setActiveTab}
-            open={sidebarOpen}
-            onOpenChange={setSidebarOpen}
-          />
+          {/* Sidebar Navigation - Hidden when section has only one tab (no subsections) */}
+          {sectionTabs.length > 1 && (
+            <SidebarNav
+              items={sectionTabs.map(t => ({
+                label: t.label,
+                value: t.value,
+                section: t.section, // Section with dot notation for nested grouping
+              }))}
+              activeValue={activeTab}
+              onValueChange={setActiveTab}
+              open={sidebarOpen}
+              onOpenChange={setSidebarOpen}
+            />
+          )}
 
           {/* Main content area - adjusts for sidebar on desktop */}
-          <main className={`flex-1 transition-all duration-300 ${sidebarOpen ? "md:ml-0" : ""}`}>
+          <main
+            className={`flex-1 transition-all duration-300 ${sectionTabs.length > 1 && sidebarOpen ? "md:ml-0" : ""}`}
+          >
             <ScrollSnapContainer
               type="y"
               behavior="mandatory"
@@ -240,10 +254,12 @@ function App() {
           <AnalyticsErrorBoundary>
             <DevProviders>
               <ThemeProvider>
-                <HeaderProvider>
-                  <KitchenSink />
-                  <Toaster />
-                </HeaderProvider>
+                <MotionProvider respectReducedMotion>
+                  <HeaderProvider>
+                    <KitchenSink />
+                    <Toaster />
+                  </HeaderProvider>
+                </MotionProvider>
               </ThemeProvider>
             </DevProviders>
           </AnalyticsErrorBoundary>

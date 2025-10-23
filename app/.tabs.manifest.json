@@ -72,6 +72,14 @@
     "section": "catalyst"
   },
   {
+    "compKey": "ThreeDModelsTab",
+    "name": "ThreeDModels",
+    "value": "threedmodels",
+    "label": "3D Models",
+    "order": 11,
+    "section": "catalyst"
+  },
+  {
     "compKey": "ResumeTab",
     "name": "Resume",
     "value": "resume",
@@ -84,7 +92,7 @@
     "name": "Tokens",
     "value": "tokens",
     "label": "Tokens",
-    "order": 13,
+    "order": 14,
     "section": "catalyst"
   },
   {
@@ -92,7 +100,7 @@
     "name": "Typography",
     "value": "typography",
     "label": "Type",
-    "order": 14,
+    "order": 15,
     "section": "catalyst"
   },
   {
@@ -100,7 +108,7 @@
     "name": "Welcome",
     "value": "welcome",
     "label": "Welcome",
-    "order": 15,
+    "order": 16,
     "section": "home"
   },
   {
