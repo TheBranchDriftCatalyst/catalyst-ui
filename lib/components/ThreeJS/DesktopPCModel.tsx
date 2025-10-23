@@ -49,24 +49,40 @@ export function DesktopPCModel({
 
   return (
     <group>
-      {/* Three-point lighting setup */}
-      <hemisphereLight intensity={0.15} groundColor="black" />
+      {/* Overhead directional lighting setup */}
+      <hemisphereLight intensity={0.5} groundColor="black" />
+
+      {/* Main directional light from above - simulates ceiling lighting */}
+      <directionalLight position={[0, 10, 0]} intensity={2} color="#ffffff" />
+
+      {/* Directional fill lights from sides for depth */}
+      <directionalLight position={[5, 8, 5]} intensity={1} color="#00fcd6" />
+      <directionalLight position={[-5, 8, -5]} intensity={0.8} color="#bd00ff" />
+
+      {/* Soft spotlight from front for model visibility */}
       <spotLight
-        position={[-20, 50, 10]}
-        angle={0.12}
+        position={[0, 15, 10]}
+        angle={0.3}
         penumbra={1}
-        intensity={1}
+        intensity={1.5}
         castShadow
         shadow-mapSize={1024}
       />
-      <pointLight intensity={1} />
 
       {/* Desktop PC Model */}
       <primitive object={computer.scene} scale={scale} position={position} rotation={rotation} />
 
-      {/* Orbit Controls */}
+      {/* Orbit Controls - Fully rotatable */}
       {enableControls && (
-        <OrbitControls enableZoom={false} maxPolarAngle={Math.PI / 2} minPolarAngle={Math.PI / 2} />
+        <OrbitControls
+          enableZoom={true}
+          enablePan={false}
+          enableRotate={true}
+          maxDistance={30}
+          minDistance={10}
+          autoRotate={false}
+          autoRotateSpeed={0.5}
+        />
       )}
     </group>
   );

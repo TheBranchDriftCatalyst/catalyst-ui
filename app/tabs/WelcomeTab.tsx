@@ -7,7 +7,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { ModelShowcase } from "@/catalyst-ui/components/ThreeJS";
+import { ThreeCanvas, DesktopPCModel } from "@/catalyst-ui/components/ThreeJS";
 import {
   textVariant,
   fadeIn,
@@ -103,7 +103,9 @@ export function WelcomeTab() {
       <section className="relative w-full h-screen">
         {/* 3D Canvas Background */}
         <div className="absolute inset-0 z-0">
-          <ModelShowcase defaultModel="desktop" />
+          <ThreeCanvas camera={{ position: [20, 3, 5], fov: 25 }}>
+            <DesktopPCModel />
+          </ThreeCanvas>
         </div>
 
         {/* Hero Content Overlay */}
@@ -111,7 +113,7 @@ export function WelcomeTab() {
           variants={staggerContainer(0.1, 0.1)}
           initial="hidden"
           animate="show"
-          className="relative z-10 h-full flex flex-col items-center justify-center px-6 text-center"
+          className="relative z-10 h-full flex flex-col items-center justify-start pt-24 md:pt-32 px-6 text-center pointer-events-none"
         >
           {/* Title */}
           <motion.h1
@@ -137,7 +139,7 @@ export function WelcomeTab() {
           {/* CTA Buttons */}
           <motion.div
             variants={fadeIn("up", "spring", 0.4, 1)}
-            className="flex flex-wrap gap-4 justify-center"
+            className="flex flex-wrap gap-4 justify-center pointer-events-auto"
           >
             <Button
               size="lg"

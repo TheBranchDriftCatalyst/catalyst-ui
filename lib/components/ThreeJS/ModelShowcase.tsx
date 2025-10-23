@@ -59,7 +59,7 @@ export function ModelShowcase({
   return (
     <div className={`relative w-full h-full ${className}`}>
       {/* Model Tabs */}
-      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10 flex gap-2">
+      <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-20 flex gap-2">
         {(Object.keys(models) as ModelType[]).map(modelKey => (
           <button
             key={modelKey}
