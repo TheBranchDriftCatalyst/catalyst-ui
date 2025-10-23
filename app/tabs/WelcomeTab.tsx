@@ -7,7 +7,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { ThreeCanvas, DesktopPCModel } from "@/catalyst-ui/components/ThreeJS";
+import { ThreeCanvas, StarsBackground, DesktopPCModel } from "@/catalyst-ui/components/ThreeJS";
 import {
   textVariant,
   fadeIn,
@@ -89,8 +89,8 @@ export const TAB_LABEL = "Welcome";
 
 export function WelcomeTab() {
   const handleNavigateToComponents = () => {
-    // Navigate to components tab
-    window.location.hash = "#/components";
+    // Navigate to Overview tab (main catalyst-ui showcase)
+    window.location.hash = "#/overview";
   };
 
   const handleGitHub = () => {
@@ -101,7 +101,7 @@ export function WelcomeTab() {
     <div className="w-full min-h-screen bg-background">
       {/* Hero Section with 3D Model */}
       <section className="relative w-full h-screen">
-        {/* 3D Canvas Background */}
+        {/* 3D Scene - Composed from isolated components */}
         <div className="absolute inset-0 z-0">
           <ThreeCanvas camera={{ position: [20, 3, 5], fov: 25 }}>
             <DesktopPCModel />

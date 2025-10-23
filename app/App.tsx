@@ -252,16 +252,16 @@ function App() {
           }}
         >
           <AnalyticsErrorBoundary>
-            <DevProviders>
-              <ThemeProvider>
+            <ThemeProvider>
+              <DevProviders>
                 <MotionProvider respectReducedMotion>
                   <HeaderProvider>
                     <KitchenSink />
                     <Toaster />
                   </HeaderProvider>
                 </MotionProvider>
-              </ThemeProvider>
-            </DevProviders>
+              </DevProviders>
+            </ThemeProvider>
           </AnalyticsErrorBoundary>
         </AnalyticsProvider>
       </SEOProvider>

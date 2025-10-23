@@ -6,6 +6,7 @@ import { extname, relative, resolve } from "path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 import tsconfigPaths from "vite-tsconfig-paths";
+import yamlPlugin from "@rollup/plugin-yaml";
 import tabsManifestPlugin from "./build/vite-plugin-tabs-manifest";
 import concatDocsPlugin from "./build/vite-plugin-concat-docs";
 import preserveUseClient from "./build/vite-plugin-preserve-use-client";
@@ -48,6 +49,7 @@ export default defineConfig(({ mode }) => ({
     ),
   },
   plugins: [
+    yamlPlugin(), // Enable YAML imports
     tabsManifestPlugin(), // Generates manifest + OG images (includes export validation)
     sitemapPlugin({
       // Use env variable from CI, fallback to GitHub Pages URL for dev

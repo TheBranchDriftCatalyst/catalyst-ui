@@ -133,10 +133,14 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   );
 
   // Merge stored effects with defaults to handle new properties
-  const effects = { ...defaultEffects, ...storedEffects };
-  const setEffects = (newEffects: ThemeEffects) => {
-    setStoredEffects(newEffects);
-  };
+  // Use useMemo to prevent creating new object on every render
+  const effects = useMemo(() => ({ ...defaultEffects, ...storedEffects }), [storedEffects]);
+  const setEffects = useCallback(
+    (newEffects: ThemeEffects) => {
+      setStoredEffects(newEffects);
+    },
+    [setStoredEffects]
+  );
 
   // Update single effect
   const updateEffect = useCallback(

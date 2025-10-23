@@ -9,6 +9,8 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/catalyst-ui/ui/tabs";
 import { Button } from "@/catalyst-ui/ui/button";
 import { Badge } from "@/catalyst-ui/ui/badge";
+import { Switch } from "@/catalyst-ui/ui/switch";
+import { Label } from "@/catalyst-ui/ui/label";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -51,8 +53,15 @@ interface AnnotationPanelProps {
  * ```
  */
 export function AnnotationPanel({ open, onOpenChange }: AnnotationPanelProps) {
-  const { getAllAnnotations, syncStatus, syncError, syncToBackend, clearAll } =
-    useAnnotationContext();
+  const {
+    getAllAnnotations,
+    syncStatus,
+    syncError,
+    syncToBackend,
+    clearAll,
+    autoSyncEnabled,
+    setAutoSyncEnabled,
+  } = useAnnotationContext();
 
   const [activeTab, setActiveTab] = useState<string>("create");
   const [inspectorActive, setInspectorActive] = useState(false);
@@ -92,9 +101,9 @@ export function AnnotationPanel({ open, onOpenChange }: AnnotationPanelProps) {
         </SheetHeader>
 
         <div className="mt-6 space-y-4">
-          {/* Sync Status */}
+          {/* Sync Status and Controls */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <Badge
                 variant="outline"
                 className={cn(
@@ -115,6 +124,22 @@ export function AnnotationPanel({ open, onOpenChange }: AnnotationPanelProps) {
                   {annotations.length} annotation{annotations.length !== 1 ? "s" : ""}
                 </span>
               )}
+
+              {/* Auto-sync Toggle */}
+              <div className="flex items-center gap-2 ml-2 pl-2 border-l border-border">
+                <Switch
+                  id="auto-sync"
+                  checked={autoSyncEnabled}
+                  onCheckedChange={setAutoSyncEnabled}
+                  aria-label="Auto-sync annotations"
+                />
+                <Label
+                  htmlFor="auto-sync"
+                  className="text-xs cursor-pointer select-none text-muted-foreground"
+                >
+                  Auto-sync
+                </Label>
+              </div>
             </div>
 
             <div className="flex items-center gap-2">
@@ -123,7 +148,7 @@ export function AnnotationPanel({ open, onOpenChange }: AnnotationPanelProps) {
                 size="icon"
                 onClick={() => syncToBackend()}
                 disabled={syncStatus === "syncing" || annotations.length === 0}
-                title="Sync to backend"
+                title={autoSyncEnabled ? "Manual sync (auto-sync enabled)" : "Sync to backend"}
               >
                 <RefreshCw className={cn("h-4 w-4", syncStatus === "syncing" && "animate-spin")} />
               </Button>

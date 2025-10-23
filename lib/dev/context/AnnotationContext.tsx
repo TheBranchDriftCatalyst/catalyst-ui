@@ -79,11 +79,22 @@ interface AnnotationContextValue {
    * Clear all annotations
    */
   clearAll: () => void;
+
+  /**
+   * Auto-sync enabled state
+   */
+  autoSyncEnabled: boolean;
+
+  /**
+   * Toggle auto-sync on/off
+   */
+  setAutoSyncEnabled: (enabled: boolean) => void;
 }
 
 const AnnotationContext = createContext<AnnotationContextValue | null>(null);
 
 const STORAGE_KEY = "catalyst-ui-annotations";
+const AUTO_SYNC_KEY = "catalyst-ui-annotations-autosync";
 const SYNC_INTERVAL_MS = 5000; // Sync every 5 seconds if there are annotations
 
 /**
@@ -92,7 +103,9 @@ const SYNC_INTERVAL_MS = 5000; // Sync every 5 seconds if there are annotations
  * Features:
  * - Stores annotations locally (in-memory + localStorage)
  * - CRUD operations for annotations
- * - Periodic backend sync (writes to annotations.json via Vite middleware)
+ * - Optional periodic backend sync (writes to annotations.json via Vite middleware)
+ * - Manual sync button for on-demand synchronization
+ * - Auto-sync toggle persisted to localStorage
  * - Manual component name entry (no React Fiber introspection)
  *
  * @example
@@ -122,10 +135,32 @@ export function AnnotationProvider({ children }: { children: React.ReactNode }) 
     }
   });
 
+  // Auto-sync toggle state (default: disabled)
+  const [autoSyncEnabled, setAutoSyncEnabledState] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+
+    try {
+      const stored = localStorage.getItem(AUTO_SYNC_KEY);
+      return stored ? JSON.parse(stored) : false;
+    } catch (error) {
+      console.error("[AnnotationProvider] Failed to load auto-sync preference:", error);
+      return false;
+    }
+  });
+
   // Backend sync state
   const [syncStatus, setSyncStatus] = useState<"idle" | "syncing" | "synced" | "error">("idle");
   const [syncError, setSyncError] = useState<string | null>(null);
   const [lastSyncedAt, setLastSyncedAt] = useState<number>(0);
+
+  // Wrapper to persist auto-sync preference
+  const setAutoSyncEnabled = useCallback((enabled: boolean) => {
+    setAutoSyncEnabledState(enabled);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(AUTO_SYNC_KEY, JSON.stringify(enabled));
+      console.log(`[AnnotationProvider] Auto-sync ${enabled ? "enabled" : "disabled"}`);
+    }
+  }, []);
 
   // Persist annotations to localStorage
   useEffect(() => {
@@ -248,9 +283,14 @@ export function AnnotationProvider({ children }: { children: React.ReactNode }) 
     }
   }, []);
 
-  // Periodic backend sync - syncs annotations every 5 seconds
+  // Periodic backend sync - syncs annotations every 5 seconds (only if auto-sync enabled)
   useEffect(() => {
     if (typeof window === "undefined") return;
+
+    // Only set up periodic sync if auto-sync is enabled
+    if (!autoSyncEnabled) {
+      return;
+    }
 
     // Only set up periodic sync if backend sync is enabled (true dev mode only)
     if (!isBackendSyncEnabled()) {
@@ -278,7 +318,7 @@ export function AnnotationProvider({ children }: { children: React.ReactNode }) 
         console.log("[AnnotationProvider] Cleared periodic sync interval");
       }
     };
-  }, [annotations.length, syncToBackend]);
+  }, [autoSyncEnabled, annotations.length, syncToBackend]);
 
   return (
     <AnnotationContext.Provider
@@ -292,6 +332,8 @@ export function AnnotationProvider({ children }: { children: React.ReactNode }) 
         syncError,
         syncToBackend,
         clearAll,
+        autoSyncEnabled,
+        setAutoSyncEnabled,
       }}
     >
       {children}

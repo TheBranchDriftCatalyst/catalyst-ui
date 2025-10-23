@@ -28,5 +28,15 @@
     "treePath": "App > AnalyticsErrorBoundary > KitchenSink > Tabs > Primitive.div > ScrollSnapContainer > TabsContent > TabsContent > Presence > Primitive.div > RBMKReactorTab > ScrollSnapItem > Card > CardContent",
     "id": "ae9e320e-c4a3-4d06-8974-48ee65af8637",
     "timestamp": 1761177623287
+  },
+  {
+    "componentName": "CanvasImpl",
+    "note": "this is too dark light",
+    "type": "note",
+    "priority": "medium",
+    "instanceId": "410ew0",
+    "treePath": "App > AnalyticsErrorBoundary > KitchenSink > Tabs > Primitive.div > ScrollSnapContainer > TabsContent > TabsContent > Presence > Primitive.div > WelcomeTab > ThreeCanvas > Canvas > m > CanvasImpl",
+    "id": "fbf4729f-07cb-4991-8088-034e925e57b6",
+    "timestamp": 1761178194913
   }
 ]

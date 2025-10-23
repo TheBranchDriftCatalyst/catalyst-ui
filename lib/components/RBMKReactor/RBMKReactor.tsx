@@ -12,6 +12,7 @@
 
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import * as d3 from "d3";
+import { useCalculatedThemeColors } from "@/catalyst-ui/contexts/Theme";
 import { Atom, ControlRod, Neutron, SimulationState, ReactorConfig } from "./types";
 import { DEFAULT_REACTOR_CONFIG } from "./config";
 import {
@@ -69,26 +70,36 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
   const isDraggingRef = useRef<boolean>(false);
   const lastDragPositionRef = useRef<{ x: number; y: number } | null>(null);
 
-  // Cache theme colors to avoid expensive getComputedStyle calls every frame
-  const themeColorsRef = useRef<{
-    chart1: string;
-    chart2: string;
-    chart3: string;
-    destructive: string;
-    mutedForeground: string;
-    primary: string;
-    accent: string;
-  } | null>(null);
+  // Get theme colors reactively via hook (replaces manual getComputedStyle)
+  const themeColors = useCalculatedThemeColors();
 
   // Cache config and dimensions to avoid recreating animate callback
   const configRef = useRef(config);
   const dimensionsRef = useRef({ width, height });
 
-  // Cache D3 color scales to avoid recreation every frame
+  // D3 color scales - updated reactively when theme changes
   const colorScalesRef = useRef<{
     heat: d3.ScaleLinear<string, string, never>;
     atom: d3.ScaleLinear<string, string, never>;
   } | null>(null);
+
+  // Update color scales when theme changes
+  useEffect(() => {
+    colorScalesRef.current = {
+      heat: d3.scaleLinear<string>().domain([0, 0.3, 0.6, 1.0]).range([
+        themeColors.chart1, // cold - chart blue
+        themeColors.chart2, // warming - chart green/teal
+        themeColors.chart3, // hot - chart orange
+        themeColors.destructive, // very hot - destructive red
+      ]),
+      atom: d3.scaleLinear<string>().domain([0, 0.3, 0.6, 1.0]).range([
+        themeColors.mutedForeground, // low energy - muted
+        themeColors.primary, // medium energy - primary blue
+        themeColors.accent, // high energy - accent yellow
+        themeColors.destructive, // very high energy - destructive red
+      ]),
+    };
+  }, [themeColors]);
 
   // FPS monitoring for performance debugging
   const frameTimesRef = useRef<number[]>([]);
@@ -356,54 +367,6 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
   }
 
   /**
-   * Read theme colors from CSS custom properties and create D3 color scales
-   * (only called once on mount)
-   */
-  const readThemeColors = useCallback(() => {
-    const root = document.documentElement;
-    const computedStyle = getComputedStyle(root);
-
-    const getCSSColor = (varName: string): string => {
-      const hslValue = computedStyle.getPropertyValue(varName).trim();
-      if (!hslValue) return "#000000";
-      // Convert "220 10% 50%" to "hsl(220, 10%, 50%)"
-      const parts = hslValue.split(" ");
-      if (parts.length === 3) {
-        return `hsl(${parts[0]}, ${parts[1]}, ${parts[2]})`;
-      }
-      return hslValue;
-    };
-
-    const colors = {
-      chart1: getCSSColor("--chart-1"),
-      chart2: getCSSColor("--chart-2"),
-      chart3: getCSSColor("--chart-3"),
-      destructive: getCSSColor("--destructive"),
-      mutedForeground: getCSSColor("--muted-foreground"),
-      primary: getCSSColor("--primary"),
-      accent: getCSSColor("--accent"),
-    };
-
-    themeColorsRef.current = colors;
-
-    // Create D3 color scales once (cached for entire lifecycle)
-    colorScalesRef.current = {
-      heat: d3.scaleLinear<string>().domain([0, 0.3, 0.6, 1.0]).range([
-        colors.chart1, // cold - chart blue
-        colors.chart2, // warming - chart green/teal
-        colors.chart3, // hot - chart orange
-        colors.destructive, // very hot - destructive red
-      ]),
-      atom: d3.scaleLinear<string>().domain([0, 0.3, 0.6, 1.0]).range([
-        colors.mutedForeground, // low energy - muted
-        colors.primary, // medium energy - primary blue
-        colors.accent, // high energy - accent yellow
-        colors.destructive, // very high energy - destructive red
-      ]),
-    };
-  }, []);
-
-  /**
    * Render using D3 (called directly from RAF loop)
    */
   const renderWithD3 = useCallback(() => {
@@ -414,10 +377,10 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
       !rodLayerRef.current
     )
       return;
-    if (!themeColorsRef.current || !colorScalesRef.current) return; // Wait for colors to be loaded
+    if (!colorScalesRef.current) return; // Wait for colors to be loaded
 
     const state = stateRef.current;
-    const colors = themeColorsRef.current;
+    const colors = themeColors;
     const { width: w, height: h } = dimensionsRef.current;
 
     // COMBINED HEAT + WATER VISUALIZATION
@@ -949,13 +912,6 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
     configRef.current = config;
     dimensionsRef.current = { width, height };
   }, [config, width, height]);
-
-  /**
-   * Initialize theme colors on mount
-   */
-  useEffect(() => {
-    readThemeColors();
-  }, [readThemeColors]);
 
   /**
    * Initial D3 render on mount

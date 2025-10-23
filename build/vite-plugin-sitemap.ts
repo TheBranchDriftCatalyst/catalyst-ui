@@ -130,7 +130,7 @@ export default function sitemapPlugin(config: SitemapConfig) {
       await generateSitemap();
 
       // Watch manifest for changes
-      const manifestPath = path.resolve(process.cwd(), "app", ".tabs.manifest.json");
+      const manifestPath = path.resolve(process.cwd(), "app", ".tabs.manifest.yaml");
       server.watcher.add(manifestPath);
 
       // Regenerate when manifest changes
@@ -154,14 +154,16 @@ export default function sitemapPlugin(config: SitemapConfig) {
   async function generateSitemap() {
     try {
       const repoRoot = process.cwd();
-      const manifestPath = path.join(repoRoot, "app", ".tabs.manifest.json");
+      const manifestPath = path.join(repoRoot, "app", ".tabs.manifest.yaml");
       const sitemapPath = path.join(repoRoot, "public", "sitemap.xml");
 
       // Read tabs manifest
       let manifest: TabManifestEntry[];
       try {
+        // Import yaml dynamically since it's used at build time
+        const yaml = await import("yaml");
         const manifestContent = await fs.readFile(manifestPath, "utf8");
-        manifest = JSON.parse(manifestContent);
+        manifest = yaml.default.parse(manifestContent);
       } catch (err) {
         logger.warn("Tabs manifest not found - skipping sitemap generation");
         return;

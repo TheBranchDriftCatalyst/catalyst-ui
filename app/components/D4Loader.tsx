@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { usePrefersReducedMotion } from "@/catalyst-ui/hooks/usePrefersReducedMotion";
+import { useCalculatedThemeColors } from "@/catalyst-ui/contexts/Theme";
 
 /**
  * D4 Loader - Infolding Hypercube Animation
@@ -28,6 +29,7 @@ export function D4Loader({
 }: D4LoaderProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const prefersReducedMotion = usePrefersReducedMotion();
+  const themeColors = useCalculatedThemeColors();
   const [isMobileDevice, setIsMobileDevice] = useState(false);
 
   // Detect mobile on mount
@@ -75,36 +77,16 @@ export function D4Loader({
     // Set up SVG with glow filter
     svg.attr("width", width).attr("height", height).attr("viewBox", `0 0 ${width} ${height}`);
 
-    // Read CSS vars for colors (prefer design tokens)
-    const computedStyle = getComputedStyle(document.documentElement);
-    const colorPrimary = (
-      computedStyle.getPropertyValue("--color-primary") ||
-      computedStyle.getPropertyValue("--primary") ||
-      computedStyle.getPropertyValue("--neon-blue")
-    ).trim();
-    const colorAccent = (
-      computedStyle.getPropertyValue("--color-accent") ||
-      computedStyle.getPropertyValue("--accent") ||
-      computedStyle.getPropertyValue("--neon-pink")
-    ).trim();
-    // Prefer explicit cyan/purple neon tokens for chromatic effect
-    const colorCyan = computedStyle.getPropertyValue("--neon-cyan").trim();
-    const colorPurple = computedStyle.getPropertyValue("--neon-purple").trim();
-    const colorPrimaryRgb = (
-      computedStyle.getPropertyValue("--primary-rgb") ||
-      computedStyle.getPropertyValue("--neon-blue-rgb")
-    ).trim();
-    const colorAccentRgb = (
-      computedStyle.getPropertyValue("--accent-rgb") ||
-      computedStyle.getPropertyValue("--neon-pink-rgb")
-    ).trim();
+    // Get colors from theme hook (reactive to theme changes)
+    const colorPrimary = themeColors.primary || themeColors.neonBlue;
+    const colorAccent = themeColors.accent || themeColors.neonPink;
+    const colorCyan = themeColors.neonCyan;
+    const colorPurple = themeColors.neonPurple;
+    const colorPrimaryRgb = themeColors.primaryRgb || themeColors.neonCyanRgb || "";
+    const colorAccentRgb = themeColors.accentRgb || "";
 
     // Foreground/contrast color token for strokes
-    const colorForeground = (
-      computedStyle.getPropertyValue("--primary-foreground") ||
-      computedStyle.getPropertyValue("--foreground") ||
-      computedStyle.getPropertyValue("--on-primary")
-    ).trim();
+    const colorForeground = themeColors.primaryForeground || themeColors.foreground;
 
     // Define glow filter (simplified on mobile for performance)
     const defs = svg.append("defs");
@@ -585,7 +567,7 @@ export function D4Loader({
     return () => {
       interval.stop();
     };
-  }, [prefersReducedMotion]);
+  }, [prefersReducedMotion, themeColors]);
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full min-h-[400px] gap-4">
