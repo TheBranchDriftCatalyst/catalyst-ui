@@ -1,12 +1,32 @@
 [
   {
-    "componentName": "ComponentsTab",
-    "note": "sup dawg this is kinda cool",
+    "componentName": "Button",
+    "note": "need to change this link here for sure, just redirect to Catalyst-ui tab",
     "type": "note",
     "priority": "medium",
-    "instanceId": "qwn0rh",
-    "treePath": "App > KitchenSink > Tabs > Primitive.div > ScrollSnapContainer > TabsContent > TabsContent > Presence > Primitive.div > ComponentsTab",
-    "id": "744232eb-9e80-4ce1-aded-f60e7dba362f",
-    "timestamp": 1760315444263
+    "instanceId": "sdsi6h",
+    "treePath": "App > AnalyticsErrorBoundary > KitchenSink > Tabs > Primitive.div > ScrollSnapContainer > TabsContent > TabsContent > Presence > Primitive.div > WelcomeTab > motion.div > motion.div > Button",
+    "id": "ae38d9b1-1766-4ce2-847a-81b0aec032f8",
+    "timestamp": 1761177467158
+  },
+  {
+    "componentName": "CanvasImpl",
+    "note": "Because the scroll is integrated to zoom in the three scene, we cant really scroll down to the rest of this page, we need to slightly rethink how to enable t drag/orbiting in the scene as well as this content, perhaps we have it overlay into the scene as we drag/scroll or zoom.  like a infinite scroll but on a different plane than usual, does this make sense.",
+    "type": "note",
+    "priority": "medium",
+    "instanceId": "410ew0",
+    "treePath": "App > AnalyticsErrorBoundary > KitchenSink > Tabs > Primitive.div > ScrollSnapContainer > TabsContent > TabsContent > Presence > Primitive.div > WelcomeTab > ThreeCanvas > Canvas > m > CanvasImpl",
+    "id": "d31ff9c0-f504-4cf4-9724-92b2b3b1b683",
+    "timestamp": 1761177561898
+  },
+  {
+    "componentName": "CardContent rbmkreactor",
+    "note": "Lets move this button group elsewhere maybe. to the top inline compact.  Compactify the entire rbmk reactor component",
+    "type": "note",
+    "priority": "medium",
+    "instanceId": "5wmbq7",
+    "treePath": "App > AnalyticsErrorBoundary > KitchenSink > Tabs > Primitive.div > ScrollSnapContainer > TabsContent > TabsContent > Presence > Primitive.div > RBMKReactorTab > ScrollSnapItem > Card > CardContent",
+    "id": "ae9e320e-c4a3-4d06-8974-48ee65af8637",
+    "timestamp": 1761177623287
   }
 ]
