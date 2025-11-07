@@ -33,16 +33,16 @@ export const DEFAULT_REACTOR_CONFIG: ReactorConfig = {
     radius: 8, // pixels - visual representation of fuel channel
     // Base emission rate: fast emission for realistic prompt neutron physics
     // Real prompt neutrons: emitted within nanoseconds to microseconds
-    // At 60 FPS: 2/sec × energyScale = ~500ms emission interval
-    // Tuned to reach criticality in ~15-30 seconds (realistic timeframe)
-    baseEmissionRate: 2.0, // neutrons per second per channel (100× slower than before)
-    energyDecay: 0.97, // 3% energy loss per frame (~60fps) - faster cooling for stability
+    // At 60 FPS: 1.5/sec × energyScale = ~667ms emission interval
+    // Tuned to reach criticality in ~20-40 seconds (slower, more stable)
+    baseEmissionRate: 1.5, // neutrons per second per channel (reduced from 2.0 to prevent spiral waves)
+    energyDecay: 0.95, // 5% energy loss per frame (~60fps) - faster cooling for better stability
     // Energy gain from neutron absorption
     // Real: fission releases ~200 MeV, we abstract to 0-1 energy scale
-    energyGain: 0.25, // reduced gain to slow exponential growth
-    emissionThreshold: 0.5, // higher threshold = requires more energy to emit
+    energyGain: 0.15, // reduced from 0.2 to prevent spiral wave propagation
+    emissionThreshold: 0.6, // higher threshold = requires more energy to emit (increased from 0.5)
     // Real U-235 releases 2.43 neutrons per fission
-    neutronsPerFission: 2.43,
+    neutronsPerFission: 1.8, // reduced from 2.0 to prevent spiral wave cascades
   },
 
   controlRod: {
@@ -97,10 +97,11 @@ export const DEFAULT_REACTOR_CONFIG: ReactorConfig = {
     // 0.5 = moderate threshold, easily reached in high-energy regions
     boilingPoint: 0.5,
 
-    // Positive void coefficient: +4.5 β (pre-Chernobyl dangerous level)
+    // Positive void coefficient: +3.5 β (reduced from 4.5 to prevent spiral waves)
     // This is the critical design flaw that enabled the Chernobyl disaster
     // Post-Chernobyl safety improvements reduced this to +0.7 β
-    voidCoefficient: 4.5,
+    // Tuned to allow runaway at extreme conditions without instant cascades
+    voidCoefficient: 3.5,
 
     // Evaporation rate: 2% per frame above boiling point
     // At 60fps, this allows gradual steam void formation
@@ -169,6 +170,22 @@ export const DEFAULT_REACTOR_CONFIG: ReactorConfig = {
     },
   },
 
+  xenon: {
+    // Xenon-135 builds up from fission products (Iodine-135 decay)
+    // Real: peaks 10-12 hours after shutdown, fully dissipates in 30-40 hours
+    // Scaled: peaks in 30-45 seconds, dissipates in 60-90 seconds (for gameplay)
+    buildupRate: 0.003, // 0.3% per fission event
+    // Natural decay: Xe-135 half-life = 9.14 hours
+    // Scaled to ~60 seconds gameplay time: 0.012 per frame at 60fps
+    decayRate: 0.00015, // 0.015% per frame = ~60 seconds to clear
+    // Burnout: high neutron flux burns xenon → xenon decreases faster
+    // Real: neutron cross-section of Xe-135 = 2.65M barns (massive!)
+    burnoutRate: 0.0001, // per nearby neutron per frame
+    // Maximum poisoning: reduces reactivity by absorbing neutrons
+    // Real: Can absorb 30-50% of neutron flux after shutdown
+    maxPoisoning: 0.4, // 40% reduction in energy gain when maxed
+  },
+
   regeneration: {
     // Water regeneration (coolant circulation)
     water: {
@@ -219,6 +236,7 @@ export function createReactorConfig(overrides: Partial<ReactorConfig>): ReactorC
       rod: { ...DEFAULT_REACTOR_CONFIG.damage.rod, ...overrides.damage?.rod },
       fuel: { ...DEFAULT_REACTOR_CONFIG.damage.fuel, ...overrides.damage?.fuel },
     },
+    xenon: { ...DEFAULT_REACTOR_CONFIG.xenon, ...overrides.xenon },
     regeneration: {
       water: { ...DEFAULT_REACTOR_CONFIG.regeneration.water, ...overrides.regeneration?.water },
       fuel: { ...DEFAULT_REACTOR_CONFIG.regeneration.fuel, ...overrides.regeneration?.fuel },
@@ -262,6 +280,44 @@ export const REACTOR_PRESETS = {
       ...DEFAULT_REACTOR_CONFIG.controlRod,
       absorptionProbability: 0.98, // maximum absorption
       insertionSpeed: 1.0, // faster emergency insertion
+    },
+  }),
+
+  /** Ultra Realistic - true RBMK physics with spiral waves and instability */
+  ultraRealistic: createReactorConfig({
+    atom: {
+      ...DEFAULT_REACTOR_CONFIG.atom,
+      baseEmissionRate: 2.0, // realistic emission rate
+      energyDecay: 0.97, // slower decay (3% per frame)
+      energyGain: 0.25, // realistic energy gain
+      emissionThreshold: 0.5, // lower threshold
+      neutronsPerFission: 2.43, // real U-235 value
+    },
+    water: {
+      ...DEFAULT_REACTOR_CONFIG.water,
+      voidCoefficient: 4.5, // original dangerous pre-Chernobyl value
+    },
+  }),
+
+  /** Easy Mode - forgiving physics for learning and experimentation */
+  easy: createReactorConfig({
+    atom: {
+      ...DEFAULT_REACTOR_CONFIG.atom,
+      baseEmissionRate: 1.0, // slower emission
+      energyDecay: 0.92, // faster cooling (8% per frame)
+      energyGain: 0.12, // lower energy gain
+      emissionThreshold: 0.7, // much higher threshold
+      neutronsPerFission: 1.5, // fewer neutrons per fission
+    },
+    controlRod: {
+      ...DEFAULT_REACTOR_CONFIG.controlRod,
+      absorptionProbability: 0.99, // nearly perfect absorption
+      insertionSpeed: 0.8, // faster insertion (1.25 seconds)
+    },
+    water: {
+      ...DEFAULT_REACTOR_CONFIG.water,
+      voidCoefficient: 2.0, // much safer void coefficient
+      baseCoolingRate: 0.96, // faster cooling
     },
   }),
 };

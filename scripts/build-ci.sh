@@ -473,6 +473,15 @@ merge_outputs() {
     cp -r "${PROJECT_ROOT}/dist/app/"* "${gh_pages}/"
     log_success "App files copied"
 
+    # Copy public assets (models, fonts, etc.)
+    log_substep "Copying public assets to gh-pages/"
+    if [[ -d "${PROJECT_ROOT}/public" ]]; then
+        cp -r "${PROJECT_ROOT}/public/"* "${gh_pages}/"
+        log_success "Public assets copied"
+    else
+        log_warning "Public directory not found"
+    fi
+
     # Rename index.html to demo.html
     log_substep "Renaming index.html → demo.html"
     if [[ -f "${gh_pages}/index.html" ]]; then
@@ -526,11 +535,18 @@ validate_output() {
         "storybook/index.html"
     )
 
-    # Optional files (warn if missing, but don't fail)
-    local optional_files=(
-        "api/README.md"
+    # Required directories
+    local required_dirs=(
+        "models"
+        "assets"
     )
 
+    # Optional directories (warn if missing, but don't fail)
+    local optional_dirs=(
+        "api"
+    )
+
+    # Check required files
     for file in "${required_files[@]}"; do
         if [[ -f "${gh_pages}/${file}" ]]; then
             local size=$(du -h "${gh_pages}/${file}" | cut -f1)
@@ -541,12 +557,26 @@ validate_output() {
         fi
     done
 
-    for file in "${optional_files[@]}"; do
-        if [[ -f "${gh_pages}/${file}" ]]; then
-            local size=$(du -h "${gh_pages}/${file}" | cut -f1)
-            log_substep "✓ ${file} (${size}) [optional]"
+    # Check required directories
+    for dir in "${required_dirs[@]}"; do
+        if [[ -d "${gh_pages}/${dir}" ]]; then
+            local size=$(du -sh "${gh_pages}/${dir}" 2>/dev/null | cut -f1)
+            local file_count=$(find "${gh_pages}/${dir}" -type f | wc -l | tr -d ' ')
+            log_substep "✓ ${dir}/ (${size}, ${file_count} files)"
         else
-            log_warning "⚠ Missing: ${file} (optional - TypeDoc build may have failed)"
+            log_error "✗ Missing directory: ${dir}/"
+            ((errors++))
+        fi
+    done
+
+    # Check optional directories
+    for dir in "${optional_dirs[@]}"; do
+        if [[ -d "${gh_pages}/${dir}" ]]; then
+            local size=$(du -sh "${gh_pages}/${dir}" 2>/dev/null | cut -f1)
+            local file_count=$(find "${gh_pages}/${dir}" -type f | wc -l | tr -d ' ')
+            log_substep "✓ ${dir}/ (${size}, ${file_count} files) [optional]"
+        else
+            log_warning "⚠ Missing directory: ${dir}/ (optional - TypeDoc build may have failed)"
         fi
     done
 
@@ -555,7 +585,7 @@ validate_output() {
         exit 1
     fi
 
-    log_success "All required files present"
+    log_success "All required files and directories present"
 }
 
 # ┌────────────────────────────────────────────────────────────────────────┐

@@ -37,6 +37,9 @@ export function RBMKReactorTab() {
   const [selectedPreset, setSelectedPreset] = useState<
     "normal" | "lowPowerTest" | "highReactivity" | "scrammed"
   >("normal");
+  const [physicsConfig, setPhysicsConfig] = useState<"normal" | "ultraRealistic" | "easy">(
+    "normal"
+  );
   const [resetKey, setResetKey] = useState(0); // Key to force component remount
   const [isPhysicsOpen, setIsPhysicsOpen] = useState(false); // Physics configuration panel
   const [masterControlValue, setMasterControlValue] = useState(0.5); // Master control slider value
@@ -180,7 +183,9 @@ export function RBMKReactorTab() {
     setIsMasterControlEngaged(true);
   };
 
-  const config = REACTOR_PRESETS[selectedPreset];
+  // Get base config from physics preset, then apply scenario preset overrides
+  const baseConfig = REACTOR_PRESETS[physicsConfig];
+  const config = selectedPreset === "normal" ? baseConfig : REACTOR_PRESETS[selectedPreset];
 
   // Delta indicator component for showing rate of change
   const DeltaIndicator = ({ value, decimals = 0 }: { value: number; decimals?: number }) => {
@@ -345,6 +350,20 @@ export function RBMKReactorTab() {
                               size={60}
                             />
                             <DeltaIndicator value={deltas.reactorPressure} decimals={1} />
+                          </div>
+                          <div className="relative flex flex-col items-center">
+                            <CircularGauge
+                              value={(simulationState.xenonLevel || 0) * 100}
+                              label="Xenon"
+                              variant={
+                                (simulationState.xenonLevel || 0) > 0.3
+                                  ? "warning"
+                                  : (simulationState.xenonLevel || 0) > 0.1
+                                    ? "info"
+                                    : "success"
+                              }
+                              size={60}
+                            />
                           </div>
                         </div>
 
@@ -620,7 +639,7 @@ export function RBMKReactorTab() {
                     <TabsContent value="controls" className="flex-1 space-y-4 overflow-y-auto">
                       {/* Preset Selection */}
                       <div className="space-y-2">
-                        <Label className="text-sm">Reactor Preset</Label>
+                        <Label className="text-sm">Scenario Preset</Label>
                         <div className="grid grid-cols-2 gap-2">
                           <Button
                             variant={selectedPreset === "normal" ? "default" : "outline"}
@@ -721,6 +740,54 @@ export function RBMKReactorTab() {
 
                     {/* Physics Config Tab */}
                     <TabsContent value="physics" className="flex-1 space-y-4 overflow-y-auto">
+                      {/* Physics Model Selection */}
+                      <div className="space-y-2">
+                        <Label className="text-sm font-semibold">Physics Model</Label>
+                        <div className="grid grid-cols-3 gap-2">
+                          <Button
+                            variant={physicsConfig === "easy" ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => {
+                              setPhysicsConfig("easy");
+                              setResetKey(prev => prev + 1);
+                            }}
+                            className="text-xs"
+                          >
+                            Easy
+                          </Button>
+                          <Button
+                            variant={physicsConfig === "normal" ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => {
+                              setPhysicsConfig("normal");
+                              setResetKey(prev => prev + 1);
+                            }}
+                            className="text-xs"
+                          >
+                            Normal
+                          </Button>
+                          <Button
+                            variant={physicsConfig === "ultraRealistic" ? "default" : "outline"}
+                            size="sm"
+                            onClick={() => {
+                              setPhysicsConfig("ultraRealistic");
+                              setResetKey(prev => prev + 1);
+                            }}
+                            className="text-xs"
+                          >
+                            Ultra Real
+                          </Button>
+                        </div>
+                        <p className="text-[10px] text-muted-foreground">
+                          {physicsConfig === "easy" &&
+                            "Stable physics, fast control rods, low void coefficient"}
+                          {physicsConfig === "normal" &&
+                            "Balanced physics with moderate instability"}
+                          {physicsConfig === "ultraRealistic" &&
+                            "True RBMK physics with spiral waves & positive void coefficient"}
+                        </p>
+                      </div>
+
                       <div className="p-3 bg-muted/50 border rounded space-y-2">
                         {/* Fuel Properties */}
                         <div>
@@ -731,8 +798,20 @@ export function RBMKReactorTab() {
                               <span className="font-mono">{config.atom.neutronsPerFission}</span>
                             </div>
                             <div className="flex justify-between">
+                              <span>Base Emission Rate:</span>
+                              <span className="font-mono">
+                                {config.atom.baseEmissionRate.toFixed(1)}/s
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
                               <span>Energy Gain:</span>
                               <span className="font-mono">{config.atom.energyGain.toFixed(2)}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Energy Decay:</span>
+                              <span className="font-mono">
+                                {(config.atom.energyDecay * 100).toFixed(0)}%
+                              </span>
                             </div>
                             <div className="flex justify-between">
                               <span>Emission Threshold:</span>
@@ -787,9 +866,143 @@ export function RBMKReactorTab() {
                           </div>
                         </div>
 
+                        {/* Water Coolant Properties */}
+                        <div>
+                          <Label className="text-xs font-semibold">
+                            Water Coolant (RBMK Critical Flaw)
+                          </Label>
+                          <div className="text-xs text-muted-foreground space-y-0.5 mt-1">
+                            <div className="flex justify-between">
+                              <span>Boiling Point:</span>
+                              <span className="font-mono">
+                                {(config.water.boilingPoint * 100).toFixed(0)}%
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-destructive font-semibold">
+                                Void Coefficient:
+                              </span>
+                              <span className="font-mono text-destructive">
+                                +{config.water.voidCoefficient.toFixed(1)}β
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Evaporation Rate:</span>
+                              <span className="font-mono">
+                                {(config.water.evaporationRate * 100).toFixed(1)}%/f
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Absorption Probability:</span>
+                              <span className="font-mono">
+                                {(config.water.absorptionProbability * 100).toFixed(0)}%
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Base Cooling Rate:</span>
+                              <span className="font-mono">
+                                {(config.water.baseCoolingRate * 100).toFixed(0)}%
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Pressure System */}
+                        <div>
+                          <Label className="text-xs font-semibold">Pressure</Label>
+                          <div className="text-xs text-muted-foreground space-y-0.5 mt-1">
+                            <div className="flex justify-between">
+                              <span>Base Pressure:</span>
+                              <span className="font-mono">
+                                {(config.pressure.basePressure * 100).toFixed(0)} bar
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Operating Pressure:</span>
+                              <span className="font-mono">
+                                {(config.pressure.normalOperatingPressure * 100).toFixed(0)} bar
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-destructive">Critical Pressure:</span>
+                              <span className="font-mono text-destructive">
+                                {(config.pressure.criticalPressure * 100).toFixed(0)} bar
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Temp Coefficient:</span>
+                              <span className="font-mono">
+                                {config.pressure.temperatureCoefficient.toFixed(2)}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Damage Parameters */}
+                        <div>
+                          <Label className="text-xs font-semibold">Damage & Safety</Label>
+                          <div className="text-xs text-muted-foreground space-y-0.5 mt-1">
+                            <div className="flex justify-between">
+                              <span>Fuel Meltdown Temp:</span>
+                              <span className="font-mono text-destructive">
+                                {(config.damage.fuel.meltdownTemp * 100).toFixed(0)}%
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Meltdown Rate:</span>
+                              <span className="font-mono">
+                                {(config.damage.fuel.meltdownRate * 100).toFixed(2)}%/f
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Rod Heat Damage:</span>
+                              <span className="font-mono">
+                                {(config.damage.rod.heatDamageRate * 10000).toFixed(2)}e-4/f
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Rod Damage Threshold:</span>
+                              <span className="font-mono">
+                                {(config.damage.rod.heatDamageThreshold * 100).toFixed(0)}%
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Xenon-135 Poisoning */}
+                        <div>
+                          <Label className="text-xs font-semibold">Xenon-135 Poisoning</Label>
+                          <div className="text-xs text-muted-foreground space-y-0.5 mt-1">
+                            <div className="flex justify-between">
+                              <span>Buildup Rate:</span>
+                              <span className="font-mono">
+                                {(config.xenon.buildupRate * 100).toFixed(2)}%/fission
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Decay Rate:</span>
+                              <span className="font-mono">
+                                {(config.xenon.decayRate * 10000).toFixed(2)}e-4/f
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Burnout Rate:</span>
+                              <span className="font-mono">
+                                {(config.xenon.burnoutRate * 10000).toFixed(2)}e-4/n
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span>Max Poisoning:</span>
+                              <span className="font-mono">
+                                {(config.xenon.maxPoisoning * 100).toFixed(0)}%
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
                         {/* Physics Constants */}
                         <div>
-                          <Label className="text-xs font-semibold">Physics</Label>
+                          <Label className="text-xs font-semibold">Physics Constants</Label>
                           <div className="text-xs text-muted-foreground space-y-0.5 mt-1">
                             <div className="flex justify-between">
                               <span>Collision Threshold:</span>
@@ -808,7 +1021,8 @@ export function RBMKReactorTab() {
 
                         <div className="pt-2 text-xs text-muted-foreground italic border-t">
                           Based on real RBMK-1000 reactor physics (U-235 fission: 580 barns, B-10
-                          absorption: 3,840 barns)
+                          absorption: 3,840 barns). Positive void coefficient was the critical
+                          design flaw that enabled the Chernobyl disaster.
                         </div>
                       </div>
                     </TabsContent>

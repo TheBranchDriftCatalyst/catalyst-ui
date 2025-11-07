@@ -147,6 +147,8 @@ export function checkRodCollision(
 /**
  * Handle collision between neutron and atom
  * Returns true if neutron should be removed (absorbed), false if it should bounce
+ *
+ * XENON POISONING: Reduces energy gain when xenon levels are high
  */
 export function handleAtomCollision(
   _neutron: Neutron,
@@ -156,15 +158,25 @@ export function handleAtomCollision(
   // Check if fission occurs based on U-235 cross-section
   const fission = Math.random() < config.neutron.fissionProbability;
 
+  // XENON POISONING EFFECT: Reduces energy gain from neutron absorption
+  // Xe-135 competes with U-235 for neutrons (2.65M barn cross-section!)
+  // Formula: effectiveGain = baseGain × (1 - xenonLevel × maxPoisoning)
+  // At xenonLevel=0: full energy gain
+  // At xenonLevel=1: energy gain reduced by maxPoisoning (default 40%)
+  const xenonLevel = atom.xenonLevel || 0;
+  const poisoningFactor = 1 - xenonLevel * config.xenon.maxPoisoning;
+  const effectiveEnergyGain = config.atom.energyGain * poisoningFactor;
+
   if (fission) {
     // Neutron absorbed, causes fission
     // Increase atom energy (which will lead to neutron emission)
-    atom.energy = Math.min(1, atom.energy + config.atom.energyGain);
+    // Reduced by xenon poisoning
+    atom.energy = Math.min(1, atom.energy + effectiveEnergyGain);
     atom.emittedCount += 1;
     return { absorbed: true, fission: true };
   } else {
     // Radiative capture - neutron absorbed but no fission
-    atom.energy = Math.min(1, atom.energy + config.atom.energyGain * 0.3);
+    atom.energy = Math.min(1, atom.energy + effectiveEnergyGain * 0.3);
     return { absorbed: true, fission: false };
   }
 }
@@ -197,6 +209,8 @@ export function handleRodCollision(
 
 /**
  * Update atom state (energy decay, neutron emission)
+ *
+ * @param neutrons - Current neutrons in simulation (for flux calculation)
  */
 export function updateAtom(
   atom: Atom,
@@ -205,12 +219,64 @@ export function updateAtom(
   vesselTop: number,
   config: ReactorConfig,
   deltaTime: number,
-  _currentTime: number
+  _currentTime: number,
+  neutrons: Neutron[] = []
 ): Neutron[] {
   const newNeutrons: Neutron[] = [];
 
-  // Energy decay (cooling)
-  atom.energy *= config.atom.energyDecay;
+  // NEUTRON FLUX-BASED ENERGY DECAY
+  // Calculate local neutron flux (count neutrons within collision distance)
+  const fluxRadius = atom.radius + config.neutron.radius + config.physics.collisionThreshold + 20;
+  const nearbyNeutrons = neutrons.filter(n => {
+    const dx = n.position.x - atom.position.x;
+    const dy = n.position.y - atom.position.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    return dist <= fluxRadius;
+  });
+
+  // Neutron flux = neutrons per unit area
+  const fluxArea = Math.PI * fluxRadius * fluxRadius;
+  const neutronFlux = nearbyNeutrons.length / fluxArea;
+
+  // Energy decay scales with flux:
+  // - High flux (active reaction): energy decays slowly (0.97 = 3% decay)
+  // - Low flux (SCRAM/shutdown): energy decays faster (0.90 = 10% decay)
+  // Formula: decay = baseDecay - flux × 0.00015
+  // At flux=0: decay=0.90 (10% per frame)
+  // At flux=500: decay=0.975 (2.5% per frame)
+  const fluxFactor = Math.min(neutronFlux * 0.00015, 0.075); // Cap at 7.5% bonus retention
+  let energyDecayRate = Math.max(0.9, config.atom.energyDecay - fluxFactor);
+
+  // Apply additional decay to prevent spiral wave propagation
+  // This simulates spatial heat diffusion / neutron leakage
+  // Stronger decay at lower energies prevents cascading waves
+  if (atom.energy < 0.3) {
+    energyDecayRate *= 0.95; // Extra 5% decay at low energies
+  }
+
+  atom.energy *= energyDecayRate;
+
+  // XENON-135 POISONING DYNAMICS
+  // Xenon builds up from fission, decays naturally, and burns out under neutron flux
+  if (!atom.xenonLevel) atom.xenonLevel = 0; // Initialize if missing
+
+  // Build-up: Fission products (I-135) decay to Xe-135
+  // Higher energy = more recent fissions = more xenon buildup
+  const xenonBuildupRate = atom.energy * config.xenon.buildupRate;
+
+  // Natural decay: Xe-135 half-life = 9.14 hours
+  const xenonDecayRate = config.xenon.decayRate;
+
+  // Burnout: Neutron absorption by Xe-135 (massive cross-section!)
+  // High flux burns xenon faster = less poisoning during operation
+  // Low flux (post-SCRAM) = xenon persists longer = harder to restart
+  const xenonBurnoutRate = neutronFlux * config.xenon.burnoutRate;
+
+  // Net xenon change
+  atom.xenonLevel += xenonBuildupRate;
+  atom.xenonLevel -= xenonDecayRate;
+  atom.xenonLevel -= xenonBurnoutRate;
+  atom.xenonLevel = Math.max(0, Math.min(1, atom.xenonLevel)); // Clamp to [0, 1]
 
   // Update emission timer
   atom.timeSinceEmission += deltaTime;
@@ -226,10 +292,14 @@ export function updateAtom(
   );
   const localVoidFraction = 1 - waterDensity; // 0 = all water, 1 = all steam
 
-  // Apply void coefficient reactivity boost
+  // Apply void coefficient reactivity boost WITH DIMINISHING RETURNS
   // More steam → higher reactivity → more neutron emission
   // voidCoefficient from config (default: 4.5 β = pre-Chernobyl dangerous level)
-  const reactivityBoost = 1.0 + localVoidFraction * config.water.voidCoefficient;
+  // REALISTIC PHYSICS: Steam becomes less effective past 60-70% void fraction
+  // Formula: boost = 1 + (void × coeff) × (1 - void × 0.3)
+  // This creates a peak around 60-70%, then drops as steam becomes too diffuse
+  const reactivityBoost =
+    1.0 + localVoidFraction * config.water.voidCoefficient * (1 - localVoidFraction * 0.3);
 
   // Check for neutron emission
   // Emission rate scales with energy level (higher energy = faster emission)
@@ -281,6 +351,9 @@ export function updateAtom(
 
 /**
  * Update control rod insertion (smooth interpolation to target)
+ *
+ * SCRAM MODE: When targetInsertion = 1.0 and rod is not yet fully inserted,
+ * activate SCRAM emergency mode with 3x insertion speed (simulates AZ-5 emergency button)
  */
 export function updateControlRod(
   rod: ControlRod,
@@ -291,12 +364,22 @@ export function updateControlRod(
   // Smooth interpolation to target insertion
   const delta = rod.targetInsertion - rod.insertion;
   if (Math.abs(delta) > 0.001) {
-    const maxChange = (config.controlRod.insertionSpeed * deltaTime) / 1000;
+    // SCRAM EMERGENCY MODE: 3x faster insertion when target = 1.0 (full insertion)
+    // Real RBMK SCRAM (AZ-5): Still takes 18-21 seconds (design flaw)
+    // We speed to ~6-7 seconds for gameplay (still slow enough to be challenging)
+    const isScramming = rod.targetInsertion >= 0.99 && delta > 0;
+    rod.isScramActive = isScramming;
+
+    const speedMultiplier = isScramming ? 3.0 : 1.0;
+    const maxChange = (config.controlRod.insertionSpeed * speedMultiplier * deltaTime) / 1000;
     const change = Math.sign(delta) * Math.min(Math.abs(delta), maxChange);
     rod.insertion = Math.max(0, Math.min(1, rod.insertion + change));
 
     // Update visual position
     rod.y = 0; // Always starts at top
+  } else {
+    // Rod reached target, deactivate SCRAM
+    rod.isScramActive = false;
   }
 
   // Clear absorption animation after duration
@@ -647,6 +730,22 @@ export function calculateAverageTemperature(heatGrid: HeatGrid): number {
   }
 
   return count > 0 ? sum / count : 0;
+}
+
+/**
+ * Calculate average xenon-135 poisoning level across all atoms
+ *
+ * @returns Xenon level 0-1, where 0 = no poisoning, 1 = maximum poisoning
+ */
+export function calculateAverageXenon(atoms: Atom[]): number {
+  if (atoms.length === 0) return 0;
+
+  let sum = 0;
+  for (const atom of atoms) {
+    sum += atom.xenonLevel || 0;
+  }
+
+  return sum / atoms.length;
 }
 
 // =============================================================================

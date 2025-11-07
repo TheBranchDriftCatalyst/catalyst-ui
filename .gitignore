@@ -35,3 +35,6 @@ public/docs-combined.md
 
 # Claude settings
 .claude/
+
+# Playwright MCP testing artifacts
+.playwright-mcp/

@@ -31,6 +31,7 @@ import {
   calculatePressure,
   updateFuelIntegrity,
   updateControlRodHealth,
+  calculateAverageXenon,
 } from "./physics";
 
 export interface RBMKReactorProps {
@@ -67,8 +68,9 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
   const animationFrameRef = useRef<number | null>(null);
   const lastFrameTimeRef = useRef<number>(0);
   const lastStatsUpdateRef = useRef<number>(0);
-  const isDraggingRef = useRef<boolean>(false);
-  const lastDragPositionRef = useRef<{ x: number; y: number } | null>(null);
+  const isHoldingRef = useRef<boolean>(false);
+  const holdPositionRef = useRef<{ x: number; y: number } | null>(null);
+  const emissionIntervalRef = useRef<number | null>(null);
 
   // Get theme colors reactively via hook (replaces manual getComputedStyle)
   const themeColors = useCalculatedThemeColors();
@@ -178,50 +180,57 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
   );
 
   /**
-   * Handle mouse down - start dragging
+   * Handle mouse down - start continuous particle emission
    */
   const handleMouseDown = useCallback(
     (event: React.MouseEvent<SVGSVGElement>) => {
       const coords = getSVGCoordinates(event);
       if (!coords) return;
 
-      isDraggingRef.current = true;
-      lastDragPositionRef.current = coords;
-      createEnergizedNeutrons(coords.x, coords.y, 5); // Initial burst
+      isHoldingRef.current = true;
+      holdPositionRef.current = coords;
+
+      // Immediate burst on initial click
+      createEnergizedNeutrons(coords.x, coords.y, 5);
+
+      // Start continuous emission interval (emit every 100ms while holding)
+      emissionIntervalRef.current = window.setInterval(() => {
+        if (isHoldingRef.current && holdPositionRef.current) {
+          createEnergizedNeutrons(holdPositionRef.current.x, holdPositionRef.current.y, 3);
+        }
+      }, 100);
     },
     [getSVGCoordinates, createEnergizedNeutrons]
   );
 
   /**
-   * Handle mouse move - create neutrons along drag path
+   * Handle mouse move - update emission position while holding
    */
   const handleMouseMove = useCallback(
     (event: React.MouseEvent<SVGSVGElement>) => {
-      if (!isDraggingRef.current) return;
+      if (!isHoldingRef.current) return;
 
       const coords = getSVGCoordinates(event);
-      if (!coords || !lastDragPositionRef.current) return;
+      if (!coords) return;
 
-      // Calculate distance from last position
-      const dx = coords.x - lastDragPositionRef.current.x;
-      const dy = coords.y - lastDragPositionRef.current.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-
-      // Create neutrons if moved enough (throttle by distance)
-      if (distance > 20) {
-        createEnergizedNeutrons(coords.x, coords.y, 2);
-        lastDragPositionRef.current = coords;
-      }
+      // Update emission position (particles will be emitted here by interval)
+      holdPositionRef.current = coords;
     },
-    [getSVGCoordinates, createEnergizedNeutrons]
+    [getSVGCoordinates]
   );
 
   /**
-   * Handle mouse up - stop dragging
+   * Handle mouse up - stop continuous emission
    */
   const handleMouseUp = useCallback(() => {
-    isDraggingRef.current = false;
-    lastDragPositionRef.current = null;
+    isHoldingRef.current = false;
+    holdPositionRef.current = null;
+
+    // Clear emission interval
+    if (emissionIntervalRef.current !== null) {
+      clearInterval(emissionIntervalRef.current);
+      emissionIntervalRef.current = null;
+    }
   }, []);
 
   /**
@@ -285,6 +294,7 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
           emittedCount: 0,
           integrity: 1.0, // Start with intact fuel
           lastTemperature: 0, // Cold startup
+          xenonLevel: 0, // No xenon at cold startup
         });
       }
     }
@@ -361,6 +371,7 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
       reactorTemp: 0, // Average reactor temperature (0-1)
       voidFraction: 0, // Average void fraction (0-1, steam percentage)
       reactorPressure: cfg.pressure.basePressure, // Start at atmospheric pressure (cold shutdown)
+      xenonLevel: 0, // Average xenon-135 poisoning level (0-1)
       lastFrameTime: performance.now(),
       animationFrameId: null,
     };
@@ -660,7 +671,8 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
         vesselTop,
         cfg,
         deltaTime,
-        currentTime
+        currentTime,
+        state.neutrons // Pass current neutrons for flux calculation
       );
       emittedNeutrons.push(...newNeutrons);
 
@@ -808,6 +820,7 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
     const reactorTemp = calculateAverageTemperature(state.heatGrid);
     const voidFraction = calculateVoidFraction(state.waterGrid);
     const reactorPressure = calculatePressure(reactorTemp, voidFraction, cfg);
+    const xenonLevel = calculateAverageXenon(state.atoms);
 
     // DEBUG: Log neutron lifecycle (detailed logging for first 120 frames)
     if (shouldDebugLog) {
@@ -834,6 +847,7 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
     state.reactorTemp = reactorTemp;
     state.voidFraction = voidFraction;
     state.reactorPressure = reactorPressure;
+    state.xenonLevel = xenonLevel;
     state.lastFrameTime = currentTime;
 
     // Render with D3 (direct DOM manipulation, no React)
@@ -873,6 +887,11 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
       if (animationFrameRef.current !== null) {
         cancelAnimationFrame(animationFrameRef.current);
       }
+      // Cleanup emission interval on unmount
+      if (emissionIntervalRef.current !== null) {
+        clearInterval(emissionIntervalRef.current);
+        emissionIntervalRef.current = null;
+      }
     };
   }, [isRunning, animate]);
 
@@ -899,6 +918,7 @@ const RBMKReactor: React.FC<RBMKReactorProps> = ({
         reactorTemp: stats.reactorTemp, // Average reactor temperature
         voidFraction: stateRef.current.voidFraction,
         reactorPressure: stateRef.current.reactorPressure, // Reactor pressure (0-1)
+        xenonLevel: stateRef.current.xenonLevel, // Xenon-135 poisoning level
         lastFrameTime: stateRef.current.lastFrameTime,
         animationFrameId: stateRef.current.animationFrameId,
       });

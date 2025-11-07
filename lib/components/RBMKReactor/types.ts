@@ -47,6 +47,8 @@ export interface Atom {
   integrity: number;
   /** Last temperature value for meltdown tracking (0-1 scale) */
   lastTemperature: number;
+  /** Xenon-135 poisoning level (0-1, where 1 = maximum neutron absorption) */
+  xenonLevel: number;
 }
 
 /**
@@ -82,6 +84,8 @@ export interface ControlRod {
   health: number;
   /** Last absorbedCount value (for tracking absorption damage increments) */
   lastAbsorbedCount?: number;
+  /** SCRAM emergency mode (3x faster insertion) */
+  isScramActive?: boolean;
 }
 
 /**
@@ -197,6 +201,12 @@ export interface SimulationState {
    * 1.0 = critical pressure (100 bar, rupture imminent)
    */
   reactorPressure: number;
+  /**
+   * Average xenon-135 poisoning level (0-1)
+   * 0 = no poisoning, 1 = maximum poisoning (40% reactivity reduction)
+   * Peaks 10-12 hours after shutdown in real reactors
+   */
+  xenonLevel: number;
   /** Timestamp of last frame */
   lastFrameTime: number;
   /** Animation frame ID (for RAF cancellation) */
@@ -392,6 +402,18 @@ export interface ReactorConfig {
       /** Decay heat from damaged fuel (fraction) */
       decayHeatFraction: number;
     };
+  };
+
+  /** Xenon-135 poisoning parameters */
+  xenon: {
+    /** Build-up rate from fission products (per neutron absorption) */
+    buildupRate: number;
+    /** Natural decay rate (Xe-135 half-life: 9.14 hours, scaled to per-frame) */
+    decayRate: number;
+    /** Neutron absorption rate (burnout under high flux) */
+    burnoutRate: number;
+    /** Maximum poisoning effect on reactivity (0-1, reduces energy gain) */
+    maxPoisoning: number;
   };
 
   /** Regeneration systems (simulates maintenance/refueling/coolant circulation) */

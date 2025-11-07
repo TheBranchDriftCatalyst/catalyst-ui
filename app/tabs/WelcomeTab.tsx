@@ -5,9 +5,8 @@
  * updates feed showcasing recent activities.
  */
 
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { motion } from "framer-motion";
-import { ThreeCanvas, StarsBackground, DesktopPCModel } from "@/catalyst-ui/components/ThreeJS";
 import {
   textVariant,
   fadeIn,
@@ -17,6 +16,14 @@ import { Button } from "@/catalyst-ui/ui/button";
 import { Card, CardContent } from "@/catalyst-ui/ui/card";
 import { Badge } from "@/catalyst-ui/ui/badge";
 import { ExternalLink, Github } from "lucide-react";
+
+// Lazy load the 3D scene to improve LCP performance
+const ThreeCanvas = lazy(() =>
+  import("@/catalyst-ui/components/ThreeJS").then(mod => ({ default: mod.ThreeCanvas }))
+);
+const HeroScene = lazy(() =>
+  import("./components/HeroScene").then(mod => ({ default: mod.HeroScene }))
+);
 
 interface Update {
   id: string;
@@ -89,8 +96,8 @@ export const TAB_LABEL = "Welcome";
 
 export function WelcomeTab() {
   const handleNavigateToComponents = () => {
-    // Navigate to Overview tab (main catalyst-ui showcase)
-    window.location.hash = "#/overview";
+    // Navigate to components tab
+    window.location.hash = "#/components";
   };
 
   const handleGitHub = () => {
@@ -101,11 +108,13 @@ export function WelcomeTab() {
     <div className="w-full min-h-screen bg-background">
       {/* Hero Section with 3D Model */}
       <section className="relative w-full h-screen">
-        {/* 3D Scene - Composed from isolated components */}
+        {/* 3D Scene - Lazy loaded to improve LCP */}
         <div className="absolute inset-0 z-0">
-          <ThreeCanvas camera={{ position: [20, 3, 5], fov: 25 }}>
-            <DesktopPCModel />
-          </ThreeCanvas>
+          <Suspense fallback={<div className="w-full h-full bg-background" />}>
+            <ThreeCanvas camera={{ position: [20, 3, 5], fov: 25 }}>
+              <HeroScene enableControls={false} />
+            </ThreeCanvas>
+          </Suspense>
         </div>
 
         {/* Hero Content Overlay */}

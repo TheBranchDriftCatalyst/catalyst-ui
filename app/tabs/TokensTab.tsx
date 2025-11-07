@@ -217,7 +217,23 @@ export function TokensTab() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <DesignTokenDocBlock viewType="table" maxHeight={600} />
+            <div className="p-8 border-2 border-dashed border-border rounded-lg text-center space-y-2">
+              <p className="text-muted-foreground">
+                The complete design token reference is available in{" "}
+                <a
+                  href="http://localhost:6006"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  Storybook
+                </a>
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Navigate to the "Tokens" tab in Storybook to view the auto-generated token
+                documentation
+              </p>
+            </div>
           </CardContent>
         </Card>
       </ScrollSnapItem>
