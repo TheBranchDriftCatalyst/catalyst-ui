@@ -3,6 +3,19 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+### [2.1.1](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v2.1.0...v2.1.1) (2025-11-10)
+
+
+### 🔧 BUG FIXES
+
+- **3d:** use base URL for GLTF model paths in GitHub Pages deployment ([9bda73c](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/9bda73ca964495a438d1f5acef6a6d4de6f54c8b))
+- **routing:** respect base URL for tab navigation on GitHub Pages ([cf6bde1](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/cf6bde1f7be3554c23a59f9009eeff15bcf3944e))
+
+
+### 📚 DOCUMENTATION
+
+- add comprehensive base path handling guidelines ([31c77fc](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/31c77fc35069b9951651f9a3a207d6b3c0e6d28d))
+
 ## [2.1.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v2.0.0...v2.1.0) (2025-11-07)
 
 
