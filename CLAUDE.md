@@ -243,3 +243,4 @@ Import paths use `@/` prefix:
 - **Playwright**: Auto-installs via `postinstall` hook for Storybook test runner
 - **Process Management**: `Procfile.dev` defines multi-process dev environment (Storybook + preview)
 - **Component Templates**: Use `task new-component` instead of manually creating files to ensure consistency
+- **Base Path Handling**: When working with URLs, paths, or assets, ALWAYS use `import.meta.env.BASE_URL` to respect GitHub Pages deployment. See `docs/architecture/base-path-guidelines.md` for comprehensive guidelines.
