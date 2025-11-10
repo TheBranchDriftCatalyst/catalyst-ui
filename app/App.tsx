@@ -32,7 +32,10 @@ function KitchenSink() {
 
   // Read initial section and tab from URL path
   const getInitialState = () => {
-    const pathSegments = window.location.pathname.split("/").filter(Boolean);
+    const basePath = import.meta.env.BASE_URL || "/";
+    // Remove base path from pathname before parsing
+    const relativePath = window.location.pathname.replace(new RegExp(`^${basePath}`), "");
+    const pathSegments = relativePath.split("/").filter(Boolean);
     const section = (pathSegments[0] as Section) || "home";
     const tab = pathSegments[1] || "welcome";
     return { section, tab };
@@ -86,7 +89,8 @@ function KitchenSink() {
   // Update URL when section or tab changes
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const newPath = `/${activeSection}/${activeTab}`;
+    const basePath = import.meta.env.BASE_URL || "/";
+    const newPath = `${basePath}${activeSection}/${activeTab}`;
     const newUrl = params.toString() ? `${newPath}?${params.toString()}` : newPath;
     window.history.replaceState({}, "", newUrl);
 
@@ -107,7 +111,10 @@ function KitchenSink() {
   // Handle browser back/forward
   useEffect(() => {
     const handlePopState = () => {
-      const pathSegments = window.location.pathname.split("/").filter(Boolean);
+      const basePath = import.meta.env.BASE_URL || "/";
+      // Remove base path from pathname before parsing
+      const relativePath = window.location.pathname.replace(new RegExp(`^${basePath}`), "");
+      const pathSegments = relativePath.split("/").filter(Boolean);
       const section = (pathSegments[0] as Section) || "home";
       const tab = pathSegments[1] || "welcome";
       setActiveSection(section);
