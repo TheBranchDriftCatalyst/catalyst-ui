@@ -284,6 +284,97 @@ validate_landing_page() {
     fi
 }
 
+validate_base_paths() {
+    log_step "Validating base path handling (GitHub Pages subdirectory)"
+
+    local demo_file="${GH_PAGES_DIR}/demo.html"
+    local js_files=()
+    local issues_found=0
+
+    if [[ ! -f "${demo_file}" ]]; then
+        log_warning "⚠ demo.html not found, skipping base path validation"
+        return 0
+    fi
+
+    # Find all JS files in assets directory
+    if [[ -d "${GH_PAGES_DIR}/assets" ]]; then
+        mapfile -t js_files < <(find "${GH_PAGES_DIR}/assets" -name "*.js" -type f)
+    fi
+
+    # Check demo.html for absolute path issues
+    log_substep "Checking demo.html for hardcoded absolute paths..."
+
+    # Look for problematic patterns in demo.html (after Vite processing)
+    # Vite should have transformed these, but we check the source references
+    if grep -q 'src="/main.tsx"' "${demo_file}"; then
+        log_warning "⚠ Found src=\"/main.tsx\" - should be relative or use base path"
+    fi
+
+    # Check JS bundle files for hardcoded absolute paths
+    log_substep "Checking compiled JS bundles for hardcoded paths..."
+
+    local problematic_patterns=(
+        '"/models/'         # Absolute model paths
+        '"/images/'         # Absolute image paths
+        '"/assets/'         # Absolute asset paths (rare, but possible)
+        'window.location.pathname.split'  # URL parsing without base path handling
+    )
+
+    for js_file in "${js_files[@]}"; do
+        local filename=$(basename "${js_file}")
+        local found_issues=false
+
+        for pattern in "${problematic_patterns[@]}"; do
+            if grep -q "${pattern}" "${js_file}"; then
+                if [[ "${found_issues}" == "false" ]]; then
+                    log_warning "⚠ Found hardcoded paths in ${filename}:"
+                    found_issues=true
+                    ((issues_found++))
+                fi
+
+                case "${pattern}" in
+                    '"/models/')
+                        log_substep "  → Contains absolute model paths (\"/models/...\")"
+                        log_substep "    Should use: import.meta.env.BASE_URL + \"models/...\""
+                        ;;
+                    '"/images/')
+                        log_substep "  → Contains absolute image paths (\"/images/...\")"
+                        log_substep "    Should use: import.meta.env.BASE_URL + \"images/...\""
+                        ;;
+                    '"/assets/')
+                        log_substep "  → Contains absolute asset paths (\"/assets/...\")"
+                        ;;
+                    'window.location.pathname.split')
+                        log_substep "  → URL parsing may not account for base path"
+                        log_substep "    Should strip BASE_URL before parsing pathname"
+                        ;;
+                esac
+            fi
+        done
+    done
+
+    # Check for import.meta.env.BASE_URL usage (good!)
+    log_substep "Checking for proper BASE_URL usage..."
+    local base_url_count=0
+    for js_file in "${js_files[@]}"; do
+        local count=$(grep -c "BASE_URL" "${js_file}" 2>/dev/null || echo "0")
+        ((base_url_count += count))
+    done
+
+    if [[ ${base_url_count} -gt 0 ]]; then
+        log_success "✓ Found ${base_url_count} BASE_URL reference(s) in compiled bundles"
+    else
+        log_warning "⚠ No BASE_URL references found - may indicate missing base path handling"
+    fi
+
+    if [[ ${issues_found} -eq 0 ]]; then
+        log_success "Base path validation complete - no hardcoded absolute paths detected"
+    else
+        log_warning "Found ${issues_found} file(s) with potential base path issues"
+        log_info "Review docs/architecture/base-path-guidelines.md for best practices"
+    fi
+}
+
 # ┌────────────────────────────────────────────────────────────────────────┐
 # │ 📊 SUMMARY REPORT                                                       │
 # └────────────────────────────────────────────────────────────────────────┘
@@ -344,6 +435,7 @@ HEADER
     validate_required_files
     validate_html_files
     validate_landing_page
+    validate_base_paths
     validate_storybook
     validate_assets
 
