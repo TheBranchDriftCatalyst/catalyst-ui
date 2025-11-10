@@ -3,6 +3,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { resolve } from "path";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
+import yamlPlugin from "@rollup/plugin-yaml";
 import concatDocsPlugin from "./build/vite-plugin-concat-docs";
 import { execSync } from "child_process";
 import { readFileSync } from "fs";
@@ -41,6 +42,7 @@ export default defineConfig({
     ...(process.env.NODE_ENV === "production" ? [concatDocsPlugin()] : []),
     react(),
     tailwindcss(),
+    yamlPlugin(),
     tsconfigPaths({
       projects: [resolve(__dirname, "tsconfig.json")],
     }),

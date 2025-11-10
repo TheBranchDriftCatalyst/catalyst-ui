@@ -38,7 +38,7 @@ export function PlanetModel({
   autoRotateSpeed = 1,
   enableControls = true,
 }: PlanetModelProps) {
-  const earth = useGLTF("/models/planet/scene.gltf");
+  const earth = useGLTF(`${import.meta.env.BASE_URL}models/planet/scene.gltf`);
 
   return (
     <group>
@@ -60,4 +60,4 @@ export function PlanetModel({
 }
 
 // Preload the model
-useGLTF.preload("/models/planet/scene.gltf");
+useGLTF.preload(`${import.meta.env.BASE_URL}models/planet/scene.gltf`);

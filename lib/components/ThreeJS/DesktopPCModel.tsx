@@ -41,7 +41,7 @@ export function DesktopPCModel({
   enableControls = true,
   isMobile = false,
 }: DesktopPCModelProps) {
-  const computer = useGLTF("/models/desktop_pc/scene.gltf");
+  const computer = useGLTF(`${import.meta.env.BASE_URL}models/desktop_pc/scene.gltf`);
 
   // Responsive defaults
   const scale = customScale ?? (isMobile ? 0.7 : 0.75);
@@ -89,4 +89,4 @@ export function DesktopPCModel({
 }
 
 // Preload the model
-useGLTF.preload("/models/desktop_pc/scene.gltf");
+useGLTF.preload(`${import.meta.env.BASE_URL}models/desktop_pc/scene.gltf`);

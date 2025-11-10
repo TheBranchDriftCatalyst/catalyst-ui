@@ -3,6 +3,36 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+## [2.1.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v2.0.0...v2.1.0) (2025-11-07)
+
+
+### 🔧 BUG FIXES
+
+- **animations:** fix stagger animations and add interactive demos ([4f39482](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/4f39482d91690c2fe1317db629a6390163ee7c66))
+
+
+### 🛠️ MAINTENANCE
+
+- update generated files (sitemap, changelog, annotations) ([593853b](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/593853bc5b2b9a7ce2b0caccdd04f6f095ee6642))
+
+
+### 📚 DOCUMENTATION
+
+- remove deprecated animation architecture docs ([67d4fc6](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/67d4fc6b38ae943474bfe382458c6c8faec40ae4))
+
+
+### ♻️ REFACTORING
+
+- **theme:** add reactive theme color hook + cleanup WelcomeTab ([c0049bf](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/c0049bfda8487db4606367a6e7243aa982974ba0))
+
+
+### ⚡ NEW FEATURES
+
+- add Developer Tools tab and bug fixes ([93c02cd](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/93c02cdc38a1e77afb51273b627f4109a3c6bc31))
+- **animation:** add Framer Motion integration with animation variants ([cc08f9c](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/cc08f9c9239762a3cd0ade8fbd534b0b6eac086d))
+- **app:** add 3D Models tab and improve sidebar UX ([e66f7c6](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/e66f7c6095faed490a05b1fec6797fc7bd03e2dd))
+- **threejs:** enhance 3D scene lighting, controls, and layout ([21a9093](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/21a90939472ca62f5967ba86e9d3817e3040bede))
+
 ## [1.5.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v1.4.0...v1.5.0) (2025-10-19)
 
 
