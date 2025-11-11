@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalyst-ui
+  namespace: catalyst
+  labels:
+    app: catalyst-ui
+    app.kubernetes.io/name: catalyst-ui
+    app.kubernetes.io/component: frontend
+    app.kubernetes.io/part-of: catalyst
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: catalyst-ui
+  template:
+    metadata:
+      labels:
+        app: catalyst-ui
+        app.kubernetes.io/name: catalyst-ui
+        app.kubernetes.io/component: frontend
+    spec:
+      containers:
+        - name: catalyst-ui
+          image: catalyst-ui:latest  # Will be updated by ArgoCD with actual image
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 101
+            capabilities:
+              drop:
+                - ALL

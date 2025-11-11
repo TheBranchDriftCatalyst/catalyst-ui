@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalyst-ui
+  namespace: catalyst
+  labels:
+    app: catalyst-ui
+    app.kubernetes.io/name: catalyst-ui
+    app.kubernetes.io/component: frontend
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: catalyst-ui

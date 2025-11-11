@@ -1,0 +1,20 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: catalyst
+
+resources:
+  - namespace.yaml
+  - deployment.yaml
+  - service.yaml
+  - ingressroute.yaml
+
+commonLabels:
+  app.kubernetes.io/managed-by: argocd
+  app.kubernetes.io/part-of: catalyst
+
+images:
+  - name: catalyst-ui
+    newName: catalyst-ui
+    newTag: latest
