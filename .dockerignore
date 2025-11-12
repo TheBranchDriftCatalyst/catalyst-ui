@@ -48,7 +48,7 @@ yarn-error.log*
 
 # Documentation
 docs
-CHANGELOG.md
+# CHANGELOG.md - needed for build
 BACKPORT_TODO.md
 CLAUDE.md
 CONTRIBUTING.md
