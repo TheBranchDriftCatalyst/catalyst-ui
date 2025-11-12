@@ -13,7 +13,9 @@ RUN yarn install
 # Copy source code
 COPY . .
 
-# Build the application
+# Build the application with production settings
+ENV VITE_BASE_PATH=/
+ENV NODE_ENV=production
 RUN yarn build:app
 
 # Stage 2: Production image with nginx
