@@ -10,7 +10,7 @@ test
 
 # Production
 dist
-build
+# build - needed for vite plugins
 gh-pages
 html
 
