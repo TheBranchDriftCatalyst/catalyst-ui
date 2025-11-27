@@ -16,5 +16,5 @@ commonLabels:
 
 images:
   - name: catalyst-ui
-    newName: registry.talos00/catalyst-ui
+    newName: nexus-docker.registry.svc.cluster.local:5000/talos00-registry/catalyst-ui
     newTag: latest

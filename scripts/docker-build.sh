@@ -29,7 +29,7 @@ NC='\033[0m' # No Color
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 REGISTRY="${REGISTRY:-localhost:5000}"
-IMAGE_NAME="${IMAGE_NAME:-catalyst-ui}"
+IMAGE_NAME="${IMAGE_NAME:-talos00-registry/catalyst-ui}"
 PUSH="${PUSH:-false}"
 MULTIARCH=false
 
