@@ -16,5 +16,5 @@ commonLabels:
 
 images:
   - name: catalyst-ui
-    newName: catalyst-ui
+    newName: registry.talos00/catalyst-ui
     newTag: latest
