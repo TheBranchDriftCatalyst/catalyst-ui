@@ -1,0 +1,142 @@
+# Docker Build and Push Workflow
+#
+# This workflow builds and pushes multi-arch Docker images to the registry.
+#
+# DISABLED: Rename to docker-build.yml to enable when registry is externally accessible.
+#
+# Prerequisites:
+#   1. Registry must be accessible from GitHub Actions (external DNS/ingress)
+#   2. Set these repository secrets:
+#      - REGISTRY_URL: Your registry URL (e.g., registry.example.com)
+#      - REGISTRY_USERNAME: Registry username
+#      - REGISTRY_PASSWORD: Registry password
+#
+# To enable:
+#   1. Configure external access to your registry
+#   2. Add the required secrets to your GitHub repository
+#   3. Rename this file to docker-build.yml
+#
+name: Docker Build
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'app/**'
+      - 'lib/**'
+      - 'public/**'
+      - 'Dockerfile'
+      - 'package.json'
+      - 'yarn.lock'
+      - '.github/workflows/docker-build.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'app/**'
+      - 'lib/**'
+      - 'public/**'
+      - 'Dockerfile'
+      - 'package.json'
+      - 'yarn.lock'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Image tag (default: git SHA)'
+        required: false
+        default: ''
+      push:
+        description: 'Push to registry'
+        required: false
+        default: 'true'
+        type: boolean
+
+env:
+  IMAGE_NAME: catalyst-ui
+  # Platforms to build for
+  PLATFORMS: linux/amd64,linux/arm64,linux/arm/v7
+
+jobs:
+  build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: all
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          install: true
+
+      - name: Determine image tag
+        id: tag
+        run: |
+          if [[ -n "${{ github.event.inputs.tag }}" ]]; then
+            echo "tag=${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Login to Registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.REGISTRY_URL }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ secrets.REGISTRY_URL }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha,prefix=
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=${{ steps.tag.outputs.tag }}
+            type=ref,event=pr
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: ${{ env.PLATFORMS }}
+          push: ${{ github.event_name != 'pull_request' && github.event.inputs.push != 'false' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Image digest
+        if: github.event_name != 'pull_request'
+        run: |
+          echo "Image pushed successfully!"
+          echo "Tags: ${{ steps.meta.outputs.tags }}"
+          echo ""
+          echo "To deploy, ArgoCD will auto-sync or run:"
+          echo "  kubectl -n argocd patch application catalyst-ui --type merge -p '{\"metadata\": {\"annotations\": {\"argocd.argoproj.io/refresh\": \"hard\"}}}'"
+
+  # Optional: Notify ArgoCD to refresh (requires ArgoCD API access)
+  # notify-argocd:
+  #   name: Notify ArgoCD
+  #   needs: build
+  #   if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Trigger ArgoCD Refresh
+  #       run: |
+  #         curl -X POST \
+  #           -H "Authorization: Bearer ${{ secrets.ARGOCD_TOKEN }}" \
+  #           "${{ secrets.ARGOCD_URL }}/api/v1/applications/catalyst-ui/refresh"
