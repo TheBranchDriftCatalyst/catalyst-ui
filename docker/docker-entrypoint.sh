@@ -5,6 +5,7 @@ set -e
 # This script replaces placeholder values in config.js with environment variables
 
 CONFIG_FILE="/usr/share/nginx/html/config.js"
+HEALTH_FILE="/usr/share/nginx/html/health.json"
 
 # Default values
 BASE_URL="${BASE_URL:-/}"
@@ -35,6 +36,18 @@ if [ -f "$CONFIG_FILE" ]; then
     echo "Configuration injected successfully"
 else
     echo "Warning: $CONFIG_FILE not found, skipping config injection"
+fi
+
+# Inject health check metadata
+BUILD_VERSION="${BUILD_VERSION:-unknown}"
+BUILD_TIMESTAMP="${BUILD_TIMESTAMP:-$(date -u +%Y-%m-%dT%H:%M:%SZ)}"
+
+if [ -f "$HEALTH_FILE" ]; then
+    sed -i "s|__BUILD_VERSION__|${BUILD_VERSION}|g" "$HEALTH_FILE"
+    sed -i "s|__BUILD_TIMESTAMP__|${BUILD_TIMESTAMP}|g" "$HEALTH_FILE"
+    echo "Health check metadata injected: version=$BUILD_VERSION"
+else
+    echo "Warning: $HEALTH_FILE not found, skipping health injection"
 fi
 
 # Execute the main command (nginx)

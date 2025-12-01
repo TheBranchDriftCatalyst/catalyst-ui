@@ -1,0 +1,6 @@
+{
+  "status": "ok",
+  "service": "catalyst-ui",
+  "version": "__BUILD_VERSION__",
+  "timestamp": "__BUILD_TIMESTAMP__"
+}
