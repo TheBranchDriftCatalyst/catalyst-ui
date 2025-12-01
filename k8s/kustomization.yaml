@@ -16,5 +16,5 @@ commonLabels:
 
 images:
   - name: catalyst-ui
-    newName: registry.talos00/talos00-registry/catalyst-ui
+    newName: ghcr.io/thebranchdriftcatalyst/catalyst-ui
     newTag: latest
