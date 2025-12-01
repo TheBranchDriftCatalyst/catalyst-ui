@@ -597,7 +597,33 @@ export function LocalizationProvider({ children }: { children: React.ReactNode }
 }
 
 /**
+ * No-op implementation for when LocalizationProvider is not present
+ * This allows components to safely use the hook in production
+ */
+const noOpLocalizationContext: LocalizationContextValue = {
+  updateTranslation: () => {},
+  dumpLocalizationFile: () => {},
+  getChanges: () => ({}),
+  clearChanges: () => {},
+  undo: () => {},
+  redo: () => {},
+  isDirty: () => false,
+  canUndo: () => false,
+  canRedo: () => false,
+  revision: 0,
+  getValue: (_namespace: string, _key: string) => "",
+  syncStatus: "idle",
+  syncError: null,
+  syncToBackend: async () => {},
+  isReady: true,
+};
+
+/**
  * Hook to access localization context
+ *
+ * In production (when LocalizationProvider is not present), this returns
+ * a no-op implementation that does nothing, allowing components to safely
+ * use the hook without errors.
  *
  * @example
  * ```tsx
@@ -616,8 +642,9 @@ export function LocalizationProvider({ children }: { children: React.ReactNode }
  */
 export function useLocalizationContext() {
   const context = useContext(LocalizationContext);
+  // Return no-op implementation in production (when provider is not present)
   if (!context) {
-    throw new Error("useLocalizationContext must be used within LocalizationProvider");
+    return noOpLocalizationContext;
   }
   return context;
 }
