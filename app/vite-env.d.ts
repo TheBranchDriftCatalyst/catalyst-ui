@@ -20,3 +20,16 @@ declare module "*?raw" {
 declare const __APP_VERSION__: string;
 declare const __GIT_HASH__: string;
 declare const __LAST_COMMIT__: string;
+
+// Runtime configuration injected via config.js
+interface RuntimeConfig {
+  BASE_URL: string;
+  API_URL: string;
+  ENVIRONMENT: string;
+}
+
+declare global {
+  interface Window {
+    ENV?: RuntimeConfig;
+  }
+}

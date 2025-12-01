@@ -41,6 +41,17 @@ jobs:
           BASE_PATH: /catalyst-ui/
           VITE_BASE_URL: https://thebranchdriftcatalyst.github.io/catalyst-ui
 
+      - name: Inject runtime config for GitHub Pages
+        run: |
+          cat > ./gh-pages/config.js << 'EOF'
+          // Runtime configuration for GitHub Pages
+          window.ENV = {
+            BASE_URL: "https://thebranchdriftcatalyst.github.io/catalyst-ui",
+            API_URL: "",
+            ENVIRONMENT: "production",
+          };
+          EOF
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
