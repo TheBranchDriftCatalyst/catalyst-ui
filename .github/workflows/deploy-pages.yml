@@ -49,6 +49,7 @@ jobs:
             BASE_URL: "https://thebranchdriftcatalyst.github.io/catalyst-ui",
             API_URL: "",
             ENVIRONMENT: "production",
+            DEV_UTILS_ENABLED: false,
           };
           EOF
 

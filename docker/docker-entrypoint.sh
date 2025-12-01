@@ -10,17 +10,28 @@ CONFIG_FILE="/usr/share/nginx/html/config.js"
 BASE_URL="${BASE_URL:-/}"
 API_URL="${API_URL:-}"
 ENVIRONMENT="${ENVIRONMENT:-production}"
+# DEV_UTILS_ENABLED defaults to false - set to "true" to enable dev tools in production
+DEV_UTILS_ENABLED="${DEV_UTILS_ENABLED:-false}"
+
+# Convert string to boolean for JS
+if [ "$DEV_UTILS_ENABLED" = "true" ] || [ "$DEV_UTILS_ENABLED" = "1" ]; then
+    DEV_UTILS_JS="true"
+else
+    DEV_UTILS_JS="false"
+fi
 
 echo "Injecting runtime configuration..."
 echo "  BASE_URL: $BASE_URL"
 echo "  API_URL: $API_URL"
 echo "  ENVIRONMENT: $ENVIRONMENT"
+echo "  DEV_UTILS_ENABLED: $DEV_UTILS_JS"
 
 # Replace placeholders in config.js
 if [ -f "$CONFIG_FILE" ]; then
     sed -i "s|__RUNTIME_BASE_URL__|${BASE_URL}|g" "$CONFIG_FILE"
     sed -i "s|__RUNTIME_API_URL__|${API_URL}|g" "$CONFIG_FILE"
     sed -i "s|__RUNTIME_ENVIRONMENT__|${ENVIRONMENT}|g" "$CONFIG_FILE"
+    sed -i "s|__RUNTIME_DEV_UTILS_ENABLED__|${DEV_UTILS_JS}|g" "$CONFIG_FILE"
     echo "Configuration injected successfully"
 else
     echo "Warning: $CONFIG_FILE not found, skipping config injection"

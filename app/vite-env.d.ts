@@ -26,6 +26,7 @@ interface RuntimeConfig {
   BASE_URL: string;
   API_URL: string;
   ENVIRONMENT: string;
+  DEV_UTILS_ENABLED?: boolean;
 }
 
 declare global {

@@ -30,6 +30,15 @@ spec:
         - name: catalyst-ui
           image: catalyst-ui:latest  # Will be updated by ArgoCD with actual image
           imagePullPolicy: Always
+          env:
+            - name: BASE_URL
+              value: "/"
+            - name: API_URL
+              value: ""
+            - name: ENVIRONMENT
+              value: "production"
+            - name: DEV_UTILS_ENABLED
+              value: "true"  # Enable dev tools in talos00 deployment for demo
           ports:
             - name: http
               containerPort: 80

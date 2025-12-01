@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Pencil } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { TextEditDialog } from "./TextEditDialog";
 import { useLocalizationContext } from "../../context/LocalizationContext";
+import { isDevUtilsEnabled } from "../../utils/devMode";
 
 interface EditableTextProps {
   /**
@@ -30,16 +32,16 @@ interface EditableTextProps {
 /**
  * EditableText wrapper component that makes text editable in dev mode
  *
- * In development:
+ * In development (or when DEV_UTILS_ENABLED):
  * - Shows edit icon (✏️) on hover
  * - Clicking icon opens edit dialog
  * - Changes are saved locally and can be dumped
  * - Edited text shows a subtle red dotted underline (dirty state)
  * - Supports Ctrl+Z to undo changes
  *
- * In production:
+ * In production (without DEV_UTILS_ENABLED):
  * - Completely transparent (no overhead)
- * - Only renders children
+ * - Uses i18next directly for translations
  *
  * @example
  * ```tsx
@@ -60,28 +62,27 @@ interface EditableTextProps {
  * ```
  */
 export function EditableText({ id, namespace = "common", children: _children }: EditableTextProps) {
-  const { isDirty, revision, getValue } = useLocalizationContext();
+  const { t } = useTranslation(namespace);
+  const devUtilsEnabled = isDevUtilsEnabled();
+
+  // Only use LocalizationContext when dev utils are enabled
+  const locContext = useLocalizationContext();
   const [isHovered, setIsHovered] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  // Get the value from LocalizationContext (not from i18next)
-  // Reading revision ensures this re-runs when translations change (undo/redo/update)
-  const displayText = getValue(namespace, id);
+  // In production without dev utils, use i18next directly
+  if (!devUtilsEnabled) {
+    return <>{t(id)}</>;
+  }
 
-  // Use revision to ensure component stays in sync (even though we don't directly use it)
-  // This causes re-render when revision changes
-  void revision;
+  // Get the value from LocalizationContext for dev mode
+  const displayText = locContext.getValue(namespace, id);
 
   // Check if this translation has been edited (dirty)
-  const isTextDirty = isDirty(namespace, id);
+  const isTextDirty = locContext.isDirty(namespace, id);
 
-  // Only enable editing in dev mode
-  const isDevMode = import.meta.env.DEV;
-
-  // In production, just render the text from LocalizationContext
-  if (!isDevMode) {
-    return <>{displayText}</>;
-  }
+  // Use revision to ensure component stays in sync
+  void locContext.revision;
 
   return (
     <span
