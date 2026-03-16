@@ -1,7 +1,7 @@
 "use client";
 import useLocalStorageState from "@/catalyst-ui/hooks/useLocalStorageState";
 import { useCallback, useEffect, useMemo } from "react";
-import { ThemeContext, ThemeEffects, ThemeVariant } from "./ThemeContext";
+import { THEMES, ThemeContext, ThemeEffects, ThemeVariant, defaultEffects } from "./ThemeContext";
 import { createLogger } from "@/catalyst-ui/utils/logger";
 
 const log = createLogger("ThemeProvider");
@@ -34,19 +34,6 @@ import "./styles/effects/scanlines.css";
 import "./styles/effects/borders.css";
 import "./styles/effects/gradients.css";
 import "./styles/effects/debug.css";
-
-/**
- * Default theme effects configuration
- * All effects enabled except debug mode
- * @internal
- */
-const defaultEffects: ThemeEffects = {
-  glow: true,
-  scanlines: true,
-  borderAnimations: true,
-  gradientShift: true,
-  debug: false,
-};
 
 /**
  * Theme provider component - manages theming state and CSS injection
@@ -194,17 +181,7 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
       effects,
       setEffects,
       updateEffect,
-      allThemes: [
-        "catalyst",
-        "dracula",
-        "dungeon",
-        "gold",
-        "laracon",
-        "nature",
-        "netflix",
-        "nord",
-        null,
-      ],
+      allThemes: THEMES,
     }),
     [theme, variant, effects, updateEffect]
   );

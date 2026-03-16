@@ -14,8 +14,8 @@ html[data-effect-scanlines="true"].light body::before {
   pointer-events: none;
   z-index: 0;
   background-image:
-    linear-gradient(rgba(192, 38, 211, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(192, 38, 211, 0.04) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--neon-purple) 4%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--neon-purple) 4%, transparent) 1px, transparent 1px);
   background-size: 60px 60px;
   opacity: 0.7;
 }

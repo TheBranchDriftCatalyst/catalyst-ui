@@ -28,3 +28,8 @@ export * from "./toggle";
 export * from "./tooltip";
 export * from "./typography";
 export * from "./use-toast";
+export * from "./badge";
+export * from "./sheet";
+export * from "./textarea";
+export * from "./collapsible";
+export * from "./circular-gauge";

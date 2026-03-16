@@ -163,7 +163,7 @@ export interface ThemeContextType {
  * All effects enabled except debug mode
  * @internal
  */
-const defaultEffects: ThemeEffects = {
+export const defaultEffects: ThemeEffects = {
   glow: true,
   scanlines: true,
   borderAnimations: true,

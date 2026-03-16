@@ -434,6 +434,7 @@ const preview = {
         items: [
           { value: "catalyst", title: "Catalyst" },
           { value: "dracula", title: "Dracula" },
+          { value: "dungeon", title: "Dungeon" },
           { value: "gold", title: "Gold" },
           { value: "laracon", title: "Laracon" },
           { value: "nature", title: "Nature" },

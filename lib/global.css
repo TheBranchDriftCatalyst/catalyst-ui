@@ -50,7 +50,7 @@ samp {
 
 .light [class*="card"] {
   box-shadow: var(--shadow-neon-sm);
-  transition: all 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .light [class*="card"]:hover {
@@ -61,7 +61,7 @@ samp {
 .light button[class*="bg-primary"]:hover {
   box-shadow: var(--glow-hover);
   transform: translateY(-1px);
-  transition: all 0.25s ease;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
 }
 
 .light input:focus,
@@ -76,7 +76,7 @@ samp {
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.3),
     var(--glow-accent);
-  transition: all 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .dark [class*="card"]:hover {
@@ -88,7 +88,7 @@ samp {
 
 .dark button[class*="bg-primary"] {
   box-shadow: var(--shadow-neon-sm);
-  transition: all 0.25s ease;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
 }
 
 .dark button[class*="bg-primary"]:hover {
@@ -146,7 +146,9 @@ samp {
 }
 
 @theme {
-  /* Cybersynthpunk Font Families */
+  /* Tailwind utility font defaults (font-sans, font-display, font-mono classes).
+     Runtime font selection uses --font-heading / --font-body / --font-mono
+     CSS custom properties set by each theme's CSS file. */
   --font-sans: "Rajdhani", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Orbitron", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Space Mono", ui-monospace, monospace;

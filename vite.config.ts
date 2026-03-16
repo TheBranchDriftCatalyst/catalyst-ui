@@ -103,6 +103,14 @@ export default defineConfig(({ mode }) => ({
         /^shiki\//, // Matches shiki/langs/*, shiki/themes/*, etc.
         "d3",
         /^d3-/, // Matches all d3 submodules (d3-force, d3-selection, etc.)
+        // 3D and motion - large optional deps, consumers must provide
+        "three",
+        /^three\//,
+        "@react-three/fiber",
+        "@react-three/drei",
+        /^@react-three\//,
+        "maath",
+        "framer-motion",
       ],
       onwarn(warning, defaultHandler) {
         // See this issue, its a non issue just... unfortunate. TL:DR: directives fuck up source maps, vite

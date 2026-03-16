@@ -423,6 +423,20 @@
   filter: drop-shadow(var(--glow-accent));
 }
 
+/* High Contrast Mode guard for gradient headings */
+@media (forced-colors: active) {
+  .theme-dungeon h1,
+  .theme-dungeon h2,
+  .theme-dungeon h3 {
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    -webkit-text-fill-color: inherit !important;
+    color: CanvasText !important;
+    filter: none !important;
+  }
+}
+
 /* Cards with romantic shadows */
 .theme-dungeon.dark [class*="card"] {
   border: 1px solid rgba(220, 38, 88, 0.15);

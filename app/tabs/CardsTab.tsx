@@ -9,7 +9,7 @@ import {
 import { Button } from "@/catalyst-ui/ui/button";
 import { CodeFlipCard } from "@/catalyst-ui/components/CodeFlipCard";
 import { CreateAccountCard } from "@/catalyst-ui/cards/CreateAccountCard/CreateAccountCard";
-import MultiChoiceQuestionCard from "@/catalyst-ui/cards/MultiChoiceQuetion/MultiChoiceQuestion";
+import MultiChoiceQuestionCard from "@/catalyst-ui/cards/MultiChoiceQuestion/MultiChoiceQuestion";
 import { ImportFooter } from "@/catalyst-ui/components/CodeFlipCard/ImportFooter";
 import { ScrollSnapItem } from "@/catalyst-ui/effects";
 
@@ -22,7 +22,7 @@ import CodeFlipCardExampleDemoSource from "../demos/CodeFlipCardExampleDemo.tsx?
 
 // Import card source code as raw strings
 import CreateAccountCardSource from "@/catalyst-ui/cards/CreateAccountCard/CreateAccountCard.tsx?raw";
-import MultiChoiceQuestionSource from "@/catalyst-ui/cards/MultiChoiceQuetion/MultiChoiceQuestion.tsx?raw";
+import MultiChoiceQuestionSource from "@/catalyst-ui/cards/MultiChoiceQuestion/MultiChoiceQuestion.tsx?raw";
 
 export function CardsTab() {
   return (

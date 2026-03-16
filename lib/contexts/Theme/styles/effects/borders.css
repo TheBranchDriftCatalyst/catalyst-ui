@@ -159,8 +159,8 @@ html[data-effect-border-animations="true"] .border-shimmer {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(0, 252, 214, 0.12),
-    rgba(192, 38, 211, 0.12),
+    color-mix(in srgb, var(--neon-cyan) 12%, transparent),
+    color-mix(in srgb, var(--neon-purple) 12%, transparent),
     transparent
   );
   background-size: 200% 100%;
@@ -172,7 +172,7 @@ html[data-effect-border-animations="true"] .border-shimmer {
 /* Laser pulse border - extremely subtle pulsing glow */
 html[data-effect-border-animations="true"] .border-glow-pulse {
   animation: glow-pulse 6s ease-in-out infinite;
-  border: 1px solid rgba(0, 252, 214, 0.15);
+  border: 1px solid color-mix(in srgb, var(--neon-cyan) 15%, transparent);
 }
 
 /* === PULSE SCALE CONTAINER CLASS === */
@@ -189,7 +189,7 @@ html[data-effect-border-animations="true"] .pulse-scale-container::after {
   position: absolute;
   width: 1.5px;
   height: 1.5px;
-  background: radial-gradient(circle, rgba(0, 252, 214, 0.6), transparent);
+  background: radial-gradient(circle, color-mix(in srgb, var(--neon-cyan) 60%, transparent), transparent);
   border-radius: 50%;
   pointer-events: none;
   animation: pulse-scale 8s ease-in-out infinite;
@@ -223,14 +223,14 @@ html[data-effect-border-animations="true"] .border-scan::before {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(0, 252, 214, 0.15),
-    rgba(0, 252, 214, 0.4),
-    rgba(192, 38, 211, 0.25),
+    color-mix(in srgb, var(--neon-cyan) 15%, transparent),
+    color-mix(in srgb, var(--neon-cyan) 40%, transparent),
+    color-mix(in srgb, var(--neon-purple) 25%, transparent),
     transparent
   );
   box-shadow:
-    0 0 4px rgba(0, 252, 214, 0.3),
-    0 0 8px rgba(0, 252, 214, 0.2);
+    0 0 4px color-mix(in srgb, var(--neon-cyan) 30%, transparent),
+    0 0 8px color-mix(in srgb, var(--neon-cyan) 20%, transparent);
   border-radius: 1px;
   animation: border-scan 6s linear infinite;
   animation-delay: calc(var(--border-scan-delay, 0) * 1s);
@@ -255,14 +255,14 @@ html[data-effect-border-animations="true"] .border-scan-bottom::before {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(0, 252, 214, 0.15),
-    rgba(0, 252, 214, 0.4),
-    rgba(192, 38, 211, 0.25),
+    color-mix(in srgb, var(--neon-cyan) 15%, transparent),
+    color-mix(in srgb, var(--neon-cyan) 40%, transparent),
+    color-mix(in srgb, var(--neon-purple) 25%, transparent),
     transparent
   );
   box-shadow:
-    0 0 4px rgba(0, 252, 214, 0.3),
-    0 0 8px rgba(0, 252, 214, 0.2);
+    0 0 4px color-mix(in srgb, var(--neon-cyan) 30%, transparent),
+    0 0 8px color-mix(in srgb, var(--neon-cyan) 20%, transparent);
   border-radius: 1px;
   animation: border-scan-bottom 4s linear infinite;
   animation-delay: calc(var(--border-scan-delay, 0) * 1s);

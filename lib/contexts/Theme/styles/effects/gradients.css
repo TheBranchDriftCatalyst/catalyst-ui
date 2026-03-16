@@ -112,3 +112,27 @@ html[data-effect-gradient-shift="true"].dark h2::after {
   opacity: 0.3;
   mix-blend-mode: screen;
 }
+
+/* === HIGH CONTRAST MODE GUARD === */
+/* Ensure text remains visible in Windows High Contrast / forced-colors mode */
+@media (forced-colors: active) {
+  html[data-effect-gradient-shift="true"] h1::before,
+  html[data-effect-gradient-shift="true"] h2::before,
+  html[data-effect-gradient-shift="true"] h1::after,
+  html[data-effect-gradient-shift="true"] h2::after {
+    content: none;
+  }
+
+  html[data-effect-gradient-shift="true"] h1,
+  html[data-effect-gradient-shift="true"] h2,
+  html[data-effect-gradient-shift="true"] h3,
+  html[data-effect-gradient-shift="true"] h4,
+  html[data-effect-gradient-shift="true"] h5,
+  html[data-effect-gradient-shift="true"] h6 {
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    -webkit-text-fill-color: inherit !important;
+    color: CanvasText !important;
+  }
+}

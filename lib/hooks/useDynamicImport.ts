@@ -107,4 +107,5 @@ const useDynamicImport = (iconName: string) => {
   return { IconComponent, error };
 };
 
+export { useDynamicImport };
 export default useDynamicImport;

@@ -52,9 +52,47 @@ export function useAnimationTriggers(
     }
   }, [trigger, setState]);
 
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (trigger === "click" && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        setState(prev => !prev);
+      }
+    },
+    [trigger, setState]
+  );
+
+  const handleFocus = useCallback(() => {
+    if (trigger === "focus") {
+      setState(true);
+    }
+  }, [trigger, setState]);
+
+  const handleBlur = useCallback(() => {
+    if (trigger === "focus") {
+      setState(false);
+    }
+  }, [trigger, setState]);
+
+  /** Props to spread on the animated wrapper for full a11y support */
+  const triggerProps = {
+    onMouseEnter: handleMouseEnter,
+    onMouseLeave: handleMouseLeave,
+    onClick: handleClick,
+    onKeyDown: handleKeyDown,
+    onFocus: handleFocus,
+    onBlur: handleBlur,
+    ...(trigger === "click" ? { tabIndex: 0, role: "button" as const } : {}),
+    ...(trigger === "focus" ? { tabIndex: 0 } : {}),
+  };
+
   return {
     handleMouseEnter,
     handleMouseLeave,
     handleClick,
+    handleKeyDown,
+    handleFocus,
+    handleBlur,
+    triggerProps,
   };
 }

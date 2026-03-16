@@ -10,12 +10,10 @@ export * from "./AnimatedTilt";
 export * from "./ScrollSnapContainer";
 export * from "./ScrollSnapItem";
 
-// Framer Motion-based animation HOCs (for explicit control)
-export * from "./MotionFade";
-export * from "./MotionScale";
-
-// Framer Motion variants library (for custom motion.div usage)
-export * from "./variants";
+// Framer Motion components (import directly for tree-shaking):
+//   import { MotionFade } from "@/catalyst-ui/effects/MotionFade";
+//   import { MotionScale } from "@/catalyst-ui/effects/MotionScale";
+//   import { variants } from "@/catalyst-ui/effects/variants";
 
 // Types
 export * from "./types";

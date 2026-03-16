@@ -41,7 +41,7 @@
  * </AnimatedSlide>
  * ```
  */
-export type AnimationTrigger = "click" | "hover";
+export type AnimationTrigger = "click" | "hover" | "focus";
 
 /**
  * FlipDirection - Defines the rotation axis for 3D flip animations

@@ -23,7 +23,7 @@
 /* Cards - colorful shadows */
 html[data-effect-glow="true"].light [class*="card"] {
   box-shadow: var(--shadow-neon-sm);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 html[data-effect-glow="true"].light [class*="card"]:hover {
@@ -32,21 +32,21 @@ html[data-effect-glow="true"].light [class*="card"]:hover {
 
 /* Links - rich purple glow */
 html[data-effect-glow="true"].light a {
-  text-shadow: 0 0 10px rgba(192, 38, 211, 0.3);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--neon-purple) 30%, transparent);
+  transition: text-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 html[data-effect-glow="true"].light a:hover {
   text-shadow:
-    0 0 20px rgba(192, 38, 211, 0.5),
-    0 0 40px rgba(192, 38, 211, 0.25);
+    0 0 20px color-mix(in srgb, var(--neon-purple) 50%, transparent),
+    0 0 40px color-mix(in srgb, var(--neon-purple) 25%, transparent);
 }
 
 /* Primary buttons - vibrant glow */
 html[data-effect-glow="true"].light button[class*="bg-primary"],
 html[data-effect-glow="true"].light [class*="bg-primary"] button {
   box-shadow: var(--glow-primary);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 html[data-effect-glow="true"].light button[class*="bg-primary"]:hover,
@@ -74,14 +74,14 @@ html[data-effect-glow="true"].light [role="dialog"] {
 
 /* Links get cyberpunk glow */
 html[data-effect-glow="true"].dark a {
-  text-shadow: 0 0 8px rgba(0, 252, 214, 0.3);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--neon-cyan) 30%, transparent);
+  transition: text-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 html[data-effect-glow="true"].dark a:hover {
   text-shadow:
-    0 0 15px rgba(0, 252, 214, 0.6),
-    0 0 30px rgba(0, 252, 214, 0.3);
+    0 0 15px color-mix(in srgb, var(--neon-cyan) 60%, transparent),
+    0 0 30px color-mix(in srgb, var(--neon-cyan) 30%, transparent);
   animation: text-glow 4s ease-in-out infinite;
 }
 
@@ -89,7 +89,7 @@ html[data-effect-glow="true"].dark a:hover {
 html[data-effect-glow="true"].dark button[class*="bg-primary"],
 html[data-effect-glow="true"].dark [class*="bg-primary"] button {
   box-shadow: var(--glow-accent);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 html[data-effect-glow="true"].dark button[class*="bg-primary"]:hover,
@@ -109,7 +109,7 @@ html[data-effect-glow="true"].dark select:focus {
 /* Cards - subtle elevation with neon accent */
 html[data-effect-glow="true"].dark [class*="card"] {
   box-shadow: var(--shadow-neon-sm);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 html[data-effect-glow="true"].dark [class*="card"]:hover {
