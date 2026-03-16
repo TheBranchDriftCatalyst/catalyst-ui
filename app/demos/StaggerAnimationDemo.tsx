@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Card } from "@/catalyst-ui/ui/card";
-import { staggerContainer, fadeInStagger } from "@/catalyst-ui/effects";
+import { staggerContainer, fadeInStagger } from "@/catalyst-ui/effects/variants";
 
 export function StaggerAnimationDemo() {
   const items = ["Card 1", "Card 2", "Card 3", "Card 4", "Card 5", "Card 6"];
