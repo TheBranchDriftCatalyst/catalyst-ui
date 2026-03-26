@@ -1,3 +1,4 @@
+"use client";
 // import { useWidgetWidth } from "@/catalyst-ui/components/ResponsiveGridWidget";
 import { cn } from "@/catalyst-ui/utils";
 import { Slot } from "@radix-ui/react-slot";

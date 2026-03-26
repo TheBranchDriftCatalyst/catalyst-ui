@@ -1,3 +1,4 @@
+"use client";
 /**
  * Toast UI Components
  *

@@ -155,8 +155,11 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     document.documentElement.dataset.effectGradientShift = effects.gradientShift.toString();
     document.documentElement.dataset.effectDebug = effects.debug.toString();
 
-    // Dev-only logging
-    if (import.meta.env.DEV) {
+    // Dev-only logging (framework-agnostic: supports both Vite and Next.js)
+    const isDev =
+      (typeof process !== "undefined" && process.env?.NODE_ENV === "development") ||
+      (typeof import.meta !== "undefined" && import.meta.env?.DEV);
+    if (isDev) {
       log.debug("Applied:", {
         theme,
         variant,

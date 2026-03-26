@@ -1,3 +1,4 @@
+"use client";
 /**
  * Toaster - Global toast container component.
  *

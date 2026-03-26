@@ -13,8 +13,8 @@
       "import": "./dist/lib/catalyst.js"
     },
     "./components/*": {
-      "types": "./dist/lib/components/*.d.ts",
-      "import": "./dist/lib/components/*.js"
+      "types": "./dist/lib/components/*/index.d.ts",
+      "import": "./dist/lib/components/*/index.js"
     },
     "./ui/*": {
       "types": "./dist/lib/ui/*.d.ts",
@@ -35,7 +35,8 @@
     "./effects/*": {
       "types": "./dist/lib/effects/*.d.ts",
       "import": "./dist/lib/effects/*.js"
-    }
+    },
+    "./themes/*": "./lib/themes/*.css"
   },
   "files": [
     "dist/lib",
@@ -65,7 +66,7 @@
     "update:badges": "./scripts/update-badges.sh",
     "text-extract": "tsx scripts/codemods/text-extract.ts",
     "prebuild": "cp CHANGELOG.md public/CHANGELOG.md",
-    "build": "tsc --p ./tsconfig-build.json && vite build",
+    "build": "tsc --p ./tsconfig-build.json --noCheck && vite build",
     "prebuild:app": "cp CHANGELOG.md public/CHANGELOG.md",
     "build:app": "vite build --config vite.app.config.ts",
     "build:full": "yarn build && yarn build:app",

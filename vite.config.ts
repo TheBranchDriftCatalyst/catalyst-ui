@@ -1,17 +1,11 @@
 import react from "@vitejs/plugin-react";
-import tailwindcss from "@tailwindcss/vite";
 import { glob } from "glob";
 import { fileURLToPath } from "node:url";
 import { extname, relative, resolve } from "path";
 import { defineConfig } from "vite";
 import dts from "vite-plugin-dts";
 import tsconfigPaths from "vite-tsconfig-paths";
-import yamlPlugin from "@rollup/plugin-yaml";
-import tabsManifestPlugin from "./build/vite-plugin-tabs-manifest";
-import concatDocsPlugin from "./build/vite-plugin-concat-docs";
 import preserveUseClient from "./build/vite-plugin-preserve-use-client";
-import { i18nApiPlugin } from "./build/vite-plugin-i18n-api";
-import sitemapPlugin from "./build/vite-plugin-sitemap";
 import { execSync } from "child_process";
 import { readFileSync } from "fs";
 
@@ -36,31 +30,14 @@ try {
 
 /** @type {import('vite').UserConfig} */
 export default defineConfig(({ mode }) => ({
-  root: "./app",
-  publicDir: "../public",
+  // Library build — root is the project root, NOT ./app
   define: {
-    // Maybe move these to a build utils function???
     __APP_VERSION__: JSON.stringify(pkg.version),
     __GIT_HASH__: JSON.stringify(gitHash),
     __LAST_COMMIT__: JSON.stringify(lastCommit),
-    // Map non-prefixed env vars to VITE_ prefixed ones for PaperTradarr
-    "import.meta.env.VITE_POLYGON_API_KEY": JSON.stringify(
-      process.env.VITE_POLYGON_API_KEY || process.env.POLYGON_API_KEY || ""
-    ),
   },
   plugins: [
-    yamlPlugin(), // Enable YAML imports
-    tabsManifestPlugin(), // Generates manifest + OG images (includes export validation)
-    sitemapPlugin({
-      // Use env variable from CI, fallback to GitHub Pages URL for dev
-      baseUrl: process.env.VITE_BASE_URL || "https://thebranchdriftcatalyst.github.io/catalyst-ui",
-      defaultChangefreq: "weekly",
-      defaultPriority: 0.8,
-    }),
-    concatDocsPlugin(),
-    i18nApiPlugin(),
     react(),
-    tailwindcss(),
     tsconfigPaths({
       projects: [resolve(__dirname, "tsconfig.json")],
     }),
@@ -68,7 +45,7 @@ export default defineConfig(({ mode }) => ({
     preserveUseClient(),
   ],
   build: {
-    outDir: "../dist/lib",
+    outDir: "dist/lib",
     copyPublicDir: false,
     cssMinify: true,
     cssCodeSplit: true,
@@ -142,7 +119,7 @@ export default defineConfig(({ mode }) => ({
           // }
           return "assets/[name]-[hash][extname]";
         },
-        entryFileNames: "[name]-[hash].js",
+        entryFileNames: "[name].js",
         chunkFileNames: "chunks/[name]-[hash].js",
         // Share common vendor chunks across components
         manualChunks(id) {

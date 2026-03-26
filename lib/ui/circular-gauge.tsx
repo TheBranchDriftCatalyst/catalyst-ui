@@ -1,3 +1,4 @@
+"use client";
 /**
  * Circular Gauge Component
  *
