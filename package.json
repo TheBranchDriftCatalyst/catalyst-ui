@@ -36,11 +36,12 @@
       "types": "./dist/lib/effects/*.d.ts",
       "import": "./dist/lib/effects/*.js"
     },
-    "./themes/*": "./lib/themes/*.css"
+    "./themes/*": "./dist/themes/*.css",
+    "./styles/*": "./dist/contexts/Theme/styles/*.css",
+    "./styles/effects/*": "./dist/contexts/Theme/styles/effects/*.css"
   },
   "files": [
-    "dist/lib",
-    "lib"
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -66,7 +67,7 @@
     "update:badges": "./scripts/update-badges.sh",
     "text-extract": "tsx scripts/codemods/text-extract.ts",
     "prebuild": "cp CHANGELOG.md public/CHANGELOG.md",
-    "build": "tsc --p ./tsconfig-build.json --noCheck && vite build",
+    "build": "tsc --p ./tsconfig-build.json --noCheck && vite build && mkdir -p dist/themes dist/contexts/Theme && cp -r lib/themes/ dist/themes/ && cp -r lib/contexts/Theme/styles/ dist/contexts/Theme/styles/",
     "prebuild:app": "cp CHANGELOG.md public/CHANGELOG.md",
     "build:app": "vite build --config vite.app.config.ts",
     "build:full": "yarn build && yarn build:app",
