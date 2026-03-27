@@ -86,7 +86,9 @@
     "release:minor": "standard-version --release-as minor",
     "release:major": "standard-version --release-as major",
     "prepare": "husky || true",
-    "prepack": "yarn build"
+    "prepack": "yarn build",
+    "release": "standard-version && git push --follow-tags",
+    "prepublishOnly": "yarn build"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,md,json}": [

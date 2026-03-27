@@ -1,4 +1,4 @@
-name: Publish to GitHub Packages
+name: Publish to npm
 
 on:
   push:
@@ -6,29 +6,57 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 jobs:
   publish:
+    name: Build, Verify & Publish
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # needed for changelog in GH release
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          registry-url: https://npm.pkg.github.com
+          registry-url: https://registry.npmjs.org
+          cache: yarn
 
       - name: Install dependencies
-        run: |
-          echo 'ignore-engines true' >> .yarnrc
-          yarn install --no-lockfile
+        run: yarn install --frozen-lockfile --ignore-scripts
 
       - name: Build library
         run: yarn build
 
-      - name: Publish to GitHub Packages
-        run: npm publish
+      - name: Verify package contents
+        run: |
+          echo "=== Verifying dist output ==="
+          ls dist/lib/ui/button.js || (echo "FAIL: missing button.js" && exit 1)
+          ls dist/lib/catalyst.js || (echo "FAIL: missing catalyst.js" && exit 1)
+          ls dist/themes/dungeon.css || (echo "FAIL: missing dungeon.css" && exit 1)
+          ls dist/contexts/Theme/styles/dungeon.css || (echo "FAIL: missing theme styles" && exit 1)
+          echo "=== Pack dry run ==="
+          npm pack --dry-run 2>&1 | tail -20
+          echo "=== All checks passed ==="
+
+      - name: Publish to npm
+        run: npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          body: |
+            ## Changes in ${{ github.ref_name }}
+
+            See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for full details.
+
+            Install:
+            ```bash
+            npm install catalyst-ui@${{ github.ref_name }}
+            ```
