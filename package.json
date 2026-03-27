@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package",
-  "name": "catalyst-ui",
+  "name": "@thebranchdriftcatalyst/catalyst-ui",
   "author": "TheBranchDriftCatalyst",
   "private": false,
   "version": "2.1.1",
@@ -50,7 +50,8 @@
     "url": "https://github.com/TheBranchDriftCatalyst/catalyst-ui"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://registry.npmjs.org",
+    "access": "public"
   },
   "sideEffects": [
     "**/*.css"
