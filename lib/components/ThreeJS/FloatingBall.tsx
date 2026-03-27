@@ -58,7 +58,6 @@ export function FloatingBall({
           rotation={[2 * Math.PI, 0, 6.25]}
           scale={1}
           map={decalTexture}
-          flatShading
         />
       </mesh>
     </Float>

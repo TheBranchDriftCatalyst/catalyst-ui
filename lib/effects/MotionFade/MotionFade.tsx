@@ -110,7 +110,7 @@ export const MotionFade = React.forwardRef<HTMLDivElement, MotionFadeProps>(
         : {};
 
     return (
-      <motion.div ref={ref} variants={variants} {...animateProps} {...exitProps} {...motionProps}>
+      <motion.div ref={ref} variants={variants} {...animateProps} {...(exitProps as Record<string, unknown>)} {...motionProps}>
         {children}
       </motion.div>
     );

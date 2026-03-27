@@ -221,8 +221,6 @@ export const Animate = React.forwardRef<HTMLDivElement, AnimateProps>(
               trigger={trigger}
               direction={direction === "none" ? "left" : (direction as any)}
               duration={cssDuration}
-              isSliding={isActive}
-              onSlideChange={onStateChange}
               {...htmlProps}
             >
               {children}
@@ -257,6 +255,13 @@ export const Animate = React.forwardRef<HTMLDivElement, AnimateProps>(
     // Render Motion implementation
     const motionDuration = typeof duration === "number" ? duration / 1000 : 0.5;
     const motionDelay = typeof delay === "number" ? delay / 1000 : 0;
+    // Strip React event handlers that conflict with framer-motion's event types
+    // (React's onDrag/onAnimationStart are DOM events, framer-motion's are motion events)
+    const {
+      onDrag, onDragStart, onDragEnd, onDragOver, onDragEnter, onDragLeave,
+      onAnimationStart, onAnimationEnd, onAnimationIteration,
+      ...motionSafeProps
+    } = htmlProps;
 
     switch (variant) {
       case "fade":
@@ -268,7 +273,7 @@ export const Animate = React.forwardRef<HTMLDivElement, AnimateProps>(
             delay={motionDelay}
             animateOnMount={animateOnMount}
             useExit={useExit}
-            {...htmlProps}
+            {...motionSafeProps}
           >
             {children}
           </MotionFade>
@@ -283,7 +288,7 @@ export const Animate = React.forwardRef<HTMLDivElement, AnimateProps>(
             duration={motionDuration}
             delay={motionDelay}
             animateOnMount={animateOnMount}
-            {...htmlProps}
+            {...motionSafeProps}
           >
             {children}
           </MotionScale>
@@ -297,7 +302,7 @@ export const Animate = React.forwardRef<HTMLDivElement, AnimateProps>(
             scale={intensity}
             delay={motionDelay}
             animateOnMount={animateOnMount}
-            {...htmlProps}
+            {...motionSafeProps}
           >
             {children}
           </MotionScale>
@@ -310,7 +315,7 @@ export const Animate = React.forwardRef<HTMLDivElement, AnimateProps>(
             variant="pop"
             delay={motionDelay}
             animateOnMount={animateOnMount}
-            {...htmlProps}
+            {...motionSafeProps}
           >
             {children}
           </MotionScale>

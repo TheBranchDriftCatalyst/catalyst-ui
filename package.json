@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package",
-  "name": "@thebranchdriftcatalyst/catalyst-ui",
+  "name": "catalyst-ui",
   "author": "TheBranchDriftCatalyst",
   "private": false,
   "version": "2.1.1",
@@ -72,7 +72,7 @@
     "update:badges": "./scripts/update-badges.sh",
     "text-extract": "tsx scripts/codemods/text-extract.ts",
     "prebuild": "cp CHANGELOG.md public/CHANGELOG.md",
-    "build": "tsc --p ./tsconfig-build.json --noCheck && vite build && mkdir -p dist/themes dist/contexts/Theme && cp -r lib/themes/ dist/themes/ && cp -r lib/contexts/Theme/styles/ dist/contexts/Theme/styles/",
+    "build": "tsc --p ./tsconfig-build.json && vite build && mkdir -p dist/themes dist/contexts/Theme && cp -r lib/themes/ dist/themes/ && cp -r lib/contexts/Theme/styles/ dist/contexts/Theme/styles/",
     "prebuild:app": "cp CHANGELOG.md public/CHANGELOG.md",
     "build:app": "vite build --config vite.app.config.ts",
     "build:full": "yarn build && yarn build:app",
@@ -85,14 +85,14 @@
     "release:patch": "standard-version --release-as patch",
     "release:minor": "standard-version --release-as minor",
     "release:major": "standard-version --release-as major",
-    "prepare": "husky"
+    "prepare": "husky || true",
+    "prepack": "yarn build"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,css,md,json}": [
       "prettier --write"
     ]
   },
-  "postinstall": "yarn playwright install",
   "peerDependencies": {
     "@react-three/drei": "^10.7.6",
     "@react-three/fiber": "^9.4.0",

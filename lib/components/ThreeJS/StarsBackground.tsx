@@ -49,7 +49,7 @@ export function StarsBackground({
   random.inSphere(sphere, { radius });
 
   // Rotate stars slowly for ambient motion
-  useFrame((state, delta) => {
+  useFrame((_state, delta) => {
     if (ref.current) {
       ref.current.rotation.x -= delta / 10;
       ref.current.rotation.y -= delta / 15;

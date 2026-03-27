@@ -20,6 +20,10 @@
     "**/tests/**",
     "lib/dev/**",
     "lib/effects/Animate/**",
-    "lib/effects/MotionFade/**"
+    "lib/effects/MotionFade/**",
+    "lib/effects/MotionScale/**",
+    "lib/components/ThreeJS/**",
+    "lib/components/NavigationHeader/**",
+    "lib/cards/CreateAccountCard/**"
   ]
 }

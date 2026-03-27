@@ -114,7 +114,8 @@ export const CreateAccountCard = ({
   enableTilt = true,
 }: CreateAccountCardProps) => {
   const form = useForm<z.infer<typeof InputFormSchema>>({
-    resolver: zodResolver(InputFormSchema),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resolver: zodResolver(InputFormSchema as any),
     defaultValues: {
       username: "",
       password: "",
