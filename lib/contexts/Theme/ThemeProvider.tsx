@@ -7,27 +7,43 @@ import { createLogger } from "@/catalyst-ui/utils/logger";
 const log = createLogger("ThemeProvider");
 
 /**
- * Map of theme names to their CSS import functions
+ * Map of theme names to their CSS content (loaded as inline strings).
  *
  * @remarks
- * CSS is dynamically imported when a theme is selected.
- * Vite handles code-splitting and bundling at build time.
- * Import functions return `Promise<void>` (side-effect only).
+ * Uses `?inline` imports so Vite embeds CSS as JS strings in the bundle
+ * instead of side-effect imports (which get stripped to `/* empty css *\/`
+ * in library builds). Only the active theme's CSS is injected into the DOM.
  *
  * @internal
  */
-const themeCoreStyles: Record<string, () => Promise<void>> = {
-  catalyst: () => import("./styles/catalyst.css") as Promise<void>,
-  dracula: () => import("./styles/dracula.css") as Promise<void>,
-  dungeon: () => import("./styles/dungeon.css") as Promise<void>,
-  gold: () => import("./styles/gold.css") as Promise<void>,
-  laracon: () => import("./styles/laracon.css") as Promise<void>,
-  nature: () => import("./styles/nature.css") as Promise<void>,
-  netflix: () => import("./styles/netflix.css") as Promise<void>,
-  nord: () => import("./styles/nord.css") as Promise<void>,
+const themeCoreStyles: Record<string, () => Promise<{ default: string }>> = {
+  catalyst: () => import("./styles/catalyst.css?inline"),
+  dracula: () => import("./styles/dracula.css?inline"),
+  dungeon: () => import("./styles/dungeon.css?inline"),
+  gold: () => import("./styles/gold.css?inline"),
+  laracon: () => import("./styles/laracon.css?inline"),
+  nature: () => import("./styles/nature.css?inline"),
+  netflix: () => import("./styles/netflix.css?inline"),
+  nord: () => import("./styles/nord.css?inline"),
 };
 
-// Import all effect layers upfront (Vite bundles CSS at build time)
+const THEME_STYLE_ID = "catalyst-ui-theme";
+
+/**
+ * Inject CSS text into a <style> tag in <head>, replacing any previous theme.
+ * @internal
+ */
+function injectThemeCSS(css: string) {
+  let el = document.getElementById(THEME_STYLE_ID) as HTMLStyleElement | null;
+  if (!el) {
+    el = document.createElement("style");
+    el.id = THEME_STYLE_ID;
+    document.head.appendChild(el);
+  }
+  el.textContent = css;
+}
+
+// Effect layers — always loaded (controlled via data attributes, not dynamic)
 import "./styles/effects/keyframes.css";
 import "./styles/effects/glow.css";
 import "./styles/effects/scanlines.css";
@@ -137,10 +153,12 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     [setStoredEffects]
   );
 
-  // Load core theme CSS
+  // Load core theme CSS — dynamically imports CSS as string, injects into <style>
   useEffect(() => {
     if (theme && themeCoreStyles[theme]) {
-      themeCoreStyles[theme]();
+      themeCoreStyles[theme]().then(mod => {
+        injectThemeCSS(mod.default);
+      });
     }
   }, [theme]);
 
