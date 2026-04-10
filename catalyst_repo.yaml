@@ -1,87 +1,48 @@
-# Catalyst Repository Metadata
-# This file defines metadata for each repository to be used by the profile page generator
-
-# Repository Information
+version: "0.1.1"
 name: "catalyst-ui"
-description: "React component library with Vite and TypeScript for shared UI components"
-repo_url: ""  # Git remote needs to be fixed
-
-# Visibility
-private: true
-
-# Repository Status (active, archived, wip, experimental)
+description: "Cyberpunk-themed React component library shipping 50+ components, 8 synthwave themes, a D3.js ForceGraph engine with 4 layout algorithms, and a full observability stack — all tree-shakeable ESM exports"
+repo_url: "https://github.com/TheBranchDriftCatalyst/catalyst-ui"
+private: false
 status: "active"
 
-# Tech Stack
 tech_stack:
   languages:
     - "typescript"
-    - "javascript"
+    - "css"
   frameworks:
     - "react"
-    - "vite"
+    - "tailwindcss"
+    - "radix-ui"
+    - "d3"
+    - "framer-motion"
+    - "react-three-fiber"
+    - "react-hook-form"
+    - "zod"
+    - "i18next"
   tools:
+    - "vite"
+    - "vitest"
     - "storybook"
+    - "typedoc"
+    - "husky"
 
-# Grouping/Categories (for organizing on profile page)
 groups:
   - "catalyst-core"
   - "component-library"
+  - "design-system"
 
-# Badge Configuration (optional - will use defaults if not specified)
 badges:
-  stars: false
-  issues: false
-  prs: false
-  license: false
+  stars: true
+  issues: true
+  prs: true
+  license: true
 
-# Custom highlights (optional - used for non-AI manual highlights)
 highlights:
-  - "Shared React component library"
-  - "Built with Vite library mode"
-
-# Automated Screenshot Configuration
-# NOTE: not currently implemented at all
-# throwing shit around, thinkin bout it
-screenshots:
-  enabled: true
-  base_url: "http://localhost:5173"
-  output_dir: "screenshots"
-
-  # Pages/tabs to screenshot
-  targets:
-    - name: "overview"
-      url: "/?tab=overview"
-      wait_for: "h1:has-text('Frameworks')"
-    - name: "tokens"
-      url: "/?tab=tokens"
-      wait_for: ".design-token"
-    - name: "forcegraph"
-      url: "/?tab=forcegraph"
-      wait_for: "svg"
-      delay: 2000  # Extra wait for graph simulation
-    - name: "forms"
-      url: "/?tab=forms"
-      wait_for: "button"
-    - name: "cards"
-      url: "/?tab=cards"
-      wait_for: ".card"
-
-  # Themes to capture
-  themes:
-    - "catalyst"
-    - "dracula"
-    - "gold"
-    - "nord"
-
-  # Viewports to test
-  viewports:
-    - name: "desktop"
-      width: 1920
-      height: 1080
-    - name: "tablet"
-      width: 768
-      height: 1024
-    - name: "mobile"
-      width: 375
-      height: 812
+  - "50+ components across 33 Radix UI primitives, 14 advanced components (ForceGraph, CodeBlock, Timeline, ThreeJS), and specialty cards including a print-ready RPG character sheet resume"
+  - "8 synthwave CSS themes (Catalyst, Dracula, Dungeon, Gold, Laracon, Nature, Netflix, Nord) with 6 cyberpunk effect layers: glow, scanlines, border lasers, gradients, keyframe animations, and debug overlays"
+  - "D3.js ForceGraph engine with 4 layout algorithms (force-directed, Dagre, ELK hierarchical, community detection), orthogonal edge routing, and localStorage position persistence"
+  - "133 tests at 99% coverage with Vitest + Testing Library, enforced via CI alongside automated Storybook deployment to GitHub Pages"
+  - "11 animation primitives (CSS and Framer Motion) with scroll-snap containers, tilt effects, and 5 motion variants (fade, scale, slide, stagger, text)"
+  - "Built-in observability: GA4 analytics, React Error Boundaries, Web Vitals monitoring (LCP/FID/CLS/TTFB/INP), and live real-time dashboard"
+  - "Zero-dependency SEO system with dynamic meta tags, Open Graph, Twitter Cards, JSON-LD structured data, and auto-generated sitemap.xml"
+  - "Tree-shakeable ESM library with per-component CSS code splitting and automatic 'use client' directive preservation for Next.js App Router"
