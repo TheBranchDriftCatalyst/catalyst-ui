@@ -3,6 +3,18 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+## [2.2.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v2.1.2...v2.2.0) (2026-06-23)
+
+
+### 🛠️ MAINTENANCE
+
+- bump to 2.1.2 ([cf28a8a](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/cf28a8a2630f323a6255fe622d47a4ad3dddbcc0))
+
+
+### ⚡ NEW FEATURES
+
+- implement Council Verdict P0/P1/P2 remediation fixes ([0931fa4](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/0931fa45d39095923d579a743cb12b76d5cd9219))
+
 ### [2.1.1](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v2.1.0...v2.1.1) (2025-11-10)
 
 
