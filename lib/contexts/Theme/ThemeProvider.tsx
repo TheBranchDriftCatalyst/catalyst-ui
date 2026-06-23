@@ -2,30 +2,24 @@
 import useLocalStorageState from "@/catalyst-ui/hooks/useLocalStorageState";
 import { useCallback, useEffect, useMemo } from "react";
 import { THEMES, ThemeContext, ThemeEffects, ThemeVariant, defaultEffects } from "./ThemeContext";
+import { THEME_REGISTRY } from "./registry";
+import { ensureThemeFonts } from "./fonts";
 import { createLogger } from "@/catalyst-ui/utils/logger";
 
 const log = createLogger("ThemeProvider");
 
 /**
- * Map of theme names to their CSS content (loaded as inline strings).
+ * Map of theme names to their CSS loader (returns inline string).
  *
  * @remarks
- * Uses `?inline` imports so Vite embeds CSS as JS strings in the bundle
- * instead of side-effect imports (which get stripped to `/* empty css *\/`
- * in library builds). Only the active theme's CSS is injected into the DOM.
+ * Derived from THEME_REGISTRY — to add a theme, edit `./registry.ts`.
+ * Only the active theme's CSS is injected into the DOM at runtime.
  *
  * @internal
  */
-const themeCoreStyles: Record<string, () => Promise<{ default: string }>> = {
-  catalyst: () => import("./styles/catalyst.css?inline"),
-  dracula: () => import("./styles/dracula.css?inline"),
-  dungeon: () => import("./styles/dungeon.css?inline"),
-  gold: () => import("./styles/gold.css?inline"),
-  laracon: () => import("./styles/laracon.css?inline"),
-  nature: () => import("./styles/nature.css?inline"),
-  netflix: () => import("./styles/netflix.css?inline"),
-  nord: () => import("./styles/nord.css?inline"),
-};
+const themeCoreStyles: Record<string, () => Promise<string>> = Object.fromEntries(
+  THEME_REGISTRY.map(t => [t.name, t.cssLoader])
+);
 
 const THEME_STYLE_ID = "catalyst-ui-theme";
 
@@ -156,10 +150,12 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   // Load core theme CSS — dynamically imports CSS as string, injects into <style>
   useEffect(() => {
     if (theme && themeCoreStyles[theme]) {
-      themeCoreStyles[theme]().then(mod => {
-        injectThemeCSS(mod.default);
+      themeCoreStyles[theme]().then(css => {
+        injectThemeCSS(css);
       });
     }
+    // Inject the active theme's font <link> tags (and remove previous theme's).
+    if (theme) ensureThemeFonts(theme);
   }, [theme]);
 
   // Apply theme classes and effect data attributes to document element

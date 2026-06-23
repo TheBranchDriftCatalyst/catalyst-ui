@@ -321,7 +321,7 @@ const LinkRenderer: React.FC<{ node: Link; children: React.ReactNode }> = ({ nod
     <a
       href={node.url}
       title={node.title || undefined}
-      className="text-primary hover:underline transition-all"
+      className="text-primary hover:underline transition"
       target={node.url.startsWith("http") ? "_blank" : undefined}
       rel={node.url.startsWith("http") ? "noopener noreferrer" : undefined}
     >

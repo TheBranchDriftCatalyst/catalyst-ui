@@ -1,40 +1,20 @@
 "use client";
 import { createContext, useContext } from "react";
+import { THEME_NAMES, type ThemeVariant as RegistryThemeVariant } from "./registry";
 
 /**
  * Theme variant type - controls light/dark mode
  * @public
  */
-export type ThemeVariant = "dark" | "light";
+export type ThemeVariant = RegistryThemeVariant;
 
 /**
- * Available theme names in catalyst-ui
- * - catalyst: Cyberpunk/synthwave theme (default)
- * - dracula: Dark purple vampire theme
- * - dungeon: Fantasy dungeon theme
- * - gold: Luxury gold theme
- * - laracon: Laravel conference theme
- * - nature: Earth tones nature theme
- * - netflix: Netflix-inspired theme
- * - nord: Nordic minimalist theme
- * - null: No theme applied (browser defaults)
- *
- * @remarks
- * Each theme has a corresponding CSS file in `./styles/*.css`
- * TODO: Dynamically create this list from ./styles/*.css files
+ * Available theme names in catalyst-ui — derived from THEME_REGISTRY.
+ * The trailing `null` represents the "default" (no `theme-*` class applied) state.
+ * To add or remove a theme, edit `./registry.ts`, not this array.
  * @public
  */
-export const THEMES = [
-  "catalyst",
-  "dracula",
-  "dungeon",
-  "gold",
-  "laracon",
-  "nature",
-  "netflix",
-  "nord",
-  null,
-];
+export const THEMES: ReadonlyArray<string | null> = [...THEME_NAMES, null];
 
 /**
  * Visual effect toggles for themes

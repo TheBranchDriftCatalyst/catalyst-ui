@@ -112,7 +112,7 @@ export function EditableText({ id, namespace = "common", children: _children }: 
           }}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          className="ml-1 inline-flex items-center justify-center p-0.5 bg-primary text-primary-foreground rounded shadow-sm hover:bg-primary/90 transition-all cursor-pointer hover:scale-105 opacity-70 hover:opacity-100"
+          className="ml-1 inline-flex items-center justify-center p-0.5 bg-primary text-primary-foreground rounded shadow-sm hover:bg-primary/90 transition cursor-pointer hover:scale-105 opacity-70 hover:opacity-100"
           title="Edit text"
           style={{
             fontSize: "8px",

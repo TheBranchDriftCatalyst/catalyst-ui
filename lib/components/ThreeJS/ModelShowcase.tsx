@@ -66,7 +66,7 @@ export function ModelShowcase({
             onClick={() => setActiveModel(modelKey)}
             className={`
               px-4 py-2 rounded-lg text-sm font-medium
-              transition-all duration-300
+              transition duration-300
               ${
                 activeModel === modelKey
                   ? "bg-primary text-primary-foreground shadow-lg shadow-primary/50"

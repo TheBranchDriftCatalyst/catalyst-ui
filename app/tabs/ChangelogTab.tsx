@@ -217,7 +217,7 @@ export function ChangelogTab() {
                       a: ({ node, ...props }) => (
                         <a
                           {...props}
-                          className="text-primary hover:underline transition-all"
+                          className="text-primary hover:underline transition"
                           target={props.href?.startsWith("http") ? "_blank" : undefined}
                           rel={props.href?.startsWith("http") ? "noopener noreferrer" : undefined}
                         />

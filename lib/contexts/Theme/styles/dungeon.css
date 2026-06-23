@@ -151,7 +151,7 @@
   /* @token Typography - Romantic fantasy aesthetic */
   --font-heading: "Amatic SC", "Dancing Script", cursive; /* @token */
   --font-body: "Spectral", "Garamond", serif; /* @token */
-  --font-mono: "Inconsolata", "Courier New", monospace; /* @token */
+  --font-mono-stack: "Inconsolata", "Courier New", monospace; /* @token */
 
   /* Romantic accent colors */
   --velvet-burgundy: hsl(345, 70%, 40%);
@@ -178,26 +178,55 @@
   --neon-yellow-rgb: 224, 181, 115; /* @token */
   --neon-gold-rgb: 227, 141, 92; /* @token */
 
+  /* CUI-w9i required tokens */
+  --primary-rgb: 214, 31, 76; /* @token */
+  --accent-rgb: 232, 140, 48; /* @token */
+  --chart-1: hsl(345, 75%, 48%); /* @token */
+  --chart-2: hsl(280, 65%, 45%); /* @token */
+  --chart-3: hsl(30, 80%, 55%); /* @token */
+  --chart-4: hsl(185, 55%, 60%); /* @token */
+  --chart-5: hsl(340, 85%, 65%); /* @token */
+  --chart-6: hsl(40, 75%, 60%); /* @token */
+  --chart-7: hsl(215, 65%, 62%); /* @token */
+  --chart-8: hsl(155, 45%, 35%); /* @token */
+  --chart-9: hsl(0, 70%, 55%); /* @token */
+  --chart-10: hsl(60, 50%, 55%); /* @token */
+  --chart-11: hsl(250, 50%, 60%); /* @token */
+  --chart-12: hsl(90, 45%, 50%); /* @token */
+  --scanline-opacity: 0.02; /* @token */
+  --scanline-color: rgba(220, 38, 88, var(--scanline-opacity)); /* @token */
+  --grid-opacity: 0.03; /* @token */
+  --grid-color: rgba(220, 38, 88, var(--grid-opacity)); /* @token */
+
   /* @token Glow Effects - Romantic passion */
-  --glow-primary: 0 0 20px rgba(220, 38, 88, 0.35), 0 0 40px rgba(220, 38, 88, 0.18); /* @token */
-  --glow-secondary: 0 0 20px rgba(158, 28, 133, 0.4), 0 0 40px rgba(158, 28, 133, 0.2); /* @token */
-  --glow-accent: 0 0 15px rgba(244, 130, 175, 0.3); /* @token */
-  --glow-hover: 0 0 25px rgba(220, 38, 88, 0.45), 0 0 50px rgba(220, 38, 88, 0.22); /* @token */
+  --glow-primary:
+    0 0 20px rgba(var(--neon-red-rgb), 0.35), 0 0 40px rgba(var(--neon-red-rgb), 0.18); /* @token */
+  --glow-secondary:
+    0 0 20px rgba(var(--neon-red-rgb), 0.4), 0 0 40px rgba(var(--neon-red-rgb), 0.2); /* @token */
+  --glow-accent: 0 0 15px rgba(var(--neon-pink-rgb), 0.3); /* @token */
+  --glow-hover:
+    0 0 25px rgba(var(--neon-red-rgb), 0.45), 0 0 50px rgba(var(--neon-red-rgb), 0.22); /* @token */
 
   /* @token Neon Shadows - Intimate mystique */
   --shadow-neon-sm:
-    0 2px 8px rgba(220, 38, 88, 0.15), 0 4px 16px rgba(158, 28, 133, 0.1); /* @token */
+    0 2px 8px rgba(var(--neon-red-rgb), 0.15), 0 4px 16px rgba(var(--neon-red-rgb), 0.1); /* @token */
   --shadow-neon-md:
-    0 4px 16px rgba(220, 38, 88, 0.2), 0 8px 32px rgba(158, 28, 133, 0.12); /* @token */
+    0 4px 16px rgba(var(--neon-red-rgb), 0.2), 0 8px 32px rgba(var(--neon-red-rgb), 0.12); /* @token */
   --shadow-neon-lg:
-    0 8px 24px rgba(220, 38, 88, 0.25), 0 16px 48px rgba(158, 28, 133, 0.15); /* @token */
+    0 8px 24px rgba(var(--neon-red-rgb), 0.25), 0 16px 48px rgba(var(--neon-red-rgb), 0.15); /* @token */
 }
 
 /* Light mode romantic effects */
 .theme-dungeon.light [class*="card"] {
   background: linear-gradient(135deg, color-mix(in srgb, var(--card) 102%, white), var(--card));
   border: 1px solid color-mix(in srgb, var(--primary) 15%, transparent);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    background-color,
+    border-color,
+    color,
+    opacity,
+    box-shadow,
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .theme-dungeon.light [class*="card"]:hover {
@@ -213,7 +242,13 @@
 /* Romantic links */
 .theme-dungeon.light a {
   color: var(--velvet-burgundy);
-  transition: all 0.3s ease;
+  transition:
+    background-color,
+    border-color,
+    color,
+    opacity,
+    box-shadow,
+    transform 0.3s ease;
 }
 
 .theme-dungeon.light a:hover {
@@ -329,31 +364,57 @@
   --neon-yellow-rgb: 212, 165, 116; /* @token */
   --neon-gold-rgb: 217, 140, 94; /* @token */
 
+  /* CUI-w9i required tokens */
+  --radius: 0.5rem; /* @token */
+  --primary-rgb: 220, 38, 88; /* @token */
+  --accent-rgb: 61, 36, 48; /* @token */
+  --chart-1: #dc2658; /* @token */
+  --chart-2: #9e1c85; /* @token */
+  --chart-3: hsl(30, 70%, 58%); /* @token */
+  --chart-4: hsl(185, 60%, 55%); /* @token */
+  --chart-5: hsl(340, 100%, 72%); /* @token */
+  --chart-6: hsl(40, 60%, 62%); /* @token */
+  --chart-7: hsl(215, 70%, 58%); /* @token */
+  --chart-8: hsl(155, 45%, 40%); /* @token */
+  --chart-9: hsl(0, 75%, 50%); /* @token */
+  --chart-10: hsl(60, 55%, 50%); /* @token */
+  --chart-11: hsl(250, 55%, 55%); /* @token */
+  --chart-12: hsl(90, 50%, 45%); /* @token */
+  --scanline-opacity: 0.03; /* @token */
+  --scanline-color: rgba(220, 38, 88, var(--scanline-opacity)); /* @token */
+  --grid-opacity: 0.04; /* @token */
+  --grid-color: rgba(220, 38, 88, var(--grid-opacity)); /* @token */
+
   /* @token Glow Effects - Romantic passion (standardized naming) */
-  --glow-primary: 0 0 20px rgba(220, 38, 88, 0.5), 0 0 40px rgba(220, 38, 88, 0.25); /* @token */
+  --glow-primary:
+    0 0 20px rgba(var(--neon-red-rgb), 0.5), 0 0 40px rgba(var(--neon-red-rgb), 0.25); /* @token */
   --glow-secondary:
-    0 0 20px rgba(158, 28, 133, 0.5), 0 0 40px rgba(158, 28, 133, 0.25); /* @token */
-  --glow-accent: 0 0 15px rgba(255, 107, 157, 0.4); /* @token */
-  --glow-hover: 0 0 25px rgba(220, 38, 88, 0.6), 0 0 50px rgba(220, 38, 88, 0.3); /* @token */
+    0 0 20px rgba(var(--neon-red-rgb), 0.5), 0 0 40px rgba(var(--neon-red-rgb), 0.25); /* @token */
+  --glow-accent: 0 0 15px rgba(var(--neon-pink-rgb), 0.4); /* @token */
+  --glow-hover:
+    0 0 25px rgba(var(--neon-red-rgb), 0.6), 0 0 50px rgba(var(--neon-red-rgb), 0.3); /* @token */
 
   /* @token Neon Shadows - Intimate mystique (standardized naming) */
   --shadow-neon-sm:
-    0 2px 12px rgba(220, 38, 88, 0.2), 0 4px 24px rgba(158, 28, 133, 0.15); /* @token */
+    0 2px 12px rgba(var(--neon-red-rgb), 0.2), 0 4px 24px rgba(var(--neon-red-rgb), 0.15); /* @token */
   --shadow-neon-md:
-    0 4px 24px rgba(220, 38, 88, 0.25), 0 8px 48px rgba(158, 28, 133, 0.2); /* @token */
+    0 4px 24px rgba(var(--neon-red-rgb), 0.25), 0 8px 48px rgba(var(--neon-red-rgb), 0.2); /* @token */
   --shadow-neon-lg:
-    0 8px 36px rgba(220, 38, 88, 0.3), 0 16px 72px rgba(158, 28, 133, 0.25); /* @token */
+    0 8px 36px rgba(var(--neon-red-rgb), 0.3), 0 16px 72px rgba(var(--neon-red-rgb), 0.25); /* @token */
 
   /* Romantic glow effects (theme-specific aliases) */
-  --glow-crimson: 0 0 20px rgba(220, 38, 88, 0.5), 0 0 40px rgba(220, 38, 88, 0.25);
-  --glow-violet: 0 0 20px rgba(158, 28, 133, 0.5), 0 0 40px rgba(158, 28, 133, 0.25);
-  --glow-rose: 0 0 15px rgba(255, 107, 157, 0.4);
-  --glow-gold: 0 0 15px rgba(212, 165, 116, 0.4);
+  --glow-crimson: 0 0 20px rgba(var(--neon-red-rgb), 0.5), 0 0 40px rgba(var(--neon-red-rgb), 0.25);
+  --glow-violet: 0 0 20px rgba(var(--neon-red-rgb), 0.5), 0 0 40px rgba(var(--neon-red-rgb), 0.25);
+  --glow-rose: 0 0 15px rgba(var(--neon-pink-rgb), 0.4);
+  --glow-gold: 0 0 15px rgba(var(--neon-yellow-rgb), 0.4);
 
   /* Intimate shadows (theme-specific aliases) */
-  --shadow-romantic-sm: 0 2px 12px rgba(220, 38, 88, 0.2), 0 4px 24px rgba(158, 28, 133, 0.15);
-  --shadow-romantic-md: 0 4px 24px rgba(220, 38, 88, 0.25), 0 8px 48px rgba(158, 28, 133, 0.2);
-  --shadow-romantic-lg: 0 8px 36px rgba(220, 38, 88, 0.3), 0 16px 72px rgba(158, 28, 133, 0.25);
+  --shadow-romantic-sm:
+    0 2px 12px rgba(var(--neon-red-rgb), 0.2), 0 4px 24px rgba(var(--neon-red-rgb), 0.15);
+  --shadow-romantic-md:
+    0 4px 24px rgba(var(--neon-red-rgb), 0.25), 0 8px 48px rgba(var(--neon-red-rgb), 0.2);
+  --shadow-romantic-lg:
+    0 8px 36px rgba(var(--neon-red-rgb), 0.3), 0 16px 72px rgba(var(--neon-red-rgb), 0.25);
 }
 
 /* Dark mode mysterious effects */
@@ -367,8 +428,8 @@
   pointer-events: none;
   z-index: 0;
   background-image:
-    linear-gradient(rgba(220, 38, 88, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(220, 38, 88, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(var(--neon-blood-rgb), 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--neon-blood-rgb), 0.03) 1px, transparent 1px);
   background-size: 50px 50px;
   opacity: 0.4;
 }
@@ -383,7 +444,7 @@
   height: 100%;
   pointer-events: none;
   z-index: 0;
-  background: radial-gradient(ellipse at top, rgba(220, 38, 88, 0.05), transparent 50%);
+  background: radial-gradient(ellipse at top, rgba(var(--neon-blood-rgb), 0.05), transparent 50%);
   animation: candlelight 4s ease-in-out infinite;
 }
 
@@ -400,14 +461,20 @@
 /* Romantic links */
 .theme-dungeon.dark a {
   color: var(--silk-rose);
-  text-shadow: 0 0 10px rgba(255, 107, 157, 0.3);
-  transition: all 0.3s ease;
+  text-shadow: 0 0 10px rgba(var(--neon-rose-rgb), 0.3);
+  transition:
+    background-color,
+    border-color,
+    color,
+    opacity,
+    box-shadow,
+    transform 0.3s ease;
 }
 
 .theme-dungeon.dark a:hover {
   text-shadow:
-    0 0 20px rgba(255, 107, 157, 0.6),
-    0 0 40px rgba(255, 107, 157, 0.3);
+    0 0 20px rgba(var(--neon-rose-rgb), 0.6),
+    0 0 40px rgba(var(--neon-rose-rgb), 0.3);
   color: var(--primary);
 }
 
@@ -439,9 +506,15 @@
 
 /* Cards with romantic shadows */
 .theme-dungeon.dark [class*="card"] {
-  border: 1px solid rgba(220, 38, 88, 0.15);
+  border: 1px solid rgba(var(--neon-blood-rgb), 0.15);
   background: linear-gradient(135deg, #1a0e14, #0d0508);
-  transition: all 0.3s ease;
+  transition:
+    background-color,
+    border-color,
+    color,
+    opacity,
+    box-shadow,
+    transform 0.3s ease;
 }
 
 .theme-dungeon.dark [class*="card"]:hover {

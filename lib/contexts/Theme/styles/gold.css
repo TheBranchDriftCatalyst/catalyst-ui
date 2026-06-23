@@ -31,7 +31,7 @@
   /* @token Typography - Elegant luxury aesthetic */
   --font-heading: "Cormorant Garamond", "Baskerville", serif; /* @token */
   --font-body: "Lora", "Georgia", serif; /* @token */
-  --font-mono: "IBM Plex Mono", "Courier", monospace; /* @token */
+  --font-mono-stack: "IBM Plex Mono", "Courier", monospace; /* @token */
 
   /* @token Neon Colors - Luxury metallic palette */
   --neon-cyan: hsl(180, 60%, 55%); /* @token - warm teal */
@@ -51,19 +51,43 @@
   --neon-yellow-rgb: 247, 202, 61; /* @token */
   --neon-gold-rgb: 255, 194, 51; /* @token */
 
+  /* Required token completeness — added by CUI-w9i */
+  --radius: 0.5rem; /* @token */
+  --primary-rgb: 194, 139, 91; /* @token */
+  --accent-rgb: 255, 207, 117; /* @token */
+  --chart-1: hsl(28, 46%, 56%); /* @token */
+  --chart-2: hsl(39, 100%, 73%); /* @token */
+  --chart-3: hsl(38, 95%, 58%); /* @token */
+  --chart-4: hsl(180, 60%, 55%); /* @token */
+  --chart-5: hsl(340, 75%, 68%); /* @token */
+  --chart-6: hsl(280, 50%, 62%); /* @token */
+  --chart-7: hsl(210, 60%, 60%); /* @token */
+  --chart-8: hsl(15, 75%, 58%); /* @token */
+  --chart-9: hsl(42, 90%, 60%); /* @token */
+  --chart-10: hsl(160, 50%, 50%); /* @token */
+  --chart-11: hsl(260, 50%, 60%); /* @token */
+  --chart-12: hsl(90, 45%, 55%); /* @token */
+  --scanline-opacity: 0.015; /* @token */
+  --scanline-color: rgba(var(--primary-rgb), var(--scanline-opacity)); /* @token */
+  --grid-opacity: 0.025; /* @token */
+  --grid-color: rgba(var(--primary-rgb), var(--grid-opacity)); /* @token */
+
   /* @token Glow Effects - Luxurious shimmer */
-  --glow-primary: 0 0 20px rgba(218, 165, 32, 0.35), 0 0 40px rgba(218, 165, 32, 0.18); /* @token */
-  --glow-secondary: 0 0 20px rgba(255, 194, 51, 0.4), 0 0 40px rgba(255, 194, 51, 0.2); /* @token */
-  --glow-accent: 0 0 15px rgba(247, 202, 61, 0.35); /* @token */
-  --glow-hover: 0 0 25px rgba(218, 165, 32, 0.45), 0 0 50px rgba(218, 165, 32, 0.22); /* @token */
+  --glow-primary:
+    0 0 20px rgba(var(--neon-gold-rgb), 0.35), 0 0 40px rgba(var(--neon-gold-rgb), 0.18); /* @token */
+  --glow-secondary:
+    0 0 20px rgba(var(--neon-gold-rgb), 0.4), 0 0 40px rgba(var(--neon-gold-rgb), 0.2); /* @token */
+  --glow-accent: 0 0 15px rgba(var(--neon-yellow-rgb), 0.35); /* @token */
+  --glow-hover:
+    0 0 25px rgba(var(--neon-gold-rgb), 0.45), 0 0 50px rgba(var(--neon-gold-rgb), 0.22); /* @token */
 
   /* @token Neon Shadows - Gilded elegance */
   --shadow-neon-sm:
-    0 2px 8px rgba(218, 165, 32, 0.15), 0 4px 16px rgba(255, 194, 51, 0.1); /* @token */
+    0 2px 8px rgba(var(--neon-gold-rgb), 0.15), 0 4px 16px rgba(var(--neon-gold-rgb), 0.1); /* @token */
   --shadow-neon-md:
-    0 4px 16px rgba(218, 165, 32, 0.2), 0 8px 32px rgba(255, 194, 51, 0.12); /* @token */
+    0 4px 16px rgba(var(--neon-gold-rgb), 0.2), 0 8px 32px rgba(var(--neon-gold-rgb), 0.12); /* @token */
   --shadow-neon-lg:
-    0 8px 24px rgba(218, 165, 32, 0.25), 0 16px 48px rgba(255, 194, 51, 0.15); /* @token */
+    0 8px 24px rgba(var(--neon-gold-rgb), 0.25), 0 16px 48px rgba(var(--neon-gold-rgb), 0.15); /* @token */
 }
 
 /* Light mode - luxury background & card gradient */
@@ -109,7 +133,7 @@
   /* @token Typography - Elegant luxury aesthetic */
   --font-heading: "Cormorant Garamond", "Baskerville", serif; /* @token */
   --font-body: "Lora", "Georgia", serif; /* @token */
-  --font-mono: "IBM Plex Mono", "Courier", monospace; /* @token */
+  --font-mono-stack: "IBM Plex Mono", "Courier", monospace; /* @token */
 
   /* @token Neon Colors - Luxury metallic palette */
   --neon-cyan: hsl(180, 65%, 50%); /* @token - warm teal */
@@ -129,18 +153,41 @@
   --neon-yellow-rgb: 246, 199, 54; /* @token */
   --neon-gold-rgb: 255, 187, 38; /* @token */
 
+  /* Required token completeness — added by CUI-w9i */
+  --radius: 0.5rem; /* @token */
+  --primary-rgb: 194, 139, 91; /* @token */
+  --accent-rgb: 255, 169, 10; /* @token */
+  --chart-1: hsl(28, 46%, 56%); /* @token */
+  --chart-2: hsl(39, 100%, 52%); /* @token */
+  --chart-3: hsl(38, 100%, 55%); /* @token */
+  --chart-4: hsl(180, 65%, 50%); /* @token */
+  --chart-5: hsl(340, 80%, 62%); /* @token */
+  --chart-6: hsl(280, 55%, 58%); /* @token */
+  --chart-7: hsl(210, 65%, 56%); /* @token */
+  --chart-8: hsl(15, 80%, 55%); /* @token */
+  --chart-9: hsl(42, 95%, 58%); /* @token */
+  --chart-10: hsl(160, 55%, 45%); /* @token */
+  --chart-11: hsl(260, 55%, 55%); /* @token */
+  --chart-12: hsl(90, 50%, 50%); /* @token */
+  --scanline-opacity: 0.025; /* @token */
+  --scanline-color: rgba(var(--primary-rgb), var(--scanline-opacity)); /* @token */
+  --grid-opacity: 0.035; /* @token */
+  --grid-color: rgba(var(--primary-rgb), var(--grid-opacity)); /* @token */
+
   /* @token Glow Effects - Luxurious shimmer */
-  --glow-primary: 0 0 20px rgba(218, 165, 32, 0.4), 0 0 40px rgba(218, 165, 32, 0.2); /* @token */
+  --glow-primary:
+    0 0 20px rgba(var(--neon-gold-rgb), 0.4), 0 0 40px rgba(var(--neon-gold-rgb), 0.2); /* @token */
   --glow-secondary:
-    0 0 20px rgba(255, 187, 38, 0.45), 0 0 40px rgba(255, 187, 38, 0.22); /* @token */
-  --glow-accent: 0 0 15px rgba(246, 199, 54, 0.4); /* @token */
-  --glow-hover: 0 0 25px rgba(218, 165, 32, 0.5), 0 0 50px rgba(218, 165, 32, 0.25); /* @token */
+    0 0 20px rgba(var(--neon-gold-rgb), 0.45), 0 0 40px rgba(var(--neon-gold-rgb), 0.22); /* @token */
+  --glow-accent: 0 0 15px rgba(var(--neon-yellow-rgb), 0.4); /* @token */
+  --glow-hover:
+    0 0 25px rgba(var(--neon-gold-rgb), 0.5), 0 0 50px rgba(var(--neon-gold-rgb), 0.25); /* @token */
 
   /* @token Neon Shadows - Gilded elegance */
   --shadow-neon-sm:
-    0 2px 8px rgba(218, 165, 32, 0.2), 0 4px 16px rgba(255, 187, 38, 0.12); /* @token */
+    0 2px 8px rgba(var(--neon-gold-rgb), 0.2), 0 4px 16px rgba(var(--neon-gold-rgb), 0.12); /* @token */
   --shadow-neon-md:
-    0 4px 16px rgba(218, 165, 32, 0.25), 0 8px 32px rgba(255, 187, 38, 0.15); /* @token */
+    0 4px 16px rgba(var(--neon-gold-rgb), 0.25), 0 8px 32px rgba(var(--neon-gold-rgb), 0.15); /* @token */
   --shadow-neon-lg:
-    0 8px 24px rgba(218, 165, 32, 0.3), 0 16px 48px rgba(255, 187, 38, 0.18); /* @token */
+    0 8px 24px rgba(var(--neon-gold-rgb), 0.3), 0 16px 48px rgba(var(--neon-gold-rgb), 0.18); /* @token */
 }

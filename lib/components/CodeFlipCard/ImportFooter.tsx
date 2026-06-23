@@ -152,11 +152,11 @@ export function ImportFooter({
       onClick={handleCopy}
     >
       <code className="text-xs text-muted-foreground flex-1 select-none">{displayText}</code>
-      <div className="h-6 w-6 flex items-center justify-center opacity-0 group-hover/import:opacity-70 transition-all duration-200 pointer-events-none">
+      <div className="h-6 w-6 flex items-center justify-center opacity-0 group-hover/import:opacity-70 transition duration-200 pointer-events-none">
         {copied ? (
           <Check className="h-3 w-3 text-primary/80 drop-shadow-[0_0_6px_rgba(var(--primary-rgb),0.6)]" />
         ) : (
-          <Copy className="h-3 w-3 text-primary/80 transition-all duration-200 group-hover/import:drop-shadow-[0_0_6px_rgba(var(--primary-rgb),0.6)]" />
+          <Copy className="h-3 w-3 text-primary/80 transition duration-200 group-hover/import:drop-shadow-[0_0_6px_rgba(var(--primary-rgb),0.6)]" />
         )}
       </div>
     </CardFooter>

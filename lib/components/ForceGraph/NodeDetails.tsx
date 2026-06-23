@@ -73,7 +73,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
             {/* Collapse Button */}
             <button
               onClick={toggleCollapse}
-              className="w-5 h-5 flex items-center justify-center cursor-pointer opacity-60 hover:opacity-100 transition-all hover:scale-110 active:scale-95 text-primary"
+              className="w-5 h-5 flex items-center justify-center cursor-pointer opacity-60 hover:opacity-100 transition hover:scale-110 active:scale-95 text-primary"
               title={isCollapsed ? "Expand" : "Collapse"}
             >
               <svg viewBox="0 0 16 16" fill="currentColor" className="w-3 h-3">
@@ -83,7 +83,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
             {/* Drag Handle */}
             <div
               ref={dragHandleRef}
-              className="w-4 h-4 cursor-grab active:cursor-grabbing opacity-40 hover:opacity-80 transition-all hover:scale-110"
+              className="w-4 h-4 cursor-grab active:cursor-grabbing opacity-40 hover:opacity-80 transition hover:scale-110"
               title="Drag to move"
             >
               <svg viewBox="0 0 16 16" fill="currentColor" className="text-primary">
@@ -114,7 +114,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
         <div className="flex border-b border-primary/20 flex-shrink-0">
           <button
             onClick={() => setActiveTab("details")}
-            className={`flex-1 px-4 py-2 text-xs font-semibold transition-all ${
+            className={`flex-1 px-4 py-2 text-xs font-semibold transition ${
               activeTab === "details"
                 ? "text-primary border-b-2 border-primary"
                 : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
@@ -124,7 +124,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
           </button>
           <button
             onClick={() => setActiveTab("attributes")}
-            className={`flex-1 px-4 py-2 text-xs font-semibold transition-all ${
+            className={`flex-1 px-4 py-2 text-xs font-semibold transition ${
               activeTab === "attributes"
                 ? "text-primary border-b-2 border-primary"
                 : "text-muted-foreground hover:text-foreground hover:bg-accent/30"
@@ -201,7 +201,7 @@ const NodeDetails: React.FC<NodeDetailsProps> = ({ node }) => {
       {!isCollapsed && (
         <div
           ref={resizeHandleRef}
-          className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize opacity-40 hover:opacity-80 transition-all hover:scale-125"
+          className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize opacity-40 hover:opacity-80 transition hover:scale-125"
           title="Drag to resize"
         >
           <svg viewBox="0 0 16 16" fill="currentColor" className="text-primary">

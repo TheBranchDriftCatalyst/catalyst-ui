@@ -109,7 +109,7 @@ const GraphContentPanel: React.FC<GraphContentPanelProps> = ({
       {/* Close button */}
       <button
         onClick={onClose}
-        className="absolute top-3 right-3 w-8 h-8 bg-background/95 border border-primary/50 rounded-full text-primary cursor-pointer flex items-center justify-center transition-all duration-200 hover:border-primary hover:shadow-[0_0_15px_rgba(var(--primary-rgb),0.4)] hover:scale-110 active:scale-95 hover:rotate-90"
+        className="absolute top-3 right-3 w-8 h-8 bg-background/95 border border-primary/50 rounded-full text-primary cursor-pointer flex items-center justify-center transition duration-200 hover:border-primary hover:shadow-[0_0_15px_rgba(var(--primary-rgb),0.4)] hover:scale-110 active:scale-95 hover:rotate-90"
         title="Close Panel"
       >
         <span className="text-xs">✖</span>

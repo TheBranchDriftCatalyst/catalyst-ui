@@ -31,7 +31,7 @@
   /* @token Typography - Gothic vampire aesthetic */
   --font-heading: "Cinzel", "Playfair Display", serif; /* @token */
   --font-body: "Crimson Text", "Georgia", serif; /* @token */
-  --font-mono: "Fira Code", "Consolas", monospace; /* @token */
+  --font-mono-stack: "Fira Code", "Consolas", monospace; /* @token */
 
   /* @token Neon Colors - Dracula vampire palette */
   --neon-cyan: hsl(195, 70%, 60%); /* @token */
@@ -51,21 +51,43 @@
   --neon-yellow-rgb: 241, 213, 124; /* @token */
   --neon-gold-rgb: 255, 184, 108; /* @token */
 
+  /* Required token completeness — added by CUI-w9i */
+  --radius: 0.5rem; /* @token */
+  --primary-rgb: 191, 149, 249; /* @token */
+  --accent-rgb: 158, 168, 199; /* @token */
+  --chart-1: hsl(265, 89%, 78%); /* @token */
+  --chart-2: hsl(326, 100%, 74%); /* @token */
+  --chart-3: hsl(195, 70%, 60%); /* @token */
+  --chart-4: hsl(240, 80%, 70%); /* @token */
+  --chart-5: hsl(0, 85%, 65%); /* @token */
+  --chart-6: hsl(50, 75%, 65%); /* @token */
+  --chart-7: hsl(40, 85%, 60%); /* @token */
+  --chart-8: hsl(160, 60%, 55%); /* @token */
+  --chart-9: hsl(285, 60%, 60%); /* @token */
+  --chart-10: hsl(15, 70%, 60%); /* @token */
+  --chart-11: hsl(210, 70%, 65%); /* @token */
+  --chart-12: hsl(95, 50%, 55%); /* @token */
+  --scanline-opacity: 0.02; /* @token */
+  --scanline-color: rgba(var(--primary-rgb), var(--scanline-opacity)); /* @token */
+  --grid-opacity: 0.03; /* @token */
+  --grid-color: rgba(var(--primary-rgb), var(--grid-opacity)); /* @token */
+
   /* @token Glow Effects - Dracula vampire glow */
   --glow-primary:
-    0 0 20px rgba(189, 147, 249, 0.35), 0 0 40px rgba(189, 147, 249, 0.15); /* @token */
+    0 0 20px rgba(var(--neon-purple-rgb), 0.35), 0 0 40px rgba(var(--neon-purple-rgb), 0.15); /* @token */
   --glow-secondary:
-    0 0 20px rgba(255, 121, 198, 0.4), 0 0 40px rgba(255, 121, 198, 0.2); /* @token */
-  --glow-accent: 0 0 15px rgba(255, 121, 198, 0.3); /* @token */
-  --glow-hover: 0 0 25px rgba(189, 147, 249, 0.5), 0 0 50px rgba(189, 147, 249, 0.25); /* @token */
+    0 0 20px rgba(var(--neon-pink-rgb), 0.4), 0 0 40px rgba(var(--neon-pink-rgb), 0.2); /* @token */
+  --glow-accent: 0 0 15px rgba(var(--neon-pink-rgb), 0.3); /* @token */
+  --glow-hover:
+    0 0 25px rgba(var(--neon-purple-rgb), 0.5), 0 0 50px rgba(var(--neon-purple-rgb), 0.25); /* @token */
 
   /* @token Neon Shadows - Vampire mystique */
   --shadow-neon-sm:
-    0 2px 8px rgba(189, 147, 249, 0.15), 0 4px 16px rgba(255, 121, 198, 0.1); /* @token */
+    0 2px 8px rgba(var(--neon-purple-rgb), 0.15), 0 4px 16px rgba(var(--neon-pink-rgb), 0.1); /* @token */
   --shadow-neon-md:
-    0 4px 16px rgba(189, 147, 249, 0.2), 0 8px 32px rgba(255, 121, 198, 0.12); /* @token */
+    0 4px 16px rgba(var(--neon-purple-rgb), 0.2), 0 8px 32px rgba(var(--neon-pink-rgb), 0.12); /* @token */
   --shadow-neon-lg:
-    0 8px 24px rgba(189, 147, 249, 0.25), 0 16px 48px rgba(255, 121, 198, 0.15); /* @token */
+    0 8px 24px rgba(var(--neon-purple-rgb), 0.25), 0 16px 48px rgba(var(--neon-pink-rgb), 0.15); /* @token */
 }
 
 .theme-dracula.dark {
@@ -101,7 +123,7 @@
   /* @token Typography - Gothic vampire aesthetic */
   --font-heading: "Cinzel", "Playfair Display", serif; /* @token */
   --font-body: "Crimson Text", "Georgia", serif; /* @token */
-  --font-mono: "Fira Code", "Consolas", monospace; /* @token */
+  --font-mono-stack: "Fira Code", "Consolas", monospace; /* @token */
 
   /* @token Neon Colors - Dracula vampire palette */
   --neon-cyan: hsl(195, 85%, 55%); /* @token - darker cyan */
@@ -121,20 +143,43 @@
   --neon-yellow-rgb: 235, 203, 107; /* @token */
   --neon-gold-rgb: 247, 175, 94; /* @token */
 
+  /* Required token completeness — added by CUI-w9i */
+  --radius: 0.5rem; /* @token */
+  --primary-rgb: 191, 149, 249; /* @token */
+  --accent-rgb: 96, 113, 164; /* @token */
+  --chart-1: hsl(265, 89%, 78%); /* @token */
+  --chart-2: hsl(326, 100%, 74%); /* @token */
+  --chart-3: hsl(195, 85%, 55%); /* @token */
+  --chart-4: hsl(240, 90%, 68%); /* @token */
+  --chart-5: hsl(0, 90%, 60%); /* @token */
+  --chart-6: hsl(50, 80%, 60%); /* @token */
+  --chart-7: hsl(40, 90%, 58%); /* @token */
+  --chart-8: hsl(160, 65%, 50%); /* @token */
+  --chart-9: hsl(285, 65%, 58%); /* @token */
+  --chart-10: hsl(15, 75%, 55%); /* @token */
+  --chart-11: hsl(210, 75%, 60%); /* @token */
+  --chart-12: hsl(95, 55%, 50%); /* @token */
+  --scanline-opacity: 0.03; /* @token */
+  --scanline-color: rgba(var(--primary-rgb), var(--scanline-opacity)); /* @token */
+  --grid-opacity: 0.04; /* @token */
+  --grid-color: rgba(var(--primary-rgb), var(--grid-opacity)); /* @token */
+
   /* @token Glow Effects - Dracula vampire glow */
-  --glow-primary: 0 0 20px rgba(189, 147, 249, 0.4), 0 0 40px rgba(189, 147, 249, 0.2); /* @token */
+  --glow-primary:
+    0 0 20px rgba(var(--neon-purple-rgb), 0.4), 0 0 40px rgba(var(--neon-purple-rgb), 0.2); /* @token */
   --glow-secondary:
-    0 0 20px rgba(255, 121, 198, 0.45), 0 0 40px rgba(255, 121, 198, 0.25); /* @token */
-  --glow-accent: 0 0 15px rgba(255, 121, 198, 0.35); /* @token */
-  --glow-hover: 0 0 25px rgba(189, 147, 249, 0.55), 0 0 50px rgba(189, 147, 249, 0.3); /* @token */
+    0 0 20px rgba(var(--neon-pink-rgb), 0.45), 0 0 40px rgba(var(--neon-pink-rgb), 0.25); /* @token */
+  --glow-accent: 0 0 15px rgba(var(--neon-pink-rgb), 0.35); /* @token */
+  --glow-hover:
+    0 0 25px rgba(var(--neon-purple-rgb), 0.55), 0 0 50px rgba(var(--neon-purple-rgb), 0.3); /* @token */
 
   /* @token Neon Shadows - Vampire mystique */
   --shadow-neon-sm:
-    0 2px 8px rgba(189, 147, 249, 0.2), 0 4px 16px rgba(255, 121, 198, 0.12); /* @token */
+    0 2px 8px rgba(var(--neon-purple-rgb), 0.2), 0 4px 16px rgba(var(--neon-pink-rgb), 0.12); /* @token */
   --shadow-neon-md:
-    0 4px 16px rgba(189, 147, 249, 0.25), 0 8px 32px rgba(255, 121, 198, 0.15); /* @token */
+    0 4px 16px rgba(var(--neon-purple-rgb), 0.25), 0 8px 32px rgba(var(--neon-pink-rgb), 0.15); /* @token */
   --shadow-neon-lg:
-    0 8px 24px rgba(189, 147, 249, 0.3), 0 16px 48px rgba(255, 121, 198, 0.2); /* @token */
+    0 8px 24px rgba(var(--neon-purple-rgb), 0.3), 0 16px 48px rgba(var(--neon-pink-rgb), 0.2); /* @token */
 }
 
 /* Dark mode - vampire link effects */
@@ -145,5 +190,5 @@
 }
 
 .theme-dracula.dark a:hover {
-  text-shadow: 0 0 8px rgba(190, 80, 255, 0.3);
+  text-shadow: 0 0 8px rgba(var(--neon-purple-rgb), 0.3);
 }

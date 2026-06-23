@@ -57,7 +57,7 @@ export const CatalystHeader = ({
 }: CatalystHeaderProps) => {
   return (
     <header
-      className="header-glow bg-background/70 backdrop-blur-2xl sticky top-0 z-50 w-full border-b transition-all duration-300"
+      className="header-glow bg-background/70 backdrop-blur-2xl sticky top-0 z-50 w-full border-b transition duration-300"
       style={{ borderColor: "color-mix(in srgb, var(--border) 40%, transparent)" }}
     >
       <div className="flex h-14 items-center gap-3 px-6">

@@ -143,7 +143,7 @@ export const LayoutOptionsPanel: React.FC<LayoutOptionsPanelProps> = ({ storageK
                     id={field.key}
                     value={value}
                     onChange={e => handleChange(field.key, e.target.value)}
-                    className="w-full px-2 py-1.5 text-xs bg-background/50 border border-primary/30 rounded text-foreground cursor-pointer transition-all duration-200 hover:border-primary/50 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+                    className="w-full px-2 py-1.5 text-xs bg-background/50 border border-primary/30 rounded text-foreground cursor-pointer transition duration-200 hover:border-primary/50 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
                   >
                     {field.options?.map((opt: { value: any; label: string }) => (
                       <option key={opt.value} value={opt.value}>

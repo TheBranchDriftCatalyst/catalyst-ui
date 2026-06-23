@@ -22,7 +22,7 @@ export const FilterPanelSearch: React.FC<FilterPanelSearchProps> = ({
         placeholder="Search nodes..."
         value={searchQuery}
         onChange={e => onSearchChange(e.target.value)}
-        className="w-full px-2 py-1.5 bg-background/50 border border-primary/30 rounded text-foreground text-xs font-mono transition-all outline-none focus:border-primary focus:shadow-[0_0_0_2px_rgba(var(--primary-rgb),0.2)]"
+        className="w-full px-2 py-1.5 bg-background/50 border border-primary/30 rounded text-foreground text-xs font-mono transition outline-none focus:border-primary focus:shadow-[0_0_0_2px_rgba(var(--primary-rgb),0.2)]"
       />
     </div>
   );

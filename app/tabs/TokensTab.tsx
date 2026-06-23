@@ -17,7 +17,7 @@ export function TokensTab() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="space-y-2 group">
                 <div
-                  className="h-20 rounded-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer"
+                  className="h-20 rounded-lg transition duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer"
                   style={{ backgroundColor: "var(--neon-cyan)", boxShadow: "var(--glow-primary)" }}
                 />
                 <div className="text-sm font-mono">--neon-cyan</div>

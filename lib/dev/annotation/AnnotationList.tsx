@@ -84,7 +84,7 @@ export function AnnotationList({ componentName, type, priority }: AnnotationList
         return (
           <div
             key={annotation.id}
-            className="group relative rounded-lg border bg-card p-4 transition-all hover:shadow-md"
+            className="group relative rounded-lg border bg-card p-4 transition hover:shadow-md"
           >
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-start gap-3 flex-1 min-w-0">

@@ -311,7 +311,7 @@ const Legend: React.FC<LegendProps> = ({
               <button
                 key={kind}
                 onClick={() => toggleNode(kind)}
-                className={`w-full flex items-center gap-1.5 cursor-pointer px-1.5 py-0.5 rounded transition-all text-[11px] ${
+                className={`w-full flex items-center gap-1.5 cursor-pointer px-1.5 py-0.5 rounded transition text-[11px] ${
                   visibleNodes[kind] ? "opacity-100" : "opacity-40 hover:opacity-70"
                 }`}
               >
@@ -338,12 +338,12 @@ const Legend: React.FC<LegendProps> = ({
               <button
                 key={kind}
                 onClick={() => toggleEdge(kind)}
-                className={`w-full flex items-center gap-1.5 cursor-pointer px-1.5 py-0.5 rounded transition-all text-[11px] ${
+                className={`w-full flex items-center gap-1.5 cursor-pointer px-1.5 py-0.5 rounded transition text-[11px] ${
                   visibleEdges[kind] ? "opacity-100" : "opacity-40 hover:opacity-70"
                 }`}
               >
                 <div
-                  className={`h-0.5 rounded-full transition-all ${visibleEdges[kind] ? "w-6" : "w-4"}`}
+                  className={`h-0.5 rounded-full transition ${visibleEdges[kind] ? "w-6" : "w-4"}`}
                   style={{
                     backgroundColor: color,
                     boxShadow: visibleEdges[kind] ? `0 0 4px ${color}` : "none",
@@ -383,7 +383,7 @@ const Legend: React.FC<LegendProps> = ({
             <select
               value={layout}
               onChange={e => setLayout(e.target.value as LayoutKind)}
-              className="w-full px-1.5 py-0.5 text-[11px] bg-background/50 border border-primary/30 rounded text-foreground cursor-pointer transition-all duration-200 hover:border-primary/50 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
+              className="w-full px-1.5 py-0.5 text-[11px] bg-background/50 border border-primary/30 rounded text-foreground cursor-pointer transition duration-200 hover:border-primary/50 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary/30"
             >
               <option value="force">Force-Directed</option>
               <option value="structured">Structured (Columns)</option>
@@ -400,7 +400,7 @@ const Legend: React.FC<LegendProps> = ({
             </p>
             <button
               onClick={toggleOrthogonalEdges}
-              className={`w-full px-1.5 py-0.5 text-[11px] rounded transition-all ${
+              className={`w-full px-1.5 py-0.5 text-[11px] rounded transition ${
                 orthogonalEdges
                   ? "text-primary font-semibold border-b-2 border-primary"
                   : "text-foreground/70 hover:text-foreground"
@@ -414,7 +414,7 @@ const Legend: React.FC<LegendProps> = ({
           <div className="pt-1 border-t border-primary/20">
             <button
               onClick={downloadGraphAsPng}
-              className="w-full px-2 py-1 bg-green-500/10 border border-green-500/30 rounded text-green-400 cursor-pointer text-[11px] font-semibold transition-all hover:bg-green-500/20"
+              className="w-full px-2 py-1 bg-green-500/10 border border-green-500/30 rounded text-green-400 cursor-pointer text-[11px] font-semibold transition hover:bg-green-500/20"
               title="Download graph as PNG image"
             >
               📥 PNG

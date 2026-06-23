@@ -1,7 +1,15 @@
 /* Tailwind CSS v4 - No config file needed! Using @theme directive below */
 
-/* Cybersynthpunk Fonts - must precede other imports */
-@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap");
+/*
+ * Theme fonts are loaded dynamically by ThemeProvider via <link> tags injected
+ * into <head> on every theme change. See lib/contexts/Theme/fonts.ts for the
+ * per-theme font registry. The runtime CSS custom properties --font-heading /
+ * --font-body / --font-mono-stack are declared in each theme's stylesheet.
+ *
+ * Preconnect tags to fonts.googleapis.com / fonts.gstatic.com live in
+ * app/index.html so the TLS handshake is warm before the first <link> is
+ * injected.
+ */
 
 @import "tailwindcss";
 @plugin 'tailwindcss-animate';
@@ -50,7 +58,9 @@ samp {
 
 .light [class*="card"] {
   box-shadow: var(--shadow-neon-sm);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
 }
 
 .light [class*="card"]:hover {
@@ -61,7 +71,9 @@ samp {
 .light button[class*="bg-primary"]:hover {
   box-shadow: var(--glow-hover);
   transform: translateY(-1px);
-  transition: box-shadow 0.25s ease, transform 0.25s ease;
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
 }
 
 .light input:focus,
@@ -76,7 +88,9 @@ samp {
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.3),
     var(--glow-accent);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
 }
 
 .dark [class*="card"]:hover {
@@ -88,7 +102,9 @@ samp {
 
 .dark button[class*="bg-primary"] {
   box-shadow: var(--shadow-neon-sm);
-  transition: box-shadow 0.25s ease, transform 0.25s ease;
+  transition:
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
 }
 
 .dark button[class*="bg-primary"]:hover {
@@ -146,12 +162,14 @@ samp {
 }
 
 @theme {
-  /* Tailwind utility font defaults (font-sans, font-display, font-mono classes).
-     Runtime font selection uses --font-heading / --font-body / --font-mono
-     CSS custom properties set by each theme's CSS file. */
-  --font-sans: "Rajdhani", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Orbitron", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Space Mono", ui-monospace, monospace;
+  /* Tailwind utility font tokens.
+     Each maps to a *runtime* CSS custom property set by the active theme's
+     stylesheet, so font-sans / font-display / font-mono utility classes
+     automatically follow the active theme. The runtime variable for mono is
+     --font-mono-stack (NOT --font-mono) to avoid colliding with this token. */
+  --font-sans: var(--font-body);
+  --font-display: var(--font-heading);
+  --font-mono: var(--font-mono-stack);
 
   --text-*: initial;
   --text-4xs: 0.375rem;

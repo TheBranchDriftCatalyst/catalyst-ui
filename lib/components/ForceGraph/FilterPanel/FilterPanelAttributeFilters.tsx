@@ -35,7 +35,7 @@ export const FilterPanelAttributeFilters: React.FC<FilterPanelAttributeFiltersPr
               <button
                 key={filter.name}
                 onClick={() => onSetValue(filter.name, !currentValue)}
-                className={`w-full flex items-center gap-1.5 px-1.5 py-0.5 rounded transition-all text-[11px] ${
+                className={`w-full flex items-center gap-1.5 px-1.5 py-0.5 rounded transition text-[11px] ${
                   isEnabled ? "opacity-100" : "opacity-40 hover:opacity-70"
                 }`}
               >

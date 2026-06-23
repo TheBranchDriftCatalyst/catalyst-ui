@@ -13,7 +13,7 @@ export const FilterPanelActions: React.FC<FilterPanelActionsProps> = ({ onReset 
 
   return (
     <button
-      className="w-full px-2 py-1.5 bg-destructive/15 border border-destructive/40 rounded text-destructive text-xs font-semibold transition-all hover:bg-destructive/25"
+      className="w-full px-2 py-1.5 bg-destructive/15 border border-destructive/40 rounded text-destructive text-xs font-semibold transition hover:bg-destructive/25"
       onClick={handleClearAll}
       title="Clear saved filters from local storage and reset"
     >

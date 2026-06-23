@@ -213,7 +213,7 @@ function KitchenSink() {
 
           {/* Main content area - adjusts for sidebar on desktop */}
           <main
-            className={`flex-1 transition-all duration-300 ${sectionTabs.length > 1 && sidebarOpen ? "md:ml-0" : ""}`}
+            className={`flex-1 transition duration-300 ${sectionTabs.length > 1 && sidebarOpen ? "md:ml-0" : ""}`}
           >
             <ScrollSnapContainer
               type="y"

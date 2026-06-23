@@ -219,10 +219,10 @@ const AnimatedSlideComponent = React.forwardRef<HTMLDivElement, AnimatedSlidePro
       onVisibilityChange
     );
     const prefersReducedMotion = usePrefersReducedMotion();
-    const { handleMouseEnter, handleMouseLeave, handleClick } = useAnimationTriggers(
-      trigger,
-      setIsVisible
-    );
+    const { triggerProps } = useAnimationTriggers(trigger, setIsVisible);
+
+    // Only attach automatic triggers when uncontrolled
+    const isControlled = controlledIsVisible !== undefined;
 
     // Respect user's motion preferences
     const effectiveDuration = prefersReducedMotion ? 0 : duration;
@@ -252,13 +252,13 @@ const AnimatedSlideComponent = React.forwardRef<HTMLDivElement, AnimatedSlidePro
       pointerEvents: isVisible ? "auto" : "none",
     };
 
+    // triggerProps provides keyboard (Enter/Space), focus/blur, tabIndex, role for full a11y
     const containerProps = {
       ref,
       className,
       style: containerStyle,
-      onMouseEnter: handleMouseEnter,
-      onMouseLeave: handleMouseLeave,
-      onClick: handleClick,
+      "aria-hidden": !isVisible,
+      ...(!isControlled && triggerProps),
       ...props,
     };
 

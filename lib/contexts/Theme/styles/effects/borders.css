@@ -189,7 +189,11 @@ html[data-effect-border-animations="true"] .pulse-scale-container::after {
   position: absolute;
   width: 1.5px;
   height: 1.5px;
-  background: radial-gradient(circle, color-mix(in srgb, var(--neon-cyan) 60%, transparent), transparent);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--neon-cyan) 60%, transparent),
+    transparent
+  );
   border-radius: 50%;
   pointer-events: none;
   animation: pulse-scale 8s ease-in-out infinite;
@@ -279,7 +283,12 @@ html[data-effect-border-animations="true"] [class*="bg-primary"] button::before 
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+  background: linear-gradient(
+    120deg,
+    transparent,
+    color-mix(in srgb, white 5%, transparent),
+    transparent
+  );
   background-size: 200% 100%;
   animation: border-shimmer 6s ease-in-out infinite;
   pointer-events: none;

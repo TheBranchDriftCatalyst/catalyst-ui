@@ -390,7 +390,7 @@ const dockerQuickFilters: QuickFilter[] = [
     label: "Orphaned",
     icon: "🔍",
     className:
-      "px-3 py-2 bg-neon-red/15 border border-neon-red/40 rounded-md text-neon-red cursor-pointer text-xs font-semibold transition-all hover:bg-neon-red/25 hover:-translate-y-0.5",
+      "px-3 py-2 bg-neon-red/15 border border-neon-red/40 rounded-md text-neon-red cursor-pointer text-xs font-semibold transition hover:bg-neon-red/25 hover:-translate-y-0.5",
     action: () => ({
       showOrphanedOnly: true,
       statusFilter: "all",
@@ -403,7 +403,7 @@ const dockerQuickFilters: QuickFilter[] = [
     label: "Running",
     icon: "▶️",
     className:
-      "px-3 py-2 bg-neon-red/15 border border-neon-red/40 rounded-md text-neon-red cursor-pointer text-xs font-semibold transition-all hover:bg-neon-red/25 hover:-translate-y-0.5",
+      "px-3 py-2 bg-neon-red/15 border border-neon-red/40 rounded-md text-neon-red cursor-pointer text-xs font-semibold transition hover:bg-neon-red/25 hover:-translate-y-0.5",
     action: () => ({
       showRunningOnly: true,
       statusFilter: "running", // Docker-specific status
@@ -415,7 +415,7 @@ const dockerQuickFilters: QuickFilter[] = [
     label: "Minimal",
     icon: "🎯",
     className:
-      "px-3 py-2 bg-neon-red/15 border border-neon-red/40 rounded-md text-neon-red cursor-pointer text-xs font-semibold transition-all hover:bg-neon-red/25 hover:-translate-y-0.5",
+      "px-3 py-2 bg-neon-red/15 border border-neon-red/40 rounded-md text-neon-red cursor-pointer text-xs font-semibold transition hover:bg-neon-red/25 hover:-translate-y-0.5",
     action: () => ({
       attributeFilterValues: { layer0: true },
       showOrphanedOnly: false,

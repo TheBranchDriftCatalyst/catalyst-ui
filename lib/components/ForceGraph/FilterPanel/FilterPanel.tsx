@@ -8,7 +8,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({ isVisible, onToggle }) => {
       {/* Toggle Button */}
       <button
         onClick={onToggle}
-        className="fixed top-[98px] w-10 h-10 bg-background/95 border-2 border-primary rounded-full text-primary cursor-pointer flex items-center justify-center transition-all duration-300 z-[1001] shadow-[0_4px_20px_rgba(var(--primary-rgb),0.3)] backdrop-blur-[10px] hover:shadow-[0_6px_30px_rgba(var(--primary-rgb),0.5)] hover:bg-background hover:scale-110 active:scale-95"
+        className="fixed top-[98px] w-10 h-10 bg-background/95 border-2 border-primary rounded-full text-primary cursor-pointer flex items-center justify-center transition duration-300 z-[1001] shadow-[0_4px_20px_rgba(var(--primary-rgb),0.3)] backdrop-blur-[10px] hover:shadow-[0_6px_30px_rgba(var(--primary-rgb),0.5)] hover:bg-background hover:scale-110 active:scale-95"
         style={{
           right: isVisible ? "312px" : "16px",
         }}

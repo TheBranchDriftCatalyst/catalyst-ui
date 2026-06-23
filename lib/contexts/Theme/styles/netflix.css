@@ -31,7 +31,7 @@
   /* @token Typography - Bold cinematic aesthetic */
   --font-heading: "Bebas Neue", "Impact", sans-serif; /* @token */
   --font-body: "Netflix Sans", "Helvetica Neue", sans-serif; /* @token */
-  --font-mono: "Source Code Pro", "Courier New", monospace; /* @token */
+  --font-mono-stack: "Source Code Pro", "Courier New", monospace; /* @token */
 
   /* @token Neon Colors - Cinematic palette */
   --neon-cyan: hsl(180, 85%, 50%); /* @token - dramatic cyan */
@@ -51,19 +51,43 @@
   --neon-yellow-rgb: 255, 204, 51; /* @token */
   --neon-gold-rgb: 255, 166, 38; /* @token */
 
+  /* Required token completeness — added by CUI-w9i */
+  --radius: 0.5rem; /* @token */
+  --primary-rgb: 224, 0, 0; /* @token */
+  --accent-rgb: 255, 0, 0; /* @token */
+  --chart-1: hsl(0, 100%, 44%); /* @token */
+  --chart-2: hsl(0, 0%, 0%); /* @token */
+  --chart-3: hsl(45, 100%, 60%); /* @token */
+  --chart-4: hsl(180, 85%, 50%); /* @token */
+  --chart-5: hsl(340, 100%, 65%); /* @token */
+  --chart-6: hsl(280, 90%, 58%); /* @token */
+  --chart-7: hsl(210, 100%, 58%); /* @token */
+  --chart-8: hsl(38, 100%, 55%); /* @token */
+  --chart-9: hsl(160, 70%, 50%); /* @token */
+  --chart-10: hsl(15, 90%, 55%); /* @token */
+  --chart-11: hsl(220, 80%, 55%); /* @token */
+  --chart-12: hsl(90, 60%, 50%); /* @token */
+  --scanline-opacity: 0.02; /* @token */
+  --scanline-color: rgba(var(--primary-rgb), var(--scanline-opacity)); /* @token */
+  --grid-opacity: 0.03; /* @token */
+  --grid-color: rgba(var(--primary-rgb), var(--grid-opacity)); /* @token */
+
   /* @token Glow Effects - Cinematic drama */
-  --glow-primary: 0 0 20px rgba(224, 9, 9, 0.4), 0 0 40px rgba(224, 9, 9, 0.2); /* @token */
+  --glow-primary:
+    0 0 20px rgba(var(--neon-red-rgb), 0.4), 0 0 40px rgba(var(--neon-red-rgb), 0.2); /* @token */
   --glow-secondary:
-    0 0 20px rgba(255, 107, 153, 0.4), 0 0 40px rgba(255, 107, 153, 0.2); /* @token */
-  --glow-accent: 0 0 15px rgba(255, 204, 51, 0.35); /* @token */
-  --glow-hover: 0 0 25px rgba(224, 9, 9, 0.55), 0 0 50px rgba(224, 9, 9, 0.3); /* @token */
+    0 0 20px rgba(var(--neon-pink-rgb), 0.4), 0 0 40px rgba(var(--neon-pink-rgb), 0.2); /* @token */
+  --glow-accent: 0 0 15px rgba(var(--neon-yellow-rgb), 0.35); /* @token */
+  --glow-hover:
+    0 0 25px rgba(var(--neon-red-rgb), 0.55), 0 0 50px rgba(var(--neon-red-rgb), 0.3); /* @token */
 
   /* @token Neon Shadows - Hollywood spotlight */
-  --shadow-neon-sm: 0 2px 8px rgba(224, 9, 9, 0.2), 0 4px 16px rgba(255, 204, 51, 0.1); /* @token */
+  --shadow-neon-sm:
+    0 2px 8px rgba(var(--neon-red-rgb), 0.2), 0 4px 16px rgba(var(--neon-yellow-rgb), 0.1); /* @token */
   --shadow-neon-md:
-    0 4px 16px rgba(224, 9, 9, 0.25), 0 8px 32px rgba(255, 204, 51, 0.12); /* @token */
+    0 4px 16px rgba(var(--neon-red-rgb), 0.25), 0 8px 32px rgba(var(--neon-yellow-rgb), 0.12); /* @token */
   --shadow-neon-lg:
-    0 8px 24px rgba(224, 9, 9, 0.3), 0 16px 48px rgba(255, 204, 51, 0.15); /* @token */
+    0 8px 24px rgba(var(--neon-red-rgb), 0.3), 0 16px 48px rgba(var(--neon-yellow-rgb), 0.15); /* @token */
 }
 
 .theme-netflix.dark {
@@ -99,7 +123,7 @@
   /* @token Typography - Bold cinematic aesthetic */
   --font-heading: "Bebas Neue", "Impact", sans-serif; /* @token */
   --font-body: "Netflix Sans", "Helvetica Neue", sans-serif; /* @token */
-  --font-mono: "Source Code Pro", "Courier New", monospace; /* @token */
+  --font-mono-stack: "Source Code Pro", "Courier New", monospace; /* @token */
 
   /* @token Neon Colors - Cinematic palette */
   --neon-cyan: hsl(180, 90%, 48%); /* @token - dramatic cyan */
@@ -119,20 +143,43 @@
   --neon-yellow-rgb: 255, 199, 46; /* @token */
   --neon-gold-rgb: 255, 158, 26; /* @token */
 
+  /* Required token completeness — added by CUI-w9i */
+  --radius: 0.5rem; /* @token */
+  --primary-rgb: 224, 0, 0; /* @token */
+  --accent-rgb: 255, 0, 0; /* @token */
+  --chart-1: hsl(0, 100%, 44%); /* @token */
+  --chart-2: hsl(0, 0%, 100%); /* @token */
+  --chart-3: hsl(45, 100%, 58%); /* @token */
+  --chart-4: hsl(180, 90%, 48%); /* @token */
+  --chart-5: hsl(340, 100%, 60%); /* @token */
+  --chart-6: hsl(280, 95%, 55%); /* @token */
+  --chart-7: hsl(210, 100%, 55%); /* @token */
+  --chart-8: hsl(38, 100%, 52%); /* @token */
+  --chart-9: hsl(160, 75%, 48%); /* @token */
+  --chart-10: hsl(15, 95%, 52%); /* @token */
+  --chart-11: hsl(220, 85%, 52%); /* @token */
+  --chart-12: hsl(90, 65%, 48%); /* @token */
+  --scanline-opacity: 0.03; /* @token */
+  --scanline-color: rgba(var(--primary-rgb), var(--scanline-opacity)); /* @token */
+  --grid-opacity: 0.04; /* @token */
+  --grid-color: rgba(var(--primary-rgb), var(--grid-opacity)); /* @token */
+
   /* @token Glow Effects - Cinematic drama */
-  --glow-primary: 0 0 20px rgba(224, 9, 9, 0.5), 0 0 40px rgba(224, 9, 9, 0.25); /* @token */
+  --glow-primary:
+    0 0 20px rgba(var(--neon-red-rgb), 0.5), 0 0 40px rgba(var(--neon-red-rgb), 0.25); /* @token */
   --glow-secondary:
-    0 0 20px rgba(255, 92, 143, 0.45), 0 0 40px rgba(255, 92, 143, 0.22); /* @token */
-  --glow-accent: 0 0 15px rgba(255, 199, 46, 0.4); /* @token */
-  --glow-hover: 0 0 25px rgba(224, 9, 9, 0.6), 0 0 50px rgba(224, 9, 9, 0.35); /* @token */
+    0 0 20px rgba(var(--neon-pink-rgb), 0.45), 0 0 40px rgba(var(--neon-pink-rgb), 0.22); /* @token */
+  --glow-accent: 0 0 15px rgba(var(--neon-yellow-rgb), 0.4); /* @token */
+  --glow-hover:
+    0 0 25px rgba(var(--neon-red-rgb), 0.6), 0 0 50px rgba(var(--neon-red-rgb), 0.35); /* @token */
 
   /* @token Neon Shadows - Hollywood spotlight */
   --shadow-neon-sm:
-    0 2px 8px rgba(224, 9, 9, 0.25), 0 4px 16px rgba(255, 199, 46, 0.12); /* @token */
+    0 2px 8px rgba(var(--neon-red-rgb), 0.25), 0 4px 16px rgba(var(--neon-yellow-rgb), 0.12); /* @token */
   --shadow-neon-md:
-    0 4px 16px rgba(224, 9, 9, 0.3), 0 8px 32px rgba(255, 199, 46, 0.15); /* @token */
+    0 4px 16px rgba(var(--neon-red-rgb), 0.3), 0 8px 32px rgba(var(--neon-yellow-rgb), 0.15); /* @token */
   --shadow-neon-lg:
-    0 8px 24px rgba(224, 9, 9, 0.4), 0 16px 48px rgba(255, 199, 46, 0.2); /* @token */
+    0 8px 24px rgba(var(--neon-red-rgb), 0.4), 0 16px 48px rgba(var(--neon-yellow-rgb), 0.2); /* @token */
 }
 
 /* Dark mode - cinematic link effects */

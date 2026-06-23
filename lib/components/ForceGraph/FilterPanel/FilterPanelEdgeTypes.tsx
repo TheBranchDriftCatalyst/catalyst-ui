@@ -33,12 +33,12 @@ export const FilterPanelEdgeTypes: React.FC<FilterPanelEdgeTypesProps> = ({
             <button
               key={kind}
               onClick={() => onToggle(kind)}
-              className={`w-full flex items-center gap-1.5 px-1.5 py-0.5 rounded transition-all text-[11px] ${
+              className={`w-full flex items-center gap-1.5 px-1.5 py-0.5 rounded transition text-[11px] ${
                 isVisible ? "opacity-100" : "opacity-40 hover:opacity-70"
               }`}
             >
               <div
-                className={`h-0.5 rounded-full transition-all ${isVisible ? "w-4" : "w-3"}`}
+                className={`h-0.5 rounded-full transition ${isVisible ? "w-4" : "w-3"}`}
                 style={{
                   backgroundColor: color,
                   boxShadow: isVisible ? `0 0 4px ${color}` : "none",

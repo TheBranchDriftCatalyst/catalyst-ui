@@ -36,7 +36,7 @@ export const FilterPanelExcluded: React.FC<FilterPanelExcludedProps> = ({
             >
               <div className="text-foreground/90 truncate flex-1">{label}</div>
               <button
-                className="px-1 py-0.5 bg-foreground/5 border border-foreground/10 rounded text-[10px] hover:bg-foreground/10 transition-all"
+                className="px-1 py-0.5 bg-foreground/5 border border-foreground/10 rounded text-[10px] hover:bg-foreground/10 transition"
                 onClick={() => onInclude(id)}
                 title="Include back"
               >
@@ -46,7 +46,7 @@ export const FilterPanelExcluded: React.FC<FilterPanelExcludedProps> = ({
           );
         })}
         <button
-          className="px-2 py-1 mt-0.5 bg-primary/10 border border-primary/30 rounded text-foreground text-[10px] transition-all hover:bg-foreground/10"
+          className="px-2 py-1 mt-0.5 bg-primary/10 border border-primary/30 rounded text-foreground text-[10px] transition hover:bg-foreground/10"
           onClick={onClearAll}
         >
           Clear Excluded

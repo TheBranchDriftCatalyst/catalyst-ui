@@ -607,7 +607,7 @@ export function OverviewTab() {
                       href="https://react.dev"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-primary hover:underline transition-all"
+                      className="text-primary hover:underline transition"
                     >
                       <EditableText id="react" namespace="OverviewTab">
                         React

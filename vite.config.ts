@@ -103,6 +103,8 @@ export default defineConfig(({ mode }) => ({
         glob
           .sync("lib/**/*.{ts,tsx,css}")
           .filter(path => !path.endsWith(".stories.tsx"))
+          .filter(path => !path.endsWith(".test.tsx") && !path.endsWith(".test.ts"))
+          .filter(path => !path.includes("/__tests__/"))
           .map(file => [
             // 1. The name of the entry point
             // lib/nested/foo.js becomes nested/foo

@@ -1,4 +1,5 @@
 import JsonTreeView from "@/catalyst-ui/components/ForceGraph/components/JsonTreeView";
+import { THEME_NAMES } from "@/catalyst-ui/contexts/Theme/registry";
 
 export function JsonTreeViewDemo() {
   return (
@@ -9,7 +10,7 @@ export function JsonTreeViewDemo() {
         type: "library",
         features: {
           components: ["ForceGraph", "CodeBlock", "JsonTreeView"],
-          themes: ["catalyst", "dracula", "gold", "nature", "netflix", "nord", "laracon"],
+          themes: [...THEME_NAMES],
           ui_primitives: ["button", "dialog", "tooltip", "dropdown-menu", "toast"],
         },
         config: {
@@ -20,7 +21,7 @@ export function JsonTreeViewDemo() {
         stats: {
           components_count: 15,
           stories_count: 12,
-          themes_count: 7,
+          themes_count: THEME_NAMES.length,
         },
       }}
       rootName="package"

@@ -31,7 +31,7 @@
   /* @token Typography - Organic earthy aesthetic */
   --font-heading: "Libre Baskerville", "Palatino", serif; /* @token */
   --font-body: "Merriweather", "Georgia", serif; /* @token */
-  --font-mono: "Ubuntu Mono", "Consolas", monospace; /* @token */
+  --font-mono-stack: "Ubuntu Mono", "Consolas", monospace; /* @token */
 
   /* @token Neon Colors - Organic earth palette */
   --neon-cyan: hsl(175, 60%, 55%); /* @token - sea green */
@@ -50,21 +50,45 @@
   --neon-red-rgb: 207, 113, 92; /* @token */
   --neon-yellow-rgb: 237, 212, 133; /* @token */
   --neon-gold-rgb: 227, 156, 92; /* @token */
+  --neon-leaf-rgb: 106, 153, 85; /* @token */
+
+  /* Required token completeness — added by CUI-w9i */
+  --radius: 0.5rem; /* @token */
+  --primary-rgb: 140, 174, 111; /* @token */
+  --accent-rgb: 184, 190, 157; /* @token */
+  --chart-1: hsl(93, 28%, 56%); /* @token */
+  --chart-2: hsl(175, 60%, 55%); /* @token */
+  --chart-3: hsl(35, 70%, 58%); /* @token */
+  --chart-4: hsl(200, 65%, 60%); /* @token */
+  --chart-5: hsl(10, 70%, 65%); /* @token */
+  --chart-6: hsl(48, 75%, 65%); /* @token */
+  --chart-7: hsl(270, 40%, 65%); /* @token */
+  --chart-8: hsl(12, 60%, 55%); /* @token */
+  --chart-9: hsl(140, 35%, 50%); /* @token */
+  --chart-10: hsl(60, 45%, 55%); /* @token */
+  --chart-11: hsl(220, 40%, 60%); /* @token */
+  --chart-12: hsl(330, 40%, 60%); /* @token */
+  --scanline-opacity: 0.015; /* @token */
+  --scanline-color: rgba(var(--primary-rgb), var(--scanline-opacity)); /* @token */
+  --grid-opacity: 0.025; /* @token */
+  --grid-color: rgba(var(--primary-rgb), var(--grid-opacity)); /* @token */
 
   /* @token Glow Effects - Natural bioluminescence */
-  --glow-primary: 0 0 20px rgba(106, 153, 85, 0.35), 0 0 40px rgba(106, 153, 85, 0.18); /* @token */
+  --glow-primary:
+    0 0 20px rgba(var(--neon-leaf-rgb), 0.35), 0 0 40px rgba(var(--neon-leaf-rgb), 0.18); /* @token */
   --glow-secondary:
-    0 0 20px rgba(112, 209, 189, 0.35), 0 0 40px rgba(112, 209, 189, 0.18); /* @token */
-  --glow-accent: 0 0 15px rgba(237, 212, 133, 0.3); /* @token */
-  --glow-hover: 0 0 25px rgba(106, 153, 85, 0.45), 0 0 50px rgba(106, 153, 85, 0.22); /* @token */
+    0 0 20px rgba(var(--neon-cyan-rgb), 0.35), 0 0 40px rgba(var(--neon-cyan-rgb), 0.18); /* @token */
+  --glow-accent: 0 0 15px rgba(var(--neon-yellow-rgb), 0.3); /* @token */
+  --glow-hover:
+    0 0 25px rgba(var(--neon-leaf-rgb), 0.45), 0 0 50px rgba(var(--neon-leaf-rgb), 0.22); /* @token */
 
   /* @token Neon Shadows - Forest glade */
   --shadow-neon-sm:
-    0 2px 8px rgba(106, 153, 85, 0.15), 0 4px 16px rgba(112, 209, 189, 0.1); /* @token */
+    0 2px 8px rgba(var(--neon-leaf-rgb), 0.15), 0 4px 16px rgba(var(--neon-cyan-rgb), 0.1); /* @token */
   --shadow-neon-md:
-    0 4px 16px rgba(106, 153, 85, 0.2), 0 8px 32px rgba(112, 209, 189, 0.12); /* @token */
+    0 4px 16px rgba(var(--neon-leaf-rgb), 0.2), 0 8px 32px rgba(var(--neon-cyan-rgb), 0.12); /* @token */
   --shadow-neon-lg:
-    0 8px 24px rgba(106, 153, 85, 0.25), 0 16px 48px rgba(112, 209, 189, 0.15); /* @token */
+    0 8px 24px rgba(var(--neon-leaf-rgb), 0.25), 0 16px 48px rgba(var(--neon-cyan-rgb), 0.15); /* @token */
 }
 
 /* Light mode - organic background gradient */
@@ -106,7 +130,7 @@
   /* @token Typography - Organic earthy aesthetic */
   --font-heading: "Libre Baskerville", "Palatino", serif; /* @token */
   --font-body: "Merriweather", "Georgia", serif; /* @token */
-  --font-mono: "Ubuntu Mono", "Consolas", monospace; /* @token */
+  --font-mono-stack: "Ubuntu Mono", "Consolas", monospace; /* @token */
 
   /* @token Neon Colors - Organic earth palette */
   --neon-cyan: hsl(175, 65%, 50%); /* @token - sea green */
@@ -125,18 +149,43 @@
   --neon-red-rgb: 201, 105, 84; /* @token */
   --neon-yellow-rgb: 235, 207, 122; /* @token */
   --neon-gold-rgb: 222, 148, 79; /* @token */
+  --neon-leaf-rgb: 106, 153, 85; /* @token */
+
+  /* Required token completeness — added by CUI-w9i */
+  --radius: 0.5rem; /* @token */
+  --primary-rgb: 140, 174, 111; /* @token */
+  --accent-rgb: 184, 190, 157; /* @token */
+  --chart-1: hsl(93, 28%, 56%); /* @token */
+  --chart-2: hsl(175, 65%, 50%); /* @token */
+  --chart-3: hsl(35, 75%, 55%); /* @token */
+  --chart-4: hsl(200, 70%, 56%); /* @token */
+  --chart-5: hsl(10, 75%, 60%); /* @token */
+  --chart-6: hsl(48, 80%, 60%); /* @token */
+  --chart-7: hsl(270, 45%, 60%); /* @token */
+  --chart-8: hsl(12, 65%, 52%); /* @token */
+  --chart-9: hsl(140, 40%, 45%); /* @token */
+  --chart-10: hsl(60, 50%, 50%); /* @token */
+  --chart-11: hsl(220, 45%, 55%); /* @token */
+  --chart-12: hsl(330, 45%, 55%); /* @token */
+  --scanline-opacity: 0.025; /* @token */
+  --scanline-color: rgba(var(--primary-rgb), var(--scanline-opacity)); /* @token */
+  --grid-opacity: 0.035; /* @token */
+  --grid-color: rgba(var(--primary-rgb), var(--grid-opacity)); /* @token */
 
   /* @token Glow Effects - Natural bioluminescence */
-  --glow-primary: 0 0 20px rgba(106, 153, 85, 0.4), 0 0 40px rgba(106, 153, 85, 0.2); /* @token */
-  --glow-secondary: 0 0 20px rgba(96, 204, 182, 0.4), 0 0 40px rgba(96, 204, 182, 0.2); /* @token */
-  --glow-accent: 0 0 15px rgba(235, 207, 122, 0.35); /* @token */
-  --glow-hover: 0 0 25px rgba(106, 153, 85, 0.5), 0 0 50px rgba(106, 153, 85, 0.25); /* @token */
+  --glow-primary:
+    0 0 20px rgba(var(--neon-leaf-rgb), 0.4), 0 0 40px rgba(var(--neon-leaf-rgb), 0.2); /* @token */
+  --glow-secondary:
+    0 0 20px rgba(var(--neon-cyan-rgb), 0.4), 0 0 40px rgba(var(--neon-cyan-rgb), 0.2); /* @token */
+  --glow-accent: 0 0 15px rgba(var(--neon-yellow-rgb), 0.35); /* @token */
+  --glow-hover:
+    0 0 25px rgba(var(--neon-leaf-rgb), 0.5), 0 0 50px rgba(var(--neon-leaf-rgb), 0.25); /* @token */
 
   /* @token Neon Shadows - Forest glade */
   --shadow-neon-sm:
-    0 2px 8px rgba(106, 153, 85, 0.2), 0 4px 16px rgba(96, 204, 182, 0.12); /* @token */
+    0 2px 8px rgba(var(--neon-leaf-rgb), 0.2), 0 4px 16px rgba(var(--neon-cyan-rgb), 0.12); /* @token */
   --shadow-neon-md:
-    0 4px 16px rgba(106, 153, 85, 0.25), 0 8px 32px rgba(96, 204, 182, 0.15); /* @token */
+    0 4px 16px rgba(var(--neon-leaf-rgb), 0.25), 0 8px 32px rgba(var(--neon-cyan-rgb), 0.15); /* @token */
   --shadow-neon-lg:
-    0 8px 24px rgba(106, 153, 85, 0.3), 0 16px 48px rgba(96, 204, 182, 0.18); /* @token */
+    0 8px 24px rgba(var(--neon-leaf-rgb), 0.3), 0 16px 48px rgba(var(--neon-cyan-rgb), 0.18); /* @token */
 }

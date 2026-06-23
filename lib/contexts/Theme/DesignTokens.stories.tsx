@@ -1,21 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { DesignTokenDocBlock } from "storybook-design-token";
+import { THEME_NAMES } from "./registry";
 
 const meta = {
   title: "Design System/Design Tokens",
   parameters: {
     layout: "fullscreen",
     designToken: {
-      // Parse all theme CSS files for tokens
-      files: [
-        "lib/contexts/Theme/styles/catalyst.css",
-        "lib/contexts/Theme/styles/dracula.css",
-        "lib/contexts/Theme/styles/gold.css",
-        "lib/contexts/Theme/styles/laracon.css",
-        "lib/contexts/Theme/styles/nature.css",
-        "lib/contexts/Theme/styles/netflix.css",
-        "lib/contexts/Theme/styles/nord.css",
-      ],
+      // Parse all theme CSS files for tokens — derived from THEME_REGISTRY.
+      files: THEME_NAMES.map(n => `lib/contexts/Theme/styles/${n}.css`),
     },
   },
 } satisfies Meta;

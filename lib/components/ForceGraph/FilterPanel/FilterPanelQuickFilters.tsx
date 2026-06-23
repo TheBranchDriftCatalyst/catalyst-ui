@@ -31,14 +31,14 @@ export const FilterPanelQuickFilters: React.FC<FilterPanelQuickFiltersProps> = (
         {quickFilters.map((quickFilter, index) => (
           <button
             key={index}
-            className="px-2 py-1 bg-neon-red/10 border border-neon-red/30 rounded text-neon-red text-[10px] font-semibold transition-all hover:bg-neon-red/20"
+            className="px-2 py-1 bg-neon-red/10 border border-neon-red/30 rounded text-neon-red text-[10px] font-semibold transition hover:bg-neon-red/20"
             onClick={() => onApplyFilter(quickFilter.action(currentFilters))}
           >
             {quickFilter.icon} {quickFilter.label}
           </button>
         ))}
         <button
-          className="px-2 py-1 bg-primary/5 border border-primary/20 rounded text-foreground/70 text-[10px] transition-all hover:text-foreground"
+          className="px-2 py-1 bg-primary/5 border border-primary/20 rounded text-foreground/70 text-[10px] transition hover:text-foreground"
           onClick={onReset}
         >
           🔄 Reset

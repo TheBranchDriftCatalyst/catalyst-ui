@@ -262,14 +262,14 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
           <Button
             size="icon"
             variant="ghost"
-            className="absolute top-2 right-2 h-7 w-7 opacity-0 group-hover/flip:opacity-70 hover:opacity-100 transition-all duration-200 bg-background/60 backdrop-blur-sm z-10"
+            className="absolute top-2 right-2 h-7 w-7 opacity-0 group-hover/flip:opacity-70 hover:opacity-100 transition duration-200 bg-background/60 backdrop-blur-sm z-10"
             onClick={e => {
               e.stopPropagation();
               setIsFlipped(true);
             }}
             title="View source code"
           >
-            <Code2 className="h-3.5 w-3.5 text-primary/80 transition-all duration-200 hover:drop-shadow-[0_0_6px_rgba(var(--primary-rgb),0.6)]" />
+            <Code2 className="h-3.5 w-3.5 text-primary/80 transition duration-200 hover:drop-shadow-[0_0_6px_rgba(var(--primary-rgb),0.6)]" />
           </Button>
         )}
       </div>
@@ -300,11 +300,11 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
               <Button
                 size="icon"
                 variant="ghost"
-                className="h-7 w-7 opacity-70 hover:opacity-100 transition-all duration-200 bg-background/60 backdrop-blur-sm"
+                className="h-7 w-7 opacity-70 hover:opacity-100 transition duration-200 bg-background/60 backdrop-blur-sm"
                 onClick={() => setIsFlipped(false)}
                 title="Back to component"
               >
-                <RotateCcw className="h-3.5 w-3.5 text-primary/80 transition-all duration-200 hover:drop-shadow-[0_0_6px_rgba(var(--primary-rgb),0.6)]" />
+                <RotateCcw className="h-3.5 w-3.5 text-primary/80 transition duration-200 hover:drop-shadow-[0_0_6px_rgba(var(--primary-rgb),0.6)]" />
               </Button>
             </div>
           }
@@ -330,8 +330,33 @@ export const CodeFlipCard = React.forwardRef<HTMLDivElement, CodeFlipCardProps>(
       </CardProvider>
     );
 
+    // Keyboard handler: Enter/Space toggles (when click trigger), Escape always unflips
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (event.key === "Escape" && isFlipped) {
+        event.preventDefault();
+        setIsFlipped(false);
+        return;
+      }
+      if (flipTrigger === "click" && !isFlipped && (event.key === "Enter" || event.key === " ")) {
+        // Only flip-to-back via keyboard when the wrapper itself is focused
+        // (not when a child button bubbles its own key event up).
+        if (event.target === event.currentTarget) {
+          event.preventDefault();
+          setIsFlipped(true);
+        }
+      }
+    };
+
     return (
-      <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <div
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onKeyDown={handleKeyDown}
+        tabIndex={0}
+        role="button"
+        aria-expanded={isFlipped}
+        aria-label={fileName ? `Toggle source code for ${fileName}` : "Toggle source code"}
+      >
         <AnimatedFlip
           ref={ref}
           front={frontFace}

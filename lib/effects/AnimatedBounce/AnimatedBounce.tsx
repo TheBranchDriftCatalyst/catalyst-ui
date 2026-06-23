@@ -211,19 +211,37 @@ const AnimatedBounceComponent = React.forwardRef<HTMLDivElement, AnimatedBounceP
       onBounceChange
     );
     const prefersReducedMotion = usePrefersReducedMotion();
-    const { handleMouseEnter, handleMouseLeave } = useAnimationTriggers(trigger, setIsBouncing);
+    const { handleMouseEnter, handleMouseLeave, handleFocus, handleBlur } = useAnimationTriggers(
+      trigger,
+      setIsBouncing
+    );
+
+    // Only attach automatic triggers when uncontrolled
+    const isControlled = controlledIsBouncing !== undefined;
 
     // Respect user's motion preferences
     const effectiveDuration = prefersReducedMotion ? 0 : duration;
 
-    // Custom click handler with auto-reset for bounce effect
+    // Custom click trigger with auto-reset for bounce effect
+    const triggerBounce = React.useCallback(() => {
+      setIsBouncing(true);
+      // Auto-reset after animation completes
+      setTimeout(() => {
+        setIsBouncing(false);
+      }, effectiveDuration);
+    }, [setIsBouncing, effectiveDuration]);
+
     const handleClick = () => {
       if (trigger === "click") {
-        setIsBouncing(true);
-        // Auto-reset after animation completes
-        setTimeout(() => {
-          setIsBouncing(false);
-        }, effectiveDuration);
+        triggerBounce();
+      }
+    };
+
+    // Keyboard equivalent of click for a11y (Enter/Space)
+    const handleKeyDown = (event: React.KeyboardEvent) => {
+      if (trigger === "click" && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        triggerBounce();
       }
     };
 
@@ -234,13 +252,21 @@ const AnimatedBounceComponent = React.forwardRef<HTMLDivElement, AnimatedBounceP
       display: "inline-block",
     };
 
+    // Compose a11y handlers manually because bounce needs custom auto-reset click
     const containerProps = {
       ref,
       className,
       style: containerStyle,
-      onMouseEnter: handleMouseEnter,
-      onMouseLeave: handleMouseLeave,
-      onClick: handleClick,
+      ...(!isControlled && {
+        onMouseEnter: handleMouseEnter,
+        onMouseLeave: handleMouseLeave,
+        onClick: handleClick,
+        onKeyDown: handleKeyDown,
+        onFocus: handleFocus,
+        onBlur: handleBlur,
+        ...(trigger === "click" ? { tabIndex: 0, role: "button" as const } : {}),
+        ...(trigger === "focus" ? { tabIndex: 0 } : {}),
+      }),
       ...props,
     };
 

@@ -20,6 +20,7 @@
  */
 import { addons } from "storybook/internal/preview-api";
 import { themes as sbThemes } from "storybook/theming";
+import { THEME_REGISTRY } from "../lib/contexts/Theme/registry";
 import "../lib/global.css";
 // Frontload all theme CSS for Storybook (normally dynamically loaded by ThemeProvider)
 // Using Vite's glob import to automatically load all theme CSS files
@@ -431,16 +432,8 @@ const preview = {
       toolbar: {
         title: "Theme",
         icon: "paintbrush",
-        items: [
-          { value: "catalyst", title: "Catalyst" },
-          { value: "dracula", title: "Dracula" },
-          { value: "dungeon", title: "Dungeon" },
-          { value: "gold", title: "Gold" },
-          { value: "laracon", title: "Laracon" },
-          { value: "nature", title: "Nature" },
-          { value: "netflix", title: "Netflix" },
-          { value: "nord", title: "Nord" },
-        ],
+        // Derived from THEME_REGISTRY — see lib/contexts/Theme/registry.ts
+        items: THEME_REGISTRY.map(t => ({ value: t.name, title: t.label })),
         dynamicTitle: true,
       },
     },

@@ -88,7 +88,7 @@ export function CircularGauge({
             cy={size / 2}
             r={radius}
             fill="none"
-            className={cn(colors.stroke, "transition-all duration-500 ease-out")}
+            className={cn(colors.stroke, "transition duration-500 ease-out")}
             strokeWidth={strokeWidth}
             strokeDasharray={circumference}
             strokeDashoffset={offset}

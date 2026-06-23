@@ -31,7 +31,7 @@
   /* @token Typography - Clean Nordic aesthetic */
   --font-heading: "Inter", "Helvetica Neue", sans-serif; /* @token */
   --font-body: "Inter", "Arial", sans-serif; /* @token */
-  --font-mono: "JetBrains Mono", "Monaco", monospace; /* @token */
+  --font-mono-stack: "JetBrains Mono", "Monaco", monospace; /* @token */
 
   /* @token Neon Colors - Nordic aurora palette */
   --neon-cyan: hsl(193, 70%, 58%); /* @token - frost cyan */
@@ -51,21 +51,43 @@
   --neon-yellow-rgb: 235, 203, 139; /* @token */
   --neon-gold-rgb: 229, 165, 92; /* @token */
 
+  /* Required token completeness — added by CUI-w9i */
+  --radius: 0.5rem; /* @token */
+  --primary-rgb: 163, 172, 194; /* @token */
+  --accent-rgb: 197, 203, 211; /* @token */
+  --chart-1: hsl(193, 70%, 58%); /* @token */
+  --chart-2: hsl(213, 75%, 62%); /* @token */
+  --chart-3: hsl(270, 55%, 65%); /* @token */
+  --chart-4: hsl(350, 60%, 68%); /* @token */
+  --chart-5: hsl(0, 70%, 58%); /* @token */
+  --chart-6: hsl(40, 65%, 70%); /* @token */
+  --chart-7: hsl(35, 75%, 60%); /* @token */
+  --chart-8: hsl(160, 50%, 55%); /* @token */
+  --chart-9: hsl(290, 40%, 60%); /* @token */
+  --chart-10: hsl(15, 60%, 60%); /* @token */
+  --chart-11: hsl(95, 40%, 55%); /* @token */
+  --chart-12: hsl(225, 40%, 60%); /* @token */
+  --scanline-opacity: 0.015; /* @token */
+  --scanline-color: rgba(var(--primary-rgb), var(--scanline-opacity)); /* @token */
+  --grid-opacity: 0.025; /* @token */
+  --grid-color: rgba(var(--primary-rgb), var(--grid-opacity)); /* @token */
+
   /* @token Glow Effects - Nordic aurora glow */
   --glow-primary:
-    0 0 20px rgba(112, 166, 235, 0.3), 0 0 40px rgba(112, 166, 235, 0.15); /* @token */
+    0 0 20px rgba(var(--neon-blue-rgb), 0.3), 0 0 40px rgba(var(--neon-blue-rgb), 0.15); /* @token */
   --glow-secondary:
-    0 0 20px rgba(108, 194, 224, 0.35), 0 0 40px rgba(108, 194, 224, 0.18); /* @token */
-  --glow-accent: 0 0 15px rgba(172, 131, 205, 0.25); /* @token */
-  --glow-hover: 0 0 25px rgba(112, 166, 235, 0.4), 0 0 50px rgba(112, 166, 235, 0.2); /* @token */
+    0 0 20px rgba(var(--neon-cyan-rgb), 0.35), 0 0 40px rgba(var(--neon-cyan-rgb), 0.18); /* @token */
+  --glow-accent: 0 0 15px rgba(var(--neon-purple-rgb), 0.25); /* @token */
+  --glow-hover:
+    0 0 25px rgba(var(--neon-blue-rgb), 0.4), 0 0 50px rgba(var(--neon-blue-rgb), 0.2); /* @token */
 
   /* @token Neon Shadows - Arctic frost */
   --shadow-neon-sm:
-    0 2px 8px rgba(112, 166, 235, 0.12), 0 4px 16px rgba(108, 194, 224, 0.08); /* @token */
+    0 2px 8px rgba(var(--neon-blue-rgb), 0.12), 0 4px 16px rgba(var(--neon-cyan-rgb), 0.08); /* @token */
   --shadow-neon-md:
-    0 4px 16px rgba(112, 166, 235, 0.16), 0 8px 32px rgba(108, 194, 224, 0.1); /* @token */
+    0 4px 16px rgba(var(--neon-blue-rgb), 0.16), 0 8px 32px rgba(var(--neon-cyan-rgb), 0.1); /* @token */
   --shadow-neon-lg:
-    0 8px 24px rgba(112, 166, 235, 0.2), 0 16px 48px rgba(108, 194, 224, 0.12); /* @token */
+    0 8px 24px rgba(var(--neon-blue-rgb), 0.2), 0 16px 48px rgba(var(--neon-cyan-rgb), 0.12); /* @token */
 }
 
 .theme-nord.dark {
@@ -101,7 +123,7 @@
   /* @token Typography - Minimalist Nordic fonts */
   --font-heading: "Inter", "Helvetica Neue", sans-serif; /* @token */
   --font-body: "Inter", "Arial", sans-serif; /* @token */
-  --font-mono: "JetBrains Mono", "Monaco", monospace; /* @token */
+  --font-mono-stack: "JetBrains Mono", "Monaco", monospace; /* @token */
 
   /* @token Neon Colors - Nordic aurora palette */
   --neon-cyan: hsl(193, 80%, 52%); /* @token - frost cyan */
@@ -121,17 +143,41 @@
   --neon-yellow-rgb: 230, 196, 128; /* @token */
   --neon-gold-rgb: 222, 156, 79; /* @token */
 
+  /* Required token completeness — added by CUI-w9i */
+  --radius: 0.5rem; /* @token */
+  --primary-rgb: 148, 159, 184; /* @token */
+  --accent-rgb: 55, 62, 73; /* @token */
+  --chart-1: hsl(193, 80%, 52%); /* @token */
+  --chart-2: hsl(213, 80%, 58%); /* @token */
+  --chart-3: hsl(270, 60%, 60%); /* @token */
+  --chart-4: hsl(350, 65%, 62%); /* @token */
+  --chart-5: hsl(0, 75%, 55%); /* @token */
+  --chart-6: hsl(40, 70%, 65%); /* @token */
+  --chart-7: hsl(35, 80%, 55%); /* @token */
+  --chart-8: hsl(160, 55%, 50%); /* @token */
+  --chart-9: hsl(290, 45%, 55%); /* @token */
+  --chart-10: hsl(15, 65%, 55%); /* @token */
+  --chart-11: hsl(95, 45%, 50%); /* @token */
+  --chart-12: hsl(225, 45%, 55%); /* @token */
+  --scanline-opacity: 0.025; /* @token */
+  --scanline-color: rgba(var(--primary-rgb), var(--scanline-opacity)); /* @token */
+  --grid-opacity: 0.035; /* @token */
+  --grid-color: rgba(var(--primary-rgb), var(--grid-opacity)); /* @token */
+
   /* @token Glow Effects - Nordic aurora glow */
-  --glow-primary: 0 0 20px rgba(99, 156, 230, 0.35), 0 0 40px rgba(99, 156, 230, 0.18); /* @token */
-  --glow-secondary: 0 0 20px rgba(85, 186, 217, 0.4), 0 0 40px rgba(85, 186, 217, 0.2); /* @token */
-  --glow-accent: 0 0 15px rgba(163, 117, 199, 0.3); /* @token */
-  --glow-hover: 0 0 25px rgba(99, 156, 230, 0.45), 0 0 50px rgba(99, 156, 230, 0.22); /* @token */
+  --glow-primary:
+    0 0 20px rgba(var(--neon-blue-rgb), 0.35), 0 0 40px rgba(var(--neon-blue-rgb), 0.18); /* @token */
+  --glow-secondary:
+    0 0 20px rgba(var(--neon-cyan-rgb), 0.4), 0 0 40px rgba(var(--neon-cyan-rgb), 0.2); /* @token */
+  --glow-accent: 0 0 15px rgba(var(--neon-purple-rgb), 0.3); /* @token */
+  --glow-hover:
+    0 0 25px rgba(var(--neon-blue-rgb), 0.45), 0 0 50px rgba(var(--neon-blue-rgb), 0.22); /* @token */
 
   /* @token Neon Shadows - Arctic frost */
   --shadow-neon-sm:
-    0 2px 8px rgba(99, 156, 230, 0.15), 0 4px 16px rgba(85, 186, 217, 0.1); /* @token */
+    0 2px 8px rgba(var(--neon-blue-rgb), 0.15), 0 4px 16px rgba(var(--neon-cyan-rgb), 0.1); /* @token */
   --shadow-neon-md:
-    0 4px 16px rgba(99, 156, 230, 0.2), 0 8px 32px rgba(85, 186, 217, 0.12); /* @token */
+    0 4px 16px rgba(var(--neon-blue-rgb), 0.2), 0 8px 32px rgba(var(--neon-cyan-rgb), 0.12); /* @token */
   --shadow-neon-lg:
-    0 8px 24px rgba(99, 156, 230, 0.25), 0 16px 48px rgba(85, 186, 217, 0.15); /* @token */
+    0 8px 24px rgba(var(--neon-blue-rgb), 0.25), 0 16px 48px rgba(var(--neon-cyan-rgb), 0.15); /* @token */
 }

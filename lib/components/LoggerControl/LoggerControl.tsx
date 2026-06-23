@@ -59,7 +59,7 @@ export const LoggerControl: React.FC<LoggerControlProps> = ({ className = "" }) 
                 key={level}
                 onClick={() => setLevel(level)}
                 className={`
-                  relative px-3 py-2 rounded-lg border-2 transition-all duration-200
+                  relative px-3 py-2 rounded-lg border-2 transition duration-200
                   ${isActive ? config.color : "bg-background/30 border-border/30 text-foreground/50"}
                   ${isActive ? "scale-105 shadow-lg" : "hover:border-border/60 hover:text-foreground/70"}
                 `}
@@ -119,7 +119,7 @@ export const LoggerControl: React.FC<LoggerControlProps> = ({ className = "" }) 
                 <div
                   key={log.name}
                   className={`
-                  w-full px-2 py-1.5 rounded text-xs font-mono transition-all
+                  w-full px-2 py-1.5 rounded text-xs font-mono transition
                   ${
                     log.enabled
                       ? "bg-primary/10 border border-primary/30"
@@ -155,7 +155,7 @@ export const LoggerControl: React.FC<LoggerControlProps> = ({ className = "" }) 
                             key={level}
                             onClick={() => setLoggerLevel(log.name, level)}
                             className={`
-                            flex-1 px-1 py-0.5 text-[10px] rounded transition-all
+                            flex-1 px-1 py-0.5 text-[10px] rounded transition
                             ${isActive ? config.color : "bg-background/50 text-foreground/40 hover:text-foreground/60"}
                           `}
                             title={`${config.label}: ${config.description}`}

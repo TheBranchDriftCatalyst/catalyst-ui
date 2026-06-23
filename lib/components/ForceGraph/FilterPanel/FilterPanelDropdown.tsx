@@ -25,7 +25,7 @@ export const FilterPanelDropdown: React.FC<FilterPanelDropdownProps> = ({
       <select
         value={value}
         onChange={e => onChange(e.target.value)}
-        className="w-full px-2 py-1.5 bg-background/50 border border-primary/30 rounded text-foreground text-xs cursor-pointer outline-none appearance-none transition-all focus:border-primary focus:shadow-[0_0_0_2px_rgba(var(--primary-rgb),0.2)]"
+        className="w-full px-2 py-1.5 bg-background/50 border border-primary/30 rounded text-foreground text-xs cursor-pointer outline-none appearance-none transition focus:border-primary focus:shadow-[0_0_0_2px_rgba(var(--primary-rgb),0.2)]"
         style={{
           backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300D4FF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e")`,
           backgroundRepeat: "no-repeat",

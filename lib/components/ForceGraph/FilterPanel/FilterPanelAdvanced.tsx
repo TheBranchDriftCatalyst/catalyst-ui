@@ -25,7 +25,7 @@ export const FilterPanelAdvanced: React.FC<FilterPanelAdvancedProps> = ({
       <div className="flex flex-col gap-0.5">
         <button
           onClick={onToggleOrphanedOnly}
-          className={`w-full flex items-center gap-1.5 px-1.5 py-0.5 rounded transition-all text-[11px] ${
+          className={`w-full flex items-center gap-1.5 px-1.5 py-0.5 rounded transition text-[11px] ${
             filters.showOrphanedOnly ? "opacity-100" : "opacity-40 hover:opacity-70"
           }`}
         >
@@ -40,7 +40,7 @@ export const FilterPanelAdvanced: React.FC<FilterPanelAdvancedProps> = ({
 
         <button
           onClick={onToggleRunningOnly}
-          className={`w-full flex items-center gap-1.5 px-1.5 py-0.5 rounded transition-all text-[11px] ${
+          className={`w-full flex items-center gap-1.5 px-1.5 py-0.5 rounded transition text-[11px] ${
             filters.showRunningOnly ? "opacity-100" : "opacity-40 hover:opacity-70"
           }`}
         >
@@ -55,7 +55,7 @@ export const FilterPanelAdvanced: React.FC<FilterPanelAdvancedProps> = ({
 
         <button
           onClick={onToggleInUseOnly}
-          className={`w-full flex items-center gap-1.5 px-1.5 py-0.5 rounded transition-all text-[11px] ${
+          className={`w-full flex items-center gap-1.5 px-1.5 py-0.5 rounded transition text-[11px] ${
             filters.showInUseOnly ? "opacity-100" : "opacity-40 hover:opacity-70"
           }`}
         >

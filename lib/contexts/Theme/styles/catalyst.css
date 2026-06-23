@@ -111,7 +111,7 @@
     "Orbitron", "Arial Black", sans-serif; /* @token { "name": "Heading Font", "category": "Typography/Fonts" } */
   --font-body:
     "Rajdhani", "Inter", "Arial", sans-serif; /* @token { "name": "Body Font", "category": "Typography/Fonts" } */
-  --font-mono:
+  --font-mono-stack:
     "Space Mono", "Courier New", monospace; /* @token { "name": "Monospace Font", "category": "Typography/Fonts" } */
 
   /**
@@ -144,18 +144,48 @@
   --neon-yellow-rgb: 247, 202, 51; /* @token */
   --neon-gold-rgb: 230, 163, 51; /* @token */
 
+  /* CUI-w9i required tokens */
+  --primary-rgb: 24, 139, 139; /* @token { "name": "Primary RGB", "category": "Colors/RGB" } */
+  --accent-rgb: 232, 186, 217; /* @token { "name": "Accent RGB", "category": "Colors/RGB" } */
+  --chart-1: hsl(180, 70%, 32%); /* @token { "name": "Chart 1", "category": "Colors/Chart" } */
+  --chart-2: hsl(330, 100%, 55%); /* @token { "name": "Chart 2", "category": "Colors/Chart" } */
+  --chart-3: hsl(290, 80%, 55%); /* @token { "name": "Chart 3", "category": "Colors/Chart" } */
+  --chart-4: hsl(200, 100%, 55%); /* @token { "name": "Chart 4", "category": "Colors/Chart" } */
+  --chart-5: hsl(340, 90%, 60%); /* @token { "name": "Chart 5", "category": "Colors/Chart" } */
+  --chart-6: hsl(45, 95%, 60%); /* @token { "name": "Chart 6", "category": "Colors/Chart" } */
+  --chart-7: hsl(38, 90%, 55%); /* @token { "name": "Chart 7", "category": "Colors/Chart" } */
+  --chart-8: hsl(160, 70%, 40%); /* @token { "name": "Chart 8", "category": "Colors/Chart" } */
+  --chart-9: hsl(260, 60%, 55%); /* @token { "name": "Chart 9", "category": "Colors/Chart" } */
+  --chart-10: hsl(15, 80%, 55%); /* @token { "name": "Chart 10", "category": "Colors/Chart" } */
+  --chart-11: hsl(220, 60%, 50%); /* @token { "name": "Chart 11", "category": "Colors/Chart" } */
+  --chart-12: hsl(80, 60%, 45%); /* @token { "name": "Chart 12", "category": "Colors/Chart" } */
+  --scanline-opacity: 0.015; /* @token { "name": "Scanline Opacity", "category": "Effects/Scanline" } */
+  --scanline-color: rgba(
+    0,
+    153,
+    153,
+    var(--scanline-opacity)
+  ); /* @token { "name": "Scanline Color", "category": "Effects/Scanline" } */
+  --grid-opacity: 0.025; /* @token { "name": "Grid Opacity", "category": "Effects/Grid" } */
+  --grid-color: rgba(
+    0,
+    153,
+    153,
+    var(--grid-opacity)
+  ); /* @token { "name": "Grid Color", "category": "Effects/Grid" } */
+
   /**
    * @tokens Glow Effects
    * @presenter Shadow
    */
   /* Opulent synthwave glows - vibrant even in light */
   --glow-primary:
-    0 0 20px rgba(0, 180, 180, 0.35), 0 0 40px rgba(0, 180, 180, 0.15); /* @token { "name": "Primary Glow", "category": "Effects/Glow" } */
+    0 0 20px rgba(var(--neon-cyan-rgb), 0.35), 0 0 40px rgba(var(--neon-cyan-rgb), 0.15); /* @token { "name": "Primary Glow", "category": "Effects/Glow" } */
   --glow-secondary:
-    0 0 20px rgba(192, 38, 211, 0.4), 0 0 40px rgba(192, 38, 211, 0.2); /* @token { "name": "Secondary Glow", "category": "Effects/Glow" } */
-  --glow-accent: 0 0 15px rgba(255, 110, 199, 0.3); /* @token { "name": "Accent Glow", "category": "Effects/Glow" } */
+    0 0 20px rgba(var(--neon-purple-rgb), 0.4), 0 0 40px rgba(var(--neon-purple-rgb), 0.2); /* @token { "name": "Secondary Glow", "category": "Effects/Glow" } */
+  --glow-accent: 0 0 15px rgba(var(--neon-pink-rgb), 0.3); /* @token { "name": "Accent Glow", "category": "Effects/Glow" } */
   --glow-hover:
-    0 0 25px rgba(192, 38, 211, 0.5), 0 0 50px rgba(192, 38, 211, 0.25); /* @token { "name": "Hover Glow", "category": "Effects/Glow" } */
+    0 0 25px rgba(var(--neon-purple-rgb), 0.5), 0 0 50px rgba(var(--neon-purple-rgb), 0.25); /* @token { "name": "Hover Glow", "category": "Effects/Glow" } */
 
   /**
    * @tokens Neon Shadows
@@ -163,11 +193,11 @@
    */
   /* Luxurious shadows with color */
   --shadow-neon-sm:
-    0 2px 8px rgba(192, 38, 211, 0.15), 0 4px 16px rgba(0, 180, 180, 0.1); /* @token { "name": "Small Neon Shadow", "category": "Effects/Shadows" } */
+    0 2px 8px rgba(var(--neon-purple-rgb), 0.15), 0 4px 16px rgba(var(--neon-cyan-rgb), 0.1); /* @token { "name": "Small Neon Shadow", "category": "Effects/Shadows" } */
   --shadow-neon-md:
-    0 4px 16px rgba(192, 38, 211, 0.2), 0 8px 32px rgba(0, 180, 180, 0.12); /* @token { "name": "Medium Neon Shadow", "category": "Effects/Shadows" } */
+    0 4px 16px rgba(var(--neon-purple-rgb), 0.2), 0 8px 32px rgba(var(--neon-cyan-rgb), 0.12); /* @token { "name": "Medium Neon Shadow", "category": "Effects/Shadows" } */
   --shadow-neon-lg:
-    0 8px 24px rgba(192, 38, 211, 0.25), 0 16px 48px rgba(0, 180, 180, 0.15); /* @token { "name": "Large Neon Shadow", "category": "Effects/Shadows" } */
+    0 8px 24px rgba(var(--neon-purple-rgb), 0.25), 0 16px 48px rgba(var(--neon-cyan-rgb), 0.15); /* @token { "name": "Large Neon Shadow", "category": "Effects/Shadows" } */
 }
 
 .theme-catalyst.dark {
@@ -253,7 +283,11 @@
   --neon-blue: #00d4ff; /* @token { "name": "Dark Neon Blue", "category": "Dark/Colors/Neon" } */
   --neon-red: #ff2975; /* @token { "name": "Dark Neon Red", "category": "Dark/Colors/Neon" } */
   --neon-yellow: #fbbf24; /* @token { "name": "Dark Neon Yellow", "category": "Dark/Colors/Neon" } */
-  --neon-gold: hsl(38, 95%, 52%); /* @token { "name": "Dark Neon Gold", "category": "Dark/Colors/Neon" } */
+  --neon-gold: hsl(
+    38,
+    95%,
+    52%
+  ); /* @token { "name": "Dark Neon Gold", "category": "Dark/Colors/Neon" } */
 
   /* RGB triplets for alpha-compositing */
   --neon-cyan-rgb: 0, 252, 214; /* @token */
@@ -264,18 +298,39 @@
   --neon-yellow-rgb: 251, 191, 36; /* @token */
   --neon-gold-rgb: 247, 170, 26; /* @token */
 
+  /* CUI-w9i required tokens */
+  --radius: 0.5rem; /* @token { "name": "Dark Base Radius", "category": "Dark/Spacing/Radius" } */
+  --primary-rgb:
+    0, 252, 214; /* @token { "name": "Dark Primary RGB", "category": "Dark/Colors/RGB" } */
+  --accent-rgb:
+    30, 30, 36; /* @token { "name": "Dark Accent RGB", "category": "Dark/Colors/RGB" } */
+  --chart-1: #00fcd6; /* @token { "name": "Dark Chart 1", "category": "Dark/Colors/Chart" } */
+  --chart-2: #ff6ec7; /* @token { "name": "Dark Chart 2", "category": "Dark/Colors/Chart" } */
+  --chart-3: #c026d3; /* @token { "name": "Dark Chart 3", "category": "Dark/Colors/Chart" } */
+  --chart-4: #00d4ff; /* @token { "name": "Dark Chart 4", "category": "Dark/Colors/Chart" } */
+  --chart-5: #ff2975; /* @token { "name": "Dark Chart 5", "category": "Dark/Colors/Chart" } */
+  --chart-6: #fbbf24; /* @token { "name": "Dark Chart 6", "category": "Dark/Colors/Chart" } */
+  --chart-7: #f7aa1a; /* @token { "name": "Dark Chart 7", "category": "Dark/Colors/Chart" } */
+  --chart-8: #14b8a6; /* @token { "name": "Dark Chart 8", "category": "Dark/Colors/Chart" } */
+  --chart-9: #a855f7; /* @token { "name": "Dark Chart 9", "category": "Dark/Colors/Chart" } */
+  --chart-10: #f97316; /* @token { "name": "Dark Chart 10", "category": "Dark/Colors/Chart" } */
+  --chart-11: #3b82f6; /* @token { "name": "Dark Chart 11", "category": "Dark/Colors/Chart" } */
+  --chart-12: #84cc16; /* @token { "name": "Dark Chart 12", "category": "Dark/Colors/Chart" } */
+  --shadow-base-rgb:
+    0, 0, 0; /* @token { "name": "Shadow Base", "category": "Dark/Effects/Shadows" } */
+
   /**
    * @tokens Dark Glow Effects
    * @presenter Shadow
    */
   /* Professional cyberpunk glow effects - subtle but noticeable */
   --glow-primary:
-    0 0 15px rgba(0, 252, 214, 0.4), 0 0 30px rgba(0, 252, 214, 0.2); /* @token { "name": "Dark Primary Glow", "category": "Dark/Effects/Glow" } */
+    0 0 15px rgba(var(--neon-cyan-rgb), 0.4), 0 0 30px rgba(var(--neon-cyan-rgb), 0.2); /* @token { "name": "Dark Primary Glow", "category": "Dark/Effects/Glow" } */
   --glow-secondary:
-    0 0 15px rgba(192, 38, 211, 0.35), 0 0 30px rgba(192, 38, 211, 0.15); /* @token { "name": "Dark Secondary Glow", "category": "Dark/Effects/Glow" } */
-  --glow-accent: 0 0 10px rgba(0, 252, 214, 0.25); /* @token { "name": "Dark Accent Glow", "category": "Dark/Effects/Glow" } */
+    0 0 15px rgba(var(--neon-purple-rgb), 0.35), 0 0 30px rgba(var(--neon-purple-rgb), 0.15); /* @token { "name": "Dark Secondary Glow", "category": "Dark/Effects/Glow" } */
+  --glow-accent: 0 0 10px rgba(var(--neon-cyan-rgb), 0.25); /* @token { "name": "Dark Accent Glow", "category": "Dark/Effects/Glow" } */
   --glow-hover:
-    0 0 20px rgba(0, 252, 214, 0.5), 0 0 40px rgba(0, 252, 214, 0.25); /* @token { "name": "Dark Hover Glow", "category": "Dark/Effects/Glow" } */
+    0 0 20px rgba(var(--neon-cyan-rgb), 0.5), 0 0 40px rgba(var(--neon-cyan-rgb), 0.25); /* @token { "name": "Dark Hover Glow", "category": "Dark/Effects/Glow" } */
 
   /**
    * @tokens Dark Neon Shadows
@@ -283,12 +338,13 @@
    */
   /* Neon shadows for depth */
   --shadow-neon-sm:
-    0 2px 10px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 252, 214, 0.15); /* @token { "name": "Dark Small Neon Shadow", "category": "Dark/Effects/Shadows" } */
+    0 2px 10px rgba(var(--shadow-base-rgb), 0.3), 0 0 10px rgba(var(--neon-cyan-rgb), 0.15); /* @token { "name": "Dark Small Neon Shadow", "category": "Dark/Effects/Shadows" } */
   --shadow-neon-md:
-    0 4px 20px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 252, 214, 0.2), 0 0 40px rgba(192, 38, 211, 0.1); /* @token { "name": "Dark Medium Neon Shadow", "category": "Dark/Effects/Shadows" } */
+    0 4px 20px rgba(var(--shadow-base-rgb), 0.4), 0 0 20px rgba(var(--neon-cyan-rgb), 0.2),
+    0 0 40px rgba(var(--neon-purple-rgb), 0.1); /* @token { "name": "Dark Medium Neon Shadow", "category": "Dark/Effects/Shadows" } */
   --shadow-neon-lg:
-    0 8px 30px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 252, 214, 0.3),
-    0 0 60px rgba(192, 38, 211, 0.15); /* @token { "name": "Dark Large Neon Shadow", "category": "Dark/Effects/Shadows" } */
+    0 8px 30px rgba(var(--shadow-base-rgb), 0.5), 0 0 30px rgba(var(--neon-cyan-rgb), 0.3),
+    0 0 60px rgba(var(--neon-purple-rgb), 0.15); /* @token { "name": "Dark Large Neon Shadow", "category": "Dark/Effects/Shadows" } */
 
   /**
    * @tokens Dark Effects
@@ -297,9 +353,7 @@
   /* Scanline subtlety */
   --scanline-opacity: 0.02; /* @token { "name": "Scanline Opacity", "category": "Dark/Effects/Scanline" } */
   --scanline-color: rgba(
-    0,
-    252,
-    214,
+    var(--neon-cyan-rgb),
     var(--scanline-opacity)
   ); /* @token { "name": "Scanline Color", "category": "Dark/Effects/Scanline" } */
 
@@ -310,9 +364,7 @@
   /* Grid pattern */
   --grid-opacity: 0.04; /* @token { "name": "Grid Opacity", "category": "Dark/Effects/Grid" } */
   --grid-color: rgba(
-    0,
-    252,
-    214,
+    var(--neon-cyan-rgb),
     var(--grid-opacity)
   ); /* @token { "name": "Grid Color", "category": "Dark/Effects/Grid" } */
 
@@ -325,7 +377,7 @@
     "Orbitron", "Arial Black", sans-serif; /* @token { "name": "Heading Font", "category": "Typography/Fonts" } */
   --font-body:
     "Rajdhani", "Inter", "Arial", sans-serif; /* @token { "name": "Body Font", "category": "Typography/Fonts" } */
-  --font-mono:
+  --font-mono-stack:
     "Space Mono", "Courier New", monospace; /* @token { "name": "Monospace Font", "category": "Typography/Fonts" } */
 }
 

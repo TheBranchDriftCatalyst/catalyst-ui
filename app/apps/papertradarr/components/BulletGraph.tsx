@@ -125,7 +125,7 @@ export function BulletGraph({
 
         {/* Value bar (foreground) */}
         <div
-          className={cn("absolute inset-y-0 left-0 transition-all duration-300", colors.value)}
+          className={cn("absolute inset-y-0 left-0 transition duration-300", colors.value)}
           style={{ width: `${valuePercent}%` }}
         />
 

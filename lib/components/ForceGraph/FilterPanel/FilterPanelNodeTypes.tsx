@@ -27,7 +27,7 @@ export const FilterPanelNodeTypes: React.FC<FilterPanelNodeTypesProps> = ({
             <button
               key={kind}
               onClick={() => onToggle(kind)}
-              className={`w-full flex items-center gap-1.5 px-1.5 py-0.5 rounded transition-all text-[11px] ${
+              className={`w-full flex items-center gap-1.5 px-1.5 py-0.5 rounded transition text-[11px] ${
                 isVisible ? "opacity-100" : "opacity-40 hover:opacity-70"
               }`}
             >

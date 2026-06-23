@@ -66,10 +66,7 @@ const AnimatedFlipComponent = React.forwardRef<HTMLDivElement, AnimatedFlipProps
     // Only use automatic triggers if component is uncontrolled
     const isControlled = controlledIsFlipped !== undefined;
 
-    const { handleMouseEnter, handleMouseLeave, handleClick } = useAnimationTriggers(
-      trigger,
-      setIsFlipped
-    );
+    const { triggerProps } = useAnimationTriggers(trigger, setIsFlipped);
 
     // Respect user's motion preferences - disable animation if preferred
     const effectiveDuration = prefersReducedMotion ? 0 : duration;
@@ -116,6 +113,9 @@ const AnimatedFlipComponent = React.forwardRef<HTMLDivElement, AnimatedFlipProps
       onClick: _propsOnClick,
       onMouseEnter: _propsOnMouseEnter,
       onMouseLeave: _propsOnMouseLeave,
+      onKeyDown: _propsOnKeyDown,
+      onFocus: _propsOnFocus,
+      onBlur: _propsOnBlur,
       ...restProps
     } = props;
 
@@ -123,13 +123,11 @@ const AnimatedFlipComponent = React.forwardRef<HTMLDivElement, AnimatedFlipProps
       ref,
       className,
       style: containerStyle,
+      "aria-expanded": isFlipped,
       ...restProps,
-      // Only attach handlers when UNcontrolled
-      ...(!isControlled && {
-        onMouseEnter: handleMouseEnter,
-        onMouseLeave: handleMouseLeave,
-        onClick: handleClick,
-      }),
+      // Only attach handlers when UNcontrolled. triggerProps provides full a11y:
+      // mouse handlers, keyboard handlers (Enter/Space), focus/blur, tabIndex, role.
+      ...(!isControlled && triggerProps),
       // When controlled, explicitly block all mouse events
       ...(isControlled && {
         onClick: (e: React.MouseEvent) => e.stopPropagation(),
@@ -149,13 +147,13 @@ const AnimatedFlipComponent = React.forwardRef<HTMLDivElement, AnimatedFlipProps
     return (
       <div {...containerProps}>
         <div style={flipperStyle}>
-          {/* Front Face */}
-          <div style={frontFaceStyle} onClick={handleContentClick}>
+          {/* Front Face - hidden from a11y tree when flipped */}
+          <div style={frontFaceStyle} onClick={handleContentClick} aria-hidden={isFlipped}>
             {front}
           </div>
 
-          {/* Back Face */}
-          <div style={backFaceStyle} onClick={handleContentClick}>
+          {/* Back Face - hidden from a11y tree when not flipped */}
+          <div style={backFaceStyle} onClick={handleContentClick} aria-hidden={!isFlipped}>
             {back}
           </div>
         </div>

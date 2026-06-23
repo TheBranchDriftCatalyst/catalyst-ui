@@ -89,7 +89,7 @@ export function AnnotationPanel({ open, onOpenChange }: AnnotationPanelProps) {
       <SheetContent
         side="bottom"
         className={cn(
-          "overflow-y-auto transition-all duration-300",
+          "overflow-y-auto transition duration-300",
           inspectorActive ? "h-[15vh]" : "h-[80vh]"
         )}
       >

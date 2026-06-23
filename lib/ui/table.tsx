@@ -41,7 +41,7 @@ const TableFooter = React.forwardRef<
 ));
 TableFooter.displayName = "TableFooter";
 
-const tableRowVariants = cva("border-b transition-all duration-200", {
+const tableRowVariants = cva("border-b transition duration-200", {
   variants: {
     interactive: {
       true: "hover:bg-muted/50 hover:shadow-sm hover:scale-[1.005]",

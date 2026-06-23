@@ -101,7 +101,7 @@ export function SidebarNav({
         style={{ animationDelay: `${index * 30}ms` }}
         className={cn(
           "group relative w-full text-left px-3 py-2.5 text-sm font-medium rounded-md overflow-hidden",
-          "transition-all duration-300 ease-out",
+          "transition-[width,colors,box-shadow,transform,opacity,border-color] duration-300 ease-out",
           "hover:translate-x-0.5",
           isActive
             ? "text-foreground bg-gradient-to-r from-primary/20 to-primary/5"
@@ -164,7 +164,7 @@ export function SidebarNav({
       <aside
         className={cn(
           "hidden md:block border-r border-primary/10 bg-card/95 backdrop-blur-md relative group/sidebar",
-          "transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
+          "transition-[width,colors,box-shadow,transform,opacity,border-color] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",
           "shadow-[2px_0_20px_rgba(var(--primary-rgb),0.1)]",
           open ? "w-60" : isPeeking ? "w-16" : "w-0 overflow-hidden",
           className
@@ -185,7 +185,7 @@ export function SidebarNav({
                   // Keep the button visible when hovering over it
                   e.currentTarget.style.opacity = "1";
                 }}
-                className="group relative h-16 w-4 rounded-r-full transition-all duration-300 bg-card/80 backdrop-blur-sm border-y border-r border-primary/20 hover:w-5 hover:border-primary/50 shadow-lg opacity-0 group-hover/sidebar:opacity-100"
+                className="group relative h-16 w-4 rounded-r-full transition-[width,colors,box-shadow,transform,opacity,border-color] duration-300 bg-card/80 backdrop-blur-sm border-y border-r border-primary/20 hover:w-5 hover:border-primary/50 shadow-lg opacity-0 group-hover/sidebar:opacity-100"
                 title="Close sidebar"
               >
                 <div className="absolute inset-0 rounded-r-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_0_12px_rgba(var(--primary-rgb),0.4)]" />
@@ -206,7 +206,7 @@ export function SidebarNav({
           <div className="h-full flex items-center justify-center p-2 animate-in fade-in-0 zoom-in-95 duration-200">
             <button
               onClick={() => onOpenChange(true)}
-              className="group relative h-16 w-4 rounded-l-full transition-all duration-300 bg-card/80 backdrop-blur-sm border-y border-l border-primary/20 hover:w-5 hover:border-primary/50 shadow-lg"
+              className="group relative h-16 w-4 rounded-l-full transition-[width,colors,box-shadow,transform,opacity,border-color] duration-300 bg-card/80 backdrop-blur-sm border-y border-l border-primary/20 hover:w-5 hover:border-primary/50 shadow-lg"
               title="Open sidebar"
             >
               <div className="absolute inset-0 rounded-l-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_0_12px_rgba(var(--primary-rgb),0.4)]" />
@@ -231,7 +231,7 @@ export function SidebarNav({
           <div
             className={cn(
               "relative w-1 h-20 bg-gradient-to-b from-transparent via-primary/40 to-transparent rounded-r-full",
-              "transition-all duration-500",
+              "transition-[width,colors,box-shadow,transform,opacity,border-color] duration-500",
               "hover:w-1.5 hover:via-primary/70 hover:shadow-[0_0_10px_rgba(var(--primary-rgb),0.5)]",
               "before:absolute before:inset-0 before:bg-primary/20 before:rounded-r-full before:animate-pulse"
             )}
@@ -244,9 +244,9 @@ export function SidebarNav({
         <div className="md:hidden fixed left-0 top-1/2 -translate-y-1/2 z-10 animate-in fade-in-0 slide-in-from-left-2 duration-500">
           <button
             onClick={() => onOpenChange(true)}
-            className="group relative h-20 w-6 rounded-r-lg bg-card/80 backdrop-blur-sm border-y border-r border-primary/20 shadow-lg transition-all duration-300 hover:w-8 hover:border-primary/50"
+            className="group relative h-20 w-6 rounded-r-lg bg-card/80 backdrop-blur-sm border-y border-r border-primary/20 shadow-lg transition-[width,colors,box-shadow,transform,opacity,border-color] duration-300 hover:w-8 hover:border-primary/50"
           >
-            <ChevronRight className="h-4 w-4 mx-auto text-muted-foreground group-hover:text-primary transition-all duration-300" />
+            <ChevronRight className="h-4 w-4 mx-auto text-muted-foreground group-hover:text-primary transition-[width,colors,box-shadow,transform,opacity,border-color] duration-300" />
             <div className="absolute inset-0 rounded-r-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-[0_0_15px_rgba(var(--primary-rgb),0.4)]" />
             {/* Pulsing indicator dots */}
             <div className="absolute right-1 top-1/2 -translate-y-1/2 flex flex-col gap-1">

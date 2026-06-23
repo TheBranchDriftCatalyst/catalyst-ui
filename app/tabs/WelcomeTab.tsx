@@ -153,7 +153,7 @@ export function WelcomeTab() {
             <Button
               size="lg"
               onClick={handleNavigateToComponents}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/50 hover:shadow-xl hover:shadow-primary/60 transition-all"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/50 hover:shadow-xl hover:shadow-primary/60 transition"
             >
               Explore Components
               <ExternalLink className="ml-2 h-4 w-4" />
@@ -163,7 +163,7 @@ export function WelcomeTab() {
               size="lg"
               variant="outline"
               onClick={handleGitHub}
-              className="border-border hover:border-primary hover:text-primary transition-all"
+              className="border-border hover:border-primary hover:text-primary transition"
             >
               <Github className="mr-2 h-4 w-4" />
               View on GitHub
@@ -199,7 +199,7 @@ export function WelcomeTab() {
           >
             {mockUpdates.map((update, index) => (
               <motion.div key={update.id} variants={fadeIn("up", "spring", index * 0.1, 0.75)}>
-                <Card className="group border-border hover:border-primary/50 transition-all duration-300 bg-card/50 backdrop-blur-sm">
+                <Card className="group border-border hover:border-primary/50 transition duration-300 bg-card/50 backdrop-blur-sm">
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4">
                       {/* Icon */}
