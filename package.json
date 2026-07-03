@@ -36,6 +36,38 @@
       "types": "./dist/lib/effects/*.d.ts",
       "import": "./dist/lib/effects/*.js"
     },
+    "./llm": {
+      "types": "./lib/llm/index.ts",
+      "import": "./lib/llm/index.ts"
+    },
+    "./llm/config": {
+      "types": "./lib/llm/config/index.ts",
+      "import": "./lib/llm/config/index.ts"
+    },
+    "./llm/components": {
+      "types": "./lib/llm/components/index.ts",
+      "import": "./lib/llm/components/index.ts"
+    },
+    "./llm/agent": {
+      "types": "./lib/llm/agent/index.ts",
+      "import": "./lib/llm/agent/index.ts"
+    },
+    "./llm/client": {
+      "types": "./lib/llm/client/index.ts",
+      "import": "./lib/llm/client/index.ts"
+    },
+    "./llm/react": {
+      "types": "./lib/llm/react/index.ts",
+      "import": "./lib/llm/react/index.ts"
+    },
+    "./llm/dev": {
+      "types": "./lib/llm/dev/index.ts",
+      "import": "./lib/llm/dev/index.ts"
+    },
+    "./llm/*": {
+      "types": "./lib/llm/*",
+      "import": "./lib/llm/*"
+    },
     "./themes/*": "./dist/themes/*.css",
     "./styles/*": "./dist/contexts/Theme/styles/*.css",
     "./styles/effects/*": "./dist/contexts/Theme/styles/effects/*.css"

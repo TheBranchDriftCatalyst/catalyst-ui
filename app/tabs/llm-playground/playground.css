@@ -1,0 +1,42 @@
+/* LLM Playground — additive styles only.
+ *
+ * The playground originally shipped its own Tailwind + theme setup. Now
+ * that it's embedded inside catalyst-ui's demo app, we DROP all of that
+ * (Tailwind is already loaded via the app's global.css, theme vars come
+ * from ThemeProvider on <html>). Everything below is genuinely additive:
+ * Orbitron/Rajdhani/Space-Mono font-face registrations + playground-only
+ * component styles (streaming cursor, gradient headings, tab underline).
+ */
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap");
+
+.theme-catalyst.dark h1,
+.theme-catalyst.dark h2,
+.theme-catalyst.dark h3 {
+  background: linear-gradient(
+    135deg,
+    var(--neon-cyan) 0%,
+    var(--neon-purple) 50%,
+    var(--neon-cyan) 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.streaming-cursor::after {
+  content: "\25AE";
+  animation: llm-playground-blink 1s infinite;
+  color: var(--primary);
+}
+
+@keyframes llm-playground-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}

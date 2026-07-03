@@ -5,6 +5,7 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import yamlPlugin from "@rollup/plugin-yaml";
 import concatDocsPlugin from "./build/vite-plugin-concat-docs";
+import tabsManifestPlugin from "./build/vite-plugin-tabs-manifest";
 import { execSync } from "child_process";
 import { readFileSync } from "fs";
 
@@ -43,11 +44,31 @@ export default defineConfig({
     react(),
     tailwindcss(),
     yamlPlugin(),
+    // Auto-discover tabs in app/tabs/*Tab.tsx and regenerate
+    // .tabs.manifest.yaml on dev-server start + file change. Was
+    // previously present-but-unregistered (op-css-scan follow-up).
+    tabsManifestPlugin(),
     tsconfigPaths({
       projects: [resolve(__dirname, "tsconfig.json")],
     }),
   ],
   server: {
+    // LLM Playground tab wraps its client tree in <LLMConfigProvider>
+    // which fetches /api/llm/config. When the operator is running,
+    // proxy this dev server's /api → operator:9090 so the playground
+    // reports source: 'operator' and picks up the yaml file's values.
+    // Set VITE_OPERATOR_URL to point at a different operator instance
+    // (empty/unset = no proxy = standalone with defaults banner).
+    proxy:
+      process.env.VITE_OPERATOR_URL !== ""
+        ? {
+            "/api": {
+              target: process.env.VITE_OPERATOR_URL || "http://localhost:9090",
+              changeOrigin: true,
+              ws: true,
+            },
+          }
+        : undefined,
     watch: {
       // Ignore generated files and annotation syncs to prevent excessive HMR
       ignored: [
