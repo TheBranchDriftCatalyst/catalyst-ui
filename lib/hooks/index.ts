@@ -1,5 +1,7 @@
 export * from "./useA11yError";
 export * from "./useAnimationTriggers";
+export * from "./useAsyncOp";
+export * from "./useConfirmAction";
 export * from "./useControllableState";
 export * from "./useDynamicImport";
 export * from "./useEventTracking";
@@ -8,4 +10,5 @@ export * from "./useLoggerControl";
 export * from "./usePageTracking";
 export * from "./usePerformanceTracking";
 export * from "./usePrefersReducedMotion";
+export * from "./useSmartCursorPosition";
 export * from "./useWebVitals";
