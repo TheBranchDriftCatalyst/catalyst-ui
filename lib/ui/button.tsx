@@ -31,6 +31,15 @@ const buttonVariants = cva(
         icon: "h-10 w-10 rounded",
         "icon-sm": "h-8 w-8 rounded",
         "icon-lg": "h-12 w-12 rounded",
+        // Compact micro variant — for dense operator surfaces (roster
+        // rows, service-control lists, table action columns) where
+        // ``sm`` is still too tall to hold the row rhythm. Uppercase
+        // tracking + 9px chrome matches the terminal-editorial aesthetic
+        // the operator uses for §-panels. Rounded-sm rather than the
+        // ``sm``'s rounded-md so the corners read as inline chip
+        // affordances rather than pill buttons.
+        micro:
+          "h-6 rounded-sm px-1.5 text-[9px] uppercase tracking-[0.18em] font-mono gap-1 [&_svg]:size-2.5",
       },
     },
     defaultVariants: {
