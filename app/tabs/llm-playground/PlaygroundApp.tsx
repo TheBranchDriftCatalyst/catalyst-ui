@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Settings2, TriangleAlert } from "lucide-react";
 import { CatalystAgentClient, CatalystLLMClient, LLMProvider } from "@/catalyst-ui/llm";
+import { notifyError, notifySuccess } from "@/catalyst-ui/ui/notify";
 import { LLMConfigProvider, useLLMConfig, type LLMConfig } from "@/catalyst-ui/llm/config";
 import { Header } from "./nav/Header.js";
 import { useRoute } from "./nav/useRoute.js";
@@ -116,7 +117,16 @@ function SettingsRow() {
                   localStorage.setItem(LS_LITELLM_URL, draft.litellmUrl);
                   localStorage.setItem(LS_LITELLM_KEY, draft.litellmKey);
                   localStorage.setItem(LS_AGENT_URL, draft.agentUrl);
-                } catch {}
+                  notifySuccess(
+                    "backend saved",
+                    `litellm=${safeHost(draft.litellmUrl)} · agent=${safeHost(draft.agentUrl)}`
+                  );
+                } catch (err) {
+                  notifyError(
+                    "localStorage write failed",
+                    err instanceof Error ? err.message : String(err)
+                  );
+                }
                 setOpen(false);
                 void reload();
               }}

@@ -22,6 +22,7 @@ import {
 import { Send, Square, ImageIcon } from "lucide-react";
 import { Button } from "@thebranchdriftcatalyst/catalyst-ui/ui/button";
 import { Textarea } from "@thebranchdriftcatalyst/catalyst-ui/ui/textarea";
+import { notifyError } from "@thebranchdriftcatalyst/catalyst-ui/ui/notify";
 import { useChatStore, type Chat } from "../../react/chat/index.js";
 import { useModels } from "../../react/hooks.js";
 import { PromptPresets } from "../prompts/PromptPresets.js";
@@ -84,8 +85,18 @@ export function ChatComposer({
     const message = input.trim();
     if (!message || chat.isStreaming || !chat.model) return;
     setInput("");
-    if (onSend) await onSend(chat.id, message);
-    else await sendMessage(chat.id, message);
+    // op-ehuc: send used to be a bare await — if onSend threw (agent
+    // returned 500, network dropped mid-turn, etc.) the user saw the
+    // input clear + no reply, and had to open devtools to know what
+    // failed. Now surfaces via the shared toast pipeline so the corner
+    // shows a real error. Streaming state clears via the store's own
+    // error handling; this catch is just for the pre-stream boundary.
+    try {
+      if (onSend) await onSend(chat.id, message);
+      else await sendMessage(chat.id, message);
+    } catch (err) {
+      notifyError("send failed", err instanceof Error ? err.message : String(err));
+    }
   };
 
   const handleKeyDown = (e: ReactKeyboardEvent<HTMLTextAreaElement>) => {
