@@ -142,8 +142,6 @@
     "three": "^0.180.0"
   },
   "devDependencies": {
-    "@react-three/drei": "^10.7.6",
-    "@react-three/fiber": "^9.4.0",
     "@axe-core/react": "^4.10.2",
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
@@ -151,6 +149,8 @@
     "@napi-rs/canvas": "^0.1.80",
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-slider": "^1.1.2",
+    "@react-three/drei": "^10.7.6",
+    "@react-three/fiber": "^9.4.0",
     "@rollup/plugin-yaml": "^4.1.2",
     "@storybook/addon-a11y": "9.1.10",
     "@storybook/addon-coverage": "^2.0.0",
@@ -190,8 +190,8 @@
     "eslint": "^9.3.0",
     "eslint-plugin-react-hooks": "^6.1.0",
     "eslint-plugin-react-refresh": "^0.4.7",
-    "framer-motion": "^12.23.24",
     "eslint-plugin-storybook": "^9.1.10",
+    "framer-motion": "^12.23.24",
     "glob": "^11.0.3",
     "husky": "^9.1.7",
     "jest-axe": "^10.0.0",
@@ -206,9 +206,9 @@
     "react-dom": "^19.0.0",
     "react-scan": "^0.4.3",
     "react-test-renderer": "^19.0.0",
+    "shiki": "^3.13.0",
     "standard-version": "^9.5.0",
     "storybook": "9.1.10",
-    "shiki": "^3.13.0",
     "storybook-design-token": "^4.1.0",
     "tailwindcss": "^4.1.14",
     "tailwindcss-animate": "^1.0.7",
@@ -249,6 +249,7 @@
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-menubar": "^1.1.16",
     "@radix-ui/react-navigation-menu": "^1.1.4",
+    "@radix-ui/react-popover": "^1.1.18",
     "@radix-ui/react-progress": "^1.1.7",
     "@radix-ui/react-radio-group": "^1.2.0",
     "@radix-ui/react-scroll-area": "^1.2.10",
@@ -275,5 +276,12 @@
     "unified": "^11.0.5",
     "web-vitals": "^5.1.0",
     "zod": "^4.0.0"
+  },
+  "optionalDependencies": {
+    "@duckdb/duckdb-wasm": "^1.33.1-dev57.0",
+    "diff": "^9.0.0",
+    "eventsource-parser": "^3.1.0",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0"
   }
 }
