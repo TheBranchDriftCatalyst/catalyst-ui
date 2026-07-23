@@ -37,36 +37,36 @@
       "import": "./dist/lib/effects/*.js"
     },
     "./llm": {
-      "types": "./lib/llm/index.ts",
-      "import": "./lib/llm/index.ts"
+      "types": "./dist/lib/llm/index.d.ts",
+      "import": "./dist/lib/llm/index.js"
     },
     "./llm/config": {
-      "types": "./lib/llm/config/index.ts",
-      "import": "./lib/llm/config/index.ts"
+      "types": "./dist/lib/llm/config/index.d.ts",
+      "import": "./dist/lib/llm/config/index.js"
     },
     "./llm/components": {
-      "types": "./lib/llm/components/index.ts",
-      "import": "./lib/llm/components/index.ts"
+      "types": "./dist/lib/llm/components/index.d.ts",
+      "import": "./dist/lib/llm/components/index.js"
     },
     "./llm/agent": {
-      "types": "./lib/llm/agent/index.ts",
-      "import": "./lib/llm/agent/index.ts"
+      "types": "./dist/lib/llm/agent/index.d.ts",
+      "import": "./dist/lib/llm/agent/index.js"
     },
     "./llm/client": {
-      "types": "./lib/llm/client/index.ts",
-      "import": "./lib/llm/client/index.ts"
+      "types": "./dist/lib/llm/client/index.d.ts",
+      "import": "./dist/lib/llm/client/index.js"
     },
     "./llm/react": {
-      "types": "./lib/llm/react/index.ts",
-      "import": "./lib/llm/react/index.ts"
+      "types": "./dist/lib/llm/react/index.d.ts",
+      "import": "./dist/lib/llm/react/index.js"
     },
     "./llm/dev": {
-      "types": "./lib/llm/dev/index.ts",
-      "import": "./lib/llm/dev/index.ts"
+      "types": "./dist/lib/llm/dev/index.d.ts",
+      "import": "./dist/lib/llm/dev/index.js"
     },
     "./llm/*": {
-      "types": "./lib/llm/*",
-      "import": "./lib/llm/*"
+      "types": "./dist/lib/llm/*.d.ts",
+      "import": "./dist/lib/llm/*.js"
     },
     "./themes/*": "./dist/themes/*.css",
     "./styles/*": "./dist/contexts/Theme/styles/*.css",
