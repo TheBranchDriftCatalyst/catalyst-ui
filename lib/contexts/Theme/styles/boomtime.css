@@ -1,0 +1,239 @@
+/*
+ * boomtime — SYNTHWAVE / OUTRUN palette.
+ *
+ * Neon magenta primary + electric cyan accent on a deep-violet base. Ported
+ * from the standalone boomtime web app to keep its visual identity intact
+ * while consuming catalyst-ui's ThemeProvider + primitives. Includes the
+ * atmospheric body backdrop and neon-halo utility rules that give the theme
+ * its "Miami-at-night" feel.
+ */
+
+.theme-boomtime.light {
+  /* Base tokens */
+  --background: oklch(0.99 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.58 0.19 255);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.58 0.19 255);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.58 0.19 255);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.58 0.19 255);
+  --radius: 0.65rem;
+
+  /* Extended palette (matches boomtime's blue-lean light theme) */
+  --neon-cyan: oklch(0.7 0.15 200);
+  --neon-pink: oklch(0.65 0.25 350);
+  --neon-purple: oklch(0.5 0.25 300);
+  --neon-blue: oklch(0.58 0.19 255);
+  --neon-red: oklch(0.6 0.25 25);
+  --neon-yellow: oklch(0.85 0.17 90);
+  --neon-gold: oklch(0.75 0.16 75);
+  --neon-cyan-rgb: 0, 168, 190;
+  --neon-pink-rgb: 217, 40, 145;
+  --neon-purple-rgb: 133, 42, 199;
+  --neon-blue-rgb: 24, 96, 214;
+  --neon-red-rgb: 218, 50, 60;
+  --neon-yellow-rgb: 240, 195, 33;
+  --neon-gold-rgb: 208, 165, 47;
+  --primary-rgb: 24, 96, 214;
+  --accent-rgb: 240, 240, 240;
+
+  /* Chart palette */
+  --chart-1: oklch(0.58 0.19 255);
+  --chart-2: oklch(0.7 0.15 200);
+  --chart-3: oklch(0.65 0.25 350);
+  --chart-4: oklch(0.5 0.25 300);
+  --chart-5: oklch(0.85 0.17 90);
+  --chart-6: oklch(0.6 0.25 25);
+  --chart-7: oklch(0.75 0.16 75);
+  --chart-8: oklch(0.65 0.18 160);
+  --chart-9: oklch(0.55 0.2 320);
+  --chart-10: oklch(0.7 0.2 40);
+  --chart-11: oklch(0.6 0.15 220);
+  --chart-12: oklch(0.7 0.15 130);
+
+  /* Typography — boomtime uses system font stacks */
+  --font-heading: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono-stack: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+
+  /* Effect tokens — restrained in light mode */
+  --glow-primary: 0 0 0 rgba(0, 0, 0, 0);
+  --glow-secondary: 0 0 0 rgba(0, 0, 0, 0);
+  --glow-accent: 0 0 0 rgba(0, 0, 0, 0);
+  --glow-hover: 0 0 0 rgba(0, 0, 0, 0);
+  --shadow-neon-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-neon-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-neon-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --scanline-opacity: 0.01;
+  --scanline-color: rgba(0, 168, 190, var(--scanline-opacity));
+  --grid-opacity: 0.02;
+  --grid-color: rgba(0, 168, 190, var(--grid-opacity));
+  --shadow-base-rgb: 0, 0, 0;
+}
+
+.theme-boomtime.dark {
+  /* SYNTHWAVE / OUTRUN — Miami-at-night, retro-futuristic. */
+  --background: oklch(0.16 0.045 295);
+  --foreground: oklch(0.965 0.012 300);
+  --card: oklch(0.205 0.05 293);
+  --card-foreground: oklch(0.965 0.012 300);
+  --popover: oklch(0.205 0.05 293);
+  --popover-foreground: oklch(0.965 0.012 300);
+  /* Neon magenta primary (~#ff2d95) */
+  --primary: oklch(0.665 0.263 3);
+  --primary-foreground: oklch(0.14 0.03 300);
+  --secondary: oklch(0.29 0.06 290);
+  --secondary-foreground: oklch(0.965 0.012 300);
+  --muted: oklch(0.27 0.045 291);
+  --muted-foreground: oklch(0.74 0.045 292);
+  /* Electric cyan accent (~#05d9e8) */
+  --accent: oklch(0.82 0.145 202);
+  --accent-foreground: oklch(0.14 0.03 240);
+  --destructive: oklch(0.7 0.235 18);
+  --destructive-foreground: oklch(0.985 0.01 300);
+  --border: oklch(0.72 0.24 350 / 22%);
+  --input: oklch(0.72 0.24 350 / 28%);
+  --ring: oklch(0.665 0.263 3);
+  --sidebar: oklch(0.18 0.05 294);
+  --sidebar-foreground: oklch(0.965 0.012 300);
+  --sidebar-primary: oklch(0.665 0.263 3);
+  --sidebar-primary-foreground: oklch(0.14 0.03 300);
+  --sidebar-accent: oklch(0.82 0.145 202);
+  --sidebar-accent-foreground: oklch(0.14 0.03 240);
+  --sidebar-border: oklch(0.7 0.2 200 / 20%);
+  --sidebar-ring: oklch(0.665 0.263 3);
+  --radius: 0.65rem;
+
+  /* Neon palette (dark) */
+  --neon-cyan: oklch(0.82 0.145 202);
+  --neon-pink: oklch(0.665 0.263 3);
+  --neon-purple: oklch(0.55 0.28 320);
+  --neon-blue: oklch(0.7 0.2 240);
+  --neon-red: oklch(0.7 0.235 18);
+  --neon-yellow: oklch(0.85 0.18 90);
+  --neon-gold: oklch(0.78 0.17 75);
+  --neon-cyan-rgb: 5, 217, 232;
+  --neon-pink-rgb: 255, 45, 149;
+  --neon-purple-rgb: 168, 32, 200;
+  --neon-blue-rgb: 0, 180, 255;
+  --neon-red-rgb: 255, 75, 90;
+  --neon-yellow-rgb: 251, 191, 36;
+  --neon-gold-rgb: 230, 163, 51;
+  --primary-rgb: 255, 45, 149;
+  --accent-rgb: 5, 217, 232;
+
+  /* Chart palette (dark) */
+  --chart-1: oklch(0.665 0.263 3);
+  --chart-2: oklch(0.82 0.145 202);
+  --chart-3: oklch(0.55 0.28 320);
+  --chart-4: oklch(0.7 0.2 240);
+  --chart-5: oklch(0.85 0.18 90);
+  --chart-6: oklch(0.7 0.235 18);
+  --chart-7: oklch(0.78 0.17 75);
+  --chart-8: oklch(0.65 0.18 160);
+  --chart-9: oklch(0.6 0.22 280);
+  --chart-10: oklch(0.7 0.2 40);
+  --chart-11: oklch(0.6 0.15 220);
+  --chart-12: oklch(0.7 0.15 130);
+
+  /* Typography */
+  --font-heading: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono-stack: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+
+  /* Effect tokens — SYNTHWAVE glow */
+  --glow-primary:
+    0 0 15px rgba(var(--neon-pink-rgb), 0.45), 0 0 30px rgba(var(--neon-pink-rgb), 0.2);
+  --glow-secondary:
+    0 0 15px rgba(var(--neon-cyan-rgb), 0.4), 0 0 30px rgba(var(--neon-cyan-rgb), 0.18);
+  --glow-accent: 0 0 12px rgba(var(--neon-cyan-rgb), 0.3);
+  --glow-hover: 0 0 20px rgba(var(--neon-pink-rgb), 0.5), 0 0 40px rgba(var(--neon-pink-rgb), 0.25);
+  --shadow-neon-sm: 0 2px 10px rgba(0, 0, 0, 0.3), 0 0 10px rgba(var(--neon-pink-rgb), 0.15);
+  --shadow-neon-md:
+    0 4px 20px rgba(0, 0, 0, 0.4), 0 0 20px rgba(var(--neon-pink-rgb), 0.2),
+    0 0 40px rgba(var(--neon-cyan-rgb), 0.1);
+  --shadow-neon-lg:
+    0 8px 30px rgba(0, 0, 0, 0.5), 0 0 30px rgba(var(--neon-pink-rgb), 0.3),
+    0 0 60px rgba(var(--neon-cyan-rgb), 0.15);
+  --scanline-opacity: 0.02;
+  --scanline-color: rgba(var(--neon-pink-rgb), var(--scanline-opacity));
+  --grid-opacity: 0.04;
+  --grid-color: rgba(var(--neon-cyan-rgb), var(--grid-opacity));
+  --shadow-base-rgb: 0, 0, 0;
+}
+
+/* ------------------------------------------------------------------ *
+ * Dark-mode atmosphere + neon halos — the visual signature that makes
+ * boomtime feel like Miami at night. These rules only fire when the
+ * .theme-boomtime.dark combination is active on <html>.
+ * ------------------------------------------------------------------ */
+
+/* Deep vertical violet gradient + faint perspective-less neon grid wash. */
+.theme-boomtime.dark body {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(ellipse 120% 80% at 50% -10%, oklch(0.3 0.12 320 / 0.35), transparent 60%),
+    radial-gradient(ellipse 90% 60% at 100% 105%, oklch(0.4 0.13 200 / 0.18), transparent 55%),
+    linear-gradient(to bottom, oklch(0.18 0.055 295), oklch(0.13 0.04 298)),
+    linear-gradient(oklch(0.72 0.24 350 / 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.7 0.2 200 / 0.04) 1px, transparent 1px);
+  background-size:
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    40px 40px,
+    40px 40px;
+  background-attachment: fixed;
+}
+
+/* Neon halo on primary-colored buttons/badges. */
+.theme-boomtime.dark button.bg-primary,
+.theme-boomtime.dark a.bg-primary,
+.theme-boomtime.dark .bg-sidebar-primary {
+  box-shadow:
+    0 0 0 1px oklch(0.665 0.263 3 / 0.5),
+    0 0 18px oklch(0.665 0.263 3 / 0.45),
+    0 0 4px oklch(0.665 0.263 3 / 0.35);
+}
+
+/* Active nav item (NavLink sets aria-current="page"): magenta glow. */
+.theme-boomtime.dark a[aria-current="page"] {
+  box-shadow:
+    0 0 0 1px oklch(0.665 0.263 3 / 0.45),
+    0 0 16px oklch(0.665 0.263 3 / 0.45);
+}
+
+/* Neon focus halos (magenta) — override the plain ring shadow. */
+.theme-boomtime.dark *:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--ring),
+    0 0 14px oklch(0.665 0.263 3 / 0.55);
+}
+
+/* Cards get a whisper of a violet-lit edge. */
+.theme-boomtime.dark .bg-card {
+  box-shadow:
+    0 0 0 1px oklch(0.72 0.24 350 / 0.1),
+    0 8px 30px oklch(0.1 0.04 300 / 0.6);
+}

@@ -3,7 +3,7 @@
   "name": "@thebranchdriftcatalyst/catalyst-ui",
   "author": "TheBranchDriftCatalyst",
   "private": false,
-  "version": "2.3.0",
+  "version": "2.4.0",
   "type": "module",
   "main": "./dist/lib/catalyst.js",
   "types": "./dist/lib/catalyst.d.ts",
@@ -23,6 +23,34 @@
     "./hooks/*": {
       "types": "./dist/lib/hooks/*.d.ts",
       "import": "./dist/lib/hooks/*.js"
+    },
+    "./contexts/Theme": {
+      "types": "./dist/lib/contexts/Theme/index.d.ts",
+      "import": "./dist/lib/contexts/Theme/index.js"
+    },
+    "./contexts/Analytics": {
+      "types": "./dist/lib/contexts/Analytics/index.d.ts",
+      "import": "./dist/lib/contexts/Analytics/index.js"
+    },
+    "./contexts/Card": {
+      "types": "./dist/lib/contexts/Card/index.d.ts",
+      "import": "./dist/lib/contexts/Card/index.js"
+    },
+    "./contexts/Debug": {
+      "types": "./dist/lib/contexts/Debug/index.d.ts",
+      "import": "./dist/lib/contexts/Debug/index.js"
+    },
+    "./contexts/i18n": {
+      "types": "./dist/lib/contexts/i18n/index.d.ts",
+      "import": "./dist/lib/contexts/i18n/index.js"
+    },
+    "./contexts/Motion": {
+      "types": "./dist/lib/contexts/Motion/index.d.ts",
+      "import": "./dist/lib/contexts/Motion/index.js"
+    },
+    "./contexts/SEO": {
+      "types": "./dist/lib/contexts/SEO/index.d.ts",
+      "import": "./dist/lib/contexts/SEO/index.js"
     },
     "./contexts/*": {
       "types": "./dist/lib/contexts/*.d.ts",
