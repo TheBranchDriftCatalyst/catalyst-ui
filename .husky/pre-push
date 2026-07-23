@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+# Pre-push guard for catalyst-ui — runs the same build that CI's publish
+# workflow runs, so type-shape breakages get caught locally instead of
+# after a tag+push has already triggered a failed npm publish.
+#
+# Why this exists: during the boomtime migration we shipped v2.4.0/2.4.1
+# only to discover React 19 typing gaps at consumer-build time. Each fix
+# required a fresh commit + version bump + tag + publish cycle. This hook
+# closes the loop — you can't push a broken build.
+#
+# Bypass with `git push --no-verify` when you really know what you're doing.
+
+set -e
+
+echo "[pre-push] running yarn build (this is what publish.yml runs in CI)..."
+yarn build
+
+echo "[pre-push] ✓ build clean — safe to push"
