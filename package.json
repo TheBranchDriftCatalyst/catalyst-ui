@@ -3,7 +3,7 @@
   "name": "@thebranchdriftcatalyst/catalyst-ui",
   "author": "TheBranchDriftCatalyst",
   "private": false,
-  "version": "2.4.0",
+  "version": "2.4.1",
   "type": "module",
   "main": "./dist/lib/catalyst.js",
   "types": "./dist/lib/catalyst.d.ts",

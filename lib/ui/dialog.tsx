@@ -250,7 +250,14 @@ const dialogContentVariants = cva(
  */
 interface DialogContentProps
   extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>,
-    VariantProps<typeof dialogContentVariants> {}
+    VariantProps<typeof dialogContentVariants> {
+  /**
+   * React 19's `ComponentPropsWithoutRef` no longer implicitly includes
+   * `children` when extending a forwardRef component, so we type it here
+   * explicitly. Otherwise consumers get TS2322 on any `<DialogContent>…</>`.
+   */
+  children?: React.ReactNode;
+}
 
 /**
  * DialogContent - Main dialog panel with content and close button

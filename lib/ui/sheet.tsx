@@ -171,7 +171,14 @@ const sheetVariants = cva(
  */
 interface SheetContentProps
   extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
-    VariantProps<typeof sheetVariants> {}
+    VariantProps<typeof sheetVariants> {
+  /**
+   * React 19's `ComponentPropsWithoutRef` no longer implicitly includes
+   * `children` when extending a forwardRef component. Types it explicitly
+   * so consumers get correct type checking on `<SheetContent>…</>`.
+   */
+  children?: React.ReactNode;
+}
 
 /**
  * SheetContent - The main content panel of the sheet.

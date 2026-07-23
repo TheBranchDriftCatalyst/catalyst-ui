@@ -44,6 +44,12 @@ export interface PopoverContentProps
    * catalyst chrome.
    */
   bare?: boolean;
+  /**
+   * React 19's `ComponentPropsWithoutRef` no longer implicitly includes
+   * `children` when extending a forwardRef component. Types it explicitly
+   * so consumers get correct type checking on `<PopoverContent>…</>`.
+   */
+  children?: React.ReactNode;
 }
 
 export const PopoverContent = React.forwardRef<
