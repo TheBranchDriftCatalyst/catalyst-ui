@@ -3,6 +3,36 @@
 > **NEURAL INTERFACE ENGAGED** · Component library transmission log
 
 
+## [2.3.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v2.2.0...v2.3.0) (2026-07-23)
+
+
+### 🛠️ MAINTENANCE
+
+- scaffold beads workflow + tilt-ops spoke ([9b9e4be](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/9b9e4bec5983f211f96e95400048aa19ecdc0366))
+- standardize renovate config (aggressive grouping) ([d6cb98c](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/d6cb98cbb31d62038b521ae8bafa732848b49731))
+
+
+### 🔧 BUG FIXES
+
+- **llm/chat,playground:** surface send errors + save-backend success ([6528cfa](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/6528cfa3c2676bc2b90e8b60c56e1d17d26dc277))
+- **pkg:** point ./llm/* subpath exports at dist output ([a3e75af](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/a3e75aff6979d4987ab5bd6f5f2ff0966ca00c0c))
+
+
+### ⚡ NEW FEATURES
+
+- **llm:** fold catalyst-llm-sdk into lib/llm + shared LLM config layer ([542b972](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/542b9722c344eb85855ebb789c5ddd6071946490))
+- **llm:** publishing readiness + live tool-elapsed atom ([79aaadb](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/79aaadbe4ab971d0a4207709ce34ec8fc3090af4))
+- **ui:** Button size='micro' — h-6 rounded-sm compact chip variant ([e811b29](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/e811b298b4a49fbb04ce3a335464244e79b68ff4))
+- **ui:** LoadingSkeleton — pulse-animated fetch-on-mount placeholder ([29d5d89](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/29d5d89e4bb51f9885c813668de7a88b33bd43f7))
+- **ui:** responsivity primitives — AsyncButton, useAsyncOp, useConfirmAction, notify helpers ([7c2d039](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/7c2d0396408d63b9367a51cfdbcd5d9e4e48db6e))
+- **ui:** SmartPopover + useSmartCursorPosition (auto-flip primitives) ([c92b1f4](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/c92b1f43ee774b673f0ee00b21c89854ed62afb6))
+- **ui:** toast redesign + React 19 JSX type fixes ([7ccf534](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/7ccf534d699b870e12b005d6a42f5bb2d6c11bbb))
+
+
+### 📚 DOCUMENTATION
+
+- **changelog:** backfill 2.2.0 release entry ([9f2283e](https://github.com/TheBranchDriftCatalyst/catalyst-ui/commit/9f2283ea7f503563cfa4197c5c233a64e66f3d9d))
+
 ## [2.2.0](https://github.com/TheBranchDriftCatalyst/catalyst-ui/compare/v2.1.2...v2.2.0) (2026-06-23)
 
 
