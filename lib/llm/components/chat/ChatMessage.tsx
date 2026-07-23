@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AlertTriangle, OctagonX, User, Bot } from "lucide-react";
+import { AlertTriangle, Bot, ChevronDown, ChevronRight, OctagonX, User } from "lucide-react";
 import type { Chat, ChatTurn, ToolAttachment } from "../../react/chat/index.js";
 import { useModels } from "../../react/hooks.js";
 import { RenderedContent } from "../shared/RenderedContent.js";
@@ -156,6 +156,7 @@ export function ChatMessage({
                   phase={message.phase}
                   phaseTool={message.phaseTool}
                   startedAt={message.phaseStartedAt}
+                  reasoning={message.reasoning}
                 />
               )}
               {/* Reasoning event accumulator (op-w76). Distinct from
@@ -163,8 +164,10 @@ export function ChatMessage({
                   backends that emit reasoning deltas as their own
                   event stream, never mixed into content. Rendered
                   above the answer so the user can read it before the
-                  conclusion. */}
-              {message.reasoning && (
+                  conclusion. Suppressed while the phase pill is live
+                  — the pill owns reasoning display during the
+                  in-flight window (op-oayn/thinking follow-up). */}
+              {message.reasoning && (!message.phase || message.phase === "done") && (
                 <ReasoningBlock
                   content={message.reasoning}
                   isStreaming={!!isStreaming && !message.content && !message.error}
@@ -346,12 +349,14 @@ function DenseChatMessage({ message, isStreaming, chat, messageIndex }: DenseCha
           phase={message.phase}
           phaseTool={message.phaseTool}
           startedAt={message.phaseStartedAt}
+          reasoning={message.reasoning}
         />
       )}
 
-      {/* Reasoning field (event-stream deltas) — separate from
-          <think>-tag splitter below. */}
-      {!isUser && message.reasoning && (
+      {/* Reasoning field (event-stream deltas). Suppressed while the
+          phase pill is live — the pill's own disclosure owns
+          reasoning display during the in-flight window. */}
+      {!isUser && message.reasoning && (!message.phase || message.phase === "done") && (
         <ReasoningBlock
           content={message.reasoning}
           isStreaming={!!isStreaming && !message.content && !message.error}
@@ -685,6 +690,16 @@ function InlineAttachment({ a }: { a: ToolAttachment }) {
  * stretches when no tokens flow yet. Updates a live elapsed counter
  * every second; unmounts immediately when message_done flips the phase
  * to "done".
+ *
+ * When a ``reasoning`` string is provided (event-stream reasoning
+ * deltas — the thinking-out-loud content the model produces before
+ * committing to an answer), the pill becomes a disclosure: chevron
+ * appears, click toggles an inline reasoning panel below the pill.
+ * Auto-expanded default when reasoning first arrives so the user
+ * doesn't miss the initial content; subsequent clicks toggle. Once
+ * the phase completes, the pill unmounts and the standard
+ * ReasoningBlock (which lives above the answer content) takes over
+ * for the rest of the turn's life.
  */
 type PhaseValue = "routing" | "thinking" | "tool_running" | "reply_streaming";
 
@@ -692,16 +707,34 @@ function PhaseIndicator({
   phase,
   phaseTool,
   startedAt,
+  reasoning,
 }: {
   phase: PhaseValue;
   phaseTool?: string;
   startedAt?: number;
+  /** Live reasoning deltas accumulated on the current in-flight turn.
+   *  When present the pill becomes clickable and toggles a panel
+   *  below itself showing the raw reasoning text. */
+  reasoning?: string;
 }) {
   const [now, setNow] = useState(() => Date.now());
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(id);
   }, []);
+
+  const hasReasoning = !!reasoning && reasoning.trim().length > 0;
+  // Auto-expand the first time reasoning arrives so the user sees
+  // it without needing to click. Subsequent user clicks are honored
+  // and persist for the life of this pill.
+  const [open, setOpen] = useState(false);
+  const [autoOpened, setAutoOpened] = useState(false);
+  useEffect(() => {
+    if (hasReasoning && !autoOpened) {
+      setOpen(true);
+      setAutoOpened(true);
+    }
+  }, [hasReasoning, autoOpened]);
 
   const elapsedS = startedAt ? Math.max(0, Math.floor((now - startedAt) / 1000)) : 0;
 
@@ -712,11 +745,8 @@ function PhaseIndicator({
     reply_streaming: "replying",
   };
 
-  return (
-    <div
-      data-testid="agent-phase-pill"
-      className="mb-2 inline-flex items-center gap-1.5 rounded-sm border border-primary/30 bg-primary/5 px-2 py-0.5 text-[10px] uppercase tracking-wider text-primary"
-    >
+  const pillContent = (
+    <>
       <span className="relative flex h-1.5 w-1.5">
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/60" />
         <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-primary" />
@@ -724,6 +754,49 @@ function PhaseIndicator({
       <span>{labels[phase]}</span>
       {elapsedS > 0 && (
         <span className="font-mono text-muted-foreground tabular-nums">{elapsedS}s</span>
+      )}
+      {hasReasoning && (
+        <span aria-hidden="true" className="ml-0.5 inline-flex text-primary/70">
+          {open ? (
+            <ChevronDown className="h-2.5 w-2.5" />
+          ) : (
+            <ChevronRight className="h-2.5 w-2.5" />
+          )}
+        </span>
+      )}
+    </>
+  );
+
+  const pillClass =
+    "mb-2 inline-flex items-center gap-1.5 rounded-sm border border-primary/30 bg-primary/5 px-2 py-0.5 text-[10px] uppercase tracking-wider text-primary";
+
+  if (!hasReasoning) {
+    return (
+      <div data-testid="agent-phase-pill" className={pillClass}>
+        {pillContent}
+      </div>
+    );
+  }
+  return (
+    <div className="mb-2">
+      <button
+        type="button"
+        onClick={() => setOpen(v => !v)}
+        data-testid="agent-phase-pill"
+        data-has-reasoning="true"
+        data-open={open ? "true" : "false"}
+        aria-expanded={open}
+        className={cn(pillClass, "mb-0 cursor-pointer hover:bg-primary/10 transition-colors")}
+      >
+        {pillContent}
+      </button>
+      {open && (
+        <div
+          data-testid="agent-phase-reasoning"
+          className="mt-1 rounded-sm border border-primary/20 bg-primary/[0.03] px-2 py-1.5 text-[11px] leading-snug text-muted-foreground whitespace-pre-wrap"
+        >
+          {reasoning}
+        </div>
       )}
     </div>
   );

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "@thebranchdriftcatalyst/catalyst-ui/ui/button";
+import { Button } from "../../../ui/button";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import type { Chat } from "../../react/chat/index.js";
 

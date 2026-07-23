@@ -37,7 +37,14 @@ export { useItemRails, type RailMap } from "./page-shell/hooks/useItemRails.js";
 export { ChatPanel, type ChatPanelProps } from "./chat/ChatPanel.js";
 export { ChatTabs, type ChatTabsProps } from "./chat/ChatTabs.js";
 export { ChatMessage, type ChatMessageProps } from "./chat/ChatMessage.js";
-export { ToolCallCard, type ToolCallCardProps } from "./chat/ToolCallCard.js";
+export {
+  ToolCallCard,
+  ToolElapsedAtom,
+  resolveToolAtomState,
+  type ToolAtomState,
+  type ResolvedToolAtom,
+  type ToolCallCardProps,
+} from "./chat/ToolCallCard.js";
 // op-0rzm: collapsible card for the per-turn router-LLM call.
 export {
   RouterCallCard,

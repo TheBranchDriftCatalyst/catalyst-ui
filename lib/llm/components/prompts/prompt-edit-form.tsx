@@ -10,10 +10,10 @@
  */
 import { useEffect } from "react";
 import { Trash2, Copy, Download, Wand2, Save, X } from "lucide-react";
-import { Button } from "@thebranchdriftcatalyst/catalyst-ui/ui/button";
-import { Input } from "@thebranchdriftcatalyst/catalyst-ui/ui/input";
-import { Label } from "@thebranchdriftcatalyst/catalyst-ui/ui/label";
-import { Textarea } from "@thebranchdriftcatalyst/catalyst-ui/ui/textarea";
+import { Button } from "../../../ui/button";
+import { Input } from "../../../ui/input";
+import { Label } from "../../../ui/label";
+import { Textarea } from "../../../ui/textarea";
 import type { CustomPreset } from "../../react/promptStore.js";
 import { cn } from "../shared/utils.js";
 import { DenseSelect } from "../shared/DenseSelect.js";

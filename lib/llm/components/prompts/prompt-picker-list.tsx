@@ -10,8 +10,8 @@
  */
 import { useMemo } from "react";
 import { Plus, Search, Sparkles, User, Shield, Layers, Tag, Wand2 } from "lucide-react";
-import { Input } from "@thebranchdriftcatalyst/catalyst-ui/ui/input";
-import { Button } from "@thebranchdriftcatalyst/catalyst-ui/ui/button";
+import { Input } from "../../../ui/input";
+import { Button } from "../../../ui/button";
 import type { CustomPreset } from "../../react/promptStore.js";
 import { cn } from "../shared/utils.js";
 

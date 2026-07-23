@@ -28,7 +28,7 @@ export interface ModelMicroSwitcherProps {
   disablePortal?: boolean;
 }
 
-const ICON_FOR: Record<EndpointType, React.ElementType> = {
+const ICON_FOR: Record<EndpointType, React.ComponentType<any>> = {
   mac: Monitor,
   cluster: Server,
   cloud: Cloud,

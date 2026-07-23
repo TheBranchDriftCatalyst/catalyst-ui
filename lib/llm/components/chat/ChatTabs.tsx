@@ -1,5 +1,5 @@
-import { Tabs, TabsList, TabsTrigger } from "@thebranchdriftcatalyst/catalyst-ui/ui/tabs";
-import { Button } from "@thebranchdriftcatalyst/catalyst-ui/ui/button";
+import { Tabs, TabsList, TabsTrigger } from "../../../ui/tabs";
+import { Button } from "../../../ui/button";
 import { Plus, X, Columns3 } from "lucide-react";
 import { useChatStore } from "../../react/chat/index.js";
 import { useCompareStore } from "../../react/useCompare.js";

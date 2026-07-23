@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Plus, Download, Upload, RotateCcw, Sparkles } from "lucide-react";
-import { Button } from "@thebranchdriftcatalyst/catalyst-ui/ui/button";
+import { Button } from "../../../ui/button";
 import { usePromptStore } from "../../react/promptStore.js";
 import { parsePromptFile, serializePromptFile } from "../../react/promptFile.js";
 import { BUILTIN_SEEDS } from "./prompt-seeds.js";

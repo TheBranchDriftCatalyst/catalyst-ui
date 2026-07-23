@@ -31,7 +31,7 @@ import { usePromptStore, type CustomPreset } from "../../react/promptStore.js";
  * Add new icons here as new built-in presets need them; the editor's
  * icon picker (when we add one) reads from this same map.
  */
-export const ICON_MAP: Record<string, React.ElementType> = {
+export const ICON_MAP: Record<string, React.ComponentType<any>> = {
   wrench: Wrench,
   code: Code,
   brain: Brain,
@@ -46,9 +46,9 @@ export const ICON_MAP: Record<string, React.ElementType> = {
 };
 
 /** Resolve an iconName from a CustomPreset (or a runtime PromptPreset
- * that already carries a React.ElementType). Falls back to Sparkles. */
-export function iconForPreset(p: PromptPreset | CustomPreset): React.ElementType {
-  if ("icon" in p && p.icon) return p.icon as React.ElementType;
+ * that already carries a React.ComponentType<any>). Falls back to Sparkles. */
+export function iconForPreset(p: PromptPreset | CustomPreset): React.ComponentType<any> {
+  if ("icon" in p && p.icon) return p.icon as React.ComponentType<any>;
   if ("iconName" in p && p.iconName) {
     const ic = ICON_MAP[p.iconName.toLowerCase()];
     if (ic) return ic;
@@ -68,7 +68,7 @@ export interface PromptPreset {
    */
   modelPattern?: string;
   /** Icon shown in the chip. */
-  icon?: React.ElementType;
+  icon?: React.ComponentType<any>;
   /** Tooltip / longer description. */
   description?: string;
   /** Optional system prompt — handler decides whether to apply it. */
@@ -526,7 +526,7 @@ export const SYSTEM_PRESETS: PromptPreset[] = BUILTIN_SEEDS.filter(
 export function getPresetsForModel(modelId: string | undefined | null): {
   presets: PromptPreset[];
   label: string;
-  icon: React.ElementType;
+  icon: React.ComponentType<any>;
   isModelSpecific: boolean;
 } {
   // Read the live registry so any user-saved model-specific presets

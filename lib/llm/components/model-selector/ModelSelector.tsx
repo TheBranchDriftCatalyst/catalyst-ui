@@ -6,9 +6,9 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@thebranchdriftcatalyst/catalyst-ui/ui/select";
-import { Button } from "@thebranchdriftcatalyst/catalyst-ui/ui/button";
-import { Label } from "@thebranchdriftcatalyst/catalyst-ui/ui/label";
+} from "../../../ui/select";
+import { Button } from "../../../ui/button";
+import { Label } from "../../../ui/label";
 import { Monitor, Server, Cloud, RefreshCw } from "lucide-react";
 import type { ModelWithRouting } from "../../client/index.js";
 import { useModels } from "../../react/hooks.js";
@@ -26,7 +26,7 @@ function ModelGroup({
   iconColor,
 }: {
   label: string;
-  icon: React.ElementType;
+  icon: React.ComponentType<any>;
   models: ModelWithRouting[];
   iconColor: string;
 }) {

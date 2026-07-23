@@ -12,9 +12,9 @@ import {
   BarChart3,
   RotateCcw,
 } from "lucide-react";
-import { Button } from "@thebranchdriftcatalyst/catalyst-ui/ui/button";
-import { Textarea } from "@thebranchdriftcatalyst/catalyst-ui/ui/textarea";
-import { Label } from "@thebranchdriftcatalyst/catalyst-ui/ui/label";
+import { Button } from "../../../ui/button";
+import { Textarea } from "../../../ui/textarea";
+import { Label } from "../../../ui/label";
 import type { ChatParams } from "../../client/index.js";
 import { useModels } from "../../react/hooks.js";
 import { useCompare, useCompareStore, type CompareMode } from "../../react/useCompare.js";

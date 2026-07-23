@@ -15,7 +15,7 @@ import { ModelInfoCard } from "../model-selector/ModelInfoCard.js";
 import { SystemPromptEditor } from "../prompts/SystemPromptEditor.js";
 import { SystemPromptPresets } from "../prompts/PromptPresets.js";
 import { ParameterControls } from "../model-selector/ParameterControls.js";
-import { Button } from "@thebranchdriftcatalyst/catalyst-ui/ui/button";
+import { Button } from "../../../ui/button";
 import { Trash2 } from "lucide-react";
 import { cn } from "../shared/utils.js";
 

@@ -20,9 +20,9 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
 import { Send, Square, ImageIcon } from "lucide-react";
-import { Button } from "@thebranchdriftcatalyst/catalyst-ui/ui/button";
-import { Textarea } from "@thebranchdriftcatalyst/catalyst-ui/ui/textarea";
-import { notifyError } from "@thebranchdriftcatalyst/catalyst-ui/ui/notify";
+import { Button } from "../../../ui/button";
+import { Textarea } from "../../../ui/textarea";
+import { notifyError } from "../../../ui/notify";
 import { useChatStore, type Chat } from "../../react/chat/index.js";
 import { useModels } from "../../react/hooks.js";
 import { PromptPresets } from "../prompts/PromptPresets.js";

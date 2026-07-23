@@ -12,7 +12,7 @@ import {
   ExternalLink,
   Scale,
 } from "lucide-react";
-import { Badge } from "@thebranchdriftcatalyst/catalyst-ui/ui/badge";
+import { Badge } from "../../../ui/badge";
 import type { ModelWithRouting } from "../../client/index.js";
 import { effectiveMetadata } from "../../client/modelHints.js";
 import { cn } from "../shared/utils.js";
@@ -33,7 +33,7 @@ const ENDPOINT_ICON = {
 interface CapDef {
   key: keyof NonNullable<ModelWithRouting["metadata"]>;
   label: string;
-  icon: React.ElementType;
+  icon: React.ComponentType<any>;
 }
 
 const CAPABILITIES: CapDef[] = [
@@ -74,7 +74,7 @@ function Chip({
   tone = "muted",
   title,
 }: {
-  icon?: React.ElementType;
+  icon?: React.ComponentType<any>;
   children: React.ReactNode;
   tone?: "muted" | "primary" | "outline";
   title?: string;

@@ -18,8 +18,8 @@
  * Phase C (TODO, llm-0mp): per-node run-event drill-down
  */
 import { useCallback, useMemo, useState } from "react";
-import { Button } from "@thebranchdriftcatalyst/catalyst-ui/ui/button";
-import { Textarea } from "@thebranchdriftcatalyst/catalyst-ui/ui/textarea";
+import { Button } from "../../../../ui/button";
+import { Textarea } from "../../../../ui/textarea";
 import { Play, Square, Wrench } from "lucide-react";
 import { useLLMContext } from "../../../react/LLMProvider.js";
 import { useEngineRunStore } from "../../../react/engineRunStore.js";

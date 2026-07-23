@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Check, ChevronsUpDown, Search, X, Monitor, Server, Cloud } from "lucide-react";
-import { Button } from "@thebranchdriftcatalyst/catalyst-ui/ui/button";
+import { Button } from "../../../ui/button";
 import type { ModelWithRouting, EndpointType } from "../../client/index.js";
 import { useModels } from "../../react/hooks.js";
 import { fuzzyFilter } from "../shared/fuzzy.js";
@@ -8,7 +8,7 @@ import { useListboxKeyboard } from "../shared/useListboxKeyboard.js";
 import { useFocusTrap } from "../shared/useFocusTrap.js";
 import { cn } from "../shared/utils.js";
 
-const ICON_FOR: Record<EndpointType, React.ElementType> = {
+const ICON_FOR: Record<EndpointType, React.ComponentType<any>> = {
   mac: Monitor,
   cluster: Server,
   cloud: Cloud,

@@ -14,8 +14,8 @@
  */
 import { useEffect, useMemo, useState } from "react";
 import { Database, Download, Play, RefreshCw, AlertTriangle, TrendingUp } from "lucide-react";
-import { Button } from "@thebranchdriftcatalyst/catalyst-ui/ui/button";
-import { Textarea } from "@thebranchdriftcatalyst/catalyst-ui/ui/textarea";
+import { Button } from "../../../ui/button";
+import { Textarea } from "../../../ui/textarea";
 import { exportPartitionedParquet, query, type MetricsRow } from "./db.js";
 import { useMetricsStore } from "./store.js";
 import { AggregateCharts } from "./AggregateCharts.js";

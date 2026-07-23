@@ -1,4 +1,4 @@
-import { Button } from "@thebranchdriftcatalyst/catalyst-ui/ui/button";
+import { Button } from "../../../../ui/button";
 import { Bot, RefreshCw, Wrench } from "lucide-react";
 import type { AgentDescriptor } from "../../../agent/events.js";
 import { useEngineStore } from "../../../react/engineStore.js";

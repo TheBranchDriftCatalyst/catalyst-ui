@@ -3,7 +3,7 @@
  * badge that decorates each response and the small label/value chip
  * row that summarises a run's key numbers.
  */
-import type { ElementType } from "react";
+import type { ComponentType } from "react";
 import { Braces, CircleAlert } from "lucide-react";
 import { cn } from "../shared/utils.js";
 import type { JsonCheck } from "./compare-stats.js";
@@ -42,7 +42,7 @@ export function JsonBadge({ check }: { check: JsonCheck }) {
 }
 
 export interface MiniPin {
-  icon: ElementType;
+  icon: ComponentType<any>;
   label: string;
   value: string;
   emphasis?: "default" | "primary" | "muted";

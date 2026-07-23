@@ -22,7 +22,7 @@ export interface CostPinsProps {
 }
 
 interface PinProps {
-  icon: React.ElementType;
+  icon: React.ComponentType<any>;
   label: string;
   value: string;
   flash?: boolean;

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Sparkles, Shield, ChevronDown, Search, X, ExternalLink } from "lucide-react";
-import { Input } from "@thebranchdriftcatalyst/catalyst-ui/ui/input";
+import { Input } from "../../../ui/input";
 import { usePromptStore } from "../../react/promptStore.js";
 import { fuzzyFilter } from "../shared/fuzzy.js";
 import { useFocusTrap } from "../shared/useFocusTrap.js";
@@ -21,7 +21,7 @@ export interface PromptPresetsProps {
   /** Label rendered before the trigger / chips. Default "presets". */
   label?: string;
   /** Icon next to the label. Default {@link Sparkles}. */
-  labelIcon?: React.ElementType;
+  labelIcon?: React.ComponentType<any>;
   /**
    * Layout for the preset row. Default `"dropdown"` (compact trigger that
    * opens a menu of presets with description tooltips). Use `"chips"` if you
@@ -143,7 +143,7 @@ function PromptPresetDropdown({
   onApply: (preset: PromptPreset) => void;
   className?: string;
   label: string;
-  labelIcon: React.ElementType;
+  labelIcon: React.ComponentType<any>;
 }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");

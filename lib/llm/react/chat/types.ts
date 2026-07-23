@@ -62,6 +62,15 @@ export interface ChatToolCallRecord {
   duration_ms: number;
   /** Iteration index within the streamChat tool-call loop (0-based). */
   iteration: number;
+  /**
+   * Wall-clock when the call was DISPATCHED (op-oayn). Populated at
+   * tool_call_start by the operator bridge so ToolCallCard's live
+   * elapsed atom can tick ``Date.now() - started_at`` while the tool
+   * is running. Optional for back-compat with older records that
+   * don't have it — those fall through to the static "…" placeholder
+   * until they finish.
+   */
+  started_at?: number;
   /** Wall-clock when the call resolved (used for ordering + display). */
   finished_at: number;
   /**

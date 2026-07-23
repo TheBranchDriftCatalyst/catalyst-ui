@@ -1,6 +1,6 @@
 import type { ComponentType } from "react";
-import { Slider as RawSlider } from "@thebranchdriftcatalyst/catalyst-ui/ui/slider";
-import { Label } from "@thebranchdriftcatalyst/catalyst-ui/ui/label";
+import { Slider as RawSlider } from "../../../ui/slider";
+import { Label } from "../../../ui/label";
 import { Brain } from "lucide-react";
 import type { ChatParams, ModelWithRouting } from "../../client/index.js";
 import { effectiveMetadata } from "../../client/modelHints.js";

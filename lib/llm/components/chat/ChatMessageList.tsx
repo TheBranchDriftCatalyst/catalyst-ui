@@ -14,7 +14,7 @@
  *   <ChatMessageList chat={chat} renderEmpty={() => <MyEmpty />} />
  */
 import { useEffect, useRef, type ReactNode } from "react";
-import { Card, CardContent } from "@thebranchdriftcatalyst/catalyst-ui/ui/card";
+import { Card, CardContent } from "../../../ui/card";
 import type { Chat } from "../../react/chat/index.js";
 import { ChatMessage } from "./ChatMessage.js";
 import { cn } from "../shared/utils.js";

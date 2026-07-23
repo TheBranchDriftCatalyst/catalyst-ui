@@ -41,7 +41,7 @@ export interface ToolCallCardProps {
   dense?: boolean;
 }
 
-const TOOL_ICONS: Record<string, React.ElementType> = {
+const TOOL_ICONS: Record<string, React.ComponentType<any>> = {
   web_search: Globe,
   browse_page: Globe,
 };
@@ -79,9 +79,9 @@ export function ToolCallCard({
     // PRO5: structured single-line row. Glyph + chevron in the left
     // gutter; tool name in a min-width-12rem truncating column so
     // multiple tool calls stack vertically with the name column
-    // perfectly aligned; duration in tabular-nums; status word at the
+    // perfectly aligned; duration atom (live spinner while running,
+    // static duration when done) in tabular-nums; status word at the
     // far right. running → `…`, error → red `error`, done → `ok`.
-    const durationLabel = record.duration_ms > 0 ? fmtDuration(record.duration_ms) : "…";
     const statusLabel = isError ? "error" : done ? "ok" : "…";
     return (
       <div
@@ -131,8 +131,13 @@ export function ToolCallCard({
               {subToolCount > 0 && <span className="tabular-nums">{subToolCount}</span>}
             </span>
           )}
-          <span className={cn("ml-auto shrink-0 tabular-nums text-muted-foreground/70")}>
-            · {durationLabel}
+          <span className="ml-auto shrink-0 inline-flex items-center gap-1">
+            <span className="text-muted-foreground/50">·</span>
+            <ToolElapsedAtom
+              startedAt={record.started_at}
+              finishedAt={record.finished_at}
+              durationMs={record.duration_ms}
+            />
           </span>
           <span
             className={cn(
@@ -228,9 +233,13 @@ export function ToolCallCard({
             )}
           </span>
         )}
-        <span className="ml-auto inline-flex shrink-0 items-center gap-0.5 text-[9px] text-muted-foreground tabular-nums">
+        <span className="ml-auto inline-flex shrink-0 items-center gap-0.5 text-[9px] text-muted-foreground">
           <Clock className="h-2.5 w-2.5" aria-hidden="true" />
-          {fmtDuration(record.duration_ms)}
+          <ToolElapsedAtom
+            startedAt={record.started_at}
+            finishedAt={record.finished_at}
+            durationMs={record.duration_ms}
+          />
         </span>
       </button>
 
@@ -405,6 +414,117 @@ function prettyJson(v: unknown): string {
 function fmtDuration(ms: number): string {
   if (ms < 1000) return `${Math.round(ms)}ms`;
   return `${(ms / 1000).toFixed(1)}s`;
+}
+
+/**
+ * Pure state resolver for the elapsed atom (op-oayn). Split out from
+ * the React component so vitest can cover every branch without a
+ * jsdom + Testing-Library harness. The component itself just decides
+ * which JSX to emit based on this.
+ *
+ *   done    — call is finished; label = fmtDuration(durationMs)
+ *   running — start time known but not yet finished; label = live
+ *             fmtDuration(now - startedAt)
+ *   unknown — no start time recorded (older records, or an event
+ *             sequence that never emitted tool_call_start); label = "…"
+ */
+export type ToolAtomState = "done" | "running" | "unknown";
+export interface ResolvedToolAtom {
+  state: ToolAtomState;
+  label: string;
+  /** Non-null only when state === 'running'; the ms since start. */
+  elapsedMs?: number;
+}
+export function resolveToolAtomState(
+  startedAt: number | undefined,
+  finishedAt: number,
+  durationMs: number,
+  now: number
+): ResolvedToolAtom {
+  if (finishedAt > 0) {
+    return { state: "done", label: fmtDuration(durationMs) };
+  }
+  if (startedAt && startedAt > 0) {
+    const elapsed = Math.max(0, now - startedAt);
+    return {
+      state: "running",
+      label: fmtDuration(elapsed),
+      elapsedMs: elapsed,
+    };
+  }
+  return { state: "unknown", label: "…" };
+}
+
+/**
+ * ToolElapsedAtom — the little duration cell on each tool-call row
+ * (op-oayn). Three states:
+ *   - RUNNING (finishedAt === 0 && startedAt > 0): a small rotating
+ *     ring wraps live-ticking ``Date.now() - startedAt`` text. Ticks
+ *     every ~500ms via a ``setInterval`` inside a useEffect. The ring
+ *     uses Tailwind's ``animate-spin`` so the animation is GPU-cheap
+ *     and pauses automatically when the tab isn't visible.
+ *   - DONE (finishedAt > 0): static ``fmtDuration(durationMs)`` text,
+ *     no ring — the row is settled and shouldn't demand attention.
+ *   - UNKNOWN (no startedAt, no finishedAt): renders the legacy "…"
+ *     placeholder so records that predate op-oayn (older stored chats)
+ *     render sanely instead of ticking with a garbage number.
+ *
+ * Rendered inline in both the dense terminal row and the standard
+ * two-tone card layout so the atom is consistent everywhere.
+ */
+interface ToolElapsedAtomProps {
+  startedAt?: number;
+  finishedAt: number;
+  durationMs: number;
+  /** Optional test hook — vitest injects a fake ``now()`` to avoid
+   *  needing real setInterval scheduling. Prod path uses Date.now. */
+  now?: () => number;
+  className?: string;
+}
+
+export function ToolElapsedAtom({
+  startedAt,
+  finishedAt,
+  durationMs,
+  now,
+  className,
+}: ToolElapsedAtomProps) {
+  const nowFn = now ?? Date.now;
+  const running = !finishedAt && !!startedAt && startedAt > 0;
+  // Force a re-render every 500ms while running so the elapsed text
+  // stays live. Interval is skipped for done / unknown rows so a
+  // chat with 200 tool cards doesn't burn 200 timers.
+  const [, force] = useState(0);
+  useEffect(() => {
+    if (!running) return;
+    const id = setInterval(() => force(n => n + 1), 500);
+    return () => clearInterval(id);
+  }, [running]);
+  const resolved = resolveToolAtomState(startedAt, finishedAt, durationMs, nowFn());
+  if (resolved.state === "running") {
+    return (
+      <span
+        className={cn("inline-flex items-center gap-1", className)}
+        data-testid="tool-elapsed-atom"
+        data-state="running"
+      >
+        <span
+          aria-hidden="true"
+          className="inline-block h-2.5 w-2.5 rounded-full border border-primary/60 border-t-transparent animate-spin"
+        />
+        <span className="tabular-nums text-primary/80">{resolved.label}</span>
+      </span>
+    );
+  }
+  return (
+    <span
+      className={cn("tabular-nums text-muted-foreground/70", className)}
+      data-testid="tool-elapsed-atom"
+      data-state={resolved.state}
+    >
+      {resolved.label}
+    </span>
+  );
 }
 
 // ─── Result panes — specialized for built-in tools ────────────────────

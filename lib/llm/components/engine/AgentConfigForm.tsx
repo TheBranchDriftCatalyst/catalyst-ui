@@ -22,12 +22,12 @@
  */
 import type { ComponentType } from "react";
 import { useMemo } from "react";
-import { Button } from "@thebranchdriftcatalyst/catalyst-ui/ui/button";
-import { Input } from "@thebranchdriftcatalyst/catalyst-ui/ui/input";
-import { Label } from "@thebranchdriftcatalyst/catalyst-ui/ui/label";
-import { Slider as RawSlider } from "@thebranchdriftcatalyst/catalyst-ui/ui/slider";
-import { Switch } from "@thebranchdriftcatalyst/catalyst-ui/ui/switch";
-import { Textarea } from "@thebranchdriftcatalyst/catalyst-ui/ui/textarea";
+import { Button } from "../../../ui/button";
+import { Input } from "../../../ui/input";
+import { Label } from "../../../ui/label";
+import { Slider as RawSlider } from "../../../ui/slider";
+import { Switch } from "../../../ui/switch";
+import { Textarea } from "../../../ui/textarea";
 import { RotateCcw } from "lucide-react";
 import type { AgentConfigSchema, AgentFieldSchema } from "../../agent/events.js";
 import { ModelSelector } from "../model-selector/ModelSelector.js";

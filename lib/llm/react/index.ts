@@ -24,7 +24,13 @@ export {
   type RunStatus,
   type RunToolCall,
 } from "./engineRunStore.js";
-export type { Chat, ChatTurn, ChatToolCallRecord, ToolSubEvent } from "./chat/index.js";
+export type {
+  Chat,
+  ChatTurn,
+  ChatToolCallRecord,
+  ToolAttachment,
+  ToolSubEvent,
+} from "./chat/index.js";
 export {
   useChatCost,
   formatUsd,

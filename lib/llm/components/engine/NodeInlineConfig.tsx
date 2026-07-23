@@ -23,10 +23,10 @@
  */
 import type { ComponentType } from "react";
 import { useMemo } from "react";
-import { Button } from "@thebranchdriftcatalyst/catalyst-ui/ui/button";
-import { Input } from "@thebranchdriftcatalyst/catalyst-ui/ui/input";
-import { Slider as RawSlider } from "@thebranchdriftcatalyst/catalyst-ui/ui/slider";
-import { Switch } from "@thebranchdriftcatalyst/catalyst-ui/ui/switch";
+import { Button } from "../../../ui/button";
+import { Input } from "../../../ui/input";
+import { Slider as RawSlider } from "../../../ui/slider";
+import { Switch } from "../../../ui/switch";
 import { FileText, RotateCcw } from "lucide-react";
 import type { AgentConfigSchema, AgentFieldSchema } from "../../agent/events.js";
 import { usePromptStore } from "../../react/promptStore.js";

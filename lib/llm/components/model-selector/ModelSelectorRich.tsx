@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Search, RefreshCw, Monitor, Server, Cloud, X } from "lucide-react";
-import { Input } from "@thebranchdriftcatalyst/catalyst-ui/ui/input";
-import { Button } from "@thebranchdriftcatalyst/catalyst-ui/ui/button";
-import { Label } from "@thebranchdriftcatalyst/catalyst-ui/ui/label";
+import { Input } from "../../../ui/input";
+import { Button } from "../../../ui/button";
+import { Label } from "../../../ui/label";
 import type { ModelWithRouting } from "../../client/index.js";
 import { useModels } from "../../react/hooks.js";
 import { ModelInfoCard } from "./ModelInfoCard.js";

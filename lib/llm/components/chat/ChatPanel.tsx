@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback, type FormEvent } from "react";
-import { Button } from "@thebranchdriftcatalyst/catalyst-ui/ui/button";
-import { Textarea } from "@thebranchdriftcatalyst/catalyst-ui/ui/textarea";
-import { Card, CardContent } from "@thebranchdriftcatalyst/catalyst-ui/ui/card";
+import { Button } from "../../../ui/button";
+import { Textarea } from "../../../ui/textarea";
+import { Card, CardContent } from "../../../ui/card";
 import {
   Send,
   Square,
