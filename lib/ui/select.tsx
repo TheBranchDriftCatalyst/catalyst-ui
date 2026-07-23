@@ -223,8 +223,12 @@ const SelectContent = React.forwardRef<
       <SelectPrimitive.Viewport
         className={cn(
           "p-1",
-          position === "popper" &&
-            "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"
+          // Drop the ``h-[var(--radix-select-trigger-height)]`` shadcn
+          // originally hardcoded here — it pinned the Viewport to the
+          // trigger's tiny height so long option lists could never
+          // scroll (Radix Viewport IS the scroll container). Keeping the
+          // width vars so popper alignment still matches the trigger.
+          position === "popper" && "w-full min-w-[var(--radix-select-trigger-width)]"
         )}
       >
         {children}

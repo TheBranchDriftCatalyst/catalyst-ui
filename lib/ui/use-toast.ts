@@ -247,6 +247,14 @@ const listeners: Array<(state: State) => void> = [];
  * Global in-memory state for the toast system.
  * Persists across component unmounts and re-renders.
  *
+ * Correctness contract: this file must only be bundled ONCE per app.
+ * Multiple module instances → separate ``memoryState`` slots → toasts
+ * dispatched via one instance never reach ``<Toaster />`` subscribed to
+ * the other. catalyst-ui guarantees single-bundling by compiling every
+ * consumer path (``./ui/*``, ``./llm/*``, ``./hooks/*``) through the
+ * same vite lib build so all subpath imports resolve to the same
+ * compiled ``dist/lib/ui/use-toast.js`` file.
+ *
  * @internal
  */
 let memoryState: State = { toasts: [] };

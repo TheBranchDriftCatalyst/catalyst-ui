@@ -54,7 +54,7 @@ const typographyVariants = cva("", {
 interface ResponsiveTypographyProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof typographyVariants> {
-  tag?: keyof JSX.IntrinsicElements;
+  tag?: keyof React.JSX.IntrinsicElements;
   children?: React.ReactNode;
   asChild?: boolean;
   breakpoints?: Record<TypographySize, number>;
@@ -112,7 +112,7 @@ const ResponsiveTypography = React.forwardRef<HTMLDivElement, ResponsiveTypograp
         : size;
 
     // Map variant to valid HTML element type
-    const variantTagMap: Record<string, keyof JSX.IntrinsicElements> = {
+    const variantTagMap: Record<string, keyof React.JSX.IntrinsicElements> = {
       h1: "h1",
       h2: "h2",
       h3: "h3",
@@ -130,7 +130,11 @@ const ResponsiveTypography = React.forwardRef<HTMLDivElement, ResponsiveTypograp
 
     const resolvedTag = variant && variantTagMap[variant] ? variantTagMap[variant] : tag;
 
-    const Comp: React.ElementType = asChild ? Slot : resolvedTag || "p";
+    // React 19: JSX inference on `Slot | keyof JSX.IntrinsicElements`
+    // collapses props to `never` (TS2745/TS2590). Fall back to
+    // `React.createElement`, which type-checks its element arg but
+    // doesn't try to enumerate the intrinsic union.
+    const Comp = asChild ? Slot : resolvedTag || "p";
 
     let adjustedSize: TypographySize = resolvedSize as TypographySize;
 
@@ -147,11 +151,7 @@ const ResponsiveTypography = React.forwardRef<HTMLDivElement, ResponsiveTypograp
 
     const classNames = cn(typographyVariants({ size: adjustedSize, variant, className }));
 
-    return (
-      <Comp className={classNames} ref={ref} {...props}>
-        {children}
-      </Comp>
-    );
+    return React.createElement(Comp, { className: classNames, ref, ...props }, children);
   }
 );
 

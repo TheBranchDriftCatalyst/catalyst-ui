@@ -35,7 +35,7 @@ import React, { useMemo } from "react";
  */
 export const NavigationListItem = React.forwardRef<
   React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a"> & { comp?: React.ElementType }
+  React.ComponentPropsWithoutRef<"a"> & { comp?: React.ComponentType<any> }
 >(({ className, title, children, comp, ...props }, ref) => {
   const Comp = comp || "a";
   return (

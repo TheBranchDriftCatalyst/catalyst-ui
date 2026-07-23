@@ -95,7 +95,7 @@ export const PopoverContent = React.forwardRef<
 // button, get a floating panel" case. Consumers pass the trigger as
 // children + the panel as ``content``; open state is fully managed.
 
-export interface SmartPopoverProps extends Omit<PopoverContentProps, "children"> {
+export interface SmartPopoverProps extends Omit<PopoverContentProps, "children" | "content"> {
   /**
    * The trigger. Passed through ``<PopoverTrigger asChild>`` so the
    * consumer's button preserves its own styling and attaches the toggle

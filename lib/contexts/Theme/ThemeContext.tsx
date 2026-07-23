@@ -135,7 +135,7 @@ export interface ThemeContextType {
   /**
    * List of all available theme names
    */
-  allThemes: (string | null)[];
+  allThemes: ReadonlyArray<string | null>;
 }
 
 /**
