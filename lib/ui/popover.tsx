@@ -37,7 +37,8 @@ export const PopoverAnchor = PopoverPrimitive.Anchor;
 export const PopoverClose = PopoverPrimitive.Close;
 
 export interface PopoverContentProps
-  extends React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content> {
+  extends React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>,
+    React.HTMLAttributes<HTMLDivElement> {
   /**
    * When true (default), skip the built-in border+shadow shell so consumers
    * can render an unstyled floating container. Leave false for the standard
@@ -46,10 +47,13 @@ export interface PopoverContentProps
   bare?: boolean;
   /**
    * React 19's `ComponentPropsWithoutRef` no longer implicitly includes
-   * `children` when extending a forwardRef component. Types it explicitly
-   * so consumers get correct type checking on `<PopoverContent>…</>`.
+   * `children` or plain HTML attributes (className, style, …) when extending
+   * a Radix forwardRef component. Types them explicitly so consumers get
+   * correct checking on `<PopoverContent align="…">…`.
    */
   children?: React.ReactNode;
+  /** Radix Popover placement — hoisted so consumers can pass align without cast. */
+  align?: "start" | "center" | "end";
 }
 
 export const PopoverContent = React.forwardRef<

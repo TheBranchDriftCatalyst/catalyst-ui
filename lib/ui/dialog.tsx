@@ -250,11 +250,14 @@ const dialogContentVariants = cva(
  */
 interface DialogContentProps
   extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>,
+    React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof dialogContentVariants> {
   /**
    * React 19's `ComponentPropsWithoutRef` no longer implicitly includes
-   * `children` when extending a forwardRef component, so we type it here
-   * explicitly. Otherwise consumers get TS2322 on any `<DialogContent>…</>`.
+   * `children` OR plain HTML attributes (className, style, id, …) when
+   * extending a Radix forwardRef component. We extend
+   * `React.HTMLAttributes<HTMLDivElement>` and add `children` explicitly so
+   * consumers get correct type checking on `<DialogContent className="…">…`.
    */
   children?: React.ReactNode;
 }
