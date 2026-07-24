@@ -88,6 +88,11 @@ export default defineConfig(({ mode }) => ({
         /^@react-three\//,
         "maath",
         "framer-motion",
+        // The `./vite` subpath entry imports `vite` types + node builtins.
+        // Never bundle these — consumers of the vite plugin already have
+        // vite installed, and node builtins must resolve at runtime.
+        "vite",
+        /^node:/,
       ],
       onwarn(warning, defaultHandler) {
         // See this issue, its a non issue just... unfortunate. TL:DR: directives fuck up source maps, vite

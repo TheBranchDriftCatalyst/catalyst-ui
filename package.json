@@ -3,7 +3,7 @@
   "name": "@thebranchdriftcatalyst/catalyst-ui",
   "author": "TheBranchDriftCatalyst",
   "private": false,
-  "version": "2.4.2",
+  "version": "2.5.0",
   "type": "module",
   "main": "./dist/lib/catalyst.js",
   "types": "./dist/lib/catalyst.d.ts",
@@ -98,12 +98,19 @@
     },
     "./themes/*": "./dist/themes/*.css",
     "./styles/*": "./dist/contexts/Theme/styles/*.css",
-    "./styles/effects/*": "./dist/contexts/Theme/styles/effects/*.css"
+    "./styles/effects/*": "./dist/contexts/Theme/styles/effects/*.css",
+    "./setup": "./dist/setup.css",
+    "./setup.css": "./dist/setup.css",
+    "./vite": {
+      "types": "./dist/lib/vite/index.d.ts",
+      "import": "./dist/lib/vite/index.js"
+    }
   },
   "files": [
     "dist/lib",
     "dist/themes",
-    "dist/contexts"
+    "dist/contexts",
+    "dist/setup.css"
   ],
   "repository": {
     "type": "git",
@@ -133,7 +140,7 @@
     "update:badges": "./scripts/update-badges.sh",
     "text-extract": "tsx scripts/codemods/text-extract.ts",
     "prebuild": "cp CHANGELOG.md public/CHANGELOG.md",
-    "build": "tsc --p ./tsconfig-build.json && vite build && mkdir -p dist/themes dist/contexts/Theme && cp -r lib/themes/ dist/themes/ && cp -r lib/contexts/Theme/styles/ dist/contexts/Theme/styles/",
+    "build": "tsc --p ./tsconfig-build.json && vite build && mkdir -p dist/themes dist/contexts/Theme && cp -r lib/themes/ dist/themes/ && cp -r lib/contexts/Theme/styles/ dist/contexts/Theme/styles/ && cp lib/setup.css dist/setup.css",
     "prebuild:app": "cp CHANGELOG.md public/CHANGELOG.md",
     "build:app": "vite build --config vite.app.config.ts",
     "build:full": "yarn build && yarn build:app",
