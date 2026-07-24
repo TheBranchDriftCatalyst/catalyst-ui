@@ -39,7 +39,18 @@
 
 @import "@thebranchdriftcatalyst/catalyst-ui/themes/effects";
 
-@source "../node_modules/@thebranchdriftcatalyst/catalyst-ui/dist";
+/*
+ * 2.5.1 fix: was `../node_modules/@thebranchdriftcatalyst/catalyst-ui/dist`,
+ * which Tailwind resolves relative to setup.css ITSELF (not the consumer's
+ * index.css) — that landed on a nested-node_modules path that never exists,
+ * so the JIT silently skipped the scan and every arbitrary-value utility
+ * used inside library components (Radix Dialog centering, Sheet slide-in,
+ * Popover positioning, Tooltip arrow, DropdownMenu offsets) got dropped
+ * from the emitted CSS. Consumers saw modals off-screen, sidebars invisible,
+ * popovers misaligned. `.` resolves to setup.css's own directory = dist/
+ * (where all built components live) = exactly the scan target we want.
+ */
+@source ".";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
