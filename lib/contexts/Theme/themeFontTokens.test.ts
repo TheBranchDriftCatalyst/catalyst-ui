@@ -3,6 +3,7 @@ import { describe, it, expect } from "vitest";
 // test browser-bundle safe (no node:fs / node:path imports) so the file is
 // safe to live alongside the rest of lib/ without breaking the library build.
 import globalCss from "../../global.css?raw";
+import arasakaCss from "./styles/arasaka.css?raw";
 import catalystCss from "./styles/catalyst.css?raw";
 import draculaCss from "./styles/dracula.css?raw";
 import dungeonCss from "./styles/dungeon.css?raw";
@@ -51,6 +52,7 @@ describe("Tailwind @theme font tokens", () => {
   });
 
   const themeCss: Record<string, string> = {
+    arasaka: arasakaCss,
     catalyst: catalystCss,
     dracula: draculaCss,
     dungeon: dungeonCss,

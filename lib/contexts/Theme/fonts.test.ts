@@ -111,7 +111,7 @@ describe("ensureThemeFonts", () => {
   });
 
   it("declares every named theme in THEMES (regression guard)", () => {
-    // The eight named themes (excluding the `null` 'no theme' option).
+    // The named themes (excluding the `null` 'no theme' option).
     const expected = [
       "catalyst",
       "dracula",
@@ -121,6 +121,7 @@ describe("ensureThemeFonts", () => {
       "nature",
       "netflix",
       "nord",
+      "arasaka",
     ];
     for (const name of expected) {
       expect(themeFonts[name], `missing font metadata for ${name}`).toBeDefined();
@@ -143,6 +144,7 @@ describe("ensureThemeFonts", () => {
     ensureThemeFonts("netflix");
     ensureThemeFonts("laracon");
     ensureThemeFonts("dungeon");
+    ensureThemeFonts("arasaka");
     ensureThemeFonts(null);
 
     // No font links should remain after a final null reset.

@@ -95,6 +95,12 @@ export const THEME_REGISTRY = [
     variants: ["dark", "light"] as const,
     cssLoader: () => import("./styles/boomtime.css?inline").then(m => m.default),
   },
+  {
+    name: "arasaka",
+    label: "Arasaka",
+    variants: ["dark", "light"] as const,
+    cssLoader: () => import("./styles/arasaka.css?inline").then(m => m.default),
+  },
 ] as const satisfies readonly ThemeRegistryEntry[];
 
 export type RegisteredThemeName = (typeof THEME_REGISTRY)[number]["name"];

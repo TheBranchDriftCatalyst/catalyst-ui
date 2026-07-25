@@ -1,0 +1,254 @@
+/*
+ * arasaka — ARASAKA CORP palette (Cyberpunk 2077 inspired).
+ *
+ * Deep signature red on jet black. Chrome/steel as the second voice.
+ * Dark-mode-native: designed as the front-line dark aesthetic; the light
+ * variant is registered only to satisfy the registry contract (both
+ * variants declared) and falls back to a Boomtime-compatible neutral
+ * surface — Arasaka is meant to be experienced in the dark.
+ *
+ * Design signatures:
+ *  - Sharp 2px radius (no rounded-full anywhere)
+ *  - Muted glow (inset stroke + soft ambient, no bloom halo)
+ *  - Chart palette is opacity ramps of primary+accent (no rainbow)
+ *  - JetBrains Mono display + Inter Tight body + Noto Sans JP for katakana
+ */
+
+.theme-arasaka.light {
+  /* Registry contract: both variants must be declared. Arasaka is
+   * dark-native; the light variant intentionally mirrors a neutral,
+   * high-contrast surface so users who force light-mode still get a
+   * consistent typographic identity (same font stack + tabular numerals). */
+  --background: oklch(0.99 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.5 0.2 25);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.45 0 0);
+  --accent: oklch(0.6 0.02 240);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.9 0.01 25);
+  --input: oklch(0.9 0.01 25);
+  --ring: oklch(0.5 0.2 25);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.5 0.2 25);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.9 0.01 25);
+  --sidebar-ring: oklch(0.5 0.2 25);
+  --radius: 2px;
+
+  --neon-cyan: oklch(0.6 0.02 240);
+  --neon-pink: oklch(0.5 0.2 25);
+  --neon-purple: oklch(0.4 0.15 25);
+  --neon-blue: oklch(0.6 0.02 240);
+  --neon-red: oklch(0.5 0.2 25);
+  --neon-yellow: oklch(0.7 0.1 60);
+  --neon-gold: oklch(0.65 0.08 60);
+  --neon-cyan-rgb: 128, 138, 152;
+  --neon-pink-rgb: 175, 30, 40;
+  --neon-purple-rgb: 120, 22, 28;
+  --neon-blue-rgb: 128, 138, 152;
+  --neon-red-rgb: 175, 30, 40;
+  --neon-yellow-rgb: 190, 155, 90;
+  --neon-gold-rgb: 175, 140, 75;
+  --primary-rgb: 175, 30, 40;
+  --accent-rgb: 128, 138, 152;
+
+  --chart-1: oklch(0.5 0.2 25);
+  --chart-2: oklch(0.6 0.02 240);
+  --chart-3: oklch(0.4 0.16 25);
+  --chart-4: oklch(0.55 0.02 240);
+  --chart-5: oklch(0.32 0.12 25);
+  --chart-6: oklch(0.45 0.02 240);
+  --chart-7: oklch(0.6 0.18 25);
+  --chart-8: oklch(0.75 0.02 240);
+  --chart-9: oklch(0.28 0.08 25);
+  --chart-10: oklch(0.35 0.02 240);
+  --chart-11: oklch(0.5 0.14 25);
+  --chart-12: oklch(0.7 0.02 240);
+
+  --font-heading: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  --font-body: "Inter Tight", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono-stack: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+
+  --glow-primary: 0 0 0 rgba(0, 0, 0, 0);
+  --glow-secondary: 0 0 0 rgba(0, 0, 0, 0);
+  --glow-accent: 0 0 0 rgba(0, 0, 0, 0);
+  --glow-hover: 0 0 0 rgba(0, 0, 0, 0);
+  --shadow-neon-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-neon-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-neon-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --scanline-opacity: 0.01;
+  --scanline-color: rgba(var(--primary-rgb), var(--scanline-opacity));
+  --grid-opacity: 0.02;
+  --grid-color: rgba(var(--primary-rgb), var(--grid-opacity));
+  --shadow-base-rgb: 0, 0, 0;
+}
+
+.theme-arasaka.dark {
+  /* ARASAKA CORP — deep signature red on jet black. Corporate ops console. */
+
+  /* Core surface: near-black with a whisper of warmth (hue 15 in the red
+   * family) so pure black doesn't feel dead. */
+  --background: oklch(0.1 0.005 15);
+  --foreground: oklch(0.95 0.008 240);
+  --card: oklch(0.12 0.005 15);
+  --card-foreground: oklch(0.95 0.008 240);
+  --popover: oklch(0.13 0.005 15);
+  --popover-foreground: oklch(0.95 0.008 240);
+
+  /* Arasaka signature red — saturated but muted enough to read as
+   * corporate rather than a warning. */
+  --primary: oklch(0.55 0.22 25);
+  --primary-foreground: oklch(0.1 0.005 15);
+  --secondary: oklch(0.18 0.008 15);
+  --secondary-foreground: oklch(0.95 0.008 240);
+
+  /* Muted / interior chrome */
+  --muted: oklch(0.2 0.005 15);
+  --muted-foreground: oklch(0.55 0.008 240);
+
+  /* Chrome / steel — nearly grey, faint cool tint. Second voice. */
+  --accent: oklch(0.7 0.02 240);
+  --accent-foreground: oklch(0.1 0.005 15);
+
+  /* Warning-only red — brighter than primary; NEVER decorative. */
+  --destructive: oklch(0.65 0.25 25);
+  --destructive-foreground: oklch(0.95 0.008 240);
+
+  /* Borders: dark red-tinted grey. */
+  --border: oklch(0.2 0.015 25);
+  --input: oklch(0.2 0.015 25);
+  --ring: oklch(0.55 0.22 25);
+
+  --sidebar: oklch(0.1 0.005 15);
+  --sidebar-foreground: oklch(0.95 0.008 240);
+  --sidebar-primary: oklch(0.55 0.22 25);
+  --sidebar-primary-foreground: oklch(0.1 0.005 15);
+  --sidebar-accent: oklch(0.7 0.02 240);
+  --sidebar-accent-foreground: oklch(0.1 0.005 15);
+  --sidebar-border: oklch(0.2 0.015 25);
+  --sidebar-ring: oklch(0.55 0.22 25);
+
+  /* Sharp corners — the Arasaka signature. */
+  --radius: 2px;
+
+  /* Extended palette: mapped away from the "neon" naming — Arasaka isn't
+   * neon. Values are opacity/lightness variants of the primary/accent so
+   * consumer components that reach for --neon-* still render on-palette. */
+  --neon-cyan: oklch(0.7 0.02 240);
+  --neon-pink: oklch(0.55 0.22 25);
+  --neon-purple: oklch(0.4 0.15 25);
+  --neon-blue: oklch(0.7 0.02 240);
+  --neon-red: oklch(0.55 0.22 25);
+  --neon-yellow: oklch(0.7 0.1 60);
+  --neon-gold: oklch(0.65 0.08 60);
+  --neon-cyan-rgb: 168, 176, 190;
+  --neon-pink-rgb: 195, 40, 45;
+  --neon-purple-rgb: 130, 25, 30;
+  --neon-blue-rgb: 168, 176, 190;
+  --neon-red-rgb: 195, 40, 45;
+  --neon-yellow-rgb: 190, 155, 90;
+  --neon-gold-rgb: 175, 140, 75;
+  --primary-rgb: 195, 40, 45;
+  --accent-rgb: 168, 176, 190;
+
+  /* Chart palette: opacity/lightness ramp of primary+accent. No rainbow. */
+  --chart-1: oklch(0.55 0.22 25);
+  --chart-2: oklch(0.7 0.02 240);
+  --chart-3: oklch(0.45 0.18 25);
+  --chart-4: oklch(0.6 0.02 240);
+  --chart-5: oklch(0.35 0.14 25);
+  --chart-6: oklch(0.5 0.02 240);
+  --chart-7: oklch(0.65 0.2 25);
+  --chart-8: oklch(0.8 0.02 240);
+  --chart-9: oklch(0.3 0.1 25);
+  --chart-10: oklch(0.4 0.02 240);
+  --chart-11: oklch(0.55 0.15 25);
+  --chart-12: oklch(0.75 0.02 240);
+
+  /* Typography: JetBrains Mono display + Inter Tight body.
+   * Noto Sans JP is loaded via fonts.ts for katakana accents that
+   * consumers can apply via a custom class (font-family override). */
+  --font-heading: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  --font-body: "Inter Tight", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono-stack: "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+
+  /* Effect tokens — muted. NO bloom halos. Inset stroke + soft ambient. */
+  --glow-primary:
+    inset 0 0 0 1px rgba(var(--primary-rgb), 0.55), 0 0 8px rgba(var(--primary-rgb), 0.18);
+  --glow-secondary: inset 0 0 0 1px rgba(var(--accent-rgb), 0.3);
+  --glow-accent: 0 0 6px rgba(var(--primary-rgb), 0.2);
+  --glow-hover:
+    inset 0 0 0 1px rgba(var(--primary-rgb), 0.75), 0 0 12px rgba(var(--primary-rgb), 0.28);
+  --shadow-neon-sm: 0 1px 3px rgba(0, 0, 0, 0.6);
+  --shadow-neon-md: 0 4px 12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(var(--primary-rgb), 0.12);
+  --shadow-neon-lg: 0 8px 24px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(var(--primary-rgb), 0.18);
+
+  /* Scanlines: tighter (2px stride) and lower alpha than boomtime. */
+  --scanline-opacity: 0.06;
+  --scanline-color: rgba(var(--primary-rgb), var(--scanline-opacity));
+  --grid-opacity: 0.05;
+  --grid-color: rgba(var(--primary-rgb), var(--grid-opacity));
+  --shadow-base-rgb: 0, 0, 0;
+}
+
+/* ------------------------------------------------------------------ *
+ * Dark-mode atmosphere — the visual signature that makes Arasaka feel
+ * like a private military contractor's ops terminal. Only fires when
+ * `.theme-arasaka.dark` is active on <html>.
+ * ------------------------------------------------------------------ */
+
+/* Jet-black surface with a subtle red vignette at the top and a nudge of
+ * warmth in the vertical gradient. No perspective grid, no neon wash. */
+.theme-arasaka.dark body {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(ellipse 100% 60% at 50% -10%, oklch(0.22 0.1 25 / 0.32), transparent 65%),
+    radial-gradient(ellipse 80% 40% at 100% 105%, oklch(0.18 0.06 25 / 0.2), transparent 60%),
+    linear-gradient(to bottom, oklch(0.1 0.005 15), oklch(0.08 0.004 15));
+  background-attachment: fixed;
+}
+
+/* Primary-colored buttons/badges: inset red stroke + tight ambient.
+ * Deliberately not a bloom halo — this is Arasaka, not Miami. */
+.theme-arasaka.dark button.bg-primary,
+.theme-arasaka.dark a.bg-primary,
+.theme-arasaka.dark .bg-sidebar-primary {
+  box-shadow:
+    inset 0 0 0 1px oklch(0.65 0.22 25 / 0.75),
+    0 0 8px oklch(0.55 0.22 25 / 0.28);
+}
+
+/* Active nav item (NavLink sets aria-current="page"): red edge, no bloom. */
+.theme-arasaka.dark a[aria-current="page"] {
+  box-shadow:
+    inset 0 0 0 1px oklch(0.55 0.22 25 / 0.6),
+    0 0 6px oklch(0.55 0.22 25 / 0.2);
+}
+
+/* Focus rings: red, tight, single-pixel. */
+.theme-arasaka.dark *:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 1px var(--background),
+    0 0 0 2px var(--ring);
+}
+
+/* Cards: chrome hairline + deep drop-shadow (weight, not glow). */
+.theme-arasaka.dark .bg-card {
+  box-shadow:
+    inset 0 0 0 1px oklch(0.25 0.015 25 / 0.8),
+    0 2px 8px oklch(0 0 0 / 0.5);
+}

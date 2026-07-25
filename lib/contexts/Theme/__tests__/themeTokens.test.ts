@@ -144,9 +144,11 @@ function loadThemeFiles() {
 describe("Theme token parity (lint)", () => {
   const files = loadThemeFiles();
 
-  it("discovers all 8 theme files", () => {
+  it("discovers all registered theme files", () => {
     const names = files.map(f => f.filename).sort();
     expect(names).toEqual([
+      "arasaka.css",
+      "boomtime.css",
       "catalyst.css",
       "dracula.css",
       "dungeon.css",

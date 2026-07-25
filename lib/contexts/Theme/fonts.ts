@@ -86,6 +86,13 @@ export const themeFonts: Record<string, ThemeFontMetadata> = {
       "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap",
     ],
   },
+  // Arasaka corporate fonts — JetBrains Mono display + Inter Tight body +
+  // Noto Sans JP for the katakana signage accents.
+  arasaka: {
+    stylesheets: [
+      "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter+Tight:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap",
+    ],
+  },
 };
 
 /**
