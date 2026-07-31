@@ -33,3 +33,6 @@ export * from "./sheet";
 export * from "./textarea";
 export * from "./collapsible";
 export * from "./circular-gauge";
+export * from "./labeled-stat";
+export * from "./loading-skeleton";
+export * from "./spinner";
