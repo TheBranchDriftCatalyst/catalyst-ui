@@ -105,30 +105,45 @@ function StudioEnv() {
   return null;
 }
 
-function Coin({ item, index, count }: { item: TrophyItem; index: number; count: number }) {
+function Coin({
+  item,
+  index,
+  count,
+  scrollRef,
+  spacing,
+}: {
+  item: TrophyItem;
+  index: number;
+  count: number;
+  scrollRef: { current: number };
+  spacing: number;
+}) {
   const ref = useRef<THREE.Group>(null);
   const faceTex = useMemo(() => makeFaceTexture(item), [item.id]);
   const metal = useMemo(() => new THREE.Color(item.color || GOLD), [item.color]);
 
-  // Fan the coins along a shallow arc, centered.
-  const spread = Math.min(0.36, 1.7 / Math.max(count, 1));
-  const centered = index - (count - 1) / 2;
-  const x = centered * (1.5 - Math.min(0.7, count * 0.04));
-  const baseY = -Math.abs(centered) * 0.12;
-  const phase = index * 0.7;
+  const totalW = count * spacing;
+  const baseX = (index - (count - 1) / 2) * spacing; // centered
+  const phase = index * 0.9;
 
   useFrame(state => {
     const g = ref.current;
     if (!g) return;
     const t = state.clock.elapsedTime;
-    g.position.y = baseY + Math.sin(t * 1.1 + phase) * 0.06;
-    // Gentle oscillating spin around Y so the metal catches the light.
-    g.rotation.y = Math.sin(t * 0.5 + phase) * 0.5;
-    g.rotation.z = centered * spread * 0.5;
+    // Marquee: wrap the coin's x into a window centered on 0 so the row
+    // scrolls seamlessly regardless of how many awards there are — no arc,
+    // no sag, no overlap.
+    let x = (baseX - scrollRef.current) % totalW;
+    if (x < -totalW / 2) x += totalW;
+    if (x >= totalW / 2) x -= totalW;
+    g.position.x = x;
+    g.position.y = Math.sin(t * 1.1 + phase) * 0.05;
+    // Gentle wobble so the metal catches the light; no full spin.
+    g.rotation.y = Math.sin(t * 0.5 + phase) * 0.3;
   });
 
   return (
-    <group ref={ref} position={[x, baseY, 0]}>
+    <group ref={ref}>
       {/* Coin body — cylinder rotated so faces point at the camera (+Z). */}
       <mesh rotation={[Math.PI / 2, 0, 0]} castShadow>
         <cylinderGeometry args={[0.62, 0.62, 0.12, 48]} />
@@ -157,36 +172,68 @@ function Coin({ item, index, count }: { item: TrophyItem; index: number; count: 
 
 function Shelf({ items }: { items: TrophyItem[] }) {
   const group = useRef<THREE.Group>(null);
+  const scroll = useRef(0);
+  const paused = useRef(false);
   const target = useRef({ x: 0, y: 0 });
+  const { camera, size } = useThree();
+  const spacing = 1.5;
 
-  useFrame(() => {
+  // Only auto-scroll when the row is wider than the viewport; otherwise the
+  // coins all fit and a static centered row reads better (nothing pops across
+  // an empty gap). viewW = visible world width at the coin plane (z=0).
+  const cam = camera as THREE.PerspectiveCamera;
+  const viewW =
+    2 *
+    cam.position.z *
+    Math.tan((cam.fov * Math.PI) / 360) *
+    (size.width / Math.max(size.height, 1));
+  const totalW = items.length * spacing;
+  const speed = totalW > viewW * 0.92 ? 0.85 : 0; // units / second
+
+  useFrame((_, delta) => {
+    if (!paused.current) scroll.current += delta * speed;
     const g = group.current;
     if (!g) return;
-    // Ease toward the pointer-driven target for a smooth parallax tilt.
+    // Ease toward the pointer-driven tilt target.
     g.rotation.x += (target.current.y - g.rotation.x) * 0.06;
     g.rotation.y += (target.current.x - g.rotation.y) * 0.06;
   });
 
+  const onEnter = () => {
+    paused.current = true;
+  };
   const onMove = (e: ThreeEvent<PointerEvent>) => {
-    // pointer.x / pointer.y are already NDC (-1..1) on the R3F event.
-    target.current.x = e.pointer.x * 0.35;
-    target.current.y = -e.pointer.y * 0.2;
+    target.current.x = e.pointer.x * 0.22;
+    target.current.y = -e.pointer.y * 0.14;
   };
   const onLeave = () => {
+    paused.current = false;
     target.current.x = 0;
     target.current.y = 0;
   };
 
   return (
     <group ref={group}>
-      {/* Invisible catcher plane so pointer moves anywhere over the canvas
-          drive the tilt, not just when directly over a coin. */}
-      <mesh onPointerMove={onMove} onPointerLeave={onLeave} position={[0, 0, -0.5]}>
-        <planeGeometry args={[40, 24]} />
+      {/* Invisible catcher plane so the pointer anywhere over the canvas
+          pauses the drift + drives the tilt. */}
+      <mesh
+        onPointerEnter={onEnter}
+        onPointerMove={onMove}
+        onPointerLeave={onLeave}
+        position={[0, 0, -0.5]}
+      >
+        <planeGeometry args={[80, 24]} />
         <meshBasicMaterial transparent opacity={0} depthWrite={false} />
       </mesh>
       {items.map((it, i) => (
-        <Coin key={it.id} item={it} index={i} count={items.length} />
+        <Coin
+          key={it.id}
+          item={it}
+          index={i}
+          count={items.length}
+          scrollRef={scroll}
+          spacing={spacing}
+        />
       ))}
     </group>
   );
@@ -200,7 +247,7 @@ export function DossierTrophyShelf({
   return (
     <Canvas
       className={className}
-      camera={{ position: [0, 0, 5.2], fov: 42 }}
+      camera={{ position: [0, 0, 6.6], fov: 42 }}
       dpr={[1, 1.75]}
       gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
       style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
