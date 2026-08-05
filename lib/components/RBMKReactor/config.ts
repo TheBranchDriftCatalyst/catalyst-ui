@@ -33,16 +33,33 @@ export const DEFAULT_REACTOR_CONFIG: ReactorConfig = {
     radius: 8, // pixels - visual representation of fuel channel
     // Base emission rate: fast emission for realistic prompt neutron physics
     // Real prompt neutrons: emitted within nanoseconds to microseconds
-    // At 60 FPS: 1.5/sec × energyScale = ~667ms emission interval
-    // Tuned to reach criticality in ~20-40 seconds (slower, more stable)
-    baseEmissionRate: 1.5, // neutrons per second per channel (reduced from 2.0 to prevent spiral waves)
-    energyDecay: 0.95, // 5% energy loss per frame (~60fps) - faster cooling for better stability
+    // At 3.0/sec × energyScale, the emission interval is ~333ms at threshold energy
+    // CRITICALITY REBALANCE (CUI-iwv.16): the previous tuning (rate 1.5, decay
+    // 0.95, gain 0.15) could never sustain a chain reaction — fission hits
+    // decayed below the emission threshold before the emission interval could
+    // elapse; apparent criticality was an artifact of the (fixed) decay-heat
+    // bug. Current values make sustained flux hold atoms above threshold while
+    // inserted rods still interdict transport and collapse the reaction.
+    baseEmissionRate: 3.0, // LEGACY (v2 charge-emit model): no longer drives physics since v3 direct fission emission
+    energyDecay: 0.98, // 2% energy loss per frame (~570ms half-life)
     // Energy gain from neutron absorption
     // Real: fission releases ~200 MeV, we abstract to 0-1 energy scale
-    energyGain: 0.15, // reduced from 0.2 to prevent spiral wave propagation
+    energyGain: 0.45, // one hit ignites a warm channel (>=0.15) — background flux converts directly to emitters
     emissionThreshold: 0.6, // higher threshold = requires more energy to emit (increased from 0.5)
-    // Real U-235 releases 2.43 neutrons per fission
-    neutronsPerFission: 1.8, // reduced from 2.0 to prevent spiral wave cascades
+    // v3 (CUI-ccq): the REAL U-235 value — fission spawns these directly at the
+    // event (prompt share) with the rest banked as delayed precursors
+    neutronsPerFission: 2.43,
+    // Spontaneous background (CUI-2dq): with 400 channels this yields ~30
+    // background neutrons/sec core-wide. Rods OUT: the background multiplies
+    // and self-ignites the core in tens of seconds. Rods IN: it is absorbed
+    // and nothing builds — criticality is genuinely rod-controlled.
+    spontaneousEmissionRate: 0.25, // neutrons per second per channel
+    // Fraction of emissions banked as delayed-neutron precursors.
+    // Real β ≈ 0.0065; scaled up so delayed neutrons are visible and the
+    // reactor is actually steerable (prompt-only kinetics are uncontrollable).
+    delayedFraction: 0.15,
+    // Precursor decay per reference frame → ~2.4s mean delay at 60fps
+    precursorDecayRate: 0.007,
   },
 
   controlRod: {
@@ -58,6 +75,12 @@ export const DEFAULT_REACTOR_CONFIG: ReactorConfig = {
     // At 60fps, 20 seconds = 0.05 units per second for 0-1 range
     // We'll speed this up 10x for better interactivity: 0.5/sec = 2 sec full travel
     insertionSpeed: 0.5, // 0-1 range per second (2 seconds for full insertion)
+    // Graphite follower/displacer length below the boron section (the RBMK flaw)
+    graphiteTipLength: 40, // pixels of graphite tip
+    // Fraction of water displaced per reference frame while the tip transits a
+    // cell (frame-scaled). Creates the transient void that spikes reactivity
+    // before boron arrives — the AZ-5 "positive scram" effect.
+    graphiteTipDisplacement: 0.25,
   },
 
   neutron: {
@@ -73,10 +96,20 @@ export const DEFAULT_REACTOR_CONFIG: ReactorConfig = {
     // U-235 fission cross-section: 580 barns (thermal neutrons)
     // 86% of absorbed neutrons cause fission, 14% radiative capture
     fissionProbability: 0.86,
-    trailLength: 8, // number of trail points to render - longer trails
+    // Trail cap passed to updateNeutronPosition (max trail points rendered)
+    trailLength: 8,
     // Wall bounce limit before neutron escapes containment
     // Real reactors: neutrons escape/absorbed by shielding
-    maxWallBounces: 5, // after 5 bounces, neutron leaks through containment
+    // Enforced in processCollisions: once wallBounces reaches this limit the
+    // neutron leaks out and is removed (counted as leakedCount)
+    maxWallBounces: 5,
+    // Fast (unmoderated) neutrons travel 2x their thermal speed, decelerating
+    // toward thermal speed as graphite moderates them
+    fastSpeedMultiplier: 2.0,
+    // Moderation gained per reference frame → fully thermal in ~0.33s at 60fps
+    moderationRate: 0.05,
+    // Fission effectiveness at moderation 0: fast neutrons rarely fission U-235
+    fastFissionFactor: 0.15,
   },
 
   physics: {
@@ -90,6 +123,10 @@ export const DEFAULT_REACTOR_CONFIG: ReactorConfig = {
     defaultSpeed: 0.5, // 0.5x real-time (slower for observing void coefficient effects)
     targetFPS: 60, // frames per second
     useRAF: true, // use requestAnimationFrame for smooth animation
+    // Thermal power per fission/sec, calibrated to the v3 equilibrium: full
+    // rod withdrawal settles ~40 fissions/s ≈ 1000 MW; staggered rods ≈ 600 MW;
+    // excursions spike well past 2000 MW. (Real RBMK-1000: 3200 MW thermal.)
+    megawattsPerFission: 25,
   },
 
   water: {
@@ -115,11 +152,20 @@ export const DEFAULT_REACTOR_CONFIG: ReactorConfig = {
     // Water absorbs neutrons (unlike graphite which moderates)
     // When water boils away, absorption decreases = more neutrons = runaway
     // Reduced from 0.25 to 0.02 to allow neutrons to survive ~100 frames on average
-    absorptionProbability: 0.02,
+    absorptionProbability: 0.015,
 
-    // Base cooling rate: 2% per frame (matches old implicit cooling)
-    // This scales with water density: less water = less cooling = positive feedback
-    baseCoolingRate: 0.98,
+    // Base cooling rate: 4% per frame — the SINGLE cooling pass, applied in
+    // updateCoolingAndWater only. (Previously cooling was double-applied: a
+    // hardcoded 0.98/frame in updateHeatGrid plus a water-scaled pass here.
+    // 0.96 ≈ 0.98² preserves the full-water equilibrium, and steam voids now
+    // fully suspend cooling — stronger, more authentic positive-void feedback.)
+    // Scales with water density: less water = less cooling = positive feedback
+    baseCoolingRate: 0.96,
+
+    // Pump-flow gradient: coolant enters from the bottom, so regen at the top
+    // row = (1 - 0.6) = 40% of the bottom-row rate. Voids therefore form
+    // top-first, mirroring real RBMK bottom-fed channel flow.
+    pumpFlowGradient: 0.6,
   },
 
   pressure: {
@@ -166,7 +212,13 @@ export const DEFAULT_REACTOR_CONFIG: ReactorConfig = {
       // Damage rate when above meltdown temp (per frame)
       meltdownRate: 0.005, // 0.5% per frame = ~3 seconds to full meltdown
       // Decay heat generation from damaged fuel (fraction of normal)
-      decayHeatFraction: 0.15, // 15% of fission heat continues as decay heat
+      // Inventory-driven decay heat (CUI-n1h): each fission adds one unit of
+      // fission products; products deplete exponentially and each unit adds a
+      // sliver of energy per frame. A freshly shut-down working core (~30-60
+      // products/atom) stays hot for a minute or two, then genuinely cools —
+      // the old damage-fraction model generated heat forever (thermal deadlock).
+      decayHeatPerFission: 0.00015, // energy per reference frame per product
+      decayHeatDecayRate: 0.0004, // product depletion per reference frame (~29s half-life)
     },
   },
 
@@ -180,10 +232,18 @@ export const DEFAULT_REACTOR_CONFIG: ReactorConfig = {
     decayRate: 0.00015, // 0.015% per frame = ~60 seconds to clear
     // Burnout: high neutron flux burns xenon → xenon decreases faster
     // Real: neutron cross-section of Xe-135 = 2.65M barns (massive!)
-    burnoutRate: 0.0001, // per nearby neutron per frame
+    // Tuned so at-power equilibrium sits meaningfully ABOVE zero: with ~10
+    // nearby neutrons, burnout ≈ 0.0002/frame vs buildup ≈ 0.0015/frame at
+    // energy 0.5 → equilibrium xenon ≈ 0.3-0.5. (Was 0.0001: burnout matched
+    // buildup wherever neutrons existed, pinning xenon at 0 — the "xenon never
+    // moves" bug found by the integration suite, CUI-iwv.14.)
+    burnoutRate: 0.00002, // per nearby neutron per frame
     // Maximum poisoning: reduces reactivity by absorbing neutrons
     // Real: Can absorb 30-50% of neutron flux after shutdown
     maxPoisoning: 0.4, // 40% reduction in energy gain when maxed
+    // Initial xenon seeded into atoms at startup (0 = fresh, clean core).
+    // The iodinePit scenario overrides this to model a poisoned restart.
+    initialLevel: 0,
   },
 
   regeneration: {
@@ -218,32 +278,115 @@ export const DEFAULT_REACTOR_CONFIG: ReactorConfig = {
 };
 
 /**
- * Helper to create a custom config by overriding defaults
+ * Deep-partial override shape accepted by createReactorConfig.
+ *
+ * Every top-level section is optional, with Partial fields inside; the nested
+ * `damage` and `regeneration` sub-sections are individually Partial as well.
+ * Note: full section objects from Partial<ReactorConfig> remain assignable to
+ * this type, so existing call sites keep working.
  */
-export function createReactorConfig(overrides: Partial<ReactorConfig>): ReactorConfig {
+export type ReactorConfigOverrides = {
+  grid?: Partial<ReactorConfig["grid"]>;
+  atom?: Partial<ReactorConfig["atom"]>;
+  controlRod?: Partial<ReactorConfig["controlRod"]>;
+  neutron?: Partial<ReactorConfig["neutron"]>;
+  physics?: Partial<ReactorConfig["physics"]>;
+  simulation?: Partial<ReactorConfig["simulation"]>;
+  water?: Partial<ReactorConfig["water"]>;
+  pressure?: Partial<ReactorConfig["pressure"]>;
+  damage?: {
+    rod?: Partial<ReactorConfig["damage"]["rod"]>;
+    fuel?: Partial<ReactorConfig["damage"]["fuel"]>;
+  };
+  xenon?: Partial<ReactorConfig["xenon"]>;
+  regeneration?: {
+    water?: Partial<ReactorConfig["regeneration"]["water"]>;
+    fuel?: Partial<ReactorConfig["regeneration"]["fuel"]>;
+    rod?: Partial<ReactorConfig["regeneration"]["rod"]>;
+  };
+};
+
+/**
+ * Helper to create a custom config by merging overrides into a base config
+ * (defaults to DEFAULT_REACTOR_CONFIG).
+ *
+ * Merging relative to `base` lets scenario deltas stack on top of any physics
+ * model variant instead of always resetting to defaults.
+ */
+export function createReactorConfig(
+  overrides: ReactorConfigOverrides,
+  base: ReactorConfig = DEFAULT_REACTOR_CONFIG
+): ReactorConfig {
   return {
-    ...DEFAULT_REACTOR_CONFIG,
-    ...overrides,
-    grid: { ...DEFAULT_REACTOR_CONFIG.grid, ...overrides.grid },
-    atom: { ...DEFAULT_REACTOR_CONFIG.atom, ...overrides.atom },
-    controlRod: { ...DEFAULT_REACTOR_CONFIG.controlRod, ...overrides.controlRod },
-    neutron: { ...DEFAULT_REACTOR_CONFIG.neutron, ...overrides.neutron },
-    physics: { ...DEFAULT_REACTOR_CONFIG.physics, ...overrides.physics },
-    simulation: { ...DEFAULT_REACTOR_CONFIG.simulation, ...overrides.simulation },
-    water: { ...DEFAULT_REACTOR_CONFIG.water, ...overrides.water },
-    pressure: { ...DEFAULT_REACTOR_CONFIG.pressure, ...overrides.pressure },
+    ...base,
+    grid: { ...base.grid, ...overrides.grid },
+    atom: { ...base.atom, ...overrides.atom },
+    controlRod: { ...base.controlRod, ...overrides.controlRod },
+    neutron: { ...base.neutron, ...overrides.neutron },
+    physics: { ...base.physics, ...overrides.physics },
+    simulation: { ...base.simulation, ...overrides.simulation },
+    water: { ...base.water, ...overrides.water },
+    pressure: { ...base.pressure, ...overrides.pressure },
     damage: {
-      rod: { ...DEFAULT_REACTOR_CONFIG.damage.rod, ...overrides.damage?.rod },
-      fuel: { ...DEFAULT_REACTOR_CONFIG.damage.fuel, ...overrides.damage?.fuel },
+      rod: { ...base.damage.rod, ...overrides.damage?.rod },
+      fuel: { ...base.damage.fuel, ...overrides.damage?.fuel },
     },
-    xenon: { ...DEFAULT_REACTOR_CONFIG.xenon, ...overrides.xenon },
+    xenon: { ...base.xenon, ...overrides.xenon },
     regeneration: {
-      water: { ...DEFAULT_REACTOR_CONFIG.regeneration.water, ...overrides.regeneration?.water },
-      fuel: { ...DEFAULT_REACTOR_CONFIG.regeneration.fuel, ...overrides.regeneration?.fuel },
-      rod: { ...DEFAULT_REACTOR_CONFIG.regeneration.rod, ...overrides.regeneration?.rod },
+      water: { ...base.regeneration.water, ...overrides.regeneration?.water },
+      fuel: { ...base.regeneration.fuel, ...overrides.regeneration?.fuel },
+      rod: { ...base.regeneration.rod, ...overrides.regeneration?.rod },
     },
   };
 }
+
+/**
+ * Scenario override deltas — ONLY the values that differ from the base config.
+ *
+ * Exported separately so downstream code can apply a scenario on top of ANY
+ * base config (e.g., a physics-model variant) via
+ * `createReactorConfig(SCENARIO_OVERRIDES.x, base)`. Previously each preset
+ * spread full DEFAULT_REACTOR_CONFIG sections into its overrides, which
+ * silently clobbered any non-scenario tuning downstream.
+ */
+export const SCENARIO_OVERRIDES: Record<
+  "lowPowerTest" | "highReactivity" | "scrammed" | "iodinePit",
+  ReactorConfigOverrides
+> = {
+  /** Low power test - similar to Chernobyl test conditions */
+  lowPowerTest: {
+    atom: { spontaneousEmissionRate: 0.05 }, // weak startup source (v3: background drives ignition)
+    controlRod: { insertionSpeed: 0.05 }, // real slow insertion (20 seconds)
+  },
+
+  /** High reactivity - demonstrates rapid chain reaction */
+  highReactivity: {
+    atom: {
+      // No baseEmissionRate here: it matched the default (1.5) and would
+      // clobber physics-model bases (easy 1.0, ultraRealistic 2.0) when layered
+      energyGain: 0.5, // higher energy gain per neutron
+      neutronsPerFission: 2.8, // upper range of neutron emission
+    },
+  },
+
+  /** Scrammed - all control rods inserted (emergency shutdown) */
+  scrammed: {
+    controlRod: {
+      // No absorptionProbability here: every base is already >= 0.98 and a
+      // default-equal "delta" would LOWER easy's 0.99 when layered
+      insertionSpeed: 1.0, // faster emergency insertion
+    },
+  },
+
+  /**
+   * Iodine pit - reactor restarting into pre-existing xenon poisoning.
+   * The exact trap at Chernobyl: operators withdrew rods far past limits to
+   * fight the poison, leaving no shutdown margin when the void spike hit.
+   */
+  iodinePit: {
+    xenon: { initialLevel: 0.85 },
+  },
+};
 
 /**
  * Preset configurations for different scenarios
@@ -253,40 +396,20 @@ export const REACTOR_PRESETS = {
   normal: DEFAULT_REACTOR_CONFIG,
 
   /** Low power test - similar to Chernobyl test conditions */
-  lowPowerTest: createReactorConfig({
-    atom: {
-      ...DEFAULT_REACTOR_CONFIG.atom,
-      baseEmissionRate: 0.2, // reduced neutron flux
-    },
-    controlRod: {
-      ...DEFAULT_REACTOR_CONFIG.controlRod,
-      insertionSpeed: 0.05, // real slow insertion (20 seconds)
-    },
-  }),
+  lowPowerTest: createReactorConfig(SCENARIO_OVERRIDES.lowPowerTest),
 
   /** High reactivity - demonstrates rapid chain reaction */
-  highReactivity: createReactorConfig({
-    atom: {
-      ...DEFAULT_REACTOR_CONFIG.atom,
-      baseEmissionRate: 1.5,
-      energyGain: 0.5, // higher energy gain per neutron
-      neutronsPerFission: 2.8, // upper range of neutron emission
-    },
-  }),
+  highReactivity: createReactorConfig(SCENARIO_OVERRIDES.highReactivity),
 
   /** Scrammed - all control rods inserted (emergency shutdown) */
-  scrammed: createReactorConfig({
-    controlRod: {
-      ...DEFAULT_REACTOR_CONFIG.controlRod,
-      absorptionProbability: 0.98, // maximum absorption
-      insertionSpeed: 1.0, // faster emergency insertion
-    },
-  }),
+  scrammed: createReactorConfig(SCENARIO_OVERRIDES.scrammed),
+
+  /** Iodine pit - restart into pre-existing xenon poisoning (Chernobyl trap) */
+  iodinePit: createReactorConfig(SCENARIO_OVERRIDES.iodinePit),
 
   /** Ultra Realistic - true RBMK physics with spiral waves and instability */
   ultraRealistic: createReactorConfig({
     atom: {
-      ...DEFAULT_REACTOR_CONFIG.atom,
       baseEmissionRate: 2.0, // realistic emission rate
       energyDecay: 0.97, // slower decay (3% per frame)
       energyGain: 0.25, // realistic energy gain
@@ -294,7 +417,6 @@ export const REACTOR_PRESETS = {
       neutronsPerFission: 2.43, // real U-235 value
     },
     water: {
-      ...DEFAULT_REACTOR_CONFIG.water,
       voidCoefficient: 4.5, // original dangerous pre-Chernobyl value
     },
   }),
@@ -302,7 +424,6 @@ export const REACTOR_PRESETS = {
   /** Easy Mode - forgiving physics for learning and experimentation */
   easy: createReactorConfig({
     atom: {
-      ...DEFAULT_REACTOR_CONFIG.atom,
       baseEmissionRate: 1.0, // slower emission
       energyDecay: 0.92, // faster cooling (8% per frame)
       energyGain: 0.12, // lower energy gain
@@ -310,14 +431,14 @@ export const REACTOR_PRESETS = {
       neutronsPerFission: 1.5, // fewer neutrons per fission
     },
     controlRod: {
-      ...DEFAULT_REACTOR_CONFIG.controlRod,
       absorptionProbability: 0.99, // nearly perfect absorption
       insertionSpeed: 0.8, // faster insertion (1.25 seconds)
     },
     water: {
-      ...DEFAULT_REACTOR_CONFIG.water,
       voidCoefficient: 2.0, // much safer void coefficient
-      baseCoolingRate: 0.96, // faster cooling
+      // Faster cooling. Single-pass equivalent of the old double-applied
+      // cooling (hardcoded 0.98 × preset 0.96 ≈ 0.94)
+      baseCoolingRate: 0.94,
     },
   }),
 };

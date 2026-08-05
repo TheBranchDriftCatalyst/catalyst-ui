@@ -17,6 +17,21 @@ import {
 } from "./types";
 
 /**
+ * Reference frame duration in milliseconds (60fps).
+ *
+ * Global time model: deltaTime (milliseconds, already multiplied by the user
+ * speed slider) is the single sim clock. Per-frame rates in config are defined
+ * relative to this reference frame; each function receiving deltaTime computes
+ * `frameScale = deltaTime / FRAME_MS` so that 60fps@1x behavior is unchanged,
+ * the speed slider dilates all subsystems uniformly, and high-refresh displays
+ * don't run fast. Conversion rules:
+ * - multiplicative per-frame retention factor r → Math.pow(r, frameScale)
+ * - additive per-frame rate a → a * frameScale
+ * - per-frame probability p → 1 - Math.pow(1 - p, frameScale)
+ */
+export const FRAME_MS = 1000 / 60;
+
+/**
  * Generate a random ID for particles
  */
 export function generateId(): string {
@@ -54,6 +69,13 @@ export function randomVelocity(speed: number): Velocity {
 
 /**
  * Create a new neutron at given position with random direction
+ *
+ * Neutrons are born FAST (moderation = 0): the initial velocity magnitude is
+ * the thermal speed scaled by config.neutron.fastSpeedMultiplier, and the
+ * neutron decelerates toward thermalSpeed as graphite moderates it (see
+ * updateNeutronPosition). thermalSpeed captures the per-neutron speed variance
+ * so moderation converges to a stable thermal velocity.
+ *
  * @param parentAtomId - Optional ID of the atom that emitted this neutron (prevents immediate re-absorption)
  */
 export function createNeutron(
@@ -64,36 +86,71 @@ export function createNeutron(
 ): Neutron {
   const variance = config.neutron.speedVariation;
   const baseSpeed = speed ?? config.neutron.baseSpeed;
-  const actualSpeed = baseSpeed * (1 + (Math.random() - 0.5) * variance * 2);
+  const thermalSpeed = baseSpeed * (1 + (Math.random() - 0.5) * variance * 2);
+  // Born fast: current magnitude = thermalSpeed × fastSpeedMultiplier
+  const fastSpeed = thermalSpeed * config.neutron.fastSpeedMultiplier;
 
   return {
     id: generateId(),
     position: { ...position },
-    velocity: randomVelocity(actualSpeed),
+    velocity: randomVelocity(fastSpeed),
     age: 0,
-    speed: actualSpeed,
+    speed: fastSpeed,
     radius: config.neutron.radius,
     isNew: true,
     trail: [{ ...position }],
     wallBounces: 0,
     parentAtomId,
+    moderation: 0,
+    thermalSpeed,
   };
 }
 
 /**
  * Update neutron position based on velocity and delta time
+ *
+ * MODERATION: fast neutrons thermalize as graphite slows them. Each frame the
+ * moderation level rises toward 1, and the neutron's speed is interpolated from
+ * fast (thermalSpeed × fastSpeedMultiplier at moderation 0) down to thermalSpeed
+ * (at moderation 1). The velocity vector is rescaled to the new magnitude,
+ * preserving direction.
+ *
+ * @param config - Reactor config (reads neutron.trailLength + moderation params)
  */
-export function updateNeutronPosition(neutron: Neutron, deltaTime: number): void {
-  // deltaTime is in seconds, velocity is in pixels per frame at 60fps
-  // Normalize to frame-based movement
-  const frameDelta = (deltaTime * 60) / 1000;
+export function updateNeutronPosition(
+  neutron: Neutron,
+  deltaTime: number,
+  config: ReactorConfig
+): void {
+  // deltaTime is in milliseconds (already speed-scaled); velocity is in pixels
+  // per reference frame (60fps), so scale movement by frames elapsed.
+  const frameDelta = deltaTime / FRAME_MS;
+
+  // Thermalize: raise moderation toward 1 (additive per-frame rate, frame-scaled)
+  // then rescale velocity to the interpolated speed for the new moderation level.
+  if ((neutron.moderation ?? 0) < 1) {
+    const { moderationRate, fastSpeedMultiplier } = config.neutron;
+    neutron.moderation = Math.min(1, (neutron.moderation ?? 0) + moderationRate * frameDelta);
+
+    const targetSpeed =
+      neutron.thermalSpeed * (1 + (fastSpeedMultiplier - 1) * (1 - neutron.moderation));
+    const mag = Math.sqrt(
+      neutron.velocity.vx * neutron.velocity.vx + neutron.velocity.vy * neutron.velocity.vy
+    );
+    if (mag > 0) {
+      const scale = targetSpeed / mag;
+      neutron.velocity.vx *= scale;
+      neutron.velocity.vy *= scale;
+    }
+    neutron.speed = targetSpeed;
+  }
 
   neutron.position.x += neutron.velocity.vx * frameDelta;
   neutron.position.y += neutron.velocity.vy * frameDelta;
 
-  // Update trail
+  // Update trail (capped at config.neutron.trailLength points)
   neutron.trail.unshift({ ...neutron.position });
-  if (neutron.trail.length > 6) {
+  if (neutron.trail.length > config.neutron.trailLength) {
     neutron.trail.pop();
   }
 
@@ -151,28 +208,39 @@ export function checkRodCollision(
  * XENON POISONING: Reduces energy gain when xenon levels are high
  */
 export function handleAtomCollision(
-  _neutron: Neutron,
+  neutron: Neutron,
   atom: Atom,
   config: ReactorConfig
 ): { absorbed: boolean; fission: boolean } {
-  // Check if fission occurs based on U-235 cross-section
-  const fission = Math.random() < config.neutron.fissionProbability;
+  // Fission probability scales with moderation: fast neutrons (moderation → 0)
+  // rarely fission U-235; thermal neutrons (moderation → 1) fission at the full
+  // cross-section rate. This is why RBMK needs a graphite moderator.
+  const moderation = neutron.moderation ?? 1;
+  const { fissionProbability, fastFissionFactor } = config.neutron;
 
-  // XENON POISONING EFFECT: Reduces energy gain from neutron absorption
-  // Xe-135 competes with U-235 for neutrons (2.65M barn cross-section!)
-  // Formula: effectiveGain = baseGain × (1 - xenonLevel × maxPoisoning)
-  // At xenonLevel=0: full energy gain
-  // At xenonLevel=1: energy gain reduced by maxPoisoning (default 40%)
+  // XENON POISONING (v3, CUI-ccq): Xe-135 competes with U-235 for the neutron
+  // (2.65M barn cross-section!) — modeled as a FISSION-probability penalty, so
+  // poisoning suppresses the chain reaction itself, not merely heat deposition.
   const xenonLevel = atom.xenonLevel || 0;
   const poisoningFactor = 1 - xenonLevel * config.xenon.maxPoisoning;
-  const effectiveEnergyGain = config.atom.energyGain * poisoningFactor;
+
+  const pFission =
+    fissionProbability *
+    (fastFissionFactor + (1 - fastFissionFactor) * moderation) *
+    poisoningFactor;
+  const fission = Math.random() < pFission;
+
+  // Energy deposited is THERMAL only in the v3 direct-emission model: fission
+  // neutrons are spawned at the fission event (processCollisions), and atom
+  // energy drives heat/xenon/visuals — never neutron production.
+  const effectiveEnergyGain = config.atom.energyGain;
 
   if (fission) {
-    // Neutron absorbed, causes fission
-    // Increase atom energy (which will lead to neutron emission)
-    // Reduced by xenon poisoning
+    // Neutron absorbed, causes fission — heat deposited into the channel
     atom.energy = Math.min(1, atom.energy + effectiveEnergyGain);
     atom.emittedCount += 1;
+    // Fission products accumulate and later drive (depleting) decay heat
+    atom.fissionProductInventory = (atom.fissionProductInventory ?? 0) + 1;
     return { absorbed: true, fission: true };
   } else {
     // Radiative capture - neutron absorbed but no fission
@@ -214,63 +282,73 @@ export function handleRodCollision(
  */
 export function updateAtom(
   atom: Atom,
-  waterGrid: WaterGrid,
-  vesselLeft: number,
-  vesselTop: number,
+  // Water/vessel params unused since v3 (the void reactivity boost moved to the
+  // fission site in processCollisions) — kept for call-site API stability.
+  _waterGrid: WaterGrid,
+  _vesselLeft: number,
+  _vesselTop: number,
   config: ReactorConfig,
   deltaTime: number,
   _currentTime: number,
   neutrons: Neutron[] = []
 ): Neutron[] {
   const newNeutrons: Neutron[] = [];
+  const frameScale = deltaTime / FRAME_MS;
+
+  // Initialize delayed-neutron precursor fields for atoms created by older code
+  // paths (they may predate these fields).
+  if (atom.precursorInventory === undefined) atom.precursorInventory = 0;
+  if (atom.precursorBank === undefined) atom.precursorBank = 0;
 
   // NEUTRON FLUX-BASED ENERGY DECAY
-  // Calculate local neutron flux (count neutrons within collision distance)
+  // Local flux = RAW COUNT of neutrons within fluxRadius (squared-distance
+  // comparison avoids a sqrt per neutron). Config rates like xenon.burnoutRate
+  // ("per nearby neutron per frame") assume this raw count.
   const fluxRadius = atom.radius + config.neutron.radius + config.physics.collisionThreshold + 20;
-  const nearbyNeutrons = neutrons.filter(n => {
+  const fluxRadiusSq = fluxRadius * fluxRadius;
+  let nearbyNeutronCount = 0;
+  for (const n of neutrons) {
     const dx = n.position.x - atom.position.x;
     const dy = n.position.y - atom.position.y;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    return dist <= fluxRadius;
-  });
-
-  // Neutron flux = neutrons per unit area
-  const fluxArea = Math.PI * fluxRadius * fluxRadius;
-  const neutronFlux = nearbyNeutrons.length / fluxArea;
-
-  // Energy decay scales with flux:
-  // - High flux (active reaction): energy decays slowly (0.97 = 3% decay)
-  // - Low flux (SCRAM/shutdown): energy decays faster (0.90 = 10% decay)
-  // Formula: decay = baseDecay - flux × 0.00015
-  // At flux=0: decay=0.90 (10% per frame)
-  // At flux=500: decay=0.975 (2.5% per frame)
-  const fluxFactor = Math.min(neutronFlux * 0.00015, 0.075); // Cap at 7.5% bonus retention
-  let energyDecayRate = Math.max(0.9, config.atom.energyDecay - fluxFactor);
-
-  // Apply additional decay to prevent spiral wave propagation
-  // This simulates spatial heat diffusion / neutron leakage
-  // Stronger decay at lower energies prevents cascading waves
-  if (atom.energy < 0.3) {
-    energyDecayRate *= 0.95; // Extra 5% decay at low energies
+    if (dx * dx + dy * dy <= fluxRadiusSq) {
+      nearbyNeutronCount++;
+    }
   }
 
-  atom.energy *= energyDecayRate;
+  // Energy retention scales with flux:
+  // - High flux (active reaction): energy decays slower (retention bonus)
+  // - Low flux (SCRAM/shutdown): energy decays at the base rate
+  // Each nearby neutron adds 0.25% retention, capped at +2.5% bonus.
+  const fluxBonus = Math.min(nearbyNeutronCount * 0.0025, 0.025);
+  // Cap must sit ABOVE the base decay (0.98 post-rebalance) or the flux bonus
+  // would invert into a penalty; 0.995 keeps a hard floor of 0.5% decay/frame.
+  let energyDecayRate = Math.min(config.atom.energyDecay + fluxBonus, 0.995);
 
-  // XENON-135 POISONING DYNAMICS
+  // Apply additional decay to prevent spiral wave propagation
+  // NOTE (CUI-2dq): the old "extra 5% decay below 0.3 energy" anti-spiral-wave
+  // penalty was removed here — it made cold atoms shed their first neutron hit
+  // before a second could arrive, which blocked background-driven self-ignition
+  // when rods are withdrawn. Spiral waves were retuned away in the criticality
+  // rebalance (CUI-iwv.16); the penalty only suppressed legitimate startups.
+
+  // Multiplicative retention factor → frame-scaled via Math.pow
+  atom.energy *= Math.pow(energyDecayRate, frameScale);
+
+  // XENON-135 POISONING DYNAMICS (additive per-frame rates, frame-scaled)
   // Xenon builds up from fission, decays naturally, and burns out under neutron flux
   if (!atom.xenonLevel) atom.xenonLevel = 0; // Initialize if missing
 
   // Build-up: Fission products (I-135) decay to Xe-135
   // Higher energy = more recent fissions = more xenon buildup
-  const xenonBuildupRate = atom.energy * config.xenon.buildupRate;
+  const xenonBuildupRate = atom.energy * config.xenon.buildupRate * frameScale;
 
-  // Natural decay: Xe-135 half-life = 9.14 hours
-  const xenonDecayRate = config.xenon.decayRate;
+  // Natural decay: Xe-135 half-life = 9.14 hours (scaled for gameplay)
+  const xenonDecayRate = config.xenon.decayRate * frameScale;
 
   // Burnout: Neutron absorption by Xe-135 (massive cross-section!)
   // High flux burns xenon faster = less poisoning during operation
   // Low flux (post-SCRAM) = xenon persists longer = harder to restart
-  const xenonBurnoutRate = neutronFlux * config.xenon.burnoutRate;
+  const xenonBurnoutRate = nearbyNeutronCount * config.xenon.burnoutRate * frameScale;
 
   // Net xenon change
   atom.xenonLevel += xenonBuildupRate;
@@ -278,72 +356,60 @@ export function updateAtom(
   atom.xenonLevel -= xenonBurnoutRate;
   atom.xenonLevel = Math.max(0, Math.min(1, atom.xenonLevel)); // Clamp to [0, 1]
 
-  // Update emission timer
-  atom.timeSinceEmission += deltaTime;
+  // NEUTRONICS v3 (CUI-ccq): the charge-then-emit machinery that lived here
+  // (emission timer, void reactivity boost on emission rate, threshold-gated
+  // prompt emission) was removed. Prompt fission neutrons are now spawned at
+  // the fission event itself in processCollisions — so rod withdrawal raises
+  // criticality immediately, as it should. Atom energy is purely thermal
+  // (heat, xenon production, visuals). This function still emits the
+  // spontaneous background and releases banked delayed-neutron precursors.
 
-  // POSITIVE VOID COEFFICIENT: Calculate reactivity boost from steam voids
-  // Get local water density at atom position
-  const waterDensity = getWaterDensityAtPosition(
-    waterGrid,
-    atom.position.x,
-    atom.position.y,
-    vesselLeft,
-    vesselTop
-  );
-  const localVoidFraction = 1 - waterDensity; // 0 = all water, 1 = all steam
+  // SPONTANEOUS BACKGROUND (CUI-2dq): U-238 spontaneous fission + cosmic rays.
+  // Energy-independent, timer-independent, always on. This is the seed flux
+  // that makes rod withdrawal itself start the reaction: with rods out, k > 1
+  // amplifies the background into criticality; with rods in, it is absorbed.
+  const spontaneousP = config.atom.spontaneousEmissionRate * (deltaTime / 1000);
+  if (Math.random() < spontaneousP) {
+    const safeDistance =
+      atom.radius + config.neutron.radius + config.physics.collisionThreshold + 2;
+    const angle = Math.random() * Math.PI * 2;
+    newNeutrons.push(
+      createNeutron(
+        {
+          x: atom.position.x + Math.cos(angle) * safeDistance,
+          y: atom.position.y + Math.sin(angle) * safeDistance,
+        },
+        config,
+        undefined, // use default speed (spontaneous neutrons are fast-born)
+        atom.id // parentAtomId - prevents immediate re-absorption
+      )
+    );
+  }
 
-  // Apply void coefficient reactivity boost WITH DIMINISHING RETURNS
-  // More steam → higher reactivity → more neutron emission
-  // voidCoefficient from config (default: 4.5 β = pre-Chernobyl dangerous level)
-  // REALISTIC PHYSICS: Steam becomes less effective past 60-70% void fraction
-  // Formula: boost = 1 + (void × coeff) × (1 - void × 0.3)
-  // This creates a peak around 60-70%, then drops as steam becomes too diffuse
-  const reactivityBoost =
-    1.0 + localVoidFraction * config.water.voidCoefficient * (1 - localVoidFraction * 0.3);
-
-  // Check for neutron emission
-  // Emission rate scales with energy level (higher energy = faster emission)
-  // At minimum threshold energy (0.3): baseEmissionRate
-  // At maximum energy (1.0): baseEmissionRate * 3.33 (scale factor)
-  const energyScaleFactor = atom.energy / config.atom.emissionThreshold;
-  const scaledEmissionRate = config.atom.baseEmissionRate * energyScaleFactor * reactivityBoost;
-  const emissionInterval = 1000 / scaledEmissionRate; // ms between emissions
-
-  const shouldEmit =
-    atom.energy >= config.atom.emissionThreshold && atom.timeSinceEmission >= emissionInterval;
-
-  if (shouldEmit) {
-    // U-235 releases average of 2.43 neutrons per fission
-    const numNeutrons = Math.round(config.atom.neutronsPerFission + (Math.random() - 0.5) * 0.5);
-
-    for (let i = 0; i < numNeutrons; i++) {
-      // Spawn neutron OUTSIDE collision radius to prevent immediate re-absorption
-      // Safe distance = atom.radius + neutron.radius + collisionThreshold + buffer
-      const safeDistance =
-        atom.radius + config.neutron.radius + config.physics.collisionThreshold + 2;
-      const angle = (Math.PI * 2 * i) / numNeutrons + Math.random() * 0.3; // Spread evenly with small randomness
-
-      const offset = {
-        x: Math.cos(angle) * safeDistance,
-        y: Math.sin(angle) * safeDistance,
-      };
-
-      newNeutrons.push(
-        createNeutron(
-          {
-            x: atom.position.x + offset.x,
-            y: atom.position.y + offset.y,
-          },
-          config,
-          undefined, // use default speed
-          atom.id // parentAtomId - prevents immediate re-absorption
-        )
-      );
-    }
-
-    // Reset emission timer and reduce energy
-    atom.timeSinceEmission = 0;
-    atom.energy = Math.max(0, atom.energy - 0.2);
+  // DELAYED-NEUTRON RELEASE: precursors decay each frame, releasing banked
+  // neutrons on a mean delay of ~1/precursorDecayRate frames. These delayed
+  // neutrons are what make the chain reaction controllable — and their slow
+  // decay is why a scrammed reactor keeps producing neutrons for a while.
+  const release = atom.precursorInventory * config.atom.precursorDecayRate * frameScale;
+  // Clamp: float drift at tiny inventories must never go negative
+  atom.precursorInventory = Math.max(0, atom.precursorInventory - release);
+  atom.precursorBank += release;
+  while (atom.precursorBank >= 1) {
+    const safeDistance =
+      atom.radius + config.neutron.radius + config.physics.collisionThreshold + 2;
+    const angle = Math.random() * Math.PI * 2;
+    newNeutrons.push(
+      createNeutron(
+        {
+          x: atom.position.x + Math.cos(angle) * safeDistance,
+          y: atom.position.y + Math.sin(angle) * safeDistance,
+        },
+        config,
+        undefined, // use default speed (delayed neutrons are also born fast)
+        atom.id // parentAtomId - prevents immediate re-absorption
+      )
+    );
+    atom.precursorBank -= 1;
   }
 
   return newNeutrons;
@@ -375,8 +441,10 @@ export function updateControlRod(
     const change = Math.sign(delta) * Math.min(Math.abs(delta), maxChange);
     rod.insertion = Math.max(0, Math.min(1, rod.insertion + change));
 
-    // Update visual position
-    rod.y = 0; // Always starts at top
+    // NOTE: rod.y is set once at initialization (vessel top) and must NOT be
+    // written here — insertion depth is expressed via rod.insertion alone.
+    // (A previous `rod.y = 0` assignment shifted moving rods above the vessel
+    // and broke rod-temperature sampling.)
   } else {
     // Rod reached target, deactivate SCRAM
     rod.isScramActive = false;
@@ -447,6 +515,10 @@ function getNearbyAtoms(grid: SpatialGrid, position: Position, radius: number): 
 
 /**
  * Process all collisions and update simulation state (optimized with spatial grid)
+ *
+ * Also enforces containment leakage: neutrons that have exhausted their wall
+ * bounce budget (config.neutron.maxWallBounces) escape the vessel and are
+ * removed, reported via leakedCount.
  */
 export function processCollisions(
   neutrons: Neutron[],
@@ -457,17 +529,24 @@ export function processCollisions(
   vesselTop: number,
   config: ReactorConfig,
   currentTime: number,
+  deltaTime: number,
   debugLog: boolean = false
 ): {
   remainingNeutrons: Neutron[];
   fissionCount: number;
   absorptionCount: number;
   waterAbsorptionCount: number;
+  leakedCount: number;
+  /** Prompt fission neutrons spawned at fission events (v3 direct emission, CUI-ccq) */
+  spawnedNeutrons: Neutron[];
 } {
   const remainingNeutrons: Neutron[] = [];
   let fissionCount = 0;
   let absorptionCount = 0;
   let waterAbsorptionCount = 0;
+  let leakedCount = 0;
+  const spawnedNeutrons: Neutron[] = [];
+  const frameScale = deltaTime / FRAME_MS;
 
   // Create spatial grid for atoms (grid size = 2x spacing for efficiency)
   const spatialGrid = createSpatialGrid(atoms, config.grid.spacing * 2);
@@ -487,6 +566,13 @@ export function processCollisions(
   }
 
   for (const n of neutrons) {
+    // CONTAINMENT LEAKAGE: neutrons that have bounced off the vessel walls too
+    // many times escape through the shielding and are removed from the sim.
+    if (n.wallBounces >= config.neutron.maxWallBounces) {
+      leakedCount += 1;
+      continue;
+    }
+
     let absorbed = false;
 
     // NOTE: Boundary collision is now handled in RBMKReactor.tsx animate() function
@@ -512,6 +598,53 @@ export function processCollisions(
           absorbed = result.absorbed;
           if (result.fission) {
             fissionCount += 1;
+
+            // DIRECT FISSION EMISSION (v3, CUI-ccq): the fission event itself
+            // releases its prompt neutrons — rod withdrawal therefore raises
+            // criticality immediately (k = nu x survival, and rods set survival).
+            // POSITIVE VOID COEFFICIENT: local steam boosts effective nu with
+            // diminishing returns past ~60-70% void (steam too diffuse) — this is
+            // where config.water.voidCoefficient lives in the v3 model, and what
+            // the graphite-tip displacement exploits during a SCRAM.
+            const localVoid =
+              1 -
+              getWaterDensityAtPosition(
+                waterGrid,
+                atom.position.x,
+                atom.position.y,
+                vesselLeft,
+                vesselTop
+              );
+            const nuBoost =
+              1 + localVoid * config.water.voidCoefficient * (1 - localVoid * 0.3) * 0.12;
+            const numNeutrons = Math.round(
+              config.atom.neutronsPerFission * nuBoost + (Math.random() - 0.5) * 0.5
+            );
+            if (numNeutrons >= 1) {
+              // Delayed share banks into precursors (released over ~2.4s by updateAtom)
+              atom.precursorInventory =
+                (atom.precursorInventory ?? 0) + numNeutrons * config.atom.delayedFraction;
+              const promptCount = Math.max(
+                1,
+                Math.round(numNeutrons * (1 - config.atom.delayedFraction))
+              );
+              const safeDistance =
+                atom.radius + config.neutron.radius + config.physics.collisionThreshold + 2;
+              for (let i = 0; i < promptCount; i++) {
+                const angle = (Math.PI * 2 * i) / promptCount + Math.random() * 0.3;
+                spawnedNeutrons.push(
+                  createNeutron(
+                    {
+                      x: atom.position.x + Math.cos(angle) * safeDistance,
+                      y: atom.position.y + Math.sin(angle) * safeDistance,
+                    },
+                    config,
+                    undefined, // fission neutrons are fast-born
+                    atom.id // parent exclusion prevents instant re-absorption
+                  )
+                );
+              }
+            }
           }
           break;
         }
@@ -531,11 +664,13 @@ export function processCollisions(
         vesselTop
       );
 
-      // Absorption probability scales with water density
+      // Absorption probability scales with water density, frame-scaled so the
+      // per-reference-frame probability holds at any deltaTime
       // Base probability is LOW (0.02 from config) to allow neutron survival
-      // Full water (density = 1.0) → 2% absorption per frame
+      // Full water (density = 1.0) → 2% absorption per reference frame
       // Steam (density = 0.0) → 0% absorption (neutrons pass through freely)
-      const waterAbsorptionProb = config.water.absorptionProbability * waterDensity;
+      const waterAbsorptionProb =
+        1 - Math.pow(1 - config.water.absorptionProbability * waterDensity, frameScale);
 
       if (Math.random() < waterAbsorptionProb) {
         absorbed = true;
@@ -549,16 +684,24 @@ export function processCollisions(
     }
   }
 
-  return { remainingNeutrons, fissionCount, absorptionCount, waterAbsorptionCount };
+  return {
+    remainingNeutrons,
+    fissionCount,
+    absorptionCount,
+    waterAbsorptionCount,
+    leakedCount,
+    spawnedNeutrons,
+  };
 }
 
 /**
- * Calculate current reaction rate (neutrons per second)
+ * Calculate instantaneous reaction rate (fissions per simulated second)
+ *
+ * Extrapolates this frame's fission count to a full second of sim time.
+ * The raw value is noisy frame-to-frame; the caller smooths it with an EMA.
  */
-export function calculateReactionRate(neutronCount: number, deltaTime: number): number {
-  // Simple moving average estimation
-  if (deltaTime === 0) return 0;
-  return (neutronCount * 1000) / deltaTime;
+export function calculateReactionRate(fissionCount: number, deltaTime: number): number {
+  return deltaTime > 0 ? (fissionCount * 1000) / deltaTime : 0;
 }
 
 /**
@@ -592,14 +735,15 @@ export function createHeatGrid(width: number, height: number, cellSize: number):
  *
  * Heat generation:
  * - Atoms with high energy generate heat (fission reactions are exothermic)
- * - Heat is proportional to atom energy level
+ * - Heat is proportional to atom energy level (written into the active buffer)
  *
- * Heat diffusion:
- * - Heat spreads to neighboring cells (thermal conduction)
- * - Uses simple averaging with neighbors
+ * Heat diffusion (double-buffered):
+ * - Reads the active buffer, writes EVERY cell into the inactive buffer,
+ *   then swaps buffers — no per-frame array allocation.
  *
- * Cooling:
- * - Heat dissipates over time (radiation and convection to coolant)
+ * Cooling is NOT applied here: updateCoolingAndWater is the single,
+ * water-density-scaled cooling path and also owns the [0, 1] clamp.
+ * (Previously a hardcoded 0.98/frame cooling here double-applied cooling.)
  */
 export function updateHeatGrid(
   heatGrid: HeatGrid,
@@ -608,9 +752,12 @@ export function updateHeatGrid(
   vesselLeft: number,
   vesselTop: number
 ): void {
-  const { width, height, cellSize, temperatures } = heatGrid;
+  const { width, height, cellSize } = heatGrid;
+  const frameScale = deltaTime / FRAME_MS;
+  const src = getActiveTemperatures(heatGrid);
+  const dst = heatGrid.activeBuffer === 0 ? heatGrid.backBuffer : heatGrid.temperatures;
 
-  // 1. Heat generation from atoms
+  // 1. Heat generation from atoms (into the active buffer)
   for (const atom of atoms) {
     // Convert atom position to grid coordinates
     const gridX = Math.floor((atom.position.x - vesselLeft) / cellSize);
@@ -620,9 +767,9 @@ export function updateHeatGrid(
     if (gridX >= 0 && gridX < width && gridY >= 0 && gridY < height) {
       // Heat generated is proportional to atom energy
       // High energy atoms (0.7-1.0) generate significant heat
-      // Scale: energy 1.0 = temperature increase of 0.05 per frame
-      const heatGeneration = atom.energy * 0.05 * (deltaTime / 16.67); // Normalize to ~60fps
-      temperatures[gridY]![gridX]! += heatGeneration;
+      // Scale: energy 1.0 = temperature increase of 0.05 per reference frame
+      const heatGeneration = atom.energy * 0.05 * frameScale;
+      src[gridY]![gridX]! += heatGeneration;
 
       // Spread heat to nearby cells (atoms radiate heat)
       // Increased radius for smoother gradients (less "atom splitting" visual)
@@ -634,7 +781,7 @@ export function updateHeatGrid(
           if (nx >= 0 && nx < width && ny >= 0 && ny < height && (dx !== 0 || dy !== 0)) {
             const distance = Math.sqrt(dx * dx + dy * dy);
             const falloff = 1 / (distance + 1); // Inverse distance falloff
-            temperatures[ny]![nx]! += heatGeneration * falloff * 0.4;
+            src[ny]![nx]! += heatGeneration * falloff * 0.4;
           }
         }
       }
@@ -642,13 +789,13 @@ export function updateHeatGrid(
   }
 
   // 2. Heat diffusion (thermal conduction between cells)
-  // Use simple averaging with neighbors to simulate heat spreading
-  const diffusionRate = 0.35; // How fast heat spreads (0-1) - increased for smoother gradients
-  const newTemperatures = temperatures.map(row => [...row]); // Copy for concurrent update
+  // Simple averaging with neighbors; frame-scaled blend rate capped below 1
+  // for numerical stability at large deltaTime.
+  const effectiveDiffusion = Math.min(0.35 * frameScale, 0.9);
 
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
-      let sum = temperatures[y]![x]!;
+      let sum = src[y]![x]!;
       let count = 1;
 
       // Average with 4 neighbors (up, down, left, right)
@@ -661,37 +808,32 @@ export function updateHeatGrid(
 
       for (const [nx, ny] of neighbors) {
         if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
-          sum += temperatures[ny]![nx]!;
+          sum += src[ny]![nx]!;
           count++;
         }
       }
 
-      const average = sum / count;
-      const current = temperatures[y]![x]!;
+      const avg = sum / count;
+      const current = src[y]![x]!;
 
-      // Blend between current temperature and average with neighbors
-      newTemperatures[y]![x] = current + (average - current) * diffusionRate;
+      // Blend between current temperature and neighbor average,
+      // writing into the inactive buffer (every cell — no stale values)
+      dst[y]![x] = current + (avg - current) * effectiveDiffusion;
     }
   }
 
-  // Update temperatures with diffused values
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      temperatures[y]![x] = newTemperatures[y]![x]!;
-    }
-  }
+  // 3. Swap buffers: the freshly-written buffer becomes active
+  heatGrid.activeBuffer = heatGrid.activeBuffer === 0 ? 1 : 0;
+}
 
-  // 3. Cooling (heat dissipation to environment/coolant)
-  // Real RBMK reactors use water coolant that removes heat
-  const coolingRate = 0.98; // 2% cooling per frame (~60fps = ~100% cooling in 3 seconds)
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      temperatures[y]![x]! *= coolingRate;
-
-      // Clamp to [0, 1] range
-      temperatures[y]![x] = Math.max(0, Math.min(1, temperatures[y]![x]!));
-    }
-  }
+/**
+ * Get the currently-active temperature buffer.
+ *
+ * updateHeatGrid double-buffers and swaps every frame, so consumers must never
+ * read heatGrid.temperatures directly — always go through this helper.
+ */
+export function getActiveTemperatures(heatGrid: HeatGrid): number[][] {
+  return heatGrid.activeBuffer === 0 ? heatGrid.temperatures : heatGrid.backBuffer;
 }
 
 /**
@@ -708,17 +850,18 @@ export function getHeatAtPosition(
   const gridY = Math.floor((y - vesselTop) / heatGrid.cellSize);
 
   if (gridX >= 0 && gridX < heatGrid.width && gridY >= 0 && gridY < heatGrid.height) {
-    return heatGrid.temperatures[gridY]![gridX]!;
+    return getActiveTemperatures(heatGrid)[gridY]![gridX]!;
   }
 
   return 0; // Outside bounds = ambient temperature
 }
 
 /**
- * Calculate average reactor temperature from heat grid
+ * Calculate average reactor temperature from heat grid (active buffer)
  */
 export function calculateAverageTemperature(heatGrid: HeatGrid): number {
-  const { temperatures, width, height } = heatGrid;
+  const { width, height } = heatGrid;
+  const temperatures = getActiveTemperatures(heatGrid);
   let sum = 0;
   let count = 0;
 
@@ -851,7 +994,13 @@ export function calculatePressure(
 /**
  * Update heat cooling and water state (evaporation/condensation)
  *
- * This function implements two coupled processes in a single pass:
+ * This is now the SINGLE cooling path for the heat grid. (Bug fix: cooling
+ * used to be double-applied — a hardcoded 0.98/frame pass in updateHeatGrid
+ * plus this water-scaled pass. updateHeatGrid no longer cools, and this
+ * function absorbed the [0, 1] temperature clamp. Steam voids now fully
+ * suspend cooling — a stronger, more authentic positive-void feedback.)
+ *
+ * Two coupled processes in a single pass:
  * 1. Water-cooled heat dissipation (less water = less cooling = positive feedback)
  * 2. Water phase change (hot water → steam, cool steam → water)
  *
@@ -861,53 +1010,134 @@ export function calculatePressure(
  * - More neutrons → more fissions → higher temperature
  * - THIS IS THE RUNAWAY FEEDBACK THAT CAUSED CHERNOBYL
  *
+ * BOTTOM-FED COOLANT: the recirculation pumps feed water in from the bottom of
+ * the core, so regeneration is strongest at the bottom row and weakest at the
+ * top (scaled by config.water.pumpFlowGradient). Steam voids therefore form
+ * top-first, before the coolant has worked its way up. pumpPower (0–1.5) is the
+ * recirc-pump control: 0 = pumps tripped (no fresh coolant), 1 = nominal.
+ *
  * @param heatGrid Heat grid to cool
  * @param waterGrid Water grid to update
  * @param config Reactor configuration
+ * @param deltaTime Elapsed sim time in milliseconds (already speed-scaled)
+ * @param pumpPower Recirculation pump control (0–1.5, default 1 = nominal flow)
  */
 export function updateCoolingAndWater(
   heatGrid: HeatGrid,
   waterGrid: WaterGrid,
-  config: ReactorConfig
+  config: ReactorConfig,
+  deltaTime: number,
+  pumpPower: number = 1
 ): void {
   const { width, height } = heatGrid;
-  const { boilingPoint, evaporationRate, condensationRate, baseCoolingRate } = config.water;
+  const { boilingPoint, evaporationRate, condensationRate, baseCoolingRate, pumpFlowGradient } =
+    config.water;
   const { baseRate, temperatureScaling } = config.regeneration.water;
+  const frameScale = deltaTime / FRAME_MS;
 
-  // Use active buffer for reading temperatures
-  const temperatures = heatGrid.activeBuffer === 0 ? heatGrid.temperatures : heatGrid.backBuffer;
+  // Always read/write the currently-active temperature buffer
+  const temperatures = getActiveTemperatures(heatGrid);
 
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       const temp = temperatures[y]![x]!;
       const water = waterGrid.waterDensity[y]![x]!;
 
-      // 1. Water-based cooling (scales with water density)
+      // 1. Water-based cooling (scales with water density), frame-scaled
       // Less water = less cooling = heat stays higher = positive feedback
-      const coolingFactor = baseCoolingRate + (1 - baseCoolingRate) * (1 - water);
-      temperatures[y]![x] = temp * coolingFactor;
+      // Radiative floor (CUI-n1h): even a fully steam-blanketed cell (water = 0)
+      // sheds at least 0.5%/frame via radiation/conduction — without the floor,
+      // coolingFactor hits exactly 1.0 at zero water and voided hot zones can
+      // never cool, deadlocking post-shutdown recovery.
+      const coolingFactor = Math.min(baseCoolingRate + (1 - baseCoolingRate) * (1 - water), 0.995);
+      const cooled = temp * Math.pow(coolingFactor, frameScale);
+      // Clamp to [0, 1] (single clamp site, moved here from updateHeatGrid)
+      temperatures[y]![x] = Math.max(0, Math.min(1, cooled));
 
-      // 2. Water phase change (evaporation/condensation)
+      // 2. Water phase change (evaporation/condensation), frame-scaled rates
       let newWaterDensity = water;
       if (temp > boilingPoint) {
         // Above boiling point: water → steam (water density decreases)
-        newWaterDensity = Math.max(0, water - evaporationRate);
+        newWaterDensity = Math.max(0, water - evaporationRate * frameScale);
       } else {
         // Below boiling point: steam → water (water density increases)
-        newWaterDensity = Math.min(1, water + condensationRate);
+        newWaterDensity = Math.min(1, water + condensationRate * frameScale);
       }
 
-      // 3. Water regeneration (coolant circulation)
-      // Simulates continuous coolant pump flow replenishing water
-      // Lower regeneration at high temps (steam blocks coolant flow)
+      // 3. Water regeneration (coolant circulation), frame-scaled
+      // Simulates continuous coolant pump flow replenishing water.
+      // Bottom-fed: rowFactor is 1.0 at the bottom row (y = height-1) and
+      // (1 - pumpFlowGradient) at the top row, so voids form top-first.
+      // Scaled by pumpPower (recirc pump control) and, if enabled, by
+      // temperature (steam blocks coolant flow at high temps).
       if (newWaterDensity < 1.0) {
-        const regenRate = temperatureScaling
-          ? baseRate * (1.0 - temp) // Less regen at high temps
-          : baseRate;
+        const rowFactor = 1 - pumpFlowGradient * (1 - y / (height - 1));
+        // Clamped at 0: the PRE-cooling temp read above can exceed 1 (heat
+        // generation is unclamped until the cooling pass writes back), and a
+        // negative "regen" would silently drain water below zero.
+        const tempFactor = temperatureScaling ? Math.max(0, 1.0 - temp) : 1.0;
+        const regenRate = baseRate * rowFactor * pumpPower * tempFactor * frameScale;
         newWaterDensity = Math.min(1.0, newWaterDensity + regenRate);
       }
 
       waterGrid.waterDensity[y]![x] = newWaterDensity;
+    }
+  }
+}
+
+/**
+ * Apply graphite-tip water displacement (the Chernobyl AZ-5 "positive scram").
+ *
+ * RBMK control rods have a graphite follower/displacer below the boron section.
+ * When a raised rod begins to lower, the graphite tip enters the channel FIRST,
+ * pushing out neutron-absorbing water before any boron arrives. The resulting
+ * local void — via the positive void coefficient — briefly INCREASES reactivity
+ * at the bottom of the core. On 26 April 1986, pressing AZ-5 to shut the reactor
+ * down inserted enough positive reactivity from all rods at once to trigger the
+ * power excursion that destroyed Unit 4.
+ *
+ * Only rods actively moving DOWN (targetInsertion > insertion) displace water.
+ * For each such rod, the graphite tip spans [tipY, tipY + graphiteTipLength];
+ * water cells intersecting that vertical span within the rod's x extent lose
+ * graphiteTipDisplacement × frameScale of density per frame (clamped at 0).
+ */
+export function applyGraphiteTipDisplacement(
+  waterGrid: WaterGrid,
+  rods: ControlRod[],
+  config: ReactorConfig,
+  deltaTime: number,
+  vesselLeft: number,
+  vesselTop: number
+): void {
+  const frameScale = deltaTime / FRAME_MS;
+  const { cellSize, width, height } = waterGrid;
+  const { graphiteTipLength, graphiteTipDisplacement } = config.controlRod;
+
+  for (const rod of rods) {
+    // Only rods moving DOWN drive the graphite tip into fresh water
+    if (rod.targetInsertion <= rod.insertion + 0.001) continue;
+
+    // Graphite follower spans from the current rod tip downward
+    const tipY = rod.y + rod.maxHeight * rod.insertion;
+    const tipBottom = tipY + graphiteTipLength;
+    const rodLeft = rod.x - rod.width / 2;
+    const rodRight = rod.x + rod.width / 2;
+
+    // Convert world extents to water-grid cell ranges
+    const minCol = Math.floor((rodLeft - vesselLeft) / cellSize);
+    const maxCol = Math.floor((rodRight - vesselLeft) / cellSize);
+    const minRow = Math.floor((tipY - vesselTop) / cellSize);
+    const maxRow = Math.floor((tipBottom - vesselTop) / cellSize);
+
+    for (let row = minRow; row <= maxRow; row++) {
+      if (row < 0 || row >= height) continue;
+      for (let col = minCol; col <= maxCol; col++) {
+        if (col < 0 || col >= width) continue;
+        waterGrid.waterDensity[row]![col] = Math.max(
+          0,
+          waterGrid.waterDensity[row]![col]! - graphiteTipDisplacement * frameScale
+        );
+      }
     }
   }
 }
@@ -925,37 +1155,46 @@ export function updateCoolingAndWater(
  * @param atom Fuel atom to update
  * @param temperature Current temperature at atom position (0-1)
  * @param config Reactor configuration
- * @returns Decay heat contribution from damaged fuel
+ * @param deltaTime Elapsed sim time in milliseconds (already speed-scaled)
+ * @returns Decay heat contribution from damaged fuel (frame-scaled additive rate)
  */
 export function updateFuelIntegrity(
   atom: Atom,
   temperature: number,
-  config: ReactorConfig
+  config: ReactorConfig,
+  deltaTime: number
 ): number {
-  const { meltdownTemp, meltdownRate, decayHeatFraction } = config.damage.fuel;
+  const { meltdownTemp, meltdownRate, decayHeatPerFission, decayHeatDecayRate } =
+    config.damage.fuel;
   const { healingRate, healingThreshold } = config.regeneration.fuel;
+  const frameScale = deltaTime / FRAME_MS;
 
   // Store temperature for tracking
   atom.lastTemperature = temperature;
 
-  // Damage fuel if temperature exceeds meltdown threshold
+  // Damage fuel if temperature exceeds meltdown threshold (frame-scaled rate)
   if (temperature > meltdownTemp) {
-    atom.integrity = Math.max(0, atom.integrity - meltdownRate);
+    atom.integrity = Math.max(0, atom.integrity - meltdownRate * frameScale);
   }
 
   // Heal damaged fuel when temperature is LOW (simulates operational maintenance)
   // Only heal when T < healingThreshold × meltdownTemp (safe operating range)
   const healingTempThreshold = meltdownTemp * healingThreshold;
   if (temperature < healingTempThreshold && atom.integrity < 1.0) {
-    // Very slow healing (10× slower than damage)
-    atom.integrity = Math.min(1.0, atom.integrity + healingRate);
+    // Very slow healing (10× slower than damage), frame-scaled
+    atom.integrity = Math.min(1.0, atom.integrity + healingRate * frameScale);
   }
 
-  // Damaged fuel generates decay heat
-  const damageLevel = 1 - atom.integrity; // 0 = intact, 1 = fully damaged
-  const decayHeat = damageLevel * atom.energy * decayHeatFraction;
-
-  return decayHeat;
+  // DECAY HEAT (inventory-driven, CUI-n1h): fission products accumulated during
+  // operation deplete exponentially (~29s half-life) while each remaining unit
+  // adds a sliver of energy per frame. The caller adds the return value to the
+  // atom's energy (capped below the emission threshold), which then radiates
+  // into the heat grid. Because the inventory DEPLETES, a shut-down core stays
+  // hot for a while and then genuinely cools — unlike the old damage-fraction
+  // model, which generated heat forever and deadlocked the thermal recovery.
+  if (atom.fissionProductInventory === undefined) atom.fissionProductInventory = 0;
+  atom.fissionProductInventory *= Math.pow(1 - decayHeatDecayRate, frameScale);
+  return atom.fissionProductInventory * decayHeatPerFission * frameScale;
 }
 
 /**
@@ -970,28 +1209,33 @@ export function updateFuelIntegrity(
  * @param rod Control rod to update
  * @param temperature Current temperature at rod position (0-1)
  * @param config Reactor configuration
+ * @param deltaTime Elapsed sim time in milliseconds (already speed-scaled)
  */
 export function updateControlRodHealth(
   rod: ControlRod,
   temperature: number,
-  config: ReactorConfig
+  config: ReactorConfig,
+  deltaTime: number
 ): void {
   const { heatDamageRate, heatDamageThreshold, absorptionDamageRate } = config.damage.rod;
   const { healingRate, healingThreshold } = config.regeneration.rod;
+  const frameScale = deltaTime / FRAME_MS;
 
-  // Heat damage when temperature exceeds threshold
+  // Heat damage when temperature exceeds threshold (frame-scaled rate)
   if (temperature > heatDamageThreshold) {
-    rod.health = Math.max(0, rod.health - heatDamageRate);
+    rod.health = Math.max(0, rod.health - heatDamageRate * frameScale);
   }
 
   // Heal damaged rods when temperature is SAFE (simulates rod replacement during maintenance)
   // Only heal when T < healingThreshold (below damage threshold)
   if (temperature < healingThreshold && rod.health < 1.0) {
-    // Slow healing (represents gradual rod replacement)
-    rod.health = Math.min(1.0, rod.health + healingRate);
+    // Slow healing (represents gradual rod replacement), frame-scaled
+    rod.health = Math.min(1.0, rod.health + healingRate * frameScale);
   }
 
   // Absorption damage (neutron bombardment causes gradual rod degradation)
+  // Per-event rate — intentionally NOT frame-scaled (each absorption is a
+  // discrete event whose frequency already scales with sim time)
   // Track absorptions since last health update to avoid double-counting
   if (!rod.lastAbsorbedCount) {
     rod.lastAbsorbedCount = 0;

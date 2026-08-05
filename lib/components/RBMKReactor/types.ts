@@ -37,8 +37,6 @@ export interface Atom {
   gridY: number;
   /** Current energy level / reaction intensity (0-1) */
   energy: number;
-  /** Time since last neutron emission (ms) */
-  timeSinceEmission: number;
   /** Visual radius in pixels */
   radius: number;
   /** Neutrons emitted from this atom */
@@ -49,6 +47,23 @@ export interface Atom {
   lastTemperature: number;
   /** Xenon-135 poisoning level (0-1, where 1 = maximum neutron absorption) */
   xenonLevel: number;
+  /**
+   * Banked delayed-neutron precursors (in neutron units).
+   * A fraction of each fission's neutrons is deferred here instead of emitted
+   * promptly; the bank decays over time, releasing delayed neutrons. This is
+   * what makes a real reactor controllable — prompt-only kinetics are far too
+   * fast to steer.
+   */
+  precursorInventory: number;
+  /** Fractional accumulator for precursor emission (emit one neutron per whole unit) */
+  precursorBank: number;
+  /**
+   * Accumulated fission products (in fission units): +1 per fission, depleting
+   * exponentially over ~30s. Drives decay heat — so a shut-down core stays hot
+   * for a while and then genuinely cools, instead of the old damage-fraction
+   * model that produced heat forever (post-shutdown thermal deadlock).
+   */
+  fissionProductInventory: number;
 }
 
 /**
@@ -115,6 +130,14 @@ export interface Neutron {
   wallBounces: number;
   /** ID of parent atom that emitted this neutron (prevents immediate re-absorption) */
   parentAtomId?: string;
+  /**
+   * Moderation level (0 = fast, 1 = fully thermalized).
+   * Fast neutrons move faster but rarely cause fission; graphite gradually
+   * thermalizes them, raising both moderation and fission effectiveness.
+   */
+  moderation: number;
+  /** Target speed in pixels per frame at full moderation (thermal velocity) */
+  thermalSpeed: number;
 }
 
 /**
@@ -207,10 +230,32 @@ export interface SimulationState {
    * Peaks 10-12 hours after shutdown in real reactors
    */
   xenonLevel: number;
+  /**
+   * Thermal power output (megawatts).
+   * Derived from the fission rate: each fission/sec contributes
+   * config.simulation.megawattsPerFission MW.
+   */
+  powerOutputMW: number;
+  /** Chronological log of notable simulation events (alarms, milestones) */
+  events: SimEvent[];
   /** Timestamp of last frame */
   lastFrameTime: number;
   /** Animation frame ID (for RAF cancellation) */
   animationFrameId: number | null;
+}
+
+/**
+ * A notable event in the simulation timeline (for the event log / alarm panel).
+ */
+export interface SimEvent {
+  /** Timestamp (ms, performance.now() timebase — i.e. time since page load) */
+  time: number;
+  /** Severity for styling and filtering */
+  severity: "info" | "warning" | "danger";
+  /** Human-readable description */
+  message: string;
+  /** Origin of the event; alarm events omit it, the autopilot tags its actions */
+  source?: "autopilot";
 }
 
 /**
@@ -253,6 +298,24 @@ export interface ReactorConfig {
     emissionThreshold: number;
     /** Neutrons released per fission event (real: 2.43) */
     neutronsPerFission: number;
+    /**
+     * Spontaneous neutron background (neutrons/sec/atom): U-238 spontaneous
+     * fission, cosmic rays. Energy-independent — this is why withdrawing the
+     * rods on a cold core starts the reaction by itself (k > 1 amplifies the
+     * background), and why an inserted-rod core stays quiet (rods absorb it).
+     */
+    spontaneousEmissionRate: number;
+    /**
+     * Fraction of each fission's neutrons banked as delayed-neutron precursors
+     * rather than emitted promptly. Real β ≈ 0.0065; scaled up for gameplay so
+     * delayed neutrons are visible and the reactor is steerable.
+     */
+    delayedFraction: number;
+    /**
+     * Precursor decay rate per reference frame (frame-scaled). Governs the mean
+     * delay before a banked precursor emits its neutron.
+     */
+    precursorDecayRate: number;
   };
 
   /** Control rod properties (Boron-10 Carbide) */
@@ -267,6 +330,19 @@ export interface ReactorConfig {
     absorptionEffectDuration: number;
     /** Insertion/withdrawal speed (real: 18-21 seconds for full insertion) */
     insertionSpeed: number; // units per second (0-1 range over this time)
+    /**
+     * Length (pixels) of the graphite follower/tip below the boron section.
+     * The infamous RBMK design flaw: the bottom of each rod is a graphite
+     * displacer, not an absorber.
+     */
+    graphiteTipLength: number;
+    /**
+     * Fraction of water displaced per reference frame while the graphite tip
+     * transits a water-grid cell (frame-scaled). Displacing water creates a
+     * local void that the positive void coefficient turns into a reactivity
+     * spike BEFORE the boron arrives.
+     */
+    graphiteTipDisplacement: number;
   };
 
   /** Neutron properties */
@@ -287,6 +363,23 @@ export interface ReactorConfig {
     trailLength: number;
     /** Maximum wall bounces before neutron leaks through containment */
     maxWallBounces: number;
+    /**
+     * Speed multiplier for a freshly-born fast neutron (moderation = 0)
+     * relative to its thermal speed. Neutrons decelerate toward thermal speed
+     * as they moderate.
+     */
+    fastSpeedMultiplier: number;
+    /**
+     * Moderation gained per reference frame (frame-scaled). Higher = neutrons
+     * thermalize faster (graphite is a good moderator).
+     */
+    moderationRate: number;
+    /**
+     * Fission effectiveness of a fully-fast neutron (moderation = 0), as a
+     * fraction of the thermal fission probability. Fast neutrons rarely cause
+     * U-235 fission; thermalization is what sustains the chain reaction.
+     */
+    fastFissionFactor: number;
   };
 
   /** Physics constants */
@@ -307,6 +400,12 @@ export interface ReactorConfig {
     targetFPS: number;
     /** Enable requestAnimationFrame (vs setInterval) */
     useRAF: boolean;
+    /**
+     * Thermal power produced per fission-per-second (MW). Converts the reaction
+     * rate into a displayed megawatt figure (~300 fissions/s ≈ 1000 MW, the
+     * RBMK-1000's rated thermal output is ~3200 MW).
+     */
+    megawattsPerFission: number;
   };
 
   /** Water coolant properties (RBMK positive void coefficient) */
@@ -346,6 +445,13 @@ export interface ReactorConfig {
      * Scales with water density - less water = less cooling
      */
     baseCoolingRate: number;
+    /**
+     * Pump-flow gradient (0-1). Coolant enters from the bottom of the core, so
+     * regeneration is strongest at the bottom row and weakest at the top:
+     * top-row regen = (1 - pumpFlowGradient) × bottom-row regen. Higher gradient
+     * = voids form top-first (coolant hasn't reached the top yet).
+     */
+    pumpFlowGradient: number;
   };
 
   /** Reactor pressure parameters */
@@ -399,8 +505,14 @@ export interface ReactorConfig {
       meltdownTemp: number;
       /** Integrity loss rate when T > meltdown */
       meltdownRate: number;
-      /** Decay heat from damaged fuel (fraction) */
-      decayHeatFraction: number;
+      /**
+       * Decay-heat energy added per reference frame per accumulated fission
+       * product (see Atom.fissionProductInventory). Inventory-driven so decay
+       * heat DEPLETES after shutdown instead of persisting forever.
+       */
+      decayHeatPerFission: number;
+      /** Fission-product depletion per reference frame (~30s half-life) */
+      decayHeatDecayRate: number;
     };
   };
 
@@ -414,6 +526,12 @@ export interface ReactorConfig {
     burnoutRate: number;
     /** Maximum poisoning effect on reactivity (0-1, reduces energy gain) */
     maxPoisoning: number;
+    /**
+     * Initial xenon-135 level (0-1) seeded into every atom at startup. Used to
+     * model an "iodine pit" — a reactor restarting into pre-existing poisoning,
+     * the exact trap the Chernobyl operators fell into.
+     */
+    initialLevel: number;
   };
 
   /** Regeneration systems (simulates maintenance/refueling/coolant circulation) */
