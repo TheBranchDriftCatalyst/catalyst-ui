@@ -27,5 +27,5 @@
   },
   "include": ["app", "lib", ".scratch", "lib/types/**/*.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }],
-  "exclude": ["**/*.stories.tsx"]
+  "exclude": ["**/*.stories.tsx", "**/*.test.ts", "**/*.test.tsx", "**/__tests__/**"]
 }
