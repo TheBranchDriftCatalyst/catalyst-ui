@@ -44,3 +44,7 @@ public/docs-combined.md
 *.db
 .beads-credential-key
 .beads/proxieddb/
+
+# beads recovery artifacts (local-only backups from dolt re-init)
+.beads.bak-fix/
+issue-export.jsonl

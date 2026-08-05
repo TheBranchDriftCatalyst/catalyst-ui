@@ -245,7 +245,7 @@ Import paths use `@/` prefix:
 - **Component Templates**: Use `task new-component` instead of manually creating files to ensure consistency
 - **Base Path Handling**: When working with URLs, paths, or assets, ALWAYS use `import.meta.env.BASE_URL` to respect GitHub Pages deployment. See `docs/architecture/base-path-guidelines.md` for comprehensive guidelines.
 
-<!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:6cd5cc61 -->
+<!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:970c3bf2 -->
 
 ## Beads Issue Tracker
 
@@ -291,6 +291,7 @@ This protocol applies when ending a Beads implementation workflow. It is subordi
 
    # Team-maintainer opt-in only, unless current instructions forbid it:
    git pull --rebase
+   bd dolt push
    git push
    git status
    ```
