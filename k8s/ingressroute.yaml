@@ -1,4 +1,8 @@
 ---
+# Catalyst UI — HTTPS + Authentik forward-auth SSO on catalyst.talos00
+# (TALOS-xgrl.14). Gated by the `authentik` forward-auth middleware; SSO via the
+# forward_single provider in talos-homelab sister-apps-blueprint.yaml. TLS: the
+# default TLSStore serves the *.talos00 wildcard via SNI. web→https redirect below.
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
@@ -12,14 +16,38 @@ metadata:
     gethomepage.dev/description: "Component library & design system"
     gethomepage.dev/group: "Apps"
     gethomepage.dev/icon: "storybook.png"
-    gethomepage.dev/href: "http://catalyst.talos00"
+    gethomepage.dev/href: "https://catalyst.talos00"
     gethomepage.dev/siteMonitor: "http://catalyst-ui.catalyst.svc.cluster.local:80"
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`catalyst.talos00`)
+      kind: Rule
+      middlewares:
+        - name: authentik
+          namespace: authentik
+      services:
+        - name: catalyst-ui
+          port: 80
+  tls: {}
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: catalyst-ui-http
+  namespace: catalyst
+  labels:
+    app: catalyst-ui
 spec:
   entryPoints:
     - web
   routes:
     - match: Host(`catalyst.talos00`)
       kind: Rule
+      middlewares:
+        - name: redirect-https
+          namespace: traefik
       services:
         - name: catalyst-ui
           port: 80
