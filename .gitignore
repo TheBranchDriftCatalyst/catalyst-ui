@@ -48,3 +48,7 @@ public/docs-combined.md
 # beads recovery artifacts (local-only backups from dolt re-init)
 .beads.bak-fix/
 issue-export.jsonl
+.beads.gate.lock
+.beads.backup-pre-recovery/
+.beads.legacy-sqlite-archived-*/
+.beads-archive/
