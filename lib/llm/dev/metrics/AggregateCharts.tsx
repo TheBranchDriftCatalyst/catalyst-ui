@@ -78,7 +78,7 @@ const AXES: MetricAxis[] = [
 const PALETTE = [
   "#ff79c6", // hot pink
   "#bd93f9", // purple
-  "#00fcd6", // cyan
+  "#00ffd5", // cyan
   "#50fa7b", // green
   "#f1fa8c", // yellow
   "#ffb86c", // orange

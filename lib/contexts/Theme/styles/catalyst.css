@@ -212,77 +212,77 @@
    * @tokens Dark Background Colors
    * @presenter Color
    */
-  --background: #0a0a0f; /* @token { "name": "Dark Background", "category": "Dark/Colors/Background" } */
+  --background: #05050a; /* @token { "name": "Dark Background", "category": "Dark/Colors/Background" } */
   --foreground: #e4e4e7; /* @token { "name": "Dark Foreground", "category": "Dark/Colors/Background" } */
 
   /**
    * @tokens Dark Card Colors
    * @presenter Color
    */
-  --card: #16161d; /* @token { "name": "Dark Card", "category": "Dark/Colors/Card" } */
+  --card: #0d0d15; /* @token { "name": "Dark Card", "category": "Dark/Colors/Card" } */
   --card-foreground: #e4e4e7; /* @token { "name": "Dark Card Foreground", "category": "Dark/Colors/Card" } */
 
   /**
    * @tokens Dark Popover Colors
    * @presenter Color
    */
-  --popover: #0a0a0f; /* @token { "name": "Dark Popover", "category": "Dark/Colors/Popover" } */
+  --popover: #05050a; /* @token { "name": "Dark Popover", "category": "Dark/Colors/Popover" } */
   --popover-foreground: #e4e4e7; /* @token { "name": "Dark Popover Foreground", "category": "Dark/Colors/Popover" } */
 
   /**
    * @tokens Dark Primary Colors
    * @presenter Color
    */
-  --primary: #00fcd6; /* @token { "name": "Dark Primary", "category": "Dark/Colors/Primary" } */
-  --primary-foreground: #0a0a0f; /* @token { "name": "Dark Primary Foreground", "category": "Dark/Colors/Primary" } */
+  --primary: #00ffd5; /* @token { "name": "Dark Primary", "category": "Dark/Colors/Primary" } */
+  --primary-foreground: #05050a; /* @token { "name": "Dark Primary Foreground", "category": "Dark/Colors/Primary" } */
 
   /**
    * @tokens Dark Secondary Colors
    * @presenter Color
    */
-  --secondary: #c026d3; /* @token { "name": "Dark Secondary", "category": "Dark/Colors/Secondary" } */
+  --secondary: #ff00c8; /* @token { "name": "Dark Secondary", "category": "Dark/Colors/Secondary" } */
   --secondary-foreground: #fafafa; /* @token { "name": "Dark Secondary Foreground", "category": "Dark/Colors/Secondary" } */
 
   /**
    * @tokens Dark Muted Colors
    * @presenter Color
    */
-  --muted: #27272a; /* @token { "name": "Dark Muted", "category": "Dark/Colors/Muted" } */
+  --muted: #1f1f2e; /* @token { "name": "Dark Muted", "category": "Dark/Colors/Muted" } */
   --muted-foreground: #a1a1aa; /* @token { "name": "Dark Muted Foreground", "category": "Dark/Colors/Muted" } */
 
   /**
    * @tokens Dark Accent Colors
    * @presenter Color
    */
-  --accent: #1e1e24; /* @token { "name": "Dark Accent", "category": "Dark/Colors/Accent" } */
+  --accent: #14141f; /* @token { "name": "Dark Accent", "category": "Dark/Colors/Accent" } */
   --accent-foreground: #fafafa; /* @token { "name": "Dark Accent Foreground", "category": "Dark/Colors/Accent" } */
 
   /**
    * @tokens Dark Destructive Colors
    * @presenter Color
    */
-  --destructive: #ff2975; /* @token { "name": "Dark Destructive", "category": "Dark/Colors/Destructive" } */
+  --destructive: #ff1f5a; /* @token { "name": "Dark Destructive", "category": "Dark/Colors/Destructive" } */
   --destructive-foreground: #fafafa; /* @token { "name": "Dark Destructive Foreground", "category": "Dark/Colors/Destructive" } */
 
   /**
    * @tokens Dark Form Colors
    * @presenter Color
    */
-  --border: #27272a; /* @token { "name": "Dark Border", "category": "Dark/Colors/Forms" } */
-  --input: #1e1e24; /* @token { "name": "Dark Input", "category": "Dark/Colors/Forms" } */
-  --ring: #00fcd6; /* @token { "name": "Dark Ring", "category": "Dark/Colors/Forms" } */
+  --border: #1f1f2e; /* @token { "name": "Dark Border", "category": "Dark/Colors/Forms" } */
+  --input: #14141f; /* @token { "name": "Dark Input", "category": "Dark/Colors/Forms" } */
+  --ring: #00ffd5; /* @token { "name": "Dark Ring", "category": "Dark/Colors/Forms" } */
 
   /**
    * @tokens Dark Neon Colors
    * @presenter Color
    */
   /* Extended cyberpunk palette */
-  --neon-cyan: #00fcd6; /* @token { "name": "Dark Neon Cyan", "category": "Dark/Colors/Neon" } */
+  --neon-cyan: #00ffd5; /* @token { "name": "Dark Neon Cyan", "category": "Dark/Colors/Neon" } */
   --neon-pink: #ff6ec7; /* @token { "name": "Dark Neon Pink", "category": "Dark/Colors/Neon" } */
-  --neon-purple: #c026d3; /* @token { "name": "Dark Neon Purple", "category": "Dark/Colors/Neon" } */
+  --neon-purple: #ff00c8; /* @token { "name": "Dark Neon Purple", "category": "Dark/Colors/Neon" } */
   --neon-blue: #00d4ff; /* @token { "name": "Dark Neon Blue", "category": "Dark/Colors/Neon" } */
-  --neon-red: #ff2975; /* @token { "name": "Dark Neon Red", "category": "Dark/Colors/Neon" } */
-  --neon-yellow: #fbbf24; /* @token { "name": "Dark Neon Yellow", "category": "Dark/Colors/Neon" } */
+  --neon-red: #ff1f5a; /* @token { "name": "Dark Neon Red", "category": "Dark/Colors/Neon" } */
+  --neon-yellow: #ffb800; /* @token { "name": "Dark Neon Yellow", "category": "Dark/Colors/Neon" } */
   --neon-gold: hsl(
     38,
     95%,
@@ -290,26 +290,28 @@
   ); /* @token { "name": "Dark Neon Gold", "category": "Dark/Colors/Neon" } */
 
   /* RGB triplets for alpha-compositing */
-  --neon-cyan-rgb: 0, 252, 214; /* @token */
+  --neon-cyan-rgb: 0, 255, 213; /* @token */
   --neon-pink-rgb: 255, 110, 199; /* @token */
-  --neon-purple-rgb: 192, 38, 211; /* @token */
+  --neon-purple-rgb: 255, 0, 200; /* @token */
   --neon-blue-rgb: 0, 212, 255; /* @token */
-  --neon-red-rgb: 255, 41, 117; /* @token */
-  --neon-yellow-rgb: 251, 191, 36; /* @token */
+  --neon-red-rgb: 255, 31, 90; /* @token */
+  --neon-yellow-rgb: 255, 184, 0; /* @token */
   --neon-gold-rgb: 247, 170, 26; /* @token */
+  --neon-acid: #b6ff00; /* @token { "name": "Dark Neon Acid", "category": "Dark/Colors/Neon" } */
+  --neon-acid-rgb: 182, 255, 0; /* @token */
 
   /* CUI-w9i required tokens */
   --radius: 0.5rem; /* @token { "name": "Dark Base Radius", "category": "Dark/Spacing/Radius" } */
   --primary-rgb:
-    0, 252, 214; /* @token { "name": "Dark Primary RGB", "category": "Dark/Colors/RGB" } */
+    0, 255, 213; /* @token { "name": "Dark Primary RGB", "category": "Dark/Colors/RGB" } */
   --accent-rgb:
-    30, 30, 36; /* @token { "name": "Dark Accent RGB", "category": "Dark/Colors/RGB" } */
-  --chart-1: #00fcd6; /* @token { "name": "Dark Chart 1", "category": "Dark/Colors/Chart" } */
+    20, 20, 31; /* @token { "name": "Dark Accent RGB", "category": "Dark/Colors/RGB" } */
+  --chart-1: #00ffd5; /* @token { "name": "Dark Chart 1", "category": "Dark/Colors/Chart" } */
   --chart-2: #ff6ec7; /* @token { "name": "Dark Chart 2", "category": "Dark/Colors/Chart" } */
-  --chart-3: #c026d3; /* @token { "name": "Dark Chart 3", "category": "Dark/Colors/Chart" } */
+  --chart-3: #ff00c8; /* @token { "name": "Dark Chart 3", "category": "Dark/Colors/Chart" } */
   --chart-4: #00d4ff; /* @token { "name": "Dark Chart 4", "category": "Dark/Colors/Chart" } */
-  --chart-5: #ff2975; /* @token { "name": "Dark Chart 5", "category": "Dark/Colors/Chart" } */
-  --chart-6: #fbbf24; /* @token { "name": "Dark Chart 6", "category": "Dark/Colors/Chart" } */
+  --chart-5: #ff1f5a; /* @token { "name": "Dark Chart 5", "category": "Dark/Colors/Chart" } */
+  --chart-6: #ffb800; /* @token { "name": "Dark Chart 6", "category": "Dark/Colors/Chart" } */
   --chart-7: #f7aa1a; /* @token { "name": "Dark Chart 7", "category": "Dark/Colors/Chart" } */
   --chart-8: #14b8a6; /* @token { "name": "Dark Chart 8", "category": "Dark/Colors/Chart" } */
   --chart-9: #a855f7; /* @token { "name": "Dark Chart 9", "category": "Dark/Colors/Chart" } */

@@ -13,23 +13,23 @@ export const catalystTheme: ThemeRegistration = {
   name: "catalyst",
   type: "dark",
   colors: {
-    "editor.background": "#0a0a0f",
+    "editor.background": "#05050a",
     "editor.foreground": "#e4e4e7",
-    "terminal.ansiBlack": "#0a0a0f",
-    "terminal.ansiRed": "#ff2975",
-    "terminal.ansiGreen": "#00fcd6",
-    "terminal.ansiYellow": "#fbbf24",
+    "terminal.ansiBlack": "#05050a",
+    "terminal.ansiRed": "#ff1f5a",
+    "terminal.ansiGreen": "#00ffd5",
+    "terminal.ansiYellow": "#ffb800",
     "terminal.ansiBlue": "#00d4ff",
-    "terminal.ansiMagenta": "#c026d3",
-    "terminal.ansiCyan": "#00fcd6",
+    "terminal.ansiMagenta": "#ff00c8",
+    "terminal.ansiCyan": "#00ffd5",
     "terminal.ansiWhite": "#e4e4e7",
-    "terminal.ansiBrightBlack": "#27272a",
+    "terminal.ansiBrightBlack": "#1f1f2e",
     "terminal.ansiBrightRed": "#ff6ec7",
-    "terminal.ansiBrightGreen": "#00fcd6",
-    "terminal.ansiBrightYellow": "#fbbf24",
+    "terminal.ansiBrightGreen": "#00ffd5",
+    "terminal.ansiBrightYellow": "#ffb800",
     "terminal.ansiBrightBlue": "#00d4ff",
-    "terminal.ansiBrightMagenta": "#c026d3",
-    "terminal.ansiBrightCyan": "#00fcd6",
+    "terminal.ansiBrightMagenta": "#ff00c8",
+    "terminal.ansiBrightCyan": "#00ffd5",
     "terminal.ansiBrightWhite": "#fafafa",
   },
   tokenColors: [
@@ -49,7 +49,7 @@ export const catalystTheme: ThemeRegistration = {
     {
       scope: ["constant", "entity.name.constant", "variable.other.constant", "variable.language"],
       settings: {
-        foreground: "#00fcd6",
+        foreground: "#00ffd5",
       },
     },
     {
@@ -73,14 +73,14 @@ export const catalystTheme: ThemeRegistration = {
     {
       scope: "keyword",
       settings: {
-        foreground: "#c026d3",
+        foreground: "#ff00c8",
         fontStyle: "bold",
       },
     },
     {
       scope: ["storage", "storage.type"],
       settings: {
-        foreground: "#c026d3",
+        foreground: "#ff00c8",
       },
     },
     {
@@ -96,7 +96,7 @@ export const catalystTheme: ThemeRegistration = {
         "string punctuation.section.embedded source",
       ],
       settings: {
-        foreground: "#fbbf24",
+        foreground: "#ffb800",
       },
     },
     {
@@ -108,7 +108,7 @@ export const catalystTheme: ThemeRegistration = {
     {
       scope: "meta.property-name",
       settings: {
-        foreground: "#00fcd6",
+        foreground: "#00ffd5",
       },
     },
     {
@@ -127,43 +127,43 @@ export const catalystTheme: ThemeRegistration = {
       scope: "invalid.broken",
       settings: {
         fontStyle: "italic",
-        foreground: "#ff2975",
+        foreground: "#ff1f5a",
       },
     },
     {
       scope: "invalid.deprecated",
       settings: {
         fontStyle: "italic",
-        foreground: "#ff2975",
+        foreground: "#ff1f5a",
       },
     },
     {
       scope: "invalid.illegal",
       settings: {
         fontStyle: "italic",
-        foreground: "#ff2975",
+        foreground: "#ff1f5a",
       },
     },
     {
       scope: "invalid.unimplemented",
       settings: {
         fontStyle: "italic",
-        foreground: "#ff2975",
+        foreground: "#ff1f5a",
       },
     },
     {
       scope: "carriage-return",
       settings: {
         fontStyle: "italic underline",
-        background: "#c026d3",
-        foreground: "#0a0a0f",
+        background: "#ff00c8",
+        foreground: "#05050a",
         content: "^M",
       } as ExtendedTokenSettings,
     },
     {
       scope: "message.error",
       settings: {
-        foreground: "#ff2975",
+        foreground: "#ff1f5a",
       },
     },
     {
@@ -175,13 +175,13 @@ export const catalystTheme: ThemeRegistration = {
     {
       scope: "string variable",
       settings: {
-        foreground: "#00fcd6",
+        foreground: "#00ffd5",
       },
     },
     {
       scope: ["source.regexp", "string.regexp"],
       settings: {
-        foreground: "#fbbf24",
+        foreground: "#ffb800",
       },
     },
     {
@@ -192,14 +192,14 @@ export const catalystTheme: ThemeRegistration = {
         "string.regexp string.regexp.arbitrary-repitition",
       ],
       settings: {
-        foreground: "#fbbf24",
+        foreground: "#ffb800",
       },
     },
     {
       scope: "string.regexp constant.character.escape",
       settings: {
         fontStyle: "bold",
-        foreground: "#00fcd6",
+        foreground: "#00ffd5",
       },
     },
     {
@@ -230,7 +230,7 @@ export const catalystTheme: ThemeRegistration = {
       scope: ["markup.heading", "markup.heading entity.name"],
       settings: {
         fontStyle: "bold",
-        foreground: "#00fcd6",
+        foreground: "#00ffd5",
       },
     },
     {
@@ -262,35 +262,35 @@ export const catalystTheme: ThemeRegistration = {
     {
       scope: ["markup.deleted", "meta.diff.header.from-file", "punctuation.definition.deleted"],
       settings: {
-        background: "#ff2975",
-        foreground: "#0a0a0f",
+        background: "#ff1f5a",
+        foreground: "#05050a",
       },
     },
     {
       scope: ["markup.inserted", "meta.diff.header.to-file", "punctuation.definition.inserted"],
       settings: {
-        background: "#00fcd6",
-        foreground: "#0a0a0f",
+        background: "#00ffd5",
+        foreground: "#05050a",
       },
     },
     {
       scope: ["markup.changed", "punctuation.definition.changed"],
       settings: {
-        background: "#c026d3",
-        foreground: "#0a0a0f",
+        background: "#ff00c8",
+        foreground: "#05050a",
       },
     },
     {
       scope: ["markup.ignored", "markup.untracked"],
       settings: {
-        foreground: "#27272a",
+        foreground: "#1f1f2e",
         background: "#00d4ff",
       },
     },
     {
       scope: "meta.diff.range",
       settings: {
-        foreground: "#c026d3",
+        foreground: "#ff00c8",
         fontStyle: "bold",
       },
     },
@@ -329,13 +329,13 @@ export const catalystTheme: ThemeRegistration = {
     {
       scope: "brackethighlighter.unmatched",
       settings: {
-        foreground: "#ff2975",
+        foreground: "#ff1f5a",
       },
     },
     {
       scope: ["constant.other.reference.link", "string.other.link"],
       settings: {
-        foreground: "#fbbf24",
+        foreground: "#ffb800",
         fontStyle: "underline",
       },
     },

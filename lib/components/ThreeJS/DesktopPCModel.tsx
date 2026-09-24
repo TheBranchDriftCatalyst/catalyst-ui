@@ -56,7 +56,7 @@ export function DesktopPCModel({
       <directionalLight position={[0, 10, 0]} intensity={2} color="#ffffff" />
 
       {/* Directional fill lights from sides for depth */}
-      <directionalLight position={[5, 8, 5]} intensity={1} color="#00fcd6" />
+      <directionalLight position={[5, 8, 5]} intensity={1} color="#00ffd5" />
       <directionalLight position={[-5, 8, -5]} intensity={0.8} color="#bd00ff" />
 
       {/* Soft spotlight from front for model visibility */}
