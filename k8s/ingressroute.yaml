@@ -27,6 +27,24 @@ spec:
       middlewares:
         - name: authentik
           namespace: authentik
+        # Puts Catalyst UI on the cross-app nav bar. The bar's link list is
+        # DERIVED, not configured: the discovery sidecar in talos-homelab
+        # (infrastructure/base/themepark/server/nav/build_nav.py) lists only
+        # routes that carry a catalyst-* injection middleware, so the
+        # gethomepage.dev annotations above were never enough on their own --
+        # this reference is what makes the app appear, under the "Apps" group
+        # its annotation already names.
+        #
+        # catalyst-nav, NOT catalyst-<slug>: the per-app injectors exist only
+        # for apps theme.park ships a base stylesheet for, which maps that
+        # app's DOM onto the theme's variables. There is no such sheet for this
+        # app and there should not be -- it IS the design system the theme is
+        # derived from, so restyling it would be circular.
+        #
+        # Ordering matters: authentik first. These are applied forward on the
+        # request, so auth runs before the body rewriter ever sees a response.
+        - name: catalyst-nav
+          namespace: traefik
       services:
         - name: catalyst-ui
           port: 80
