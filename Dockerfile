@@ -8,7 +8,13 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 
 # Install dependencies
-RUN yarn install
+# --frozen-lockfile is load-bearing, not hygiene. Without it yarn silently
+# re-resolves whenever the lock and package.json disagree, which is how this
+# build failed on every run from 2026-06-23 to 2026-09-25 while local installs
+# stayed green: the developer yarn is Berry 4.x, this image ships yarn classic
+# 1.22.22, and only classic choked on the resulting tree. Failing loudly on a
+# stale lock is the whole point.
+RUN yarn install --frozen-lockfile
 
 # Copy source code
 COPY . .
