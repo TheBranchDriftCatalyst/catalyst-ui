@@ -18,14 +18,14 @@
  * persistent operator state.
  */
 import { Fragment, useMemo, useState, type ReactNode } from "react";
-import { Button } from "@thebranchdriftcatalyst/catalyst-ui/ui/button";
+import { Button } from "@/catalyst-ui/ui/button";
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@thebranchdriftcatalyst/catalyst-ui/ui/sheet";
+} from "@/catalyst-ui/ui/sheet";
 import { Activity, Cpu, RotateCcw } from "lucide-react";
 import {
   AgentsListPanel,
