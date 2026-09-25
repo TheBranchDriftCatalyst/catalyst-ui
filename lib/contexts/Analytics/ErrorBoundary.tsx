@@ -6,6 +6,7 @@
 import { Component, ErrorInfo, ReactNode } from "react";
 import type { AnalyticsContextValue, ErrorEvent } from "./types";
 import { storage } from "./storage";
+import { scrubErrorEvent } from "./scrub";
 
 interface Props {
   children: ReactNode;
@@ -41,25 +42,36 @@ export class AnalyticsErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // Track error via analytics
-    const errorEvent: ErrorEvent = {
-      message: error.message,
-      stack: error.stack || undefined,
-      componentStack: errorInfo.componentStack || undefined,
-      type: "react",
-      userAgent: navigator.userAgent,
-      url: window.location.href,
-      timestamp: Date.now(),
-    };
-
-    // Store error
-    storage.addError(errorEvent);
-
-    // Call analytics if available
+    // Exactly one of these two paths records the error. `analytics` is
+    // documented as "will use storage directly if not provided" -- either/or --
+    // but the boundary used to do both, so a wired boundary wrote its own copy
+    // AND the provider's, doubling every React error in the dashboard and in
+    // Export. Only the provider's copy ever reached a sink, so the duplicate
+    // was also the one nothing downstream could see.
     if (this.props.analytics?.trackError) {
+      // Delegate: the provider scrubs, writes the single record and fans out.
+      // `context` is the only channel `trackError` offers, so the stack goes
+      // over as a context key and the provider lifts it back onto
+      // `ErrorEvent.componentStack` -- the field the faro sink and the
+      // Observability tab read. Do not "simplify" that lift away.
       this.props.analytics.trackError(error, {
         componentStack: errorInfo.componentStack,
       });
+    } else {
+      // No provider in scope, so the boundary is the only writer -- and has to
+      // scrub for itself; see ./scrub for why the full href must never be
+      // recorded.
+      const errorEvent: ErrorEvent = scrubErrorEvent({
+        message: error.message,
+        stack: error.stack || undefined,
+        componentStack: errorInfo.componentStack || undefined,
+        type: "react",
+        userAgent: navigator.userAgent,
+        url: window.location.href,
+        timestamp: Date.now(),
+      });
+
+      storage.addError(errorEvent);
     }
 
     // Call custom error handler

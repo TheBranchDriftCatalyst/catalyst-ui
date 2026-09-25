@@ -6,6 +6,7 @@ import {
   AnalyticsProvider,
   AnalyticsErrorBoundary,
   useAnalytics,
+  sinks as analyticsSinks,
 } from "@/catalyst-ui/contexts/Analytics";
 import { SEOProvider, useSEO } from "@/catalyst-ui/contexts/SEO";
 import { DevProviders, DevModeToggle } from "@/catalyst-ui/dev/components";
@@ -25,6 +26,19 @@ import { LocaleSwitcher } from "@/catalyst-ui/components/LocaleSwitcher";
 
 import { tabComponents, initialTabs } from "./tabs/loader";
 import { DEFAULT_SEO, getSEOForTab } from "./seo-config";
+
+/**
+ * Wires the class-based AnalyticsErrorBoundary to the analytics context.
+ *
+ * The boundary is a class with no contextType, so it cannot reach
+ * `useAnalytics()` itself -- without this wrapper it takes its fallback branch
+ * and writes React errors to localStorage ONLY, never through the sinks. That
+ * silently excluded every render error from the Faro stream.
+ */
+function WiredErrorBoundary({ children }: { children: React.ReactNode }) {
+  const analytics = useAnalytics();
+  return <AnalyticsErrorBoundary analytics={analytics}>{children}</AnalyticsErrorBoundary>;
+}
 
 function KitchenSink() {
   const analytics = useAnalytics();
@@ -257,8 +271,23 @@ function App() {
             enableErrorTracking: true,
             enableUserJourney: true,
           }}
+          // The `sinks` prop REPLACES the defaults, it does not extend them --
+          // so ga4 and the debug console have to be listed explicitly or they
+          // are silently dropped. Without this prop the Faro sink is dead code:
+          // defaultSinks() is [ga4(), consoleSink()] and nothing would ever
+          // reach the collector.
+          //
+          // Faro is deliberately absent in dev. window.location.hostname is
+          // "localhost" there, and since the collector turns meta.app.name into
+          // the Loki `app` label, a dev run would mint a permanent
+          // app="localhost" stream alongside the real ones.
+          sinks={[
+            analyticsSinks.ga4(),
+            analyticsSinks.consoleSink(),
+            ...(import.meta.env.DEV ? [] : [analyticsSinks.faro({ environment: "prod" })]),
+          ]}
         >
-          <AnalyticsErrorBoundary>
+          <WiredErrorBoundary>
             <ThemeProvider>
               <DevProviders>
                 <MotionProvider respectReducedMotion>
@@ -269,7 +298,7 @@ function App() {
                 </MotionProvider>
               </DevProviders>
             </ThemeProvider>
-          </AnalyticsErrorBoundary>
+          </WiredErrorBoundary>
         </AnalyticsProvider>
       </SEOProvider>
     </I18nProvider>

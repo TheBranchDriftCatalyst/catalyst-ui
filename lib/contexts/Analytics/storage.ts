@@ -110,6 +110,33 @@ export class AnalyticsStorage {
     }
   }
 
+  /**
+   * Atomically bump the session counters and refresh `lastActivity`.
+   *
+   * The new totals MUST be derived from the persisted session rather than from
+   * a caller-held copy. Callers hold the session in a ref that is only assigned
+   * when the session is initialized, so `held.eventCount + 1` pins the counter
+   * at its mount-time value forever. Re-reading here is what keeps the counts
+   * monotonic and lets them survive a provider remount inside the session
+   * window — the same reason `addJourneyStep` re-reads.
+   *
+   * @returns the persisted session after the bump, or null if there is none.
+   */
+  incrementSession(deltas: { pageViews?: number; eventCount?: number }): SessionInfo | null {
+    const session = this.getSession();
+    if (!session) return null;
+
+    const updated: SessionInfo = {
+      ...session,
+      pageViews: session.pageViews + (deltas.pageViews ?? 0),
+      eventCount: session.eventCount + (deltas.eventCount ?? 0),
+      lastActivity: Date.now(),
+    };
+
+    this.setSession(updated);
+    return updated;
+  }
+
   addJourneyStep(step: UserJourneyStep): void {
     const session = this.getSession();
     if (!session) return;

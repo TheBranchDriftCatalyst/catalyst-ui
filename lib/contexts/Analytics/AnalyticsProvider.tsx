@@ -5,33 +5,130 @@
  */
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import ReactGA from "react-ga4";
 import type {
   AnalyticsConfig,
   AnalyticsContextValue,
   AnalyticsEvent,
+  AnalyticsSink,
+  AnalyticsSinkMethod,
+  AnalyticsSinkPayloads,
   ErrorEvent,
   PerformanceMetric,
   SessionInfo,
   UserJourneyStep,
 } from "./types";
 import { storage } from "./storage";
+import { scrubErrorEvent, scrubParams, scrubText } from "./scrub";
+import { consoleSink, ga4 } from "./sinks";
 import { AnalyticsContext } from "./AnalyticsContext";
 
-interface AnalyticsProviderProps {
+/**
+ * Props for {@link AnalyticsProvider}.
+ *
+ * @public
+ */
+export interface AnalyticsProviderProps {
   children: React.ReactNode;
   /** Auto-initialize with config */
   config?: AnalyticsConfig;
+  /**
+   * Destinations the collected signals are forwarded to, in fan-out order.
+   *
+   * Omit this and you get the historical pair — `ga4()` (inert without a
+   * `measurementId`) and `consoleSink()` (inert without `debug`) — so existing
+   * consumers passing only `{ children, config }` are unaffected. Pass `[]`
+   * to collect into localStorage and nothing else.
+   *
+   * The list is read once, on the provider's first render: sinks are
+   * registered, not reactive. Sink failures never reach the caller — see
+   * {@link AnalyticsSink}.
+   */
+  sinks?: AnalyticsSink[];
 }
+
+/** The historical destinations, each self-gating on {@link AnalyticsConfig}. */
+const defaultSinks = (): AnalyticsSink[] => [ga4(), consoleSink()];
+
+const isThenable = (value: unknown): value is Promise<unknown> =>
+  typeof (value as Promise<unknown> | undefined)?.then === "function";
 
 const generateSessionId = () => {
   return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 };
 
-export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({ children, config }) => {
+export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({
+  children,
+  config,
+  sinks,
+}) => {
   const [isInitialized, setIsInitialized] = useState(false);
   const configRef = useRef<AnalyticsConfig | null>(null);
   const sessionRef = useRef<SessionInfo | null>(null);
+
+  // Registered once, on first render, so `emit` can stay dependency-free and
+  // every track callback keeps a stable identity.
+  const sinksRef = useRef<AnalyticsSink[] | null>(null);
+  if (sinksRef.current === null) {
+    sinksRef.current = sinks ?? defaultSinks();
+  }
+
+  // Everything `initialize` attaches outside React's effect graph, as the
+  // teardowns that undo it. They have to live in a ref: they are produced
+  // imperatively, long after the effect responsible for running them was
+  // declared, so there is nowhere else to hand them.
+  const teardownsRef = useRef<Array<() => void>>([]);
+
+  // The "already initialized" guard has to be a ref rather than the
+  // `isInitialized` state, because a state guard is only ever as fresh as the
+  // closure reading it: `setIsInitialized(true)` is queued, not applied, so a
+  // second `initialize()` in the same render cycle still reads `false` and
+  // re-runs the lot -- a second click listener, a second session, a second
+  // `init()` on every sink. A ref is updated in place, so the second call sees
+  // what the first did.
+  //
+  // This is *not* what fixes StrictMode's double-attach; `teardown` below is.
+  // Note it also clears this ref, so StrictMode's second pass deliberately
+  // re-initializes from scratch -- correct, because the simulated unmount
+  // already detached everything the first pass attached.
+  const initializedRef = useRef(false);
+
+  /** Undo everything `initialize` attached, in one place. */
+  const teardown = useCallback(() => {
+    for (const undo of teardownsRef.current.splice(0)) undo();
+    initializedRef.current = false;
+  }, []);
+
+  const warnSinkFailure = useCallback((sink: AnalyticsSink, method: string, error: unknown) => {
+    console.warn(`[AnalyticsProvider] sink "${sink.id}" threw in ${method}()`, error);
+  }, []);
+
+  /**
+   * Fan one signal out to every sink that implements it.
+   *
+   * Best-effort by contract: a throwing sink is reported and skipped so it can
+   * neither break the caller nor starve the sinks registered after it. The
+   * localStorage write has already happened by the time this runs.
+   */
+  const emit = useCallback(
+    <M extends AnalyticsSinkMethod>(method: M, payload: AnalyticsSinkPayloads[M]) => {
+      for (const sink of sinksRef.current ?? []) {
+        const handler = sink[method] as
+          | ((value: AnalyticsSinkPayloads[M]) => void | Promise<void>)
+          | undefined;
+        if (typeof handler !== "function") continue;
+
+        try {
+          const result = handler.call(sink, payload);
+          if (isThenable(result)) {
+            result.then(undefined, error => warnSinkFailure(sink, method, error));
+          }
+        } catch (error) {
+          warnSinkFailure(sink, method, error);
+        }
+      }
+    },
+    [warnSinkFailure]
+  );
 
   // Initialize session
   const initializeSession = useCallback(() => {
@@ -40,8 +137,11 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({ children, 
 
     // Check if existing session is still valid (< 30 minutes since last activity)
     if (existingSession && now - existingSession.lastActivity < 30 * 60 * 1000) {
-      sessionRef.current = existingSession;
-      storage.updateSession({ lastActivity: now });
+      // Resume: the ref has to carry the refreshed activity stamp too, so it
+      // never disagrees with what was just persisted.
+      const resumed: SessionInfo = { ...existingSession, lastActivity: now };
+      sessionRef.current = resumed;
+      storage.setSession(resumed);
     } else {
       // Create new session
       const newSession: SessionInfo = {
@@ -60,34 +160,43 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({ children, 
   // Initialize analytics
   const initialize = useCallback(
     (initConfig: AnalyticsConfig) => {
-      if (isInitialized) {
+      if (initializedRef.current) {
         console.warn("Analytics already initialized");
         return;
       }
+      initializedRef.current = true;
 
       configRef.current = initConfig;
 
-      // Initialize GA4 if measurement ID provided
-      if (initConfig.measurementId) {
-        ReactGA.initialize(initConfig.measurementId, {
-          gaOptions: {
-            debug_mode: initConfig.debug,
-            ...initConfig.customDimensions,
-          },
-        });
-
-        if (initConfig.debug) {
-          console.log("Google Analytics 4 initialized:", initConfig.measurementId);
+      // Bring up the sinks. Each one gates itself on `initConfig` (GA4 on
+      // `measurementId`, console on `debug`), and one that fails to start must
+      // not take the others — or initialization itself — down with it.
+      for (const sink of sinksRef.current ?? []) {
+        if (typeof sink.init !== "function") continue;
+        try {
+          const result = sink.init(initConfig);
+          if (isThenable(result)) {
+            result.then(undefined, error => warnSinkFailure(sink, "init", error));
+          }
+        } catch (error) {
+          warnSinkFailure(sink, "init", error);
         }
       }
 
       // Initialize session
       initializeSession();
 
-      // Setup global error handlers if enabled
+      // Setup global error handlers if enabled. The teardown is registered
+      // here, against the handlers actually attached, rather than rebuilt later
+      // from `configRef` -- the config that decided to attach is the only thing
+      // that can be trusted to decide to detach.
       if (initConfig.enableErrorTracking) {
         window.addEventListener("error", handleGlobalError);
         window.addEventListener("unhandledrejection", handleUnhandledRejection);
+        teardownsRef.current.push(() => {
+          window.removeEventListener("error", handleGlobalError);
+          window.removeEventListener("unhandledrejection", handleUnhandledRejection);
+        });
       }
 
       // Setup performance monitoring if enabled
@@ -99,14 +208,17 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({ children, 
         setupPerformanceMonitoring();
       }
 
-      // Setup user journey tracking if enabled
+      // Setup user journey tracking if enabled. The returned teardown is the
+      // only handle on the `click` and `popstate` listeners it attaches;
+      // discarding it leaked both for the lifetime of the page, so an unmounted
+      // provider went on recording journey steps.
       if (initConfig.enableUserJourney) {
-        setupUserJourneyTracking();
+        teardownsRef.current.push(setupUserJourneyTracking());
       }
 
       setIsInitialized(true);
     },
-    [isInitialized, initializeSession]
+    [initializeSession, warnSinkFailure]
   );
 
   // Auto-initialize if config provided
@@ -117,51 +229,50 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({ children, 
   }, [config, isInitialized, initialize]);
 
   // Track custom event
-  const trackEvent = useCallback((name: string, params?: Record<string, any>) => {
-    const event: AnalyticsEvent = {
-      name,
-      params,
-      timestamp: Date.now(),
-    };
+  const trackEvent = useCallback(
+    (name: string, params?: Record<string, any>) => {
+      const event: AnalyticsEvent = {
+        name,
+        // Scrubbed HERE, before storage and before any sink, for the same
+        // reason trackError scrubs at collection: the invariant then holds for
+        // every sink including ones this repo never sees, and for localStorage
+        // and the Export button, which a user can hand to anyone.
+        params: scrubParams(params),
+        timestamp: Date.now(),
+      };
 
-    // Store locally
-    storage.addEvent(event);
+      // Store locally. Unconditional and first: the dashboard, Export and
+      // Clear read this, so it must not depend on any sink.
+      storage.addEvent(event);
 
-    // Send to GA4
-    if (configRef.current?.measurementId) {
-      ReactGA.event(name, params);
-    }
+      emit("event", event);
 
-    // Update session
-    if (sessionRef.current) {
-      storage.updateSession({
-        eventCount: sessionRef.current.eventCount + 1,
-        lastActivity: Date.now(),
-      });
-    }
-
-    if (configRef.current?.debug) {
-      console.log("Event tracked:", event);
-    }
-  }, []);
+      // Update session — the bump reads the persisted total, never the ref,
+      // which is only assigned at init and would pin the counter at that value.
+      if (sessionRef.current) {
+        sessionRef.current = storage.incrementSession({ eventCount: 1 }) ?? sessionRef.current;
+      }
+    },
+    [emit]
+  );
 
   // Track page view
   const trackPageView = useCallback(
-    (path: string, title?: string) => {
-      // Send to GA4
-      if (configRef.current?.measurementId) {
-        ReactGA.send({ hitType: "pageview", page: path, title });
-      }
+    (rawPath: string, title?: string) => {
+      // Reduced ONCE, up front, because this function has two independent
+      // exits: the native pageView emit below bypasses trackEvent entirely, so
+      // scrubbing only inside trackEvent would leave this path leaking.
+      const path = scrubText(rawPath);
 
-      // Track as custom event
+      // Sinks with a native page-view concept see it first...
+      emit("pageView", { path, title, timestamp: Date.now() });
+
+      // ...then the derived event, for sinks (and storage) that only speak events
       trackEvent("page_view", { page_path: path, page_title: title });
 
-      // Update session page views
+      // Update session page views (see trackEvent — same persisted-total rule)
       if (sessionRef.current) {
-        storage.updateSession({
-          pageViews: sessionRef.current.pageViews + 1,
-          lastActivity: Date.now(),
-        });
+        sessionRef.current = storage.incrementSession({ pageViews: 1 }) ?? sessionRef.current;
       }
 
       // Track in user journey
@@ -173,70 +284,85 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({ children, 
         });
       }
     },
-    [trackEvent]
+    [emit, trackEvent]
   );
 
   // Track error
-  const trackError = useCallback((error: Error, context?: Record<string, any>) => {
-    const errorEvent: ErrorEvent = {
-      message: error.message,
-      stack: error.stack,
-      type: "react",
-      userAgent: navigator.userAgent,
-      url: window.location.href,
-      timestamp: Date.now(),
-      context,
-    };
+  const trackError = useCallback(
+    (error: Error, context?: Record<string, any>) => {
+      // `componentStack` is the one context key with a home of its own on
+      // ErrorEvent, and `trackError(error, context)` has no parameter for it --
+      // so a caller that has one (AnalyticsErrorBoundary, now delegating rather
+      // than writing its own copy) can only hand it over inside `context`.
+      // Left there it is lost data: `sinks/faro.ts` and the Observability tab
+      // both read the top-level field, and neither would ever see it. Lift it
+      // out rather than copy it, so the record carries exactly one stack.
+      //
+      // A lift is a move, so the siblings have to survive it: `context` is the
+      // caller's only channel, and dropping what is left after the stack comes
+      // out would take the `{ type: "global" }` / `{ type: "unhandled_rejection" }`
+      // markers below with it -- the same lost-data failure one layer up. The
+      // ternary is load-bearing in both directions and is pinned by
+      // ErrorBoundary.test.tsx's "trackError context lifting" block; `{}` is
+      // collapsed to `undefined` so the record never claims a context it has
+      // none of.
+      let componentStack: string | undefined;
+      let rest = context;
+      if (typeof context?.componentStack === "string") {
+        const { componentStack: lifted, ...others } = context;
+        componentStack = lifted;
+        rest = Object.keys(others).length > 0 ? others : undefined;
+      }
 
-    // Store locally
-    storage.addError(errorEvent);
-
-    // Send to GA4
-    if (configRef.current?.measurementId) {
-      ReactGA.event("exception", {
-        description: error.message,
-        fatal: false,
-        ...context,
+      // Scrubbed before it is stored, not before it is sent: localStorage and
+      // the Export button are egress too, and doing it here means every sink
+      // -- including ones written outside this repo -- is safe by construction
+      // rather than by remembering. See ./scrub.
+      const errorEvent: ErrorEvent = scrubErrorEvent({
+        message: error.message,
+        stack: error.stack,
+        componentStack,
+        type: "react",
+        userAgent: navigator.userAgent,
+        url: window.location.href,
+        timestamp: Date.now(),
+        context: rest,
       });
-    }
 
-    if (configRef.current?.debug) {
-      console.error("Error tracked:", errorEvent);
-    }
-  }, []);
+      // Store locally (unconditional)
+      storage.addError(errorEvent);
+
+      emit("error", errorEvent);
+    },
+    [emit]
+  );
 
   // Track performance metric
-  const trackPerformance = useCallback((metric: PerformanceMetric) => {
-    // Store locally
-    storage.addMetric(metric);
+  const trackPerformance = useCallback(
+    (metric: PerformanceMetric) => {
+      // Store locally (unconditional)
+      storage.addMetric(metric);
 
-    // Send to GA4
-    if (configRef.current?.measurementId) {
-      ReactGA.event("web_vitals", {
-        metric_name: metric.name,
-        metric_value: metric.value,
-        metric_rating: metric.rating,
-      });
-    }
-
-    if (configRef.current?.debug) {
-      console.log("Performance metric tracked:", metric);
-    }
-  }, []);
+      emit("performance", metric);
+    },
+    [emit]
+  );
 
   // Track user journey step
-  const trackJourneyStep = useCallback((step: Omit<UserJourneyStep, "timestamp">) => {
-    const journeyStep: UserJourneyStep = {
-      ...step,
-      timestamp: Date.now(),
-    };
+  const trackJourneyStep = useCallback(
+    (step: Omit<UserJourneyStep, "timestamp">) => {
+      const journeyStep: UserJourneyStep = {
+        ...step,
+        timestamp: Date.now(),
+      };
 
-    storage.addJourneyStep(journeyStep);
+      // Store locally (unconditional)
+      storage.addJourneyStep(journeyStep);
 
-    if (configRef.current?.debug) {
-      console.log("Journey step tracked:", journeyStep);
-    }
-  }, []);
+      emit("journeyStep", journeyStep);
+    },
+    [emit]
+  );
 
   // Global error handler
   const handleGlobalError = useCallback(
@@ -310,15 +436,10 @@ export const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({ children, 
     };
   }, [trackJourneyStep]);
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (configRef.current?.enableErrorTracking) {
-        window.removeEventListener("error", handleGlobalError as any);
-        window.removeEventListener("unhandledrejection", handleUnhandledRejection as any);
-      }
-    };
-  }, [handleGlobalError, handleUnhandledRejection]);
+  // Cleanup on unmount: run every teardown `initialize` registered. Empty of
+  // its own logic on purpose -- anything that knows how to detach itself
+  // registered that knowledge at attach time, so nothing can be forgotten here.
+  useEffect(() => teardown, [teardown]);
 
   // Context value
   const contextValue: AnalyticsContextValue = {
