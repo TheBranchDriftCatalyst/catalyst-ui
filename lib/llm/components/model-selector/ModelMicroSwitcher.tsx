@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { ChevronsUpDown, Monitor, Server, Cloud } from "lucide-react";
+import { ChevronsUpDown, Monitor, Server, Cloud , Cpu} from "lucide-react";
 import type { EndpointType } from "../../client/index.js";
 import { useModels } from "../../react/hooks.js";
 import { fuzzyFilter } from "../shared/fuzzy.js";
@@ -31,6 +31,7 @@ export interface ModelMicroSwitcherProps {
 const ICON_FOR: Record<EndpointType, React.ComponentType<any>> = {
   mac: Monitor,
   cluster: Server,
+  rig: Cpu,
   cloud: Cloud,
 };
 

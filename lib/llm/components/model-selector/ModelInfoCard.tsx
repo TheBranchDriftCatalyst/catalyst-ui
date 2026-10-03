@@ -27,6 +27,7 @@ export interface ModelInfoCardProps {
 const ENDPOINT_ICON = {
   mac: Monitor,
   cluster: Server,
+  rig: Cpu,
   cloud: Cloud,
 } as const;
 

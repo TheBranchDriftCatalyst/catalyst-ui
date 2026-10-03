@@ -114,6 +114,8 @@ export function useAgents(): UseAgentsResult {
 export interface GroupedModels {
   mac: ModelWithRouting[];
   cluster: ModelWithRouting[];
+  /** Ephemeral AWS GPU rigs — see EndpointType for why these are not `cluster`. */
+  rig: ModelWithRouting[];
   cloud: ModelWithRouting[];
 }
 
@@ -156,6 +158,7 @@ export function useModels(): UseModelsResult {
   const grouped: GroupedModels = useMemo(
     () => ({
       mac: models.filter(m => m.endpoint?.type === ("mac" as EndpointType)),
+      rig: models.filter(m => m.endpoint?.type === ("rig" as EndpointType)),
       cluster: models.filter(m => m.endpoint?.type === ("cluster" as EndpointType)),
       cloud: models.filter(m => m.endpoint?.type === ("cloud" as EndpointType)),
     }),

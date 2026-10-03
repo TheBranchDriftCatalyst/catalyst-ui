@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Search, RefreshCw, Monitor, Server, Cloud, X } from "lucide-react";
+import { Search, RefreshCw, Monitor, Server, Cloud, X , Cpu} from "lucide-react";
 import { Input } from "../../../ui/input";
 import { Button } from "../../../ui/button";
 import { Label } from "../../../ui/label";
@@ -21,11 +21,14 @@ export interface ModelSelectorRichProps {
 const GROUP_ICON = {
   mac: Monitor,
   cluster: Server,
+  // Cpu, not Server: a rig is a GPU box that bills by the hour and is usually OFF.
+  // Sharing the cluster icon would imply "free and always on".
+  rig: Cpu,
   cloud: Cloud,
 } as const;
 
 interface Group {
-  key: "mac" | "cluster" | "cloud";
+  key: "mac" | "cluster" | "rig" | "cloud";
   label: string;
   models: ModelWithRouting[];
 }
@@ -53,6 +56,7 @@ export function ModelSelectorRich({
     const groups: Group[] = [
       { key: "mac", label: "Local (Mac)", models: grouped.mac },
       { key: "cluster", label: "Cluster", models: grouped.cluster },
+      { key: "rig", label: "AWS GPU rig ($/hr)", models: grouped.rig },
       { key: "cloud", label: "Cloud", models: grouped.cloud },
     ];
     return groups

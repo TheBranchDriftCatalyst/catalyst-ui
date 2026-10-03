@@ -104,7 +104,14 @@ export interface ModelMetadata {
   hf_tags?: string[];
 }
 
-export type EndpointType = "mac" | "cluster" | "cloud";
+/** Where a model physically runs.
+ *
+ * `rig` is its own tier rather than a flavour of `cluster` or `cloud`, because an
+ * ephemeral AWS GPU box is neither: the hardware is in AWS and bills by the hour, while
+ * the hostname you reach it on belongs to the homelab cluster (an in-cluster relay Pod
+ * holds the SSM tunnel). Folding it into `cluster` reads as "free and always on", which
+ * is exactly the wrong intuition for something costing $2-10/hr. */
+export type EndpointType = "mac" | "cluster" | "rig" | "cloud";
 
 export interface EndpointInfo {
   label: string;

@@ -29,8 +29,14 @@ export interface ImageGenSubmit {
 }
 
 export interface ImagePromptFormProps {
-  /** List of available models, fed to the DenseSelect. */
-  models: Array<{ id: string; description?: string }>;
+  /** List of available models, fed to the DenseSelect.
+   *
+   * `ownedBy` is the shim's own report of WHICH HOST serves the model, and it is the
+   * only thing that distinguishes backends here: the Mac's comfyui-shim and the AWS rig
+   * serve the SAME pipeline ids from the same pipelines/ directory on the same port, so
+   * the id alone tells you nothing about where a render will actually run — or whether
+   * it is costing $2/hr. Surfaced in the option row for exactly that reason. */
+  models: Array<{ id: string; description?: string; ownedBy?: string }>;
   /** Currently selected model id (controlled by consumer). */
   selectedModel: string | null;
   /** Called when the model picker changes. */
@@ -84,11 +90,25 @@ export function ImagePromptForm({
     });
   };
 
-  const modelOptions: DenseSelectOption[] = models.map(m => ({
-    value: m.id,
-    label: m.id,
-    description: m.description,
-  }));
+  // Shorten the backend id for the row: "aws-l40s-comfyui" -> "AWS L40S",
+  // "mac-sdlc-node-comfyui" -> "Mac". Unknown values pass through verbatim rather than
+  // being guessed at, so a new backend shows up as itself instead of silently reading
+  // as one of the two we happen to know about.
+  const sourceLabel = (ownedBy?: string): string | undefined => {
+    if (!ownedBy) return undefined;
+    if (ownedBy.startsWith("aws-")) return `AWS ${ownedBy.replace(/^aws-/, "").replace(/-comfyui$/, "").toUpperCase()}`;
+    if (ownedBy.startsWith("mac-")) return "Mac (local)";
+    return ownedBy;
+  };
+
+  const modelOptions: DenseSelectOption[] = models.map(m => {
+    const src = sourceLabel(m.ownedBy);
+    return {
+      value: m.id,
+      label: src ? `${m.id}  ·  ${src}` : m.id,
+      description: m.description,
+    };
+  });
 
   const sizeOpts: DenseSelectOption[] = sizeOptions.map(s => ({ value: s, label: s }));
 

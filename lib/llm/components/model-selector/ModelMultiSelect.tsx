@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Check, ChevronsUpDown, Search, X, Monitor, Server, Cloud } from "lucide-react";
+import { Check, ChevronsUpDown, Search, X, Monitor, Server, Cloud , Cpu} from "lucide-react";
 import { Button } from "../../../ui/button";
 import type { ModelWithRouting, EndpointType } from "../../client/index.js";
 import { useModels } from "../../react/hooks.js";
@@ -11,6 +11,7 @@ import { cn } from "../shared/utils.js";
 const ICON_FOR: Record<EndpointType, React.ComponentType<any>> = {
   mac: Monitor,
   cluster: Server,
+  rig: Cpu,
   cloud: Cloud,
 };
 
@@ -67,6 +68,7 @@ export function ModelMultiSelect({
     () =>
       [
         { key: "mac" as const, label: "Local (Mac)", models: grouped.mac },
+        { key: "rig" as const, label: "AWS GPU rig ($/hr)", models: grouped.rig },
         { key: "cluster" as const, label: "Cluster", models: grouped.cluster },
         { key: "cloud" as const, label: "Cloud", models: grouped.cloud },
       ]
