@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 import { isDevUtilsEnabled } from "../utils/devMode";
 import { LocalizationProvider } from "../context/LocalizationContext";
-import { AnnotationProvider } from "../context/AnnotationContext";
 
 interface DevProvidersProps {
   children: ReactNode;
@@ -11,8 +10,8 @@ interface DevProvidersProps {
  * Conditional wrapper for dev-mode providers
  *
  * In development (or when VITE_CATALYST_DEV_UTILS_ENABLED=true):
- * - Wraps children with LocalizationProvider and AnnotationProvider
- * - Enables live translation editing and component annotations
+ * - Wraps children with LocalizationProvider
+ * - Enables live translation editing
  *
  * In production (when flag not set):
  * - Renders children directly (pass-through)
@@ -29,9 +28,5 @@ export function DevProviders({ children }: DevProvidersProps) {
   }
 
   // Dev mode or production with flag - wrap with providers
-  return (
-    <LocalizationProvider>
-      <AnnotationProvider>{children}</AnnotationProvider>
-    </LocalizationProvider>
-  );
+  return <LocalizationProvider>{children}</LocalizationProvider>;
 }

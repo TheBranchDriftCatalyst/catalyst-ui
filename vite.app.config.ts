@@ -70,9 +70,8 @@ export default defineConfig({
           }
         : undefined,
     watch: {
-      // Ignore generated files and annotation syncs to prevent excessive HMR
+      // Ignore generated files to prevent excessive HMR
       ignored: [
-        "**/annotations.json",
         "**/docs-combined.md",
         "**/.tabs.manifest.json",
         "**/.locale/*.i18n.json", // Ignore i18n translation files - loaded eagerly at startup

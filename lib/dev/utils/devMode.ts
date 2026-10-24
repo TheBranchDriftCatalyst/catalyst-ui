@@ -7,7 +7,7 @@
  * 3. Setting window.ENV.DEV_UTILS_ENABLED=true at runtime (via config.js)
  *
  * When enabled via production flag:
- * - UI features work (inspect, view annotations, view i18n)
+ * - UI features work (view i18n)
  * - Backend sync is DISABLED (no file writes)
  */
 
