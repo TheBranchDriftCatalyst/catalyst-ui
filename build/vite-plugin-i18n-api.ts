@@ -1,14 +1,12 @@
 import type { Plugin } from "vite";
 import { handleI18nUpdate } from "../server/api/i18n";
-import { handleAnnotationsSync } from "../server/api/annotations";
 import { createPluginLogger } from "./plugin-logger";
 
 /**
- * Vite plugin to add i18n and annotation API endpoints to dev server
+ * Vite plugin to add i18n API endpoints to dev server
  *
  * Registers middleware for:
  * - POST /api/i18n/update - Update translation values
- * - POST /api/annotations/sync - Sync annotations to file
  *
  * **Dev mode only** - These endpoints are not available in production builds
  *
@@ -32,7 +30,7 @@ export function i18nApiPlugin(): Plugin {
 
     /**
      * Configure dev server middleware
-     * Adds POST endpoints for i18n updates and annotation sync
+     * Adds POST endpoints for i18n updates
      */
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
@@ -45,13 +43,6 @@ export function i18nApiPlugin(): Plugin {
         if (req.url === "/api/i18n/update") {
           logger.info("Handling i18n update request");
           await handleI18nUpdate(req, res);
-          return;
-        }
-
-        // Route: POST /api/annotations/sync
-        if (req.url === "/api/annotations/sync") {
-          logger.info("Handling annotations sync request");
-          await handleAnnotationsSync(req, res);
           return;
         }
 

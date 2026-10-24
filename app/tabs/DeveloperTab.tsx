@@ -3,7 +3,7 @@ import { Typography } from "@/catalyst-ui/ui/typography";
 import { Badge } from "@/catalyst-ui/ui/badge";
 import { CodeBlock } from "@/catalyst-ui/components/CodeBlock";
 import { ScrollSnapItem } from "@/catalyst-ui/effects";
-import { Pencil, FileJson, Languages, Bug, Code2, Sparkles } from "lucide-react";
+import { Pencil, Languages, Code2, Sparkles } from "lucide-react";
 
 export const TAB_ORDER = 1.5; // Between Overview (0) and Cards (2)
 export const TAB_SECTION = "catalyst";
@@ -13,7 +13,6 @@ export const TAB_LABEL = "Developer";
  * DeveloperTab - Documentation for developer tools and utilities
  *
  * Explains the various dev-mode features available in Catalyst UI:
- * - Annotation System for code documentation
  * - EditableText for in-place i18n editing
  * - i18n/Localization system overview
  */
@@ -44,17 +43,7 @@ export function DeveloperTab() {
               about bundle size or performance impact.
             </Typography>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-              <div className="border rounded-lg p-4 space-y-2">
-                <div className="flex items-center gap-2">
-                  <Bug className="h-5 w-5 text-primary" />
-                  <Typography variant="h4">Annotation System</Typography>
-                </div>
-                <Typography variant="muted" className="text-sm">
-                  Add TODOs, notes, and documentation directly to components with visual overlays
-                </Typography>
-              </div>
-
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
               <div className="border rounded-lg p-4 space-y-2">
                 <div className="flex items-center gap-2">
                   <Pencil className="h-5 w-5 text-primary" />
@@ -74,146 +63,6 @@ export function DeveloperTab() {
                   Co-located translation files with namespace isolation and hot reloading
                 </Typography>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-      </ScrollSnapItem>
-
-      {/* Annotation System */}
-      <ScrollSnapItem align="start">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Bug className="h-5 w-5 text-primary" />
-              Annotation System
-            </CardTitle>
-            <CardDescription>
-              Document components, track TODOs, and add contextual notes
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-3">
-              <Typography variant="h3">What is it?</Typography>
-              <Typography variant="p" className="text-muted-foreground">
-                The Annotation System lets you add structured documentation, TODOs, and notes to any
-                component in your application. Annotations are:
-              </Typography>
-              <ul className="list-disc list-inside space-y-1 text-muted-foreground ml-4">
-                <li>
-                  <strong>Visual</strong> - Appear as overlays on the actual components
-                </li>
-                <li>
-                  <strong>Exportable</strong> - Can be exported as JSON, Markdown, or TODO.md
-                </li>
-                <li>
-                  <strong>Persistent</strong> - Saved to localStorage and optionally synced to
-                  backend
-                </li>
-                <li>
-                  <strong>Categorized</strong> - Support tags like BUG, TODO, DOCS, REFACTOR
-                </li>
-              </ul>
-            </div>
-
-            <div className="space-y-3">
-              <Typography variant="h3">How to Use</Typography>
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Typography variant="p" className="font-semibold">
-                    1. Access the Annotation Panel
-                  </Typography>
-                  <Typography variant="muted" className="text-sm ml-4">
-                    Click the <Badge variant="outline">Dev Mode Utilities</Badge> icon in the header
-                    (looks like a bug/wrench icon). This opens the annotation panel at the bottom of
-                    the screen.
-                  </Typography>
-                </div>
-
-                <div className="space-y-2">
-                  <Typography variant="p" className="font-semibold">
-                    2. Enable Component Inspector
-                  </Typography>
-                  <Typography variant="muted" className="text-sm ml-4">
-                    Click <Badge variant="outline">Enable Component Inspector</Badge> in the panel.
-                    Now you can hover over any component to see its React component name and props.
-                  </Typography>
-                </div>
-
-                <div className="space-y-2">
-                  <Typography variant="p" className="font-semibold">
-                    3. Create Annotations
-                  </Typography>
-                  <Typography variant="muted" className="text-sm ml-4">
-                    Click a component while inspector is active, then fill out the annotation form:
-                  </Typography>
-                  <ul className="list-disc list-inside space-y-1 text-muted-foreground text-sm ml-8">
-                    <li>
-                      <strong>Type:</strong> BUG, TODO, DOCS, REFACTOR, NOTE
-                    </li>
-                    <li>
-                      <strong>Priority:</strong> LOW, MEDIUM, HIGH, CRITICAL
-                    </li>
-                    <li>
-                      <strong>Description:</strong> Your detailed note
-                    </li>
-                    <li>
-                      <strong>Location:</strong> Auto-captured from component inspector
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="space-y-2">
-                  <Typography variant="p" className="font-semibold">
-                    4. Export Your Work
-                  </Typography>
-                  <Typography variant="muted" className="text-sm ml-4">
-                    Use the <Badge variant="outline">Download</Badge> button to export as:
-                  </Typography>
-                  <ul className="list-disc list-inside space-y-1 text-muted-foreground text-sm ml-8">
-                    <li>
-                      <strong>JSON:</strong> Structured data for tooling integration
-                    </li>
-                    <li>
-                      <strong>Markdown:</strong> Human-readable documentation
-                    </li>
-                    <li>
-                      <strong>TODO.md:</strong> GitHub/VS Code compatible task list
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            <div className="border-t pt-4">
-              <Typography variant="h4" className="mb-3">
-                Code Example
-              </Typography>
-              <CodeBlock
-                code={`import { useAnnotationContext } from '@/catalyst-ui/dev/context';
-
-function MyComponent() {
-  const { addAnnotation } = useAnnotationContext();
-
-  // Programmatically add an annotation
-  const handleBugReport = () => {
-    addAnnotation({
-      type: 'BUG',
-      priority: 'HIGH',
-      description: 'Button does not handle loading state',
-      componentName: 'SubmitButton',
-      location: window.location.pathname,
-      timestamp: new Date().toISOString(),
-    });
-  };
-
-  return <button onClick={handleBugReport}>Report Bug</button>;
-}`}
-                language="tsx"
-                fileName="AnnotationExample.tsx"
-                theme="catalyst"
-                showLineNumbers={true}
-                showCopyButton={true}
-              />
             </div>
           </CardContent>
         </Card>
@@ -536,22 +385,6 @@ function LanguageSwitcher() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-3">
-              <Typography variant="h4">Annotation System</Typography>
-              <ul className="list-disc list-inside space-y-1 text-muted-foreground ml-4">
-                <li>
-                  Use <strong>HIGH</strong> priority for blocking bugs
-                </li>
-                <li>
-                  Export annotations regularly to avoid losing work (localStorage can be cleared)
-                </li>
-                <li>Enable auto-sync if you have a backend endpoint configured</li>
-                <li>
-                  Use the <strong>DOCS</strong> type for component usage examples and API notes
-                </li>
-              </ul>
-            </div>
-
-            <div className="space-y-3">
               <Typography variant="h4">EditableText</Typography>
               <ul className="list-disc list-inside space-y-1 text-muted-foreground ml-4">
                 <li>
@@ -596,13 +429,11 @@ function LanguageSwitcher() {
                 <Badge>Header → Dev Mode Utilities</Badge>
               </div>
               <Typography variant="p" className="text-muted-foreground text-sm">
-                Click the <strong>bug/wrench icon</strong> in the navigation header to open the Dev
-                Mode Utilities panel. This gives you access to:
+                Click the <strong>code icon</strong> in the navigation header to open the Dev Mode
+                Utilities menu. This gives you access to:
               </Typography>
               <ul className="list-disc list-inside space-y-1 text-muted-foreground text-sm ml-4">
-                <li>Annotation panel (create, view, export annotations)</li>
-                <li>Component inspector (hover to see React component details)</li>
-                <li>Auto-sync toggle for backend synchronization</li>
+                <li>Translation tools (view and manage in-place i18n edits)</li>
               </ul>
             </div>
 

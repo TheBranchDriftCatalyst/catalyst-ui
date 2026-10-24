@@ -6,9 +6,8 @@ This directory contains all development-mode utilities and UI components for cat
 
 ```
 lib/dev/
-├── annotation/          # Component annotation system
 ├── components/          # Dev-mode UI components (DevModeToggle, EditableText)
-├── context/             # Dev-mode React contexts (LocalizationContext, AnnotationContext)
+├── context/             # Dev-mode React contexts (LocalizationContext)
 ├── utils/               # Dev-mode utilities (devMode.ts)
 └── README.md           # This file
 ```
@@ -26,7 +25,7 @@ import { isDevUtilsEnabled, isBackendSyncEnabled } from "@/catalyst-ui/dev/utils
 
 // Check if dev UI should be visible
 if (isDevUtilsEnabled()) {
-  // Show dev tools, render DevModeToggle, enable inspection
+  // Show dev tools, render DevModeToggle
 }
 
 // Check if backend sync (file writes) is allowed
@@ -46,34 +45,7 @@ All code in `lib/dev/` is automatically tree-shaken from production builds if no
 
 ## Features
 
-### 1. Annotation System
-
-Real-time component annotations for tracking TODOs, bugs, notes, and documentation needs.
-
-**Features:**
-
-- Visual component inspector
-- Annotation CRUD operations
-- LocalStorage persistence
-- Backend sync (dev mode only)
-- Priority levels and categories
-
-**Usage:**
-
-```tsx
-import { AnnotationProvider, DevModeToggle } from "@/catalyst-ui/dev";
-
-function App() {
-  return (
-    <AnnotationProvider>
-      <DevModeToggle />
-      {/* Your app */}
-    </AnnotationProvider>
-  );
-}
-```
-
-### 2. Localization Editing
+### 1. Localization Editing
 
 Live translation editing with undo/redo support.
 
@@ -100,15 +72,13 @@ function App() {
 }
 ```
 
-### 3. DevModeToggle Component
+### 2. DevModeToggle Component
 
 Central hub for all dev utilities.
 
 **Features:**
 
 - Dropdown menu with organized sections
-- Component inspector activation
-- Annotation list view
 - Translation management UI
 - Auto-hides in production (unless flag is set)
 
@@ -149,7 +119,6 @@ export VITE_CATALYST_DEV_UTILS_ENABLED=true
 
 This allows visitors to the demo site to:
 
-- View component annotations
 - See translation editing UI
 - Explore dev mode features
 
@@ -158,14 +127,6 @@ But backend sync (file writes) is disabled in production builds, so no data pers
 ## Backend Sync
 
 Backend sync is implemented via Vite middleware and **only works in true development mode**.
-
-### Annotation Sync
-
-**Endpoint:** `POST /api/annotations/sync`
-
-Writes annotations to `annotations.json` at the workspace root.
-
-**Implementation:** `build/vite-plugin-i18n-api.ts`
 
 ### Translation Sync
 
